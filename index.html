@@ -169,37 +169,41 @@ header {
 .kpi-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
 
 /* ── EDITABLE TABLE ──────────────────────── */
-.etbl { width: 100%; border-collapse: collapse; }
+.etbl { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .etbl thead th {
   padding: 9px 16px;
-  font-size: 10px; font-family: var(--mono); letter-spacing: 1px;
+  font-size: 11px; font-family: var(--mono); letter-spacing: 1px;
   text-transform: uppercase; color: var(--text3);
   background: var(--bg2); border-bottom: 1px solid var(--border);
-  text-align: left; font-weight: 500;
+  text-align: left; font-weight: 500; overflow: hidden;
 }
 .etbl thead th.r { text-align: right; }
+.etbl col.col-name { width: 45%; }
+.etbl col.col-amt  { width: 25%; }
+.etbl col.col-note { width: 22%; }
+.etbl col.col-del  { width: 8%; }
 .etbl tbody tr { border-bottom: 1px solid rgba(226,217,204,0.6); }
 .etbl tbody tr:last-child { border-bottom: none; }
 .etbl tbody tr:hover { background: #fdf9f4; }
 .etbl td { padding: 0; }
-.etbl .c-name { padding: 8px 16px; }
+.etbl .c-name { padding: 8px 16px; overflow: hidden; }
 .etbl .c-name input {
   background: transparent; border: none; outline: none;
-  color: var(--text); font-family: var(--sans); font-size: 13px;
-  width: 100%;
+  color: var(--text); font-family: var(--sans); font-size: 14px;
+  width: 100%; overflow: hidden; text-overflow: ellipsis;
 }
 .etbl .c-name input:focus { color: var(--blue); }
 .etbl .c-amt { padding: 8px 16px; text-align: right; }
 .etbl .c-amt input {
   background: transparent; border: none; outline: none;
-  color: var(--text); font-family: var(--mono); font-size: 13px;
+  color: var(--text); font-family: var(--mono); font-size: 14px;
   text-align: right; width: 100%;
 }
 .etbl .c-amt input:focus { color: var(--blue); }
-.etbl .c-note { padding: 8px 12px; width: 130px; }
+.etbl .c-note { padding: 8px 12px; overflow: hidden; }
 .etbl .c-note input {
   background: transparent; border: none; outline: none;
-  color: var(--text3); font-family: var(--sans); font-size: 11px; width: 100%;
+  color: var(--text3); font-family: var(--sans); font-size: 12px; width: 100%;
 }
 .etbl .c-del {
   padding: 8px 12px; text-align: center; width: 32px;
@@ -208,9 +212,9 @@ header {
 }
 .etbl tbody tr:hover .c-del { color: var(--red); }
 .etbl .total-row { background: var(--bg2) !important; border-top: 1px solid var(--border); }
-.etbl .total-row .c-name { padding: 10px 16px; font-size: 12px; color: var(--text2); font-weight: 600; font-family: var(--mono); letter-spacing: 0.3px; }
+.etbl .total-row .c-name { padding: 10px 16px; font-size: 13px; color: var(--text2); font-weight: 600; font-family: var(--mono); letter-spacing: 0.3px; }
 .etbl .total-row .c-amt { padding: 10px 16px; }
-.etbl .total-row .c-amt span { font-family: var(--mono); font-size: 14px; color: var(--accent); font-weight: 600; }
+.etbl .total-row .c-amt span { font-family: var(--mono); font-size: 15px; color: var(--accent); font-weight: 600; }
 
 .add-btn {
   width: 100%; padding: 10px 16px;
@@ -383,8 +387,8 @@ header {
   .etbl .c-name input { font-size: 12px; }
   .etbl .c-amt { padding: 7px 10px; }
   .etbl .c-amt input { font-size: 12px; }
-  .etbl .c-note { display: none; }
-  .etbl .c-del { padding: 7px 8px; }
+  .etbl col.col-del  { width: 8%; }
+  .etbl .c-del { padding: 7px 6px; font-size: 13px; }
 
   .settings-body { padding: 14px; }
   .settings-grid { grid-template-columns: 1fr; gap: 12px; }
@@ -483,7 +487,7 @@ header {
       <span class="card-title"><span class="card-title-icon">🏗</span> Bucket A — Bare Warehouse</span>
       <span class="card-total" id="total-warehouse">THB 0</span>
     </div>
-    <table class="etbl">
+    <table class="etbl"><colgroup><col class="col-name"><col class="col-amt"><col class="col-note"><col class="col-del"></colgroup>
       <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
       <tbody id="tbody-warehouse"></tbody>
     </table>
@@ -501,7 +505,7 @@ header {
       <span class="card-title"><span class="card-title-icon">🧗</span> Wall & Structure</span>
       <span class="card-total" id="total-wall">THB 0</span>
     </div>
-    <table class="etbl">
+    <table class="etbl"><colgroup><col class="col-name"><col class="col-amt"><col class="col-note"><col class="col-del"></colgroup>
       <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
       <tbody id="tbody-wall"></tbody>
     </table>
@@ -513,7 +517,7 @@ header {
       <span class="card-title"><span class="card-title-icon">🎯</span> Equipment & Mats</span>
       <span class="card-total" id="total-equipment">THB 0</span>
     </div>
-    <table class="etbl">
+    <table class="etbl"><colgroup><col class="col-name"><col class="col-amt"><col class="col-note"><col class="col-del"></colgroup>
       <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
       <tbody id="tbody-equipment"></tbody>
     </table>
@@ -525,7 +529,7 @@ header {
       <span class="card-title"><span class="card-title-icon">🏠</span> Interior Fit-out</span>
       <span class="card-total" id="total-fitout">THB 0</span>
     </div>
-    <table class="etbl">
+    <table class="etbl"><colgroup><col class="col-name"><col class="col-amt"><col class="col-note"><col class="col-del"></colgroup>
       <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
       <tbody id="tbody-fitout"></tbody>
     </table>
@@ -554,7 +558,7 @@ header {
         <span class="card-title">💰 Monthly Expenses</span>
         <span class="card-total" id="total-opex">THB 0</span>
       </div>
-      <table class="etbl">
+      <table class="etbl"><colgroup><col class="col-name"><col class="col-amt"><col class="col-note"><col class="col-del"></colgroup>
         <thead><tr><th>Item</th><th class="r" style="width:150px">THB / month</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
         <tbody id="tbody-opex"></tbody>
       </table>
