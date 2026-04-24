@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hat Yai Bouldering Gym — Financial Model</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiempos+Headline:wght@400;500&family=Styrene+A:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #f5f0e8;
+  --bg2:       #faf7f2;
+  --bg3:       #f0ebe0;
+  --surface:   #ffffff;
+  --border:    #e2d9cc;
+  --border2:   #d4c9b8;
+  --text:      #1a1410;
+  --text2:     #5c5244;
+  --text3:     #9c8f82;
+  --accent:    #c96442;
+  --accent2:   #7b6e5d;
+  --green:     #4a7c59;
+  --blue:      #4a6b8a;
+  --orange:    #c8883a;
+  --red:       #b84040;
+  --shadow:    0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --sans:  'Source Sans 3', system-ui, sans-serif;
+  --serif: 'Lora', Georgia, serif;
+  --mono:  'JetBrains Mono', monospace;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── HEADER ─────────────────────────────── */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-logo {
+  width: 28px; height: 28px; background: var(--accent);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 14px; color: white; font-weight: 600;
+}
+.header-title { font-family: var(--serif); font-size: 16px; color: var(--text); font-weight: 500; }
+.header-sub { font-size: 12px; color: var(--text3); margin-top: 1px; }
+.header-right { display: flex; align-items: center; gap: 8px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 20px;
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: 11px; color: var(--text2); font-family: var(--mono);
+}
+.pill.green { background: #eef5f0; border-color: #c8ddd0; color: var(--green); }
+.pill.orange { background: #fdf3ea; border-color: #f0d8bb; color: var(--orange); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* ── SIDEBAR + CONTENT ───────────────────── */
+.app-layout { display: flex; min-height: calc(100vh - 56px); }
+
+.sidebar {
+  width: 200px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 20px 12px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+.nav-section { margin-bottom: 24px; }
+.nav-section-label {
+  font-size: 10px; font-family: var(--mono); color: var(--text3);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 0 10px; margin-bottom: 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 7px;
+  font-size: 13px; color: var(--text2);
+  cursor: pointer; transition: all 0.12s;
+  font-weight: 400;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--bg3); color: var(--accent); font-weight: 500; }
+.nav-icon { font-size: 15px; opacity: 0.7; width: 18px; text-align: center; }
+.nav-badge {
+  margin-left: auto; font-family: var(--mono); font-size: 10px;
+  color: var(--text3); background: var(--bg); border: 1px solid var(--border);
+  padding: 1px 6px; border-radius: 10px;
+}
+
+.main-content { flex: 1; padding: 28px 32px; min-width: 0; }
+
+/* ── SECTIONS ────────────────────────────── */
+.section { display: none; }
+.section.active { display: block; }
+
+.page-title {
+  font-family: var(--serif); font-size: 22px; color: var(--text);
+  margin-bottom: 4px; font-weight: 500;
+}
+.page-sub { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
+
+/* ── CARDS ───────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.card-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg2);
+}
+.card-title {
+  font-size: 13px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title-icon { font-size: 14px; }
+.card-total {
+  font-family: var(--mono); font-size: 13px;
+  color: var(--accent); font-weight: 500;
+  background: #fdf0eb; border: 1px solid #f2cfc0;
+  padding: 3px 10px; border-radius: 5px;
+}
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+
+/* ── KPI CARDS ───────────────────────────── */
+.kpi-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.kpi-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.5px; }
+.kpi-value { font-family: var(--serif); font-size: 22px; color: var(--text); font-weight: 500; line-height: 1.2; }
+.kpi-value.accent { color: var(--accent); }
+.kpi-value.green  { color: var(--green); }
+.kpi-value.blue   { color: var(--blue); }
+.kpi-value.orange { color: var(--orange); }
+.kpi-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+/* ── EDITABLE TABLE ──────────────────────── */
+.etbl { width: 100%; border-collapse: collapse; }
+.etbl thead th {
+  padding: 9px 16px;
+  font-size: 10px; font-family: var(--mono); letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text3);
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  text-align: left; font-weight: 500;
+}
+.etbl thead th.r { text-align: right; }
+.etbl tbody tr { border-bottom: 1px solid rgba(226,217,204,0.6); }
+.etbl tbody tr:last-child { border-bottom: none; }
+.etbl tbody tr:hover { background: #fdf9f4; }
+.etbl td { padding: 0; }
+.etbl .c-name { padding: 8px 16px; }
+.etbl .c-name input {
+  background: transparent; border: none; outline: none;
+  color: var(--text); font-family: var(--sans); font-size: 13px;
+  width: 100%;
+}
+.etbl .c-name input:focus { color: var(--blue); }
+.etbl .c-amt { padding: 8px 16px; text-align: right; }
+.etbl .c-amt input {
+  background: transparent; border: none; outline: none;
+  color: var(--text); font-family: var(--mono); font-size: 13px;
+  text-align: right; width: 100%;
+}
+.etbl .c-amt input:focus { color: var(--blue); }
+.etbl .c-note { padding: 8px 12px; width: 130px; }
+.etbl .c-note input {
+  background: transparent; border: none; outline: none;
+  color: var(--text3); font-family: var(--sans); font-size: 11px; width: 100%;
+}
+.etbl .c-del {
+  padding: 8px 12px; text-align: center; width: 32px;
+  color: var(--border2); cursor: pointer; font-size: 16px;
+  transition: color 0.1s; line-height: 1;
+}
+.etbl tbody tr:hover .c-del { color: var(--red); }
+.etbl .total-row { background: var(--bg2) !important; border-top: 1px solid var(--border); }
+.etbl .total-row .c-name { padding: 10px 16px; font-size: 12px; color: var(--text2); font-weight: 600; font-family: var(--mono); letter-spacing: 0.3px; }
+.etbl .total-row .c-amt { padding: 10px 16px; }
+.etbl .total-row .c-amt span { font-family: var(--mono); font-size: 14px; color: var(--accent); font-weight: 600; }
+
+.add-btn {
+  width: 100%; padding: 10px 16px;
+  background: transparent; border: none; border-top: 1px dashed var(--border);
+  color: var(--text3); cursor: pointer; font-family: var(--sans); font-size: 12px;
+  text-align: left; transition: all 0.12s; display: flex; align-items: center; gap: 6px;
+}
+.add-btn:hover { background: #fdf9f4; color: var(--accent); }
+
+/* ── SETTINGS ────────────────────────────── */
+.settings-body { padding: 20px; }
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field-label { font-size: 11px; color: var(--text2); font-weight: 500; letter-spacing: 0.3px; }
+.field-input {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 7px;
+  padding: 8px 12px; color: var(--text); font-family: var(--mono); font-size: 13px;
+  outline: none; transition: border-color 0.12s, box-shadow 0.12s; width: 100%;
+}
+.field-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(201,100,66,0.08);
+}
+.field-hint { font-size: 11px; color: var(--text3); }
+.field-computed {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 7px;
+  padding: 8px 12px; font-family: var(--mono); font-size: 14px; color: var(--accent);
+  font-weight: 500;
+}
+.full { grid-column: 1/-1; }
+.divider { grid-column: 1/-1; height: 1px; background: var(--border); margin: 4px 0; }
+
+/* ── TOGGLE ──────────────────────────────── */
+.toggle-field {
+  grid-column: 1/-1;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0;
+}
+.toggle-text { font-size: 13px; color: var(--text); }
+.toggle-sub { font-size: 11px; color: var(--text3); }
+.switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch-slider {
+  position: absolute; cursor: pointer; inset: 0;
+  background: var(--border2); border-radius: 22px; transition: 0.2s;
+}
+.switch-slider:before {
+  content: ''; position: absolute;
+  height: 16px; width: 16px; left: 3px; bottom: 3px;
+  background: white; border-radius: 50%;
+  transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.switch input:checked + .switch-slider { background: var(--accent); }
+.switch input:checked + .switch-slider:before { transform: translateX(18px); }
+
+/* ── SCENARIO INPUTS ─────────────────────── */
+.scenario-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; padding: 20px; }
+.sc-field { display: flex; flex-direction: column; gap: 6px; }
+.sc-name { font-size: 12px; font-weight: 600; color: var(--text2); }
+.sc-input {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 7px;
+  padding: 8px 10px; color: var(--text); font-family: var(--mono); font-size: 14px;
+  outline: none; width: 100%; text-align: center; transition: all 0.12s;
+}
+.sc-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,100,66,0.08); }
+.sc-hint { font-size: 10px; color: var(--text3); text-align: center; font-family: var(--mono); }
+
+/* ── PROJECTION TABLE ────────────────────── */
+.ptbl-wrap { overflow-x: auto; }
+.ptbl { width: 100%; border-collapse: collapse; min-width: 900px; table-layout: fixed; }
+.ptbl thead th {
+  padding: 9px 10px; font-size: 9px; font-family: var(--mono);
+  letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3);
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  text-align: right; font-weight: 500; white-space: nowrap; overflow: hidden;
+}
+.ptbl thead th:first-child { text-align: left; }
+.ptbl tbody tr { border-bottom: 1px solid rgba(226,217,204,0.5); }
+.ptbl tbody tr:last-child { border-bottom: none; }
+.ptbl tbody tr:hover { background: #fdf9f4; }
+.ptbl td {
+  padding: 9px 10px; text-align: right;
+  font-family: var(--mono); font-size: 11px; color: var(--text2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ptbl td:first-child { text-align: left; font-family: var(--sans); font-weight: 600; color: var(--text); font-size: 12px; }
+.ptbl .pos { color: var(--green); }
+.ptbl .neg { color: var(--red); }
+.ptbl .neutral { color: var(--text3); }
+.ptbl .warn { color: var(--orange); }
+.ptbl .be-row td {
+  background: var(--bg3); color: var(--text3); font-size: 11px;
+  padding: 8px 10px; font-style: italic;
+}
+.ptbl .be-row td:first-child { text-align: left; font-style: italic; font-family: var(--mono); font-size: 11px; font-weight: 400; }
+
+/* ── PHASE LABEL ─────────────────────────── */
+.phase-label {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 20px; font-size: 12px; font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.phase-dot { width: 8px; height: 8px; border-radius: 50%; }
+.phase1-label { color: var(--blue); background: #eef3f8; }
+.phase1-label .phase-dot { background: var(--blue); }
+.phase2-label { color: var(--green); background: #eef5f0; }
+.phase2-label .phase-dot { background: var(--green); }
+
+/* ── CAPEX SUMMARY ───────────────────────── */
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.summary-item {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.summary-item:nth-child(odd) { border-right: 1px solid var(--border); }
+.summary-item.highlight { background: #fdf0eb; }
+.summary-item.highlight-green { background: #eef5f0; }
+.s-label { font-size: 12px; color: var(--text2); }
+.s-val { font-family: var(--mono); font-size: 13px; color: var(--text); font-weight: 500; }
+.s-val.accent { color: var(--accent); }
+.s-val.green { color: var(--green); }
+.s-val.blue { color: var(--blue); }
+
+/* ── SCROLLBAR ───────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── MOBILE ──────────────────────────────── */
+@media (max-width: 768px) {
+  header { padding: 0 16px; height: 52px; }
+  .header-title { font-size: 14px; }
+  .pill { display: none; }
+  .pill:first-child { display: inline-flex; }
+
+  .app-layout { flex-direction: column; }
+
+  .sidebar {
+    width: 100%; height: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 8px;
+    display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 4px;
+  }
+  .nav-section { display: contents; }
+  .nav-section-label { display: none; }
+  .nav-item {
+    flex-shrink: 0; padding: 6px 12px;
+    font-size: 12px; border-radius: 20px;
+    white-space: nowrap;
+  }
+  .nav-badge { display: none; }
+
+  .main-content { padding: 16px; }
+
+  .page-title { font-size: 18px; }
+  .page-sub { font-size: 12px; margin-bottom: 16px; }
+
+  .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+
+  .kpi-card { padding: 14px 16px; }
+  .kpi-value { font-size: 18px; }
+
+  .card-header { padding: 12px 14px; }
+  .card-title { font-size: 12px; }
+
+  .etbl thead th { padding: 7px 10px; font-size: 9px; }
+  .etbl .c-name { padding: 7px 10px; }
+  .etbl .c-name input { font-size: 12px; }
+  .etbl .c-amt { padding: 7px 10px; }
+  .etbl .c-amt input { font-size: 12px; }
+  .etbl .c-note { display: none; }
+  .etbl .c-del { padding: 7px 8px; }
+
+  .settings-body { padding: 14px; }
+  .settings-grid { grid-template-columns: 1fr; gap: 12px; }
+  .full { grid-column: 1; }
+  .toggle-field { grid-column: 1; }
+  .divider { grid-column: 1; }
+
+  .scenario-row { grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px; }
+
+  /* Projection table: horizontal scroll on mobile */
+  .ptbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ptbl { min-width: 750px; font-size: 10px; }
+  .ptbl thead th { padding: 7px 8px; font-size: 8px; }
+  .ptbl td { padding: 8px 8px; font-size: 10px; }
+  .ptbl td:first-child { font-size: 11px; }
+
+  .phase-label { font-size: 11px; padding: 8px 14px; }
+
+  .summary-grid { grid-template-columns: 1fr; }
+  .summary-item { border-right: none !important; }
+  .summary-item:nth-child(odd) { border-right: none; }
+
+  .capex-summary { grid-template-columns: 1fr; padding: 12px; }
+
+  #sec-opex .grid2 { grid-template-columns: 1fr; }
+
+  .be1-label, .be2-label { font-size: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="header-logo">H</div>
+    <div>
+      <div class="header-title">Hat Yai Bouldering Gym</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="pill" id="hvac-badge"><span class="dot"></span> HVAC ON</div>
+    <div class="pill">Apr 2026</div>
+  </div>
+</header>
+
+<div class="app-layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="nav-section">
+    <div class="nav-section-label">Investment</div>
+    <div class="nav-item active" onclick="showSection('capex-wh',this)">
+      <span class="nav-icon">🏗</span> Warehouse
+    </div>
+    <div class="nav-item" onclick="showSection('capex-b',this)">
+      <span class="nav-icon">🧗</span> Bucket B
+    </div>
+    <div class="nav-item" onclick="showSection('capex-sum',this)">
+      <span class="nav-icon">📊</span> Summary
+      <span class="nav-badge" id="nav-total">—</span>
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Operations</div>
+    <div class="nav-item" onclick="showSection('opex',this)">
+      <span class="nav-icon">💰</span> Monthly OPEX
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Model</div>
+    <div class="nav-item" onclick="showSection('pricing',this)">
+      <span class="nav-icon">🏷</span> Pricing
+    </div>
+    <div class="nav-item" onclick="showSection('settings',this)">
+      <span class="nav-icon">⚙️</span> Settings
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Output</div>
+    <div class="nav-item" onclick="showSection('projections',this)">
+      <span class="nav-icon">📈</span> Projections
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+<!-- ── WAREHOUSE ── -->
+<div id="sec-capex-wh" class="section active">
+  <div class="page-title">Warehouse Structure</div>
+  <div class="page-sub">Bucket A — funded entirely by Surf / View. Not counted in JV equity.</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title"><span class="card-title-icon">🏗</span> Bucket A — Bare Warehouse</span>
+      <span class="card-total" id="total-warehouse">THB 0</span>
+    </div>
+    <table class="etbl">
+      <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
+      <tbody id="tbody-warehouse"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRow('warehouse')">＋ Add item</button>
+  </div>
+</div>
+
+<!-- ── BUCKET B (COMBINED) ── -->
+<div id="sec-capex-b" class="section">
+  <div class="page-title">Bucket B — Gym Fit-out</div>
+  <div class="page-sub">Co-invested by all JV parties. Equity calculated from this bucket only.</div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+      <span class="card-title"><span class="card-title-icon">🧗</span> Wall & Structure</span>
+      <span class="card-total" id="total-wall">THB 0</span>
+    </div>
+    <table class="etbl">
+      <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
+      <tbody id="tbody-wall"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRow('wall')">＋ Add item</button>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+      <span class="card-title"><span class="card-title-icon">🎯</span> Equipment & Mats</span>
+      <span class="card-total" id="total-equipment">THB 0</span>
+    </div>
+    <table class="etbl">
+      <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
+      <tbody id="tbody-equipment"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRow('equipment')">＋ Add item</button>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title"><span class="card-title-icon">🏠</span> Interior Fit-out</span>
+      <span class="card-total" id="total-fitout">THB 0</span>
+    </div>
+    <table class="etbl">
+      <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
+      <tbody id="tbody-fitout"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRow('fitout')">＋ Add item</button>
+  </div>
+</div>
+
+<!-- ── CAPEX SUMMARY ── -->
+<div id="sec-capex-sum" class="section">
+  <div class="page-title">CAPEX Summary</div>
+  <div class="page-sub">Full investment picture including leasehold valuation.</div>
+  <div class="grid4" id="kpi-capex"></div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">📊 Full Breakdown</span></div>
+    <div class="summary-grid" id="capex-summary"></div>
+  </div>
+</div>
+
+<!-- ── OPEX ── -->
+<div id="sec-opex" class="section">
+  <div class="page-title">Monthly OPEX</div>
+  <div class="page-sub">Operating expenses per month. Electricity auto-adjusts with HVAC toggle.</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">💰 Monthly Expenses</span>
+        <span class="card-total" id="total-opex">THB 0</span>
+      </div>
+      <table class="etbl">
+        <thead><tr><th>Item</th><th class="r" style="width:150px">THB / month</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
+        <tbody id="tbody-opex"></tbody>
+      </table>
+      <button class="add-btn" onclick="addRow('opex')">＋ Add item</button>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-header"><span class="card-title">📝 Notes</span></div>
+        <div style="padding:16px; display:flex; flex-direction:column; gap:10px;">
+          <div style="padding:12px; background:var(--bg3); border-radius:7px; font-size:12px; color:var(--text2); line-height:1.7;">
+            <div>• Rent = <strong style="color:var(--accent)">THB 0</strong> during Phase 1</div>
+            <div>• Phase 2 rent: <strong id="note-rent" style="color:var(--green)">—</strong></div>
+            <div>• Electricity switches with HVAC toggle</div>
+            <div>• Staff THB 150,000 budget — individual breakdown TBD</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">⚡ Effective OPEX</span></div>
+        <div style="padding:16px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="padding:12px; background:var(--bg3); border-radius:7px; text-align:center;">
+            <div style="font-size:10px; color:var(--text3); font-family:var(--mono); margin-bottom:4px;">WITH HVAC</div>
+            <div id="opex-with-hvac" style="font-family:var(--serif); font-size:18px; color:var(--text);"></div>
+          </div>
+          <div style="padding:12px; background:#eef5f0; border-radius:7px; text-align:center;">
+            <div style="font-size:10px; color:var(--text3); font-family:var(--mono); margin-bottom:4px;">NO HVAC</div>
+            <div id="opex-no-hvac" style="font-family:var(--serif); font-size:18px; color:var(--green);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRICING ── -->
+<div id="sec-pricing" class="section">
+  <div class="page-title">Pricing</div>
+  <div class="page-sub">Entry fees and ancillary rental rates per visit.</div>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-header"><span class="card-title">🏷 Climbing Pricing</span></div>
+      <div class="settings-body">
+        <div class="settings-grid">
+          <div class="field">
+            <span class="field-label">Day Pass (THB)</span>
+            <input class="field-input" id="p-daypass" type="number" value="300" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Membership / month (THB)</span>
+            <input class="field-input" id="p-membership" type="number" value="1500" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Shoe Rental (THB)</span>
+            <input class="field-input" id="p-shoe" type="number" value="100" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Shoe Uptake (%)</span>
+            <input class="field-input" id="p-shoe-rate" type="number" value="95" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Chalk Bag (THB)</span>
+            <input class="field-input" id="p-chalk" type="number" value="30" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Chalk Uptake (%)</span>
+            <input class="field-input" id="p-chalk-rate" type="number" value="70" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Harness Rental (THB)</span>
+            <input class="field-input" id="p-harness" type="number" value="50" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Harness Uptake (%)</span>
+            <input class="field-input" id="p-harness-rate" type="number" value="70" oninput="recalc()">
+          </div>
+          <div class="full">
+            <div style="padding:14px; background:var(--bg3); border-radius:7px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--text2);">Effective revenue / walk-in visit</span>
+              <span id="eff-rev" class="field-computed" style="border:none; padding:4px 0; background:transparent;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">🏓 Pickleball</span></div>
+      <div class="settings-body">
+        <div class="settings-grid">
+          <div class="field">
+            <span class="field-label">Rate (THB / hr / court)</span>
+            <input class="field-input" id="pb-rate" type="number" value="200" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Hours / day / court</span>
+            <input class="field-input" id="pb-hours" type="number" value="4" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Number of courts</span>
+            <input class="field-input" id="pb-courts" type="number" value="2" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Days / month</span>
+            <input class="field-input" id="pb-days" type="number" value="30" oninput="recalc()">
+          </div>
+          <div class="full">
+            <div style="padding:14px; background:var(--bg3); border-radius:7px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--text2);">Pickleball revenue / month</span>
+              <span id="pb-monthly" style="font-family:var(--mono); font-size:15px; color:var(--green); font-weight:600;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📋 Scenario Visitors / Day</span></div>
+      <div class="settings-body">
+        <div id="scenario-inputs" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SETTINGS ── -->
+<div id="sec-settings" class="section">
+  <div class="page-title">JV & Model Settings</div>
+  <div class="page-sub">Equity split, rent structure, HVAC toggle, visitor assumptions.</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">🤝 JV Structure</span></div>
+      <div class="settings-body">
+        <div class="settings-grid">
+          <div class="field">
+            <span class="field-label">BP Equity (%)</span>
+            <input class="field-input" id="jv-bp" type="number" value="49" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Surf / View Equity (%)</span>
+            <input class="field-input" id="jv-surf" type="number" value="51" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Walk-in split (%)</span>
+            <input class="field-input" id="jv-walkin" type="number" value="90" oninput="recalc()">
+            <span class="field-hint">% walk-in (rest = member visits)</span>
+          </div>
+          <div class="field">
+            <span class="field-label">Member visits / month</span>
+            <input class="field-input" id="jv-visits" type="number" value="8" oninput="recalc()">
+          </div>
+          <div class="divider"></div>
+          <div class="field">
+            <span class="field-label">Post-payback Rent (THB/sqm)</span>
+            <input class="field-input" id="jv-rent-sqm" type="number" value="100" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Building area (sqm)</span>
+            <input class="field-input" id="jv-sqm" type="number" value="1200" oninput="recalc()">
+          </div>
+          <div class="full">
+            <div style="padding:14px; background:var(--bg3); border-radius:7px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--text2);">Phase 2 rent / month</span>
+              <span id="phase2-rent" style="font-family:var(--mono); font-size:15px; color:var(--green); font-weight:600;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">❄️ HVAC Settings</span></div>
+      <div class="settings-body">
+        <div class="settings-grid">
+          <div class="toggle-field">
+            <div>
+              <div class="toggle-text">HVAC installed</div>
+              <div class="toggle-sub">Affects electricity OPEX and Bucket B total</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="hvac-toggle" checked onchange="recalc()">
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+          <div class="field">
+            <span class="field-label">Electricity with HVAC (THB/mo)</span>
+            <input class="field-input" id="elec-hvac" type="number" value="40000" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">Electricity without HVAC (THB/mo)</span>
+            <input class="field-input" id="elec-no-hvac" type="number" value="20000" oninput="recalc()">
+          </div>
+          <div class="full">
+            <div style="padding:14px; background:var(--bg3); border-radius:7px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--text2);">Active electricity cost</span>
+              <span id="active-elec" style="font-family:var(--mono); font-size:15px; color:var(--blue); font-weight:600;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROJECTIONS ── -->
+<div id="sec-projections" class="section">
+  <div class="page-title">Financial Projections</div>
+  <div class="page-sub">Auto-calculated from all inputs. Updates live.</div>
+
+  <div class="grid4" id="kpi-proj"></div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="phase-label phase1-label">
+      <span class="phase-dot"></span>
+      Phase 1 — Before BP Recoups &nbsp;·&nbsp; No Rent
+      <span style="margin-left:auto; font-family:var(--mono); font-size:11px;" id="be1-label"></span>
+    </div>
+    <div class="ptbl-wrap">
+      <table class="ptbl">
+        <colgroup>
+          <col style="width:110px"><col style="width:80px"><col style="width:70px"><col style="width:70px">
+          <col style="width:90px"><col style="width:75px"><col style="width:90px">
+          <col style="width:90px"><col style="width:90px"><col style="width:90px"><col style="width:90px"><col style="width:80px">
+        </colgroup>
+        <thead><tr>
+          <th>Scenario</th><th>Total/day</th><th>WI/day</th><th>Members</th>
+          <th>Climb Rev</th><th>PB Rev</th><th>Total Rev</th>
+          <th>EBITDA/mo</th><th>Ann EBITDA</th><th>BP / yr</th><th>Surf / yr</th><th>Payback</th>
+        </tr></thead>
+        <tbody id="pbody1"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="phase-label phase2-label">
+      <span class="phase-dot"></span>
+      Phase 2 — After BP Recoups &nbsp;·&nbsp; Rent applies
+      <span style="margin-left:auto; font-family:var(--mono); font-size:11px;" id="be2-label"></span>
+    </div>
+    <div class="ptbl-wrap">
+      <table class="ptbl">
+        <colgroup>
+          <col style="width:110px"><col style="width:80px"><col style="width:70px"><col style="width:70px">
+          <col style="width:90px"><col style="width:75px"><col style="width:90px">
+          <col style="width:90px"><col style="width:90px"><col style="width:90px"><col style="width:90px">
+        </colgroup>
+        <thead><tr>
+          <th>Scenario</th><th>Total/day</th><th>WI/day</th><th>Members</th>
+          <th>Climb Rev</th><th>PB Rev</th><th>Total Rev</th>
+          <th>EBITDA/mo</th><th>Ann EBITDA</th><th>BP / yr</th><th>Surf / yr</th>
+        </tr></thead>
+        <tbody id="pbody2"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ══ DATA ══════════════════════════════════════════════
+const DATA = {
+  warehouse:[
+    {name:'Building work (1,200 sqm × THB 6,000)',amt:7200000,note:'Steel frame + concrete'},
+    {name:'Electrical (15% of building)',amt:1080000,note:'3-phase + distribution'},
+    {name:'Plumbing rough-in',amt:120000,note:'Water + drainage'},
+  ],
+  wall:[
+    {name:'Wall labor — Ivan + Shaffi (30 days × SGD 600)',amt:453780,note:'BP team'},
+    {name:'Wall plywood (236 sheets × THB 1,060)',amt:250160,note:'18mm multi-ply'},
+    {name:'Wall laborers (4 × 30 days)',amt:120000,note:''},
+    {name:'Steel skeleton — S-2000 (590 sqm)',amt:885000,note:'THB 1,500/sqm'},
+    {name:'Timber',amt:100000,note:''},
+    {name:'Wall paint',amt:30000,note:''},
+    {name:'Air filter — chalk dust',amt:80000,note:'2 units'},
+  ],
+  equipment:[
+    {name:'Mats — Canvas FLIPP (180 sqm)',amt:340560,note:'€50/sqm'},
+    {name:'Mats — Carpet FLIPP (180 sqm)',amt:340560,note:'€50/sqm'},
+    {name:'Mats — Foam soft (180 sqm)',amt:240840,note:''},
+    {name:'Mats — Foam edge (18 pcs)',amt:24588,note:''},
+    {name:'Climbing holds (USD 100,000)',amt:3212000,note:'Multiple brands'},
+    {name:'Auto belay — 10 units (€2,670/unit)',amt:1010933,note:'Perfect Descent'},
+    {name:'Tools rental (SGD 2,000)',amt:50420,note:''},
+    {name:'Setting equipment',amt:230138,note:''},
+    {name:'Shoes (150 pairs) + harness (40 pcs)',amt:323613,note:'Rental stock'},
+    {name:'Fitness equipment',amt:220600,note:''},
+    {name:'Pickleball courts (2 courts)',amt:200000,note:'Phase 1 Day 1'},
+  ],
+  fitout:[
+    {name:'HVAC (600 sqm Phase 1 — climbing side)',amt:2500000,note:'Removable if no HVAC'},
+    {name:'HVLS fans — 2 units',amt:300000,note:'Alternative to HVAC'},
+    {name:'Toilet / wet area',amt:600000,note:'Men + Women'},
+    {name:'Renovation (extra)',amt:300000,note:''},
+    {name:'Reception + Counter + Office',amt:50000,note:''},
+    {name:'Fixed furniture',amt:100000,note:''},
+    {name:'Loose furniture',amt:100000,note:''},
+    {name:'Security cameras',amt:100000,note:''},
+    {name:'Sound / PA system',amt:50000,note:''},
+    {name:'Lockers (12-door × 4 sets)',amt:30000,note:''},
+    {name:'Water filter + dispenser',amt:15000,note:''},
+    {name:'Office equipment (SGD 5,000)',amt:126050,note:''},
+    {name:'Admin costs (SGD 10,000)',amt:252100,note:''},
+    {name:'Marketing (SGD 10,000)',amt:252100,note:''},
+    {name:'6-month OPEX runway',amt:1422960,note:''},
+  ],
+  opex:[
+    {name:'Staff (6 pax — Operations, Setter, Marketing, HK)',amt:150000,note:'Budget only'},
+    {name:'SSO contributions',amt:21560,note:''},
+    {name:'Electricity',amt:40000,note:'HVAC on'},
+    {name:'Water',amt:2400,note:''},
+    {name:'POS — Qashier',amt:2400,note:''},
+    {name:'Gym software — Mindbody',amt:16000,note:''},
+    {name:'Accounting',amt:2400,note:''},
+    {name:'Internet',amt:2400,note:''},
+  ],
+};
+
+const SCENARIOS = [
+  {name:'Conservative',visitors:30},
+  {name:'Base Case',visitors:50},
+  {name:'Good',visitors:80},
+  {name:'Strong',visitors:120},
+  {name:'Exceptional',visitors:180},
+];
+
+const LEASEHOLD = 9650000;
+
+// ══ FORMAT ════════════════════════════════════════════
+const fmt = n => isNaN(n)||n===null ? '—' : Math.round(n).toLocaleString('en-US');
+
+// ══ RENDER TABLES ══════════════════════════════════════
+function renderTable(sec) {
+  const tbody = document.getElementById(`tbody-${sec}`);
+  tbody.innerHTML = '';
+  DATA[sec].forEach((r,i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="c-name"><input type="text" value="${r.name}" onchange="DATA['${sec}'][${i}].name=this.value"/></td>
+      <td class="c-amt"><input type="number" value="${r.amt}" oninput="DATA['${sec}'][${i}].amt=parseFloat(this.value)||0;updateTotal('${sec}');recalc()"/></td>
+      <td class="c-note"><input type="text" value="${r.note}" onchange="DATA['${sec}'][${i}].note=this.value"/></td>
+      <td class="c-del" onclick="delRow('${sec}',${i})">×</td>`;
+    tbody.appendChild(tr);
+  });
+  // total row
+  const tr = document.createElement('tr');
+  tr.className = 'total-row';
+  tr.innerHTML = `<td class="c-name">Total</td><td class="c-amt"><span id="total-${sec}-inner">${fmt(getTotal(sec))}</span></td><td></td><td></td>`;
+  tbody.appendChild(tr);
+  updateTotal(sec);
+}
+
+function getTotal(sec) { return DATA[sec].reduce((s,r)=>s+(parseFloat(r.amt)||0),0); }
+
+function updateTotal(sec) {
+  const t = getTotal(sec);
+  const el = document.getElementById(`total-${sec}`);
+  const el2 = document.getElementById(`total-${sec}-inner`);
+  if(el) el.textContent = 'THB '+fmt(t);
+  if(el2) el2.textContent = fmt(t);
+}
+
+function delRow(sec,i) { DATA[sec].splice(i,1); renderTable(sec); recalc(); }
+function addRow(sec) { DATA[sec].push({name:'New item',amt:0,note:''}); renderTable(sec); }
+
+// ══ SCENARIOS ══════════════════════════════════════════
+function renderScenarios() {
+  const c = document.getElementById('scenario-inputs');
+  c.innerHTML = '';
+  SCENARIOS.forEach((sc,i) => {
+    c.innerHTML += `<div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:12px;font-weight:600;color:var(--text2);width:100px;flex-shrink:0;">${sc.name}</span>
+      <input class="field-input" type="number" value="${sc.visitors}" style="flex:1;"
+        oninput="SCENARIOS[${i}].visitors=parseInt(this.value)||0;recalc()">
+      <span style="font-size:11px;color:var(--text3);font-family:var(--mono);width:70px;">visitors/day</span>
+    </div>`;
+  });
+}
+
+// ══ MAIN RECALC ════════════════════════════════════════
+function recalc() {
+  const dp      = parseFloat(document.getElementById('p-daypass').value)||0;
+  const mem_fee = parseFloat(document.getElementById('p-membership').value)||0;
+  const shoe    = parseFloat(document.getElementById('p-shoe').value)||0;
+  const shoeR   = (parseFloat(document.getElementById('p-shoe-rate').value)||0)/100;
+  const chalk   = parseFloat(document.getElementById('p-chalk').value)||0;
+  const chalkR  = (parseFloat(document.getElementById('p-chalk-rate').value)||0)/100;
+  const hrns    = parseFloat(document.getElementById('p-harness').value)||0;
+  const hrnsR   = (parseFloat(document.getElementById('p-harness-rate').value)||0)/100;
+  const anc     = shoe*shoeR + chalk*chalkR + hrns*hrnsR;
+  const revWI   = dp + anc;
+
+  const pbRate  = parseFloat(document.getElementById('pb-rate').value)||0;
+  const pbHrs   = parseFloat(document.getElementById('pb-hours').value)||0;
+  const pbCts   = parseFloat(document.getElementById('pb-courts').value)||0;
+  const pbDays  = parseFloat(document.getElementById('pb-days').value)||30;
+  const pbMo    = pbRate*pbHrs*pbCts*pbDays;
+
+  const bpEq    = (parseFloat(document.getElementById('jv-bp').value)||0)/100;
+  const sfEq    = (parseFloat(document.getElementById('jv-surf').value)||0)/100;
+  const wiPct   = (parseFloat(document.getElementById('jv-walkin').value)||90)/100;
+  const visAmo  = parseFloat(document.getElementById('jv-visits').value)||8;
+  const rentSqm = parseFloat(document.getElementById('jv-rent-sqm').value)||0;
+  const sqm     = parseFloat(document.getElementById('jv-sqm').value)||0;
+  const rentP2  = rentSqm*sqm;
+
+  const hvac    = document.getElementById('hvac-toggle').checked;
+  const elHvac  = parseFloat(document.getElementById('elec-hvac').value)||0;
+  const elNoAc  = parseFloat(document.getElementById('elec-no-hvac').value)||0;
+  const elec    = hvac ? elHvac : elNoAc;
+
+  // OPEX: replace electricity row
+  const elRow = DATA.opex.find(r=>r.name.toLowerCase().includes('electric'));
+  const baseOpexRaw = getTotal('opex');
+  const baseOpex = baseOpexRaw - (elRow?elRow.amt:0) + elec;
+  const opexWithAc = baseOpexRaw - (elRow?elRow.amt:0) + elHvac;
+  const opexNoAc   = baseOpexRaw - (elRow?elRow.amt:0) + elNoAc;
+
+  // CAPEX
+  const bucketA = getTotal('warehouse');
+  const bucketB = getTotal('wall')+getTotal('equipment')+getTotal('fitout');
+  const bpCash  = bucketB*bpEq;
+
+  // Update display
+  document.getElementById('eff-rev').textContent = 'THB '+fmt(revWI);
+  document.getElementById('pb-monthly').textContent = 'THB '+fmt(pbMo);
+  document.getElementById('phase2-rent').textContent = 'THB '+fmt(rentP2);
+  document.getElementById('note-rent').textContent = 'THB '+fmt(rentP2)+'/month';
+  document.getElementById('active-elec').textContent = 'THB '+fmt(elec)+'/month';
+  document.getElementById('opex-with-hvac').textContent = 'THB '+fmt(opexWithAc);
+  document.getElementById('opex-no-hvac').textContent = 'THB '+fmt(opexNoAc);
+  document.getElementById('total-opex').textContent = 'THB '+fmt(baseOpex);
+  document.getElementById('hvac-badge').innerHTML = hvac
+    ? '<span class="dot"></span> HVAC ON'
+    : '<span class="dot"></span> NO HVAC';
+  document.getElementById('hvac-badge').className = hvac ? 'pill orange' : 'pill green';
+  document.getElementById('nav-total').textContent = 'THB '+Math.round((bucketA+bucketB)/1e6)+'M';
+
+  // CAPEX KPIs
+  document.getElementById('kpi-capex').innerHTML = `
+    <div class="kpi-card"><div class="kpi-label">Bucket A (Warehouse)</div><div class="kpi-value">THB ${fmt(bucketA)}</div><div class="kpi-sub">Surf / View only</div></div>
+    <div class="kpi-card"><div class="kpi-label">Bucket B (Gym Fit-out)</div><div class="kpi-value blue">THB ${fmt(bucketB)}</div><div class="kpi-sub">Co-invested</div></div>
+    <div class="kpi-card"><div class="kpi-label">BP Cash Required (${Math.round(bpEq*100)}%)</div><div class="kpi-value accent">THB ${fmt(bpCash)}</div><div class="kpi-sub">49% of Bucket B</div></div>
+    <div class="kpi-card"><div class="kpi-label">Total JV Value</div><div class="kpi-value green">THB ${fmt(bucketA+bucketB+LEASEHOLD)}</div><div class="kpi-sub">incl. leasehold THB ${fmt(LEASEHOLD)}</div></div>`;
+
+  // CAPEX summary
+  document.getElementById('capex-summary').innerHTML = `
+    <div class="summary-item"><span class="s-label">Bucket A — Warehouse</span><span class="s-val">THB ${fmt(bucketA)}</span></div>
+    <div class="summary-item"><span class="s-label">Bucket B — Gym Fit-out</span><span class="s-val">THB ${fmt(bucketB)}</span></div>
+    <div class="summary-item highlight"><span class="s-label">Total CAPEX (A+B)</span><span class="s-val accent">THB ${fmt(bucketA+bucketB)}</span></div>
+    <div class="summary-item"><span class="s-label">Leasehold (10-yr NPV @ 5%)</span><span class="s-val">THB ${fmt(LEASEHOLD)}</span></div>
+    <div class="summary-item"><span class="s-label">Total JV Value</span><span class="s-val accent">THB ${fmt(bucketA+bucketB+LEASEHOLD)}</span></div>
+    <div class="summary-item highlight-green"><span class="s-label">BP Cash (${Math.round(bpEq*100)}% of Bucket B)</span><span class="s-val green">THB ${fmt(bpCash)}</span></div>
+    <div class="summary-item"><span class="s-label">Surf Cash (${Math.round(sfEq*100)}% of Bucket B)</span><span class="s-val blue">THB ${fmt(bucketB*sfEq)}</span></div>
+    <div class="summary-item"><span class="s-label">Monthly OPEX (active)</span><span class="s-val">THB ${fmt(baseOpex)}</span></div>`;
+
+  // PROJECTION CALC
+  function calcSc(vis, opex) {
+    const wi  = Math.round(vis*wiPct);
+    const mv  = vis-wi;
+    const mem = Math.round(mv*30/visAmo);
+    const rc  = wi*30*revWI + mem*mem_fee + mv*30*anc;
+    const rev = rc+pbMo;
+    const ebi = rev-opex;
+    const ann = ebi*12;
+    const bpy = Math.max(0,ann)*bpEq;
+    const sfy = Math.max(0,ann)*sfEq;
+    const pb  = bpy>0 ? bpCash/bpy : null;
+    return {wi,mv,mem,rc,rev,ebi,ann,bpy,sfy,pb};
+  }
+
+  function ebiC(v){ return v>=0?`<span class="pos">${fmt(v)}</span>`:`<span class="neg">${fmt(v)}</span>`; }
+  function pbC(p){
+    if(!p) return '<span class="neg">Loss</span>';
+    if(p<2) return `<span class="pos">${p.toFixed(1)} yrs</span>`;
+    if(p<5) return `<span class="warn">${p.toFixed(1)} yrs</span>`;
+    return `<span class="neutral">${p.toFixed(1)} yrs</span>`;
+  }
+
+  // Projection KPIs
+  const bc = calcSc(50, baseOpex);
+  document.getElementById('kpi-proj').innerHTML = `
+    <div class="kpi-card"><div class="kpi-label">OPEX / month</div><div class="kpi-value">${fmt(baseOpex)}</div><div class="kpi-sub">THB</div></div>
+    <div class="kpi-card"><div class="kpi-label">Base Case EBITDA / mo</div><div class="kpi-value ${bc.ebi>=0?'green':'accent'}">${fmt(bc.ebi)}</div><div class="kpi-sub">50 visitors/day</div></div>
+    <div class="kpi-card"><div class="kpi-label">Base Case BP Payback</div><div class="kpi-value orange">${bc.pb?bc.pb.toFixed(1)+' yrs':'Loss'}</div><div class="kpi-sub">Phase 1</div></div>
+    <div class="kpi-card"><div class="kpi-label">Break-even</div><div class="kpi-value blue">${((baseOpex-pbMo)/(revWI*wiPct*30)).toFixed(0)}/day</div><div class="kpi-sub">visitors/day</div></div>`;
+
+  // Phase 1
+  let b1='';
+  SCENARIOS.forEach(sc=>{
+    const c=calcSc(sc.visitors,baseOpex);
+    b1+=`<tr><td>${sc.name}</td><td>${sc.visitors}</td><td>${c.wi}</td><td>${c.mem}</td>
+      <td>${fmt(c.rc)}</td><td>${fmt(pbMo)}</td><td>${fmt(c.rev)}</td>
+      ${ebiC(c.ebi)}<td>${ebiC(c.ann)}</td><td class="pos">${fmt(c.bpy)}</td>
+      <td class="pos">${fmt(c.sfy)}</td><td>${pbC(c.pb)}</td></tr>`;
+  });
+  const be1=((baseOpex-pbMo)/(revWI*wiPct*30));
+  document.getElementById('pbody1').innerHTML=b1+`<tr class="be-row"><td colspan="12">Break-even: ${be1.toFixed(0)} visitors/day</td></tr>`;
+  document.getElementById('be1-label').textContent=`Break-even: ${be1.toFixed(0)}/day`;
+
+  // Phase 2
+  const opex2=baseOpex+rentP2;
+  let b2='';
+  SCENARIOS.forEach(sc=>{
+    const c=calcSc(sc.visitors,opex2);
+    b2+=`<tr><td>${sc.name}</td><td>${sc.visitors}</td><td>${c.wi}</td><td>${c.mem}</td>
+      <td>${fmt(c.rc)}</td><td>${fmt(pbMo)}</td><td>${fmt(c.rev)}</td>
+      ${ebiC(c.ebi)}<td>${ebiC(c.ann)}</td><td class="pos">${fmt(c.bpy)}</td>
+      <td class="pos">${fmt(c.sfy)}</td></tr>`;
+  });
+  const be2=((opex2-pbMo)/(revWI*wiPct*30));
+  document.getElementById('pbody2').innerHTML=b2+`<tr class="be-row"><td colspan="11">Break-even with rent: ${be2.toFixed(0)} visitors/day</td></tr>`;
+  document.getElementById('be2-label').textContent=`Break-even: ${be2.toFixed(0)}/day`;
+}
+
+// ══ NAV ════════════════════════════════════════════════
+function showSection(name, el) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(`sec-${name}`).classList.add('active');
+  el.classList.add('active');
+}
+
+// ══ INIT ═══════════════════════════════════════════════
+window.onload = () => {
+  Object.keys(DATA).forEach(sec => renderTable(sec));
+  renderScenarios();
+  recalc();
+};
+</script>
+</body>
+</html>
