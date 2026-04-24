@@ -1046,7 +1046,7 @@ function recalc() {
     const c=calcSc(sc.visitors,baseOpex);
     b1+=`<tr><td>${sc.name}</td><td>${sc.visitors}</td><td>${c.wi}</td><td>${c.mem}</td>
       <td>${fmt(c.rc)}</td><td>${fmt(pbMo)}</td><td>${fmt(c.rev)}</td>
-      ${ebiC(c.ebi)}<td>${ebiC(c.ann)}</td><td class="pos">${fmt(c.bpy)}</td>
+      <td>${ebiC(c.ebi)}</td><td>${ebiC(c.ann)}</td><td class="pos">${fmt(c.bpy)}</td>
       <td class="pos">${fmt(c.sfy)}</td><td>${pbC(c.pb)}</td></tr>`;
   });
   const be1=((baseOpex-pbMo)/(revWI*wiPct*30));
@@ -1060,7 +1060,7 @@ function recalc() {
     const c=calcSc(sc.visitors,opex2);
     b2+=`<tr><td>${sc.name}</td><td>${sc.visitors}</td><td>${c.wi}</td><td>${c.mem}</td>
       <td>${fmt(c.rc)}</td><td>${fmt(pbMo)}</td><td>${fmt(c.rev)}</td>
-      ${ebiC(c.ebi)}<td>${ebiC(c.ann)}</td><td class="pos">${fmt(c.bpy)}</td>
+      <td>${ebiC(c.ebi)}</td><td>${ebiC(c.ann)}</td><td class="pos">${fmt(c.bpy)}</td>
       <td class="pos">${fmt(c.sfy)}</td></tr>`;
   });
   const be2=((opex2-pbMo)/(revWI*wiPct*30));
