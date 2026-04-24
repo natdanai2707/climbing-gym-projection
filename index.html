@@ -65,8 +65,13 @@ header {
 .header-title { font-family: var(--serif); font-size: 16px; color: var(--text); font-weight: 500; }
 .header-sub { font-size: 12px; color: var(--text3); margin-top: 1px; }
 .header-right { display: flex; align-items: center; gap: 8px; }
-.pill {
-  display: inline-flex; align-items: center; gap: 5px;
+.hdr-btn {
+  padding: 6px 14px; border-radius: 7px; font-size: 12px; font-weight: 500;
+  background: var(--bg3); border: 1px solid var(--border2); color: var(--text2);
+  cursor: pointer; font-family: var(--sans); transition: all 0.12s;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.hdr-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
   padding: 4px 10px; border-radius: 20px;
   background: var(--bg3); border: 1px solid var(--border);
   font-size: 11px; color: var(--text2); font-family: var(--mono);
@@ -430,6 +435,8 @@ header {
     </div>
   </div>
   <div class="header-right">
+    <button class="hdr-btn" onclick="exportData()">⬇ Export</button>
+    <label class="hdr-btn" style="cursor:pointer;">⬆ Import<input type="file" accept=".json" style="display:none" onchange="importData(event)"></label>
     <div class="pill" id="hvac-badge"><span class="dot"></span> HVAC ON</div>
     <div class="pill">Apr 2026</div>
   </div>
@@ -1078,6 +1085,89 @@ function showSection(name, el) {
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById(`sec-${name}`).classList.add('active');
   el.classList.add('active');
+}
+
+// ══ EXPORT / IMPORT ════════════════════════════════════
+function exportData() {
+  const settings = {
+    daypass:      document.getElementById('p-daypass').value,
+    membership:   document.getElementById('p-membership').value,
+    shoe:         document.getElementById('p-shoe').value,
+    shoeRate:     document.getElementById('p-shoe-rate').value,
+    chalk:        document.getElementById('p-chalk').value,
+    chalkRate:    document.getElementById('p-chalk-rate').value,
+    harness:      document.getElementById('p-harness').value,
+    harnessRate:  document.getElementById('p-harness-rate').value,
+    pbRate:       document.getElementById('pb-rate').value,
+    pbHours:      document.getElementById('pb-hours').value,
+    pbCourts:     document.getElementById('pb-courts').value,
+    pbDays:       document.getElementById('pb-days').value,
+    jvBp:         document.getElementById('jv-bp').value,
+    jvSurf:       document.getElementById('jv-surf').value,
+    jvVisits:     document.getElementById('jv-visits').value,
+    jvWalkin:     document.getElementById('jv-walkin').value,
+    jvRentSqm:    document.getElementById('jv-rent-sqm').value,
+    jvSqm:        document.getElementById('jv-sqm').value,
+    hvac:         document.getElementById('hvac-toggle').checked,
+    elecHvac:     document.getElementById('elec-hvac').value,
+    elecNoHvac:   document.getElementById('elec-no-hvac').value,
+    scenarios:    SCENARIOS.map(s=>({name:s.name, visitors:s.visitors})),
+  };
+  const payload = { data: DATA, settings };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `hatyai-gym-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const payload = JSON.parse(e.target.result);
+      // Restore DATA
+      if (payload.data) {
+        Object.keys(payload.data).forEach(sec => {
+          if (DATA[sec]) DATA[sec] = payload.data[sec];
+        });
+        Object.keys(DATA).forEach(sec => renderTable(sec));
+      }
+      // Restore settings
+      if (payload.settings) {
+        const s = payload.settings;
+        const set = (id, val) => { const el = document.getElementById(id); if(el) el.value = val; };
+        set('p-daypass', s.daypass); set('p-membership', s.membership);
+        set('p-shoe', s.shoe); set('p-shoe-rate', s.shoeRate);
+        set('p-chalk', s.chalk); set('p-chalk-rate', s.chalkRate);
+        set('p-harness', s.harness); set('p-harness-rate', s.harnessRate);
+        set('pb-rate', s.pbRate); set('pb-hours', s.pbHours);
+        set('pb-courts', s.pbCourts); set('pb-days', s.pbDays);
+        set('jv-bp', s.jvBp); set('jv-surf', s.jvSurf);
+        set('jv-visits', s.jvVisits); set('jv-walkin', s.jvWalkin);
+        set('jv-rent-sqm', s.jvRentSqm); set('jv-sqm', s.jvSqm);
+        set('elec-hvac', s.elecHvac); set('elec-no-hvac', s.elecNoHvac);
+        document.getElementById('hvac-toggle').checked = s.hvac;
+        if (s.scenarios) {
+          s.scenarios.forEach((sc,i) => {
+            if (SCENARIOS[i]) {
+              SCENARIOS[i].visitors = sc.visitors;
+              const el = document.getElementById(`sc-${i}`);
+              if (el) el.value = sc.visitors;
+            }
+          });
+        }
+      }
+      recalc();
+      alert('Imported successfully.');
+    } catch(err) {
+      alert('Failed to import. Make sure the file is a valid export from this app.');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; // reset so same file can be re-imported
 }
 
 // ══ INIT ═══════════════════════════════════════════════
