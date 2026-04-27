@@ -499,6 +499,18 @@ header {
       <span class="nav-icon">📈</span> Projections
     </div>
   </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Reference</div>
+    <div class="nav-item" onclick="showSection('ref-pricing',this)">
+      <span class="nav-icon">🌏</span> Global Pricing
+    </div>
+    <div class="nav-item" onclick="showSection('ref-gear',this)">
+      <span class="nav-icon">👟</span> Gear Rental
+    </div>
+    <div class="nav-item" onclick="showSection('ref-market',this)">
+      <span class="nav-icon">📍</span> Hat Yai Market
+    </div>
+  </div>
 </nav>
 
 <!-- MAIN CONTENT -->
@@ -839,10 +851,379 @@ header {
   </div>
 </div>
 
-</main>
+<!-- ── REF: GLOBAL PRICING ── -->
+<div id="sec-ref-pricing" class="section">
+  <div class="page-title">Global Pricing Benchmark</div>
+  <div class="page-sub">Day pass, 10-pass, and monthly membership across USA, UK, Singapore, Malaysia, Thailand.</div>
+  <div class="card">
+    <div style="padding:16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; border-bottom:1px solid var(--border);">
+      <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">REGION</span>
+      <div id="ref-pricing-filters" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+      <span style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-left:16px;">DISPLAY</span>
+      <div id="ref-pricing-currency" style="display:flex;gap:6px;"></div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="ptbl" style="min-width:700px;">
+        <thead><tr>
+          <th style="text-align:left">Gym</th>
+          <th>Single</th><th>10× (per entry)</th><th>Monthly</th>
+          <th>Monthly/Single</th><th>10×/Single</th>
+        </tr></thead>
+        <tbody id="ref-pricing-body"></tbody>
+      </table>
+    </div>
+    <div style="padding:16px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; border-top:1px solid var(--border);">
+      <div style="padding:14px;background:var(--bg3);border-radius:7px;">
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Avg Monthly/Single</div>
+        <div id="avg-monthly-ratio" style="font-family:var(--serif);font-size:22px;color:var(--accent);">—</div>
+      </div>
+      <div style="padding:14px;background:var(--bg3);border-radius:7px;">
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Avg 10× per-entry/Single</div>
+        <div id="avg-multi-ratio" style="font-family:var(--serif);font-size:22px;color:var(--accent);">—</div>
+      </div>
+      <div style="padding:14px;background:var(--bg3);border-radius:7px;">
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Weekly/Single (industry)</div>
+        <div style="font-family:var(--serif);font-size:22px;color:var(--accent);">~7–8×</div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- ── REF: GEAR RENTAL ── -->
+<div id="sec-ref-gear" class="section">
+  <div class="page-title">Gear Rental Strategy</div>
+  <div class="page-sub">Benchmark rental prices across SEA, USA, UK — with Hat Yai recommendation and ROI analysis.</div>
+  <div style="display:flex;gap:8px;margin-bottom:16px;" id="gear-tabs"></div>
+
+  <div id="gear-tab-benchmark" class="gear-tab-content">
+    <div class="card" style="margin-bottom:16px;">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;">
+        <div id="gear-region-filters" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="ptbl" style="min-width:700px;">
+          <thead><tr>
+            <th style="text-align:left">Gym</th><th style="text-align:left">Region</th>
+            <th>Shoes</th><th>Chalk</th><th>Harness</th><th>Bundle</th>
+            <th style="text-align:left;min-width:180px">Notes</th>
+          </tr></thead>
+          <tbody id="gear-benchmark-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+      <div class="card"><div style="font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Shoes as % of day pass (SEA)</div><div style="font-family:var(--serif);font-size:20px;color:var(--accent);">22–33%</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">TH ฿100–150 on ฿350–495 pass</div></div>
+      <div class="card"><div style="font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Chalk range (SEA)</div><div style="font-family:var(--serif);font-size:20px;color:var(--accent);">฿20–30/session</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">฿65 liquid chalk sold separately</div></div>
+    </div>
+  </div>
+
+  <div id="gear-tab-recommend" class="gear-tab-content" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Shoe Rental</div><div style="font-family:var(--serif);font-size:32px;color:var(--accent);">฿100</div><div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5;">33% of single entry. Below Stonegoat PARQ (฿150), above Bean Cow (฿50).</div></div>
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Chalk (per session)</div><div style="font-family:var(--serif);font-size:32px;color:var(--accent);">฿30</div><div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5;">Matches Stonegoat S69. Sell liquid chalk separately at ฿65.</div></div>
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Beginner Bundle</div><div style="font-family:var(--serif);font-size:32px;color:var(--accent);">฿100</div><div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5;">Shoes + chalk — reduces decision friction for first-timers.</div></div>
+    </div>
+    <div class="card"><div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text);">Hat Yai Gear Price Sheet</div>
+      <table class="ptbl">
+        <thead><tr><th style="text-align:left">Item</th><th>Proposed</th><th>Stonegoat S69</th><th>Camp5 MY</th><th>SG Avg</th><th style="text-align:left">Model</th></tr></thead>
+        <tbody>
+          <tr><td>Climbing Shoes</td><td class="pos">฿100</td><td>฿100–150</td><td>฿54 (RM7)</td><td>฿130 (S$5)</td><td style="text-align:left;color:var(--text3)">เช่าต่อ session</td></tr>
+          <tr><td>Chalk (session)</td><td class="pos">฿30</td><td>฿20</td><td>฿23 (RM3)</td><td>฿78 (S$3)</td><td style="text-align:left;color:var(--text3)">ใส่ถุงเล็ก</td></tr>
+          <tr><td>Liquid Chalk (ขาย)</td><td class="pos">฿65</td><td>฿65</td><td>—</td><td>—</td><td style="text-align:left;color:var(--text3)">ขาย pocket size</td></tr>
+          <tr><td>Bundle (shoes+chalk)</td><td class="pos">฿100</td><td>—</td><td>฿77 (RM10)</td><td>~฿200</td><td style="text-align:left;color:var(--text3)">รวมทุกอย่าง</td></tr>
+          <tr><td>Socks (ขาย)</td><td class="pos">฿20–30</td><td>—</td><td>included</td><td>฿52 (S$2)</td><td style="text-align:left;color:var(--text3)">ขายขาด</td></tr>
+          <tr><td>Harness</td><td style="color:var(--text3)">N/A Phase 1</td><td>N/A</td><td>฿39 (RM5)</td><td>฿156 (S$6)</td><td style="text-align:left;color:var(--text3)">เพิ่มเมื่อมี auto-belay</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="gear-tab-roi" class="gear-tab-content" style="display:none;">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">ต้นทุนซื้อ/คู่</div><div style="font-family:var(--serif);font-size:24px;color:var(--accent);">฿1,750</div><div style="font-size:11px;color:var(--text3);margin-top:4px;">Evolv rental ~$49 wholesale</div></div>
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Break-even visits</div><div style="font-family:var(--serif);font-size:24px;color:var(--accent);">18 ครั้ง</div><div style="font-size:11px;color:var(--text3);margin-top:4px;">ที่ ฿100/rental</div></div>
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Revenue ที่ 300 rentals</div><div style="font-family:var(--serif);font-size:24px;color:var(--green);">฿30,000</div><div style="font-size:11px;color:var(--text3);margin-top:4px;">อายุ ~300 ครั้ง/คู่</div></div>
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Net profit/คู่</div><div style="font-family:var(--serif);font-size:24px;color:var(--green);">฿28,250</div><div style="font-size:11px;color:var(--text3);margin-top:4px;">ROI 1,614%</div></div>
+    </div>
+    <div class="card"><div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text);">Fleet Sizing & Revenue</div>
+      <table class="ptbl">
+        <thead><tr><th style="text-align:left">Scenario</th><th>จำนวนคู่</th><th>ต้นทุน Fleet</th><th>Rentals/วัน</th><th>Revenue/เดือน</th><th>Payback</th></tr></thead>
+        <tbody>
+          <tr><td>Opening (conservative)</td><td>30</td><td>฿52,500</td><td>10</td><td class="pos">฿30,000</td><td>~2 เดือน</td></tr>
+          <tr><td>Year 1 (moderate)</td><td>60</td><td>฿105,000</td><td>25</td><td class="pos">฿75,000</td><td>~2 เดือน</td></tr>
+          <tr><td>Peak (established)</td><td>100</td><td>฿175,000</td><td>50</td><td class="pos">฿150,000</td><td>~1 เดือน</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── REF: HAT YAI MARKET ── -->
+<div id="sec-ref-market" class="section">
+  <div class="page-title">Hat Yai Market Comparison</div>
+  <div class="page-sub">Fitness market positioning — government, local, chain, and climbing gym benchmarks.</div>
+  <div style="display:flex;gap:8px;margin-bottom:16px;" id="market-tabs"></div>
+
+  <div id="market-tab-recommend" class="market-tab-content">
+    <div style="padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:20px;font-size:13px;color:var(--text2);line-height:1.7;">
+      <strong style="color:var(--text);">Positioning:</strong> ฟิตเนสทั่วไปใน Hat Yai ฿400–1,300/เดือน — ไม่ใช่คู่แข่ง. Bouldering gym คือ <strong>experience product</strong> ไม่ใช่ fitness commodity. Ceiling = Stonegoat S69 (฿350/฿1,700). Floor = Project Rock Penang (~฿323/฿1,386).
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;">
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Single Entry</div><div style="font-family:var(--serif);font-size:36px;color:var(--accent);">฿300</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">Range ฿280–350</div></div>
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Monthly Unlimited</div><div style="font-family:var(--serif);font-size:36px;color:var(--accent);">฿1,490</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">= 4.97× single</div></div>
+      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Student / PSU</div><div style="font-family:var(--serif);font-size:36px;color:var(--accent);">฿1,190</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">Early adopter segment</div></div>
+    </div>
+    <div class="card"><div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text);">Full Price Sheet</div>
+      <table class="ptbl">
+        <thead><tr><th style="text-align:left">Product</th><th>Proposed</th><th>Per Entry</th><th>Discount</th><th style="text-align:left">Target</th></tr></thead>
+        <tbody>
+          <tr><td>Single Entry</td><td class="pos">฿300</td><td>฿300</td><td style="color:var(--text3)">—</td><td style="text-align:left;color:var(--text3)">First-timers, tourists</td></tr>
+          <tr><td>3-Entry Pass</td><td class="pos">฿840</td><td>฿280</td><td style="color:var(--green)">–7%</td><td style="text-align:left;color:var(--text3)">Curious / testing</td></tr>
+          <tr><td>10-Entry Pass</td><td class="pos">฿2,700</td><td>฿270</td><td style="color:var(--green)">–10%</td><td style="text-align:left;color:var(--text3)">Regular (2–3×/week)</td></tr>
+          <tr><td>Weekly Pass</td><td class="pos">฿2,200</td><td>Unlimited</td><td style="color:var(--green)">~7.3×</td><td style="text-align:left;color:var(--text3)">Hardcore / visitors</td></tr>
+          <tr><td>Monthly (General)</td><td class="pos">฿1,490</td><td>Unlimited</td><td style="color:var(--green)">~5×</td><td style="text-align:left;color:var(--text3)">Working adults</td></tr>
+          <tr><td>Monthly (Student/PSU)</td><td class="pos">฿1,190</td><td>Unlimited</td><td style="color:var(--green)">~4×</td><td style="text-align:left;color:var(--text3)">มหาวิทยาลัย</td></tr>
+          <tr><td>Annual (12M)</td><td class="pos">฿14,900</td><td>฿1,242/mo</td><td style="color:var(--green)">–17%</td><td style="text-align:left;color:var(--text3)">Core community</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="market-tab-market" class="market-tab-content" style="display:none;">
+    <div class="card">
+      <table class="ptbl">
+        <thead><tr><th style="text-align:left">สถานที่</th><th style="text-align:left">Type</th><th>Day Pass</th><th>Monthly</th><th style="text-align:left">หมายเหตุ</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(79,107,138,0.05)"><td colspan="5" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);padding:12px 14px 6px;font-weight:600;">Budget / Government</td></tr>
+          <tr><td>Hatyai City Fitness (Municipal)</td><td><span style="font-size:10px;background:var(--bg3);color:var(--text3);padding:2px 8px;border-radius:4px;">Gov</span></td><td>฿20</td><td>฿240</td><td style="text-align:left;color:var(--text3);font-size:11px;">ค่าแรกเข้า ฿20/ปี</td></tr>
+          <tr><td>FIT Hero Hat Yai</td><td><span style="font-size:10px;background:var(--bg3);color:var(--text3);padding:2px 8px;border-radius:4px;">Local</span></td><td>—</td><td>฿400</td><td style="text-align:left;color:var(--text3);font-size:11px;">รายเดือน</td></tr>
+          <tr style="background:rgba(79,107,138,0.05)"><td colspan="5" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);padding:12px 14px 6px;font-weight:600;">Local / Independent</td></tr>
+          <tr><td>FactoryFit Hat Yai</td><td><span style="font-size:10px;background:var(--bg3);color:var(--text3);padding:2px 8px;border-radius:4px;">Local</span></td><td>฿100</td><td>฿1,200</td><td style="text-align:left;color:var(--text3);font-size:11px;">นักศึกษา ฿990</td></tr>
+          <tr><td>Fit Lab Hat Yai (PSU)</td><td><span style="font-size:10px;background:var(--bg3);color:var(--text3);padding:2px 8px;border-radius:4px;">Local</span></td><td>—</td><td>฿900</td><td style="text-align:left;color:var(--text3);font-size:11px;">นักศึกษา ฿690</td></tr>
+          <tr><td>NK Fitness Hat Yai</td><td><span style="font-size:10px;background:var(--bg3);color:var(--text3);padding:2px 8px;border-radius:4px;">Local</span></td><td>—</td><td>฿1,200</td><td style="text-align:left;color:var(--text3);font-size:11px;">GX Studio 80+ classes</td></tr>
+          <tr style="background:rgba(79,107,138,0.05)"><td colspan="5" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);padding:12px 14px 6px;font-weight:600;">Chain / National</td></tr>
+          <tr><td>Fitness24Seven</td><td><span style="font-size:10px;background:var(--bg3);color:var(--blue);padding:2px 8px;border-radius:4px;">Chain</span></td><td>฿499</td><td>฿1,299</td><td style="text-align:left;color:var(--text3);font-size:11px;">280 สาขา, 24/7</td></tr>
+          <tr><td>Jetts 24 Hour</td><td><span style="font-size:10px;background:var(--bg3);color:var(--blue);padding:2px 8px;border-radius:4px;">Chain</span></td><td>—</td><td>฿1,500</td><td style="text-align:left;color:var(--text3);font-size:11px;">สัญญา 12 เดือน</td></tr>
+          <tr><td>Celebrity Fitness</td><td><span style="font-size:10px;background:var(--bg3);color:var(--blue);padding:2px 8px;border-radius:4px;">Chain</span></td><td>—</td><td>฿1,980</td><td style="text-align:left;color:var(--text3);font-size:11px;">Mid-tier premium</td></tr>
+          <tr style="background:rgba(74,124,89,0.05)"><td colspan="5" style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);padding:12px 14px 6px;font-weight:600;">Climbing Gym Benchmarks (SEA)</td></tr>
+          <tr><td>Stonegoat S69 Bangkok</td><td><span style="font-size:10px;background:rgba(74,124,89,0.15);color:var(--green);padding:2px 8px;border-radius:4px;">Climbing</span></td><td>฿350</td><td>฿1,700</td><td style="text-align:left;color:var(--text3);font-size:11px;">Weekday ฿300 / Weekend ฿450</td></tr>
+          <tr><td>Stonegoat The PARQ Bangkok</td><td><span style="font-size:10px;background:rgba(74,124,89,0.15);color:var(--green);padding:2px 8px;border-radius:4px;">Climbing</span></td><td>฿495</td><td>฿1,980</td><td style="text-align:left;color:var(--text3);font-size:11px;">Premium location</td></tr>
+          <tr><td>Project Rock Penang (MYR→฿)</td><td><span style="font-size:10px;background:rgba(74,124,89,0.15);color:var(--green);padding:2px 8px;border-radius:4px;">Climbing</span></td><td>฿323</td><td>฿1,386</td><td style="text-align:left;color:var(--text3);font-size:11px;">RM42 / RM180 monthly</td></tr>
+          <tr style="background:rgba(201,100,66,0.05)"><td><strong style="color:var(--accent);">HAT YAI GYM (Proposed)</strong></td><td><span style="font-size:10px;background:rgba(201,100,66,0.15);color:var(--accent);padding:2px 8px;border-radius:4px;">Proposed</span></td><td><strong style="color:var(--accent);">฿300</strong></td><td><strong style="color:var(--accent);">฿1,490</strong></td><td style="text-align:left;color:var(--text3);font-size:11px;">Student ฿1,190</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="market-tab-chart" class="market-tab-content" style="display:none;">
+    <div class="card" style="margin-bottom:16px;">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text);">Day Pass Positioning</div>
+      <div style="padding:16px;" id="chart-daypass"></div>
+    </div>
+    <div class="card">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text);">Monthly Membership Positioning</div>
+      <div style="padding:16px;" id="chart-monthly"></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
 <script>
+// ══ REFERENCE DATA ═════════════════════════════════════
+const GYM_DATA = [
+  {name:'Movement Gyms (US)',region:'USA',currency:'USD',single:23,multi10:200,monthly:95,flag:'🇺🇸'},
+  {name:'Planet Rock (US)',region:'USA',currency:'USD',single:23,multi10:195,monthly:80,flag:'🇺🇸'},
+  {name:'Bouldering Project (US)',region:'USA',currency:'USD',single:25,multi10:null,monthly:89,flag:'🇺🇸'},
+  {name:'Circuit Gym Portland',region:'USA',currency:'USD',single:22,multi10:null,monthly:75,flag:'🇺🇸'},
+  {name:'ASCEND Climbing (US)',region:'USA',currency:'USD',single:18,multi10:null,monthly:55,flag:'🇺🇸'},
+  {name:'Parthian Wandsworth (UK)',region:'UK',currency:'GBP',single:15,multi10:null,monthly:75,flag:'🇬🇧'},
+  {name:'The Stronghold (UK)',region:'UK',currency:'GBP',single:15.5,multi10:75,monthly:72,flag:'🇬🇧'},
+  {name:'The Nest (UK)',region:'UK',currency:'GBP',single:14,multi10:null,monthly:55,flag:'🇬🇧'},
+  {name:'Boulder Planet SG',region:'SEA',currency:'SGD',single:33,multi10:220,monthly:90,flag:'🇸🇬'},
+  {name:'Boulder Movement SG',region:'SEA',currency:'SGD',single:30,multi10:200,monthly:85,flag:'🇸🇬'},
+  {name:'Boulder World SG',region:'SEA',currency:'SGD',single:25,multi10:200,monthly:90,flag:'🇸🇬'},
+  {name:'Climb Asia SG',region:'SEA',currency:'SGD',single:22,multi10:null,monthly:80,flag:'🇸🇬'},
+  {name:'Project Rock Penang',region:'SEA',currency:'MYR',single:42,multi10:350,monthly:180,flag:'🇲🇾'},
+  {name:'Camp5 (Malaysia)',region:'SEA',currency:'MYR',single:35,multi10:null,monthly:150,flag:'🇲🇾'},
+  {name:'Stonegoat S69 (Bangkok)',region:'SEA',currency:'THB',single:350,multi10:2800,monthly:1700,flag:'🇹🇭'},
+  {name:'Stonegoat The PARQ',region:'SEA',currency:'THB',single:495,multi10:null,monthly:1980,flag:'🇹🇭'},
+  {name:'Gravity Lab Bangkok',region:'SEA',currency:'THB',single:400,multi10:null,monthly:1600,flag:'🇹🇭'},
+];
+
+const GEAR_DATA = [
+  {gym:'Stonegoat S69',region:'Thailand',currency:'THB',shoes:120,chalk:20,harness:null,bundle:null,note:'฿120 shoes, chalk ฿20'},
+  {gym:'Stonegoat The PARQ',region:'Thailand',currency:'THB',shoes:150,chalk:20,harness:null,bundle:null,note:'฿150/pair confirmed'},
+  {gym:'Bean Cow Climbing',region:'Thailand',currency:'THB',shoes:50,chalk:20,harness:50,bundle:null,note:'Budget gym: shoes ฿50, harness ฿50'},
+  {gym:'Camp5 (Malaysia)',region:'Malaysia',currency:'MYR',shoes:7,chalk:3,harness:5,bundle:12,note:'RM7 shoes + RM5 harness + RM3 chalk'},
+  {gym:'BUMP Bouldering (KL)',region:'Malaysia',currency:'MYR',shoes:7,chalk:10,harness:null,bundle:null,note:'Bouldering only'},
+  {gym:'MadMonkeyz (KL)',region:'Malaysia',currency:'MYR',shoes:5,chalk:3,harness:null,bundle:null,note:'Budget community gym'},
+  {gym:'Boulder Planet SG',region:'Singapore',currency:'SGD',shoes:6,chalk:null,harness:6,bundle:null,note:'Shoes S$6, harness S$6'},
+  {gym:'Boulder Movement SG',region:'Singapore',currency:'SGD',shoes:6,chalk:null,harness:6,bundle:12,note:'Bundle S$12 (shoes+harness+device)'},
+  {gym:'Kinetics Climbing SG',region:'Singapore',currency:'SGD',shoes:5,chalk:3,harness:4,bundle:null,note:'Shoes S$5, harness S$4, chalk S$3'},
+  {gym:'US Gyms (avg)',region:'USA',currency:'USD',shoes:6,chalk:3,harness:4,bundle:10,note:'Shoes $5–7, harness $3–5'},
+  {gym:'UK Gyms (avg)',region:'UK',currency:'GBP',shoes:4,chalk:2,harness:4,bundle:null,note:'Shoes £3–5, harness £3–5'},
+];
+
+const TO_THB = {USD:35,GBP:44,SGD:26,MYR:7.7,THB:1};
+
+// ══ PRICING REFERENCE ══════════════════════════════════
+let pricingRegion = 'All';
+let pricingCurrency = 'Local';
+
+function initPricingRef() {
+  const regions = ['All','USA','UK','SEA'];
+  const rf = document.getElementById('ref-pricing-filters');
+  const rc = document.getElementById('ref-pricing-currency');
+  if(!rf) return;
+  rf.innerHTML = regions.map(r=>`<button onclick="setPricingRegion('${r}')" id="pr-${r}" class="ref-pill ${r===pricingRegion?'ref-pill-active':''}">${r}</button>`).join('');
+  rc.innerHTML = ['Local','THB'].map(c=>`<button onclick="setPricingCurrency('${c}')" id="pc-${c}" class="ref-pill ${c===pricingCurrency?'ref-pill-active':''}">${c}</button>`).join('');
+  renderPricingTable();
+}
+
+function setPricingRegion(r){ pricingRegion=r; initPricingRef(); }
+function setPricingCurrency(c){ pricingCurrency=c; initPricingRef(); }
+
+function cvt(val,cur){ if(!val) return null; return pricingCurrency==='THB' ? Math.round(val*TO_THB[cur]) : val; }
+function fmtP(val,cur){ if(!val) return '—'; const c=pricingCurrency==='Local'?cur:pricingCurrency; const s={USD:'$',GBP:'£',SGD:'S$',MYR:'RM',THB:'฿'}[c]||''; return s+Number(val).toLocaleString(); }
+
+function renderPricingTable(){
+  const data = pricingRegion==='All' ? GYM_DATA : GYM_DATA.filter(g=>g.region===pricingRegion);
+  const tbody = document.getElementById('ref-pricing-body');
+  if(!tbody) return;
+  tbody.innerHTML = data.map(g=>{
+    const s=cvt(g.single,g.currency), m=cvt(g.monthly,g.currency);
+    const m10=g.multi10?cvt(g.multi10/10,g.currency):null;
+    const rM=g.single&&g.monthly?(g.monthly/g.single).toFixed(2):null;
+    const rX=g.single&&g.multi10?((g.multi10/10)/g.single).toFixed(2):null;
+    const mCls=rM?(parseFloat(rM)<4.5?'pos':parseFloat(rM)>5.5?'neg':'warn'):'';
+    const xCls=rX?(parseFloat(rX)<0.9?'pos':parseFloat(rX)>0.95?'neg':'warn'):'';
+    return `<tr>
+      <td style="text-align:left">${g.flag} ${g.name}</td>
+      <td>${fmtP(s,g.currency)}</td><td>${m10?fmtP(m10,g.currency):'—'}</td>
+      <td>${m?fmtP(m,g.currency):'—'}</td>
+      <td><span class="${mCls}">${rM?rM+'×':'—'}</span></td>
+      <td><span class="${xCls}">${rX?rX+'×':'—'}</span></td>
+    </tr>`;
+  }).join('');
+  // Averages
+  const withM = data.filter(g=>g.single&&g.monthly);
+  const withX = data.filter(g=>g.single&&g.multi10);
+  const avgM = withM.length ? (withM.reduce((s,g)=>s+g.monthly/g.single,0)/withM.length).toFixed(2)+'×' : '—';
+  const avgX = withX.length ? (withX.reduce((s,g)=>s+(g.multi10/10)/g.single,0)/withX.length).toFixed(2)+'×' : '—';
+  const am=document.getElementById('avg-monthly-ratio'); if(am) am.textContent=avgM;
+  const ax=document.getElementById('avg-multi-ratio'); if(ax) ax.textContent=avgX;
+}
+
+// ══ GEAR REFERENCE ══════════════════════════════════════
+let gearRegion = 'All';
+const gearRegions = ['All','Thailand','Malaysia','Singapore','USA','UK'];
+
+function initGearRef(){
+  const tabs=[{id:'benchmark',label:'Benchmark'},{id:'recommend',label:'Hat Yai Recommendation'},{id:'roi',label:'ROI'}];
+  const tc=document.getElementById('gear-tabs');
+  if(!tc) return;
+  tc.innerHTML=tabs.map(t=>`<button onclick="showGearTab('${t.id}')" id="gtab-${t.id}" class="ref-tab ${t.id==='benchmark'?'ref-tab-active':''}">${t.label}</button>`).join('');
+  const rf=document.getElementById('gear-region-filters');
+  if(rf) rf.innerHTML=gearRegions.map(r=>`<button onclick="setGearRegion('${r}')" id="gr-${r}" class="ref-pill ${r===gearRegion?'ref-pill-active':''}">${r}</button>`).join('');
+  renderGearTable();
+}
+
+function showGearTab(id){
+  document.querySelectorAll('.gear-tab-content').forEach(el=>el.style.display='none');
+  document.querySelectorAll('[id^="gtab-"]').forEach(el=>el.classList.remove('ref-tab-active'));
+  const el=document.getElementById('gear-tab-'+id); if(el) el.style.display='block';
+  const btn=document.getElementById('gtab-'+id); if(btn) btn.classList.add('ref-tab-active');
+}
+
+function setGearRegion(r){ gearRegion=r; initGearRef(); }
+
+function renderGearTable(){
+  const data = gearRegion==='All' ? GEAR_DATA : GEAR_DATA.filter(g=>g.region===gearRegion);
+  const tbody=document.getElementById('gear-benchmark-body');
+  if(!tbody) return;
+  const regionColors={Thailand:'var(--accent)',Malaysia:'var(--green)',Singapore:'var(--blue)',USA:'var(--orange)',UK:'var(--text2)'};
+  tbody.innerHTML=data.map(g=>`<tr>
+    <td style="text-align:left;font-weight:600">${g.gym}</td>
+    <td style="text-align:left"><span style="font-size:10px;background:var(--bg3);color:${regionColors[g.region]||'var(--text3)'};padding:2px 8px;border-radius:4px;">${g.region}</span></td>
+    <td class="warn">${g.shoes?'฿'+Math.round(g.shoes*TO_THB[g.currency]):'—'}</td>
+    <td>${g.chalk?'฿'+Math.round(g.chalk*TO_THB[g.currency]):'—'}</td>
+    <td>${g.harness?'฿'+Math.round(g.harness*TO_THB[g.currency]):'—'}</td>
+    <td>${g.bundle?'฿'+Math.round(g.bundle*TO_THB[g.currency]):'—'}</td>
+    <td style="text-align:left;font-size:11px;color:var(--text3)">${g.note}</td>
+  </tr>`).join('');
+}
+
+// ══ MARKET REFERENCE ════════════════════════════════════
+function initMarketRef(){
+  const tabs=[{id:'recommend',label:'Pricing Recommendation'},{id:'market',label:'Hat Yai Market'},{id:'chart',label:'Positioning Chart'}];
+  const tc=document.getElementById('market-tabs');
+  if(!tc) return;
+  tc.innerHTML=tabs.map(t=>`<button onclick="showMarketTab('${t.id}')" id="mtab-${t.id}" class="ref-tab ${t.id==='recommend'?'ref-tab-active':''}">${t.label}</button>`).join('');
+  renderCharts();
+}
+
+function showMarketTab(id){
+  document.querySelectorAll('.market-tab-content').forEach(el=>el.style.display='none');
+  document.querySelectorAll('[id^="mtab-"]').forEach(el=>el.classList.remove('ref-tab-active'));
+  const el=document.getElementById('market-tab-'+id); if(el) el.style.display='block';
+  const btn=document.getElementById('mtab-'+id); if(btn) btn.classList.add('ref-tab-active');
+}
+
+function renderCharts(){
+  const dpData=[
+    {label:'City Fitness',val:20,type:'gov'},{label:'FactoryFit',val:100,type:'local'},
+    {label:'Project Rock (฿323)',val:323,type:'climbing'},{label:'HAT YAI GYM ★',val:300,type:'us'},
+    {label:'Stonegoat S69',val:350,type:'climbing'},{label:'Fitness24Seven',val:499,type:'chain'},
+    {label:'Stonegoat PARQ',val:495,type:'climbing'},
+  ].sort((a,b)=>a.val-b.val);
+  const moData=[
+    {label:'City Fitness',val:240,type:'gov'},{label:'FIT Hero',val:400,type:'local'},
+    {label:'Fit Lab PSU',val:900,type:'local'},{label:'Fitness24Seven',val:1299,type:'chain'},
+    {label:'Project Rock',val:1386,type:'climbing'},{label:'Jetts',val:1500,type:'chain'},
+    {label:'HAT YAI GYM ★',val:1490,type:'us'},{label:'Stonegoat S69',val:1700,type:'climbing'},
+    {label:'Celebrity Fitness',val:1980,type:'chain'},{label:'Stonegoat PARQ',val:1980,type:'climbing'},
+  ].sort((a,b)=>a.val-b.val);
+
+  const colors={gov:'#666',local:'#888',chain:'var(--blue)',climbing:'var(--green)',us:'var(--accent)'};
+
+  function renderBar(containerId, data, max){
+    const c=document.getElementById(containerId); if(!c) return;
+    c.innerHTML=data.map(d=>`
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:180px;font-size:11px;color:${d.type==='us'?'var(--accent)':'var(--text3)'};flex-shrink:0;${d.type==='us'?'font-weight:600':''}">${d.label}</div>
+        <div style="flex:1;height:22px;background:var(--bg3);border-radius:4px;overflow:hidden;">
+          <div style="width:${(d.val/max*100).toFixed(1)}%;height:100%;background:${colors[d.type]};display:flex;align-items:center;justify-content:flex-end;padding-right:8px;">
+            <span style="font-size:11px;font-family:var(--mono);color:${d.type==='us'?'white':'var(--text2)'}">฿${d.val.toLocaleString()}</span>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  renderBar('chart-daypass', dpData, 600);
+  renderBar('chart-monthly', moData, 2200);
+}
+
+// ══ REF PILL & TAB STYLES ════════════════════════════════
+const refStyles = document.createElement('style');
+refStyles.textContent = `
+  .ref-pill {
+    padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 500;
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+    cursor: pointer; font-family: var(--sans); transition: all 0.12s;
+  }
+  .ref-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .ref-pill-active { background: var(--accent); color: white; border-color: var(--accent); }
+  .ref-tab {
+    padding: 7px 16px; border-radius: 7px; font-size: 12px; font-weight: 500;
+    background: var(--bg2); border: 1px solid var(--border); color: var(--text2);
+    cursor: pointer; font-family: var(--sans); transition: all 0.12s;
+  }
+  .ref-tab:hover { color: var(--text); }
+  .ref-tab-active { background: var(--bg3); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+  .warn { color: var(--orange); }
+`;
+document.head.appendChild(refStyles);
+
 // ══ DATA ══════════════════════════════════════════════
 const DATA = {
   warehouse:[
@@ -1104,6 +1485,10 @@ function showSection(name, el) {
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById(`sec-${name}`).classList.add('active');
   el.classList.add('active');
+  // Init reference sections on first visit
+  if(name==='ref-pricing') initPricingRef();
+  if(name==='ref-gear') initGearRef();
+  if(name==='ref-market') initMarketRef();
 }
 
 // ══ EXPORT / IMPORT ════════════════════════════════════
