@@ -358,6 +358,18 @@ header {
 .s-val.green { color: var(--green); }
 .s-val.blue { color: var(--blue); }
 
+/* ── DEPRECIATION TABLE ──────────────────── */
+.depr-summary {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  padding: 16px 20px; border-top: 1px solid var(--border);
+}
+.depr-kpi {
+  background: var(--bg3); border-radius: 7px; padding: 12px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.depr-kpi-label { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+.depr-kpi-val { font-family: var(--mono); font-size: 14px; color: var(--accent); font-weight: 600; }
+
 /* ── SCROLLBAR ───────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -492,6 +504,9 @@ header {
     <div class="nav-item" onclick="showSection('settings',this)">
       <span class="nav-icon">⚙️</span> Settings
     </div>
+    <div class="nav-item" onclick="showSection('depreciation',this)">
+      <span class="nav-icon">📉</span> Depreciation
+    </div>
   </div>
   <div class="nav-section">
     <div class="nav-section-label">Output</div>
@@ -537,6 +552,13 @@ header {
 <div id="sec-capex-b" class="section">
   <div class="page-title">Bucket B — Gym Fit-out</div>
   <div class="page-sub">Co-invested by all JV parties. Equity calculated from this bucket only.</div>
+
+  <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+    <div style="background:var(--surface);border:1.5px solid var(--accent);border-radius:var(--radius);padding:12px 24px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow-sm);">
+      <span style="font-size:12px;color:var(--text2);font-weight:600;">Bucket B Total</span>
+      <span id="bucket-b-grand-total" style="font-family:var(--mono);font-size:18px;color:var(--accent);font-weight:700;">THB 0</span>
+    </div>
+  </div>
 
   <div class="card" style="margin-bottom:20px;">
     <div class="card-header">
@@ -730,11 +752,11 @@ header {
         <div class="settings-grid">
           <div class="field">
             <span class="field-label">BP Equity (%)</span>
-            <input class="field-input" id="jv-bp" type="number" value="49" oninput="recalc()">
+            <input class="field-input" id="jv-bp" type="number" value="50" oninput="recalc()">
           </div>
           <div class="field">
             <span class="field-label">Surf / View Equity (%)</span>
-            <input class="field-input" id="jv-surf" type="number" value="51" oninput="recalc()">
+            <input class="field-input" id="jv-surf" type="number" value="50" oninput="recalc()">
           </div>
           <div class="field">
             <span class="field-label">Walk-in split (%)</span>
@@ -797,6 +819,71 @@ header {
   </div>
 </div>
 
+<!-- ── DEPRECIATION ── -->
+<div id="sec-depreciation" class="section">
+  <div class="page-title">Depreciation</div>
+  <div class="page-sub">Straight-line depreciation on Bucket B (gym fit-out) only. Bucket A stays with Surf/View and is not charged to the gym P&L.</div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header"><span class="card-title">📉 Asset Useful Life — Bucket B</span></div>
+    <div class="settings-body">
+      <div class="settings-grid">
+        <div class="field">
+          <span class="field-label">Wall & Structure (years)</span>
+          <input class="field-input" id="depr-wall" type="number" value="10" min="1" oninput="recalc()">
+          <span class="field-hint">Steel skeleton, plywood panels, paint</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Equipment & Mats (years)</span>
+          <input class="field-input" id="depr-equipment" type="number" value="10" min="1" oninput="recalc()">
+          <span class="field-hint">Holds, mats, auto belay, tools</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Rental Stock — Shoes / Harness (years)</span>
+          <input class="field-input" id="depr-rental" type="number" value="5" min="1" oninput="recalc()">
+          <span class="field-hint">High-wear items</span>
+        </div>
+        <div class="field">
+          <span class="field-label">HVAC System (years)</span>
+          <input class="field-input" id="depr-hvac" type="number" value="15" min="1" oninput="recalc()">
+          <span class="field-hint">Long-life MEP asset</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Interior Fit-out (years)</span>
+          <input class="field-input" id="depr-fitout" type="number" value="10" min="1" oninput="recalc()">
+          <span class="field-hint">Toilets, furniture, security, lockers</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Office Equipment (years)</span>
+          <input class="field-input" id="depr-office" type="number" value="5" min="1" oninput="recalc()">
+          <span class="field-hint">Computers, POS, admin</span>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:10px 12px;background:var(--bg3);border-radius:7px;font-size:11px;color:var(--text3);line-height:1.6;">
+        <strong style="color:var(--text2);">Note:</strong> OPEX runway and admin/marketing costs (one-time launch costs) are expensed in Year 1 and not depreciated. Depreciation is applied to capital assets only.
+      </div>
+    </div>
+    <!-- Live depreciation summary -->
+    <div class="depr-summary" id="depr-summary-grid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">📊 Depreciation Schedule — Bucket B</span></div>
+    <div style="overflow-x:auto;">
+      <table class="ptbl" style="min-width:600px;">
+        <thead><tr>
+          <th style="text-align:left;">Asset Group</th>
+          <th>Cost (THB)</th>
+          <th>Life (yr)</th>
+          <th>Depr / yr</th>
+          <th>Depr / mo</th>
+        </tr></thead>
+        <tbody id="depr-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- ── PROJECTIONS ── -->
 <div id="sec-projections" class="section">
   <div class="page-title">Financial Projections</div>
@@ -813,14 +900,16 @@ header {
     <div class="ptbl-wrap">
       <table class="ptbl">
         <colgroup>
-          <col style="width:110px"><col style="width:80px"><col style="width:70px"><col style="width:70px">
-          <col style="width:90px"><col style="width:75px"><col style="width:90px">
-          <col style="width:90px"><col style="width:90px"><col style="width:90px"><col style="width:90px"><col style="width:80px">
+          <col style="width:100px"><col style="width:70px"><col style="width:60px"><col style="width:60px">
+          <col style="width:85px"><col style="width:70px"><col style="width:85px">
+          <col style="width:85px"><col style="width:85px"><col style="width:85px"><col style="width:85px">
+          <col style="width:85px"><col style="width:75px">
         </colgroup>
         <thead><tr>
           <th>Scenario</th><th>Total/day</th><th>WI/day</th><th>Members</th>
           <th>Climb Rev</th><th>PB Rev</th><th>Total Rev</th>
-          <th>EBITDA/mo</th><th>Ann EBITDA</th><th>BP / yr</th><th>Surf / yr</th><th>Payback</th>
+          <th>EBITDA/mo</th><th>Depr/mo</th><th>EBIT/mo</th><th>Ann EBIT</th>
+          <th>BP / yr</th><th>Payback</th>
         </tr></thead>
         <tbody id="pbody1"></tbody>
       </table>
@@ -836,14 +925,16 @@ header {
     <div class="ptbl-wrap">
       <table class="ptbl">
         <colgroup>
-          <col style="width:110px"><col style="width:80px"><col style="width:70px"><col style="width:70px">
-          <col style="width:90px"><col style="width:75px"><col style="width:90px">
-          <col style="width:90px"><col style="width:90px"><col style="width:90px"><col style="width:90px">
+          <col style="width:100px"><col style="width:70px"><col style="width:60px"><col style="width:60px">
+          <col style="width:85px"><col style="width:70px"><col style="width:85px">
+          <col style="width:85px"><col style="width:85px"><col style="width:85px"><col style="width:85px">
+          <col style="width:85px">
         </colgroup>
         <thead><tr>
           <th>Scenario</th><th>Total/day</th><th>WI/day</th><th>Members</th>
           <th>Climb Rev</th><th>PB Rev</th><th>Total Rev</th>
-          <th>EBITDA/mo</th><th>Ann EBITDA</th><th>BP / yr</th><th>Surf / yr</th>
+          <th>EBITDA/mo</th><th>Depr/mo</th><th>EBIT/mo</th><th>Ann EBIT</th>
+          <th>BP / yr</th>
         </tr></thead>
         <tbody id="pbody2"></tbody>
       </table>
@@ -918,7 +1009,7 @@ header {
   </div>
 
   <div id="gear-tab-recommend" class="gear-tab-content" style="display:none;">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
       <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Shoe Rental</div><div style="font-family:var(--serif);font-size:32px;color:var(--accent);">฿100</div><div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5;">33% of single entry. Below Stonegoat PARQ (฿150), above Bean Cow (฿50).</div></div>
       <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Chalk (per session)</div><div style="font-family:var(--serif);font-size:32px;color:var(--accent);">฿30</div><div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5;">Matches Stonegoat S69. Sell liquid chalk separately at ฿65.</div></div>
       <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Beginner Bundle</div><div style="font-family:var(--serif);font-size:32px;color:var(--accent);">฿100</div><div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5;">Shoes + chalk — reduces decision friction for first-timers.</div></div>
@@ -1106,7 +1197,6 @@ function renderPricingTable(){
       <td><span class="${xCls}">${rX?rX+'×':'—'}</span></td>
     </tr>`;
   }).join('');
-  // Averages
   const withM = data.filter(g=>g.single&&g.monthly);
   const withX = data.filter(g=>g.single&&g.multi10);
   const avgM = withM.length ? (withM.reduce((s,g)=>s+g.monthly/g.single,0)/withM.length).toFixed(2)+'×' : '—';
@@ -1237,7 +1327,7 @@ const DATA = {
     {name:'Wall laborers (4 × 30 days)',amt:120000,note:''},
     {name:'Steel skeleton — S-2000 (590 sqm)',amt:885000,note:'THB 1,500/sqm'},
     {name:'Timber',amt:100000,note:''},
-    {name:'Wall paint',amt:30000,note:''},
+    {name:'Wall paint',amt:300000,note:''},
     {name:'Air filter — chalk dust',amt:80000,note:'2 units'},
   ],
   equipment:[
@@ -1292,6 +1382,113 @@ const SCENARIOS = [
 
 const LEASEHOLD = 9650000;
 
+// ══ DEPRECIATION CONFIG ════════════════════════════════
+// Maps asset groups to their Bucket B costs and which life input to use.
+// HVAC item: if hvac toggle off, use HVLS cost instead; life comes from depr-hvac.
+// Rental stock: shoes + harness in equipment, uses depr-rental life.
+// One-time launch costs (admin, marketing, opex runway) — NOT depreciated.
+const LAUNCH_COST_NAMES = ['admin costs', 'marketing', 'opex runway', '6-month opex'];
+
+function getDeprGroups() {
+  const hvac       = document.getElementById('hvac-toggle').checked;
+  const lifeWall   = parseFloat(document.getElementById('depr-wall').value)||10;
+  const lifeEquip  = parseFloat(document.getElementById('depr-equipment').value)||10;
+  const lifeRental = parseFloat(document.getElementById('depr-rental').value)||5;
+  const lifeHvac   = parseFloat(document.getElementById('depr-hvac').value)||15;
+  const lifeFitout = parseFloat(document.getElementById('depr-fitout').value)||10;
+  const lifeOffice = parseFloat(document.getElementById('depr-office').value)||5;
+
+  // Wall & structure (all wall items)
+  const wallCost = getTotal('wall');
+
+  // Equipment — separate rental stock from rest
+  const rentalItem = DATA.equipment.find(r => r.name.toLowerCase().includes('shoes') && r.name.toLowerCase().includes('harness'));
+  const rentalCost = rentalItem ? rentalItem.amt : 323613;
+  const officeItem = DATA.equipment.find(r => r.name.toLowerCase().includes('fitness equipment'));
+  // Everything in equipment except rental stock
+  const equipCost = getTotal('equipment') - rentalCost;
+
+  // Fitout — separate HVAC/HVLS, office equipment, and launch costs
+  let hvacCost = 0, hvlsCost = 0, officeFitout = 0, launchCost = 0, fitoutRest = 0;
+  DATA.fitout.forEach(r => {
+    const n = r.name.toLowerCase();
+    if (n.includes('hvac') && !n.includes('hvls')) { hvacCost += r.amt; }
+    else if (n.includes('hvls')) { hvlsCost += r.amt; }
+    else if (n.includes('office equipment')) { officeFitout += r.amt; }
+    else if (LAUNCH_COST_NAMES.some(lc => n.includes(lc))) { launchCost += r.amt; }
+    else { fitoutRest += r.amt; }
+  });
+
+  const activeHvacCost = hvac ? hvacCost : hvlsCost;
+  const officeTotalCost = officeFitout; // office equipment in fitout
+
+  return [
+    { label: 'Wall & Structure',           cost: wallCost,         life: lifeWall   },
+    { label: 'Equipment & Mats',           cost: equipCost,        life: lifeEquip  },
+    { label: 'Rental Stock (shoes/harness)',cost: rentalCost,       life: lifeRental },
+    { label: hvac ? 'HVAC System' : 'HVLS Fans', cost: activeHvacCost, life: lifeHvac },
+    { label: 'Interior Fit-out',           cost: fitoutRest,       life: lifeFitout },
+    { label: 'Office Equipment',           cost: officeTotalCost,  life: lifeOffice },
+    // Launch costs shown as note only
+    { label: 'Launch Costs (expensed Yr 1)', cost: launchCost,     life: null       },
+  ];
+}
+
+function calcTotalDeprMo() {
+  return getDeprGroups().reduce((sum, g) => {
+    if (!g.life) return sum;
+    return sum + g.cost / g.life / 12;
+  }, 0);
+}
+
+function renderDeprSection() {
+  const groups = getDeprGroups();
+  const tbody = document.getElementById('depr-table-body');
+  if (!tbody) return;
+
+  let totalCost = 0, totalDeprMo = 0;
+  tbody.innerHTML = groups.map(g => {
+    if (!g.life) {
+      return `<tr style="background:var(--bg3);">
+        <td style="text-align:left;color:var(--text3);font-style:italic;">${g.label}</td>
+        <td>${fmt(g.cost)}</td>
+        <td style="color:var(--text3);">—</td>
+        <td style="color:var(--text3);">expensed</td>
+        <td style="color:var(--text3);">—</td>
+      </tr>`;
+    }
+    const dyr = g.cost / g.life;
+    const dmo = dyr / 12;
+    totalCost += g.cost;
+    totalDeprMo += dmo;
+    return `<tr>
+      <td style="text-align:left;">${g.label}</td>
+      <td>${fmt(g.cost)}</td>
+      <td>${g.life}</td>
+      <td class="warn">${fmt(dyr)}</td>
+      <td class="accent" style="color:var(--accent);font-weight:600;">${fmt(dmo)}</td>
+    </tr>`;
+  }).join('');
+
+  // Total row
+  tbody.innerHTML += `<tr style="background:var(--bg2);border-top:2px solid var(--border);">
+    <td style="text-align:left;font-weight:700;font-family:var(--mono);font-size:12px;">TOTAL (depreciable)</td>
+    <td style="font-weight:700;">${fmt(totalCost)}</td>
+    <td></td>
+    <td></td>
+    <td style="font-weight:700;color:var(--accent);font-size:13px;">${fmt(totalDeprMo)}</td>
+  </tr>`;
+
+  // Summary grid
+  const sg = document.getElementById('depr-summary-grid');
+  if (sg) {
+    sg.innerHTML = `
+      <div class="depr-kpi"><span class="depr-kpi-label">Total Depreciable Assets</span><span class="depr-kpi-val">THB ${fmt(totalCost)}</span></div>
+      <div class="depr-kpi"><span class="depr-kpi-label">Total Depreciation / month</span><span class="depr-kpi-val">THB ${fmt(totalDeprMo)}</span></div>
+    `;
+  }
+}
+
 // ══ FORMAT ════════════════════════════════════════════
 const fmt = n => isNaN(n)||n===null ? '—' : Math.round(n).toLocaleString('en-US');
 
@@ -1308,7 +1505,6 @@ function renderTable(sec) {
       <td class="c-del" onclick="delRow('${sec}',${i})">×</td>`;
     tbody.appendChild(tr);
   });
-  // total row
   const tr = document.createElement('tr');
   tr.className = 'total-row';
   tr.innerHTML = `<td class="c-name">Total</td><td class="c-amt"><span id="total-${sec}-inner">${fmt(getTotal(sec))}</span></td><td></td><td></td>`;
@@ -1375,7 +1571,6 @@ function recalc() {
   const elNoAc  = parseFloat(document.getElementById('elec-no-hvac').value)||0;
   const elec    = hvac ? elHvac : elNoAc;
 
-  // OPEX: replace electricity row
   const elRow = DATA.opex.find(r=>r.name.toLowerCase().includes('electric'));
   const baseOpexRaw = getTotal('opex');
   const baseOpex = baseOpexRaw - (elRow?elRow.amt:0) + elec;
@@ -1387,7 +1582,11 @@ function recalc() {
   const bucketB = getTotal('wall')+getTotal('equipment')+getTotal('fitout');
   const bpCash  = bucketB*bpEq;
 
-  // Update display
+  // DEPRECIATION
+  const deprMo = calcTotalDeprMo();
+  renderDeprSection();
+
+  // Update display elements
   document.getElementById('eff-rev').textContent = 'THB '+fmt(revWI);
   document.getElementById('pb-monthly').textContent = 'THB '+fmt(pbMo);
   document.getElementById('phase2-rent').textContent = 'THB '+fmt(rentP2);
@@ -1401,6 +1600,8 @@ function recalc() {
     : '<span class="dot"></span> NO HVAC';
   document.getElementById('hvac-badge').className = hvac ? 'pill orange' : 'pill green';
   document.getElementById('nav-total').textContent = 'THB '+Math.round((bucketA+bucketB)/1e6)+'M';
+  const bbt = document.getElementById('bucket-b-grand-total');
+  if(bbt) bbt.textContent = 'THB '+fmt(bucketB);
 
   // CAPEX KPIs
   document.getElementById('kpi-capex').innerHTML = `
@@ -1409,7 +1610,6 @@ function recalc() {
     <div class="kpi-card"><div class="kpi-label">BP Cash Required (${Math.round(bpEq*100)}%)</div><div class="kpi-value accent">THB ${fmt(bpCash)}</div><div class="kpi-sub">49% of Bucket B</div></div>
     <div class="kpi-card"><div class="kpi-label">Total JV Value</div><div class="kpi-value green">THB ${fmt(bucketA+bucketB+LEASEHOLD)}</div><div class="kpi-sub">incl. leasehold THB ${fmt(LEASEHOLD)}</div></div>`;
 
-  // CAPEX summary
   document.getElementById('capex-summary').innerHTML = `
     <div class="summary-item"><span class="s-label">Bucket A — Warehouse</span><span class="s-val">THB ${fmt(bucketA)}</span></div>
     <div class="summary-item"><span class="s-label">Bucket B — Gym Fit-out</span><span class="s-val">THB ${fmt(bucketB)}</span></div>
@@ -1427,12 +1627,14 @@ function recalc() {
     const mem = Math.round(mv*30/visAmo);
     const rc  = wi*30*revWI + mem*mem_fee + mv*30*anc;
     const rev = rc+pbMo;
-    const ebi = rev-opex;
-    const ann = ebi*12;
+    const ebitda = rev-opex;
+    const ebit   = ebitda - deprMo;
+    const annEbit = ebit*12;
+    // Payback still based on EBITDA share (cash basis for BP)
+    const ann = ebitda*12;
     const bpy = Math.max(0,ann)*bpEq;
-    const sfy = Math.max(0,ann)*sfEq;
     const pb  = bpy>0 ? bpCash/bpy : null;
-    return {wi,mv,mem,rc,rev,ebi,ann,bpy,sfy,pb};
+    return {wi,mv,mem,rc,rev,ebitda,ebit,annEbit,bpy,pb};
   }
 
   function ebiC(v){ return v>=0?`<span class="pos">${fmt(v)}</span>`:`<span class="neg">${fmt(v)}</span>`; }
@@ -1447,9 +1649,9 @@ function recalc() {
   const bc = calcSc(50, baseOpex);
   document.getElementById('kpi-proj').innerHTML = `
     <div class="kpi-card"><div class="kpi-label">OPEX / month</div><div class="kpi-value">${fmt(baseOpex)}</div><div class="kpi-sub">THB</div></div>
-    <div class="kpi-card"><div class="kpi-label">Base Case EBITDA / mo</div><div class="kpi-value ${bc.ebi>=0?'green':'accent'}">${fmt(bc.ebi)}</div><div class="kpi-sub">50 visitors/day</div></div>
-    <div class="kpi-card"><div class="kpi-label">Base Case BP Payback</div><div class="kpi-value orange">${bc.pb?bc.pb.toFixed(1)+' yrs':'Loss'}</div><div class="kpi-sub">Phase 1</div></div>
-    <div class="kpi-card"><div class="kpi-label">Break-even</div><div class="kpi-value blue">${((baseOpex-pbMo)/(revWI*wiPct*30)).toFixed(0)}/day</div><div class="kpi-sub">visitors/day</div></div>`;
+    <div class="kpi-card"><div class="kpi-label">Depreciation / month</div><div class="kpi-value orange">${fmt(deprMo)}</div><div class="kpi-sub">Bucket B straight-line</div></div>
+    <div class="kpi-card"><div class="kpi-label">Base Case EBIT / mo</div><div class="kpi-value ${bc.ebit>=0?'green':'accent'}">${fmt(bc.ebit)}</div><div class="kpi-sub">50 visitors/day</div></div>
+    <div class="kpi-card"><div class="kpi-label">Base Case BP Payback</div><div class="kpi-value blue">${bc.pb?bc.pb.toFixed(1)+' yrs':'Loss'}</div><div class="kpi-sub">EBITDA basis (cash)</div></div>`;
 
   // Phase 1
   let b1='';
@@ -1457,12 +1659,16 @@ function recalc() {
     const c=calcSc(sc.visitors,baseOpex);
     b1+=`<tr><td>${sc.name}</td><td>${sc.visitors}</td><td>${c.wi}</td><td>${c.mem}</td>
       <td>${fmt(c.rc)}</td><td>${fmt(pbMo)}</td><td>${fmt(c.rev)}</td>
-      <td>${ebiC(c.ebi)}</td><td>${ebiC(c.ann)}</td><td class="pos">${fmt(c.bpy)}</td>
-      <td class="pos">${fmt(c.sfy)}</td><td>${pbC(c.pb)}</td></tr>`;
+      <td>${ebiC(c.ebitda)}</td>
+      <td style="color:var(--orange);font-family:var(--mono);font-size:11px;">(${fmt(deprMo)})</td>
+      <td>${ebiC(c.ebit)}</td>
+      <td>${ebiC(c.annEbit)}</td>
+      <td class="pos">${fmt(c.bpy)}</td>
+      <td>${pbC(c.pb)}</td></tr>`;
   });
   const be1=((baseOpex-pbMo)/(revWI*wiPct*30));
-  document.getElementById('pbody1').innerHTML=b1+`<tr class="be-row"><td colspan="12">Break-even: ${be1.toFixed(0)} visitors/day</td></tr>`;
-  document.getElementById('be1-label').textContent=`Break-even: ${be1.toFixed(0)}/day`;
+  document.getElementById('pbody1').innerHTML=b1+`<tr class="be-row"><td colspan="13">Break-even (EBITDA): ${be1.toFixed(0)} visitors/day &nbsp;|&nbsp; EBIT break-even: ${((baseOpex+deprMo-pbMo)/(revWI*wiPct*30)).toFixed(0)} visitors/day</td></tr>`;
+  document.getElementById('be1-label').textContent=`EBITDA BE: ${be1.toFixed(0)}/day`;
 
   // Phase 2
   const opex2=baseOpex+rentP2;
@@ -1471,12 +1677,15 @@ function recalc() {
     const c=calcSc(sc.visitors,opex2);
     b2+=`<tr><td>${sc.name}</td><td>${sc.visitors}</td><td>${c.wi}</td><td>${c.mem}</td>
       <td>${fmt(c.rc)}</td><td>${fmt(pbMo)}</td><td>${fmt(c.rev)}</td>
-      <td>${ebiC(c.ebi)}</td><td>${ebiC(c.ann)}</td><td class="pos">${fmt(c.bpy)}</td>
-      <td class="pos">${fmt(c.sfy)}</td></tr>`;
+      <td>${ebiC(c.ebitda)}</td>
+      <td style="color:var(--orange);font-family:var(--mono);font-size:11px;">(${fmt(deprMo)})</td>
+      <td>${ebiC(c.ebit)}</td>
+      <td>${ebiC(c.annEbit)}</td>
+      <td class="pos">${fmt(c.bpy)}</td></tr>`;
   });
   const be2=((opex2-pbMo)/(revWI*wiPct*30));
-  document.getElementById('pbody2').innerHTML=b2+`<tr class="be-row"><td colspan="11">Break-even with rent: ${be2.toFixed(0)} visitors/day</td></tr>`;
-  document.getElementById('be2-label').textContent=`Break-even: ${be2.toFixed(0)}/day`;
+  document.getElementById('pbody2').innerHTML=b2+`<tr class="be-row"><td colspan="12">Break-even (EBITDA): ${be2.toFixed(0)} visitors/day &nbsp;|&nbsp; EBIT break-even: ${((opex2+deprMo-pbMo)/(revWI*wiPct*30)).toFixed(0)} visitors/day</td></tr>`;
+  document.getElementById('be2-label').textContent=`EBITDA BE: ${be2.toFixed(0)}/day`;
 }
 
 // ══ NAV ════════════════════════════════════════════════
@@ -1485,7 +1694,6 @@ function showSection(name, el) {
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById(`sec-${name}`).classList.add('active');
   el.classList.add('active');
-  // Init reference sections on first visit
   if(name==='ref-pricing') initPricingRef();
   if(name==='ref-gear') initGearRef();
   if(name==='ref-market') initMarketRef();
@@ -1515,6 +1723,12 @@ function exportData() {
     hvac:         document.getElementById('hvac-toggle').checked,
     elecHvac:     document.getElementById('elec-hvac').value,
     elecNoHvac:   document.getElementById('elec-no-hvac').value,
+    deprWall:     document.getElementById('depr-wall').value,
+    deprEquipment:document.getElementById('depr-equipment').value,
+    deprRental:   document.getElementById('depr-rental').value,
+    deprHvac:     document.getElementById('depr-hvac').value,
+    deprFitout:   document.getElementById('depr-fitout').value,
+    deprOffice:   document.getElementById('depr-office').value,
     scenarios:    SCENARIOS.map(s=>({name:s.name, visitors:s.visitors})),
   };
   const payload = { data: DATA, settings };
@@ -1532,17 +1746,15 @@ function importData(event) {
   reader.onload = e => {
     try {
       const payload = JSON.parse(e.target.result);
-      // Restore DATA
       if (payload.data) {
         Object.keys(payload.data).forEach(sec => {
           if (DATA[sec]) DATA[sec] = payload.data[sec];
         });
         Object.keys(DATA).forEach(sec => renderTable(sec));
       }
-      // Restore settings
       if (payload.settings) {
         const s = payload.settings;
-        const set = (id, val) => { const el = document.getElementById(id); if(el) el.value = val; };
+        const set = (id, val) => { const el = document.getElementById(id); if(el && val!==undefined) el.value = val; };
         set('p-daypass', s.daypass); set('p-membership', s.membership);
         set('p-shoe', s.shoe); set('p-shoe-rate', s.shoeRate);
         set('p-chalk', s.chalk); set('p-chalk-rate', s.chalkRate);
@@ -1553,14 +1765,13 @@ function importData(event) {
         set('jv-visits', s.jvVisits); set('jv-walkin', s.jvWalkin);
         set('jv-rent-sqm', s.jvRentSqm); set('jv-sqm', s.jvSqm);
         set('elec-hvac', s.elecHvac); set('elec-no-hvac', s.elecNoHvac);
+        set('depr-wall', s.deprWall); set('depr-equipment', s.deprEquipment);
+        set('depr-rental', s.deprRental); set('depr-hvac', s.deprHvac);
+        set('depr-fitout', s.deprFitout); set('depr-office', s.deprOffice);
         document.getElementById('hvac-toggle').checked = s.hvac;
         if (s.scenarios) {
           s.scenarios.forEach((sc,i) => {
-            if (SCENARIOS[i]) {
-              SCENARIOS[i].visitors = sc.visitors;
-              const el = document.getElementById(`sc-${i}`);
-              if (el) el.value = sc.visitors;
-            }
+            if (SCENARIOS[i]) SCENARIOS[i].visitors = sc.visitors;
           });
         }
       }
@@ -1571,7 +1782,7 @@ function importData(event) {
     }
   };
   reader.readAsText(file);
-  event.target.value = ''; // reset so same file can be re-imported
+  event.target.value = '';
 }
 
 // ══ INIT ═══════════════════════════════════════════════
