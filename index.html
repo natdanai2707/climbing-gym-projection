@@ -1060,22 +1060,36 @@ header {
       <strong style="color:var(--text);">Positioning:</strong> General gyms in Hat Yai are ฿400–1,300/month — not direct competition. Bouldering gym is an <strong>experience product</strong>, not a fitness commodity. Ceiling = Stonegoat S69 (฿350/฿1,700). Floor = Project Rock Penang (~฿323/฿1,386).
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;">
-      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Single Entry</div><div style="font-family:var(--serif);font-size:36px;color:var(--accent);">฿300</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">Range ฿280–350</div></div>
-      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Monthly Unlimited</div><div style="font-family:var(--serif);font-size:36px;color:var(--accent);">฿1,490</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">= 4.97× single</div></div>
-      <div class="card"><div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Student / PSU</div><div style="font-family:var(--serif);font-size:36px;color:var(--accent);">฿1,190</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">Early adopter segment</div></div>
+      <div class="card" style="padding:18px 20px;">
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Single Entry</div>
+        <div style="font-family:var(--serif);font-size:36px;color:var(--accent);" id="kpi-single">฿300</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px;">Range ฿280–350</div>
+      </div>
+      <div class="card" style="padding:18px 20px;">
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Monthly Unlimited</div>
+        <div style="font-family:var(--serif);font-size:36px;color:var(--accent);" id="kpi-monthly-gen">฿1,490</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px;" id="kpi-monthly-ratio">= 4.97× single</div>
+      </div>
+      <div class="card" style="padding:18px 20px;">
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Student / PSU</div>
+        <div style="font-family:var(--serif);font-size:36px;color:var(--accent);" id="kpi-monthly-stu">฿1,190</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px;">Early adopter segment</div>
+      </div>
     </div>
-    <div class="card"><div style="padding:14px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text);">Full Price Sheet</div>
-      <table class="ptbl">
-        <thead><tr><th style="text-align:left">Product</th><th>Proposed</th><th>Per Entry</th><th>Discount</th><th style="text-align:left">Target</th></tr></thead>
-        <tbody>
-          <tr><td>Single Entry</td><td class="pos">฿300</td><td>฿300</td><td style="color:var(--text3)">—</td><td style="text-align:left;color:var(--text3)">First-timers, tourists</td></tr>
-          <tr><td>3-Entry Pass</td><td class="pos">฿840</td><td>฿280</td><td style="color:var(--green)">–7%</td><td style="text-align:left;color:var(--text3)">Curious / testing</td></tr>
-          <tr><td>10-Entry Pass</td><td class="pos">฿2,700</td><td>฿270</td><td style="color:var(--green)">–10%</td><td style="text-align:left;color:var(--text3)">Regular (2–3×/week)</td></tr>
-          <tr><td>Weekly Pass</td><td class="pos">฿2,200</td><td>Unlimited</td><td style="color:var(--green)">~7.3×</td><td style="text-align:left;color:var(--text3)">Hardcore / visitors</td></tr>
-          <tr><td>Monthly (General)</td><td class="pos">฿1,490</td><td>Unlimited</td><td style="color:var(--green)">~5×</td><td style="text-align:left;color:var(--text3)">Working adults</td></tr>
-          <tr><td>Monthly (Student/PSU)</td><td class="pos">฿1,190</td><td>Unlimited</td><td style="color:var(--green)">~4×</td><td style="text-align:left;color:var(--text3)">University students</td></tr>
-          <tr><td>Annual (12M)</td><td class="pos">฿14,900</td><td>฿1,242/mo</td><td style="color:var(--green)">–17%</td><td style="text-align:left;color:var(--text3)">Core community</td></tr>
-        </tbody>
+    <div class="card">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:12px;font-weight:600;color:var(--text);">Full Price Sheet</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">click any price to edit</span>
+      </div>
+      <table class="ptbl" id="price-sheet-table">
+        <thead><tr>
+          <th style="text-align:left">Product</th>
+          <th>Proposed</th>
+          <th>Per Entry</th>
+          <th>vs Single</th>
+          <th style="text-align:left">Target</th>
+        </tr></thead>
+        <tbody id="price-sheet-body"></tbody>
       </table>
     </div>
   </div>
@@ -1696,7 +1710,7 @@ function showSection(name, el) {
   el.classList.add('active');
   if(name==='ref-pricing') initPricingRef();
   if(name==='ref-gear') initGearRef();
-  if(name==='ref-market') initMarketRef();
+  if(name==='ref-market') { initMarketRef(); renderPriceSheet(); }
 }
 
 // ══ EXPORT / IMPORT ════════════════════════════════════
@@ -1785,10 +1799,104 @@ function importData(event) {
   event.target.value = '';
 }
 
+// ══ PRICE SHEET DATA ══════════════════════════════════
+const PRICE_SHEET = [
+  { product: 'Single Entry',       price: 300,   entries: 1,    type: 'single',   target: 'First-timers, tourists' },
+  { product: '3-Entry Pass',       price: 840,   entries: 3,    type: 'multi',    target: 'Curious / testing' },
+  { product: '10-Entry Pass',      price: 2700,  entries: 10,   type: 'multi',    target: 'Regular (2–3×/week)' },
+  { product: 'Weekly Pass',        price: 790,   entries: null, type: 'unlimited',target: 'Hardcore / visitors' },
+  { product: 'Monthly (General)',  price: 1490,  entries: null, type: 'monthly',  target: 'Working adults' },
+  { product: 'Monthly (Student/PSU)', price: 1190, entries: null, type: 'monthly', target: 'University students' },
+  { product: 'Annual (12M)',       price: 14900, entries: 12,   type: 'annual',   target: 'Core community' },
+];
+
+function renderPriceSheet() {
+  const tbody = document.getElementById('price-sheet-body');
+  if (!tbody) return;
+  const single = PRICE_SHEET.find(p => p.type === 'single');
+  const singlePrice = single ? single.price : 300;
+
+  tbody.innerHTML = PRICE_SHEET.map((p, i) => {
+    // Per entry
+    let perEntry = '—';
+    let vsLabel = '—';
+    let vsColor = 'var(--text3)';
+
+    if (p.type === 'single') {
+      perEntry = '฿' + p.price.toLocaleString();
+      vsLabel = '—';
+    } else if (p.type === 'multi') {
+      const pe = p.price / p.entries;
+      perEntry = '฿' + Math.round(pe).toLocaleString();
+      const disc = ((pe - singlePrice) / singlePrice * 100);
+      vsLabel = (disc <= 0 ? '' : '+') + disc.toFixed(0) + '%';
+      vsColor = disc <= 0 ? 'var(--green)' : 'var(--red)';
+    } else if (p.type === 'monthly' || p.type === 'unlimited') {
+      perEntry = 'Unlimited';
+      const ratio = p.price / singlePrice;
+      vsLabel = '~' + ratio.toFixed(1) + '×';
+      vsColor = ratio <= 5.5 ? 'var(--green)' : 'var(--orange)';
+    } else if (p.type === 'annual') {
+      const moPrice = p.price / 12;
+      perEntry = '฿' + Math.round(moPrice).toLocaleString() + '/mo';
+      const monthly = PRICE_SHEET.find(p => p.product === 'Monthly (General)');
+      if (monthly) {
+        const disc = ((moPrice - monthly.price) / monthly.price * 100);
+        vsLabel = (disc <= 0 ? '' : '+') + disc.toFixed(0) + '% vs monthly';
+        vsColor = disc <= 0 ? 'var(--green)' : 'var(--red)';
+      }
+    }
+
+    return `<tr>
+      <td style="text-align:left;font-weight:600;">${p.product}</td>
+      <td>
+        <span style="display:inline-flex;align-items:center;gap:4px;cursor:pointer;color:var(--green);font-family:var(--mono);"
+          onclick="startEditPrice(${i}, this)">
+          ฿${p.price.toLocaleString()}
+        </span>
+      </td>
+      <td style="color:var(--text2);font-family:var(--mono);">${perEntry}</td>
+      <td style="color:${vsColor};font-family:var(--mono);">${vsLabel}</td>
+      <td style="text-align:left;color:var(--text3);">${p.target}</td>
+    </tr>`;
+  }).join('');
+
+  // Update KPI cards
+  const gen = PRICE_SHEET.find(p => p.product === 'Monthly (General)');
+  const stu = PRICE_SHEET.find(p => p.product === 'Monthly (Student/PSU)');
+  const s = document.getElementById('kpi-single');
+  const mg = document.getElementById('kpi-monthly-gen');
+  const ms = document.getElementById('kpi-monthly-stu');
+  const mr = document.getElementById('kpi-monthly-ratio');
+  if (s) s.textContent = '฿' + singlePrice.toLocaleString();
+  if (mg && gen) mg.textContent = '฿' + gen.price.toLocaleString();
+  if (ms && stu) ms.textContent = '฿' + stu.price.toLocaleString();
+  if (mr && gen) mr.textContent = '= ' + (gen.price / singlePrice).toFixed(2) + '× single';
+}
+
+function startEditPrice(i, el) {
+  const current = PRICE_SHEET[i].price;
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.value = current;
+  input.style.cssText = 'width:90px;font-family:var(--mono);font-size:12px;border:1px solid var(--accent);border-radius:5px;padding:3px 6px;background:var(--bg2);color:var(--text);outline:none;';
+  el.replaceWith(input);
+  input.focus();
+  input.select();
+  const commit = () => {
+    const val = parseFloat(input.value);
+    if (!isNaN(val) && val > 0) PRICE_SHEET[i].price = val;
+    renderPriceSheet();
+  };
+  input.addEventListener('blur', commit);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') renderPriceSheet(); });
+}
+
 // ══ INIT ═══════════════════════════════════════════════
 window.onload = () => {
   Object.keys(DATA).forEach(sec => renderTable(sec));
   renderScenarios();
+  renderPriceSheet();
   recalc();
 };
 </script>
