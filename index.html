@@ -555,7 +555,7 @@ header {
 
   <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
     <div style="background:var(--surface);border:1.5px solid var(--accent);border-radius:var(--radius);padding:12px 24px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow-sm);">
-      <span style="font-size:12px;color:var(--text2);font-weight:600;">Bucket B Total</span>
+      <span id="bucket-b-label" style="font-size:12px;color:var(--text2);font-weight:600;">Bucket B Total</span>
       <span id="bucket-b-grand-total" style="font-family:var(--mono);font-size:18px;color:var(--accent);font-weight:700;">THB 0</span>
     </div>
   </div>
@@ -668,7 +668,7 @@ header {
           </div>
           <div class="field">
             <span class="field-label">Membership / month (THB)</span>
-            <input class="field-input" id="p-membership" type="number" value="1490" oninput="recalc()">
+            <input class="field-input" id="p-membership" type="number" value="1500" oninput="recalc()">
           </div>
           <div class="field">
             <span class="field-label">Shoe Rental (THB)</span>
@@ -1586,14 +1586,35 @@ function recalc() {
   const elec    = hvac ? elHvac : elNoAc;
 
   const elRow = DATA.opex.find(r=>r.name.toLowerCase().includes('electric'));
+  // Sync electricity row in OPEX table with HVAC toggle
+  if (elRow && elRow.amt !== elec) {
+    elRow.amt = elec;
+    elRow.note = hvac ? 'HVAC on' : 'No HVAC (HVLS)';
+    const idx = DATA.opex.indexOf(elRow);
+    const tb = document.getElementById('tbody-opex');
+    if (tb && tb.rows[idx]) {
+      const amtInput = tb.rows[idx].cells[1].querySelector('input');
+      const noteInput = tb.rows[idx].cells[2].querySelector('input');
+      if (amtInput && document.activeElement !== amtInput) amtInput.value = elec;
+      if (noteInput && document.activeElement !== noteInput) noteInput.value = elRow.note;
+    }
+    updateTotal('opex');
+  }
   const baseOpexRaw = getTotal('opex');
   const baseOpex = baseOpexRaw - (elRow?elRow.amt:0) + elec;
   const opexWithAc = baseOpexRaw - (elRow?elRow.amt:0) + elHvac;
   const opexNoAc   = baseOpexRaw - (elRow?elRow.amt:0) + elNoAc;
 
-  // CAPEX
+  // CAPEX — exclude the inactive cooling option from Bucket B
+  let hvacItemCost = 0, hvlsItemCost = 0;
+  DATA.fitout.forEach(r => {
+    const n = r.name.toLowerCase();
+    if (n.includes('hvac') && !n.includes('hvls')) hvacItemCost += (parseFloat(r.amt)||0);
+    else if (n.includes('hvls')) hvlsItemCost += (parseFloat(r.amt)||0);
+  });
   const bucketA = getTotal('warehouse');
-  const bucketB = getTotal('wall')+getTotal('equipment')+getTotal('fitout');
+  const bucketBRaw = getTotal('wall')+getTotal('equipment')+getTotal('fitout');
+  const bucketB = hvac ? (bucketBRaw - hvlsItemCost) : (bucketBRaw - hvacItemCost);
   const bpCash  = bucketB*bpEq;
 
   // DEPRECIATION
@@ -1616,6 +1637,8 @@ function recalc() {
   document.getElementById('nav-total').textContent = 'THB '+Math.round((bucketA+bucketB)/1e6)+'M';
   const bbt = document.getElementById('bucket-b-grand-total');
   if(bbt) bbt.textContent = 'THB '+fmt(bucketB);
+  const bbl = document.getElementById('bucket-b-label');
+  if(bbl) bbl.textContent = hvac ? 'Bucket B Total (with HVAC, excl. HVLS)' : 'Bucket B Total (no HVAC, excl. AC)';
 
   // CAPEX KPIs
   document.getElementById('kpi-capex').innerHTML = `
@@ -1801,12 +1824,12 @@ function importData(event) {
 
 // ══ PRICE SHEET DATA ══════════════════════════════════
 const PRICE_SHEET = [
-  { product: 'Single Entry',       price: 330,   entries: 1,    type: 'single',   target: 'First-timers, tourists' },
-  { product: '3-Entry Pass',       price: 920,   entries: 3,    type: 'multi',    target: 'Curious / testing' },
-  { product: '10-Entry Pass',      price: 3000,  entries: 10,   type: 'multi',    target: 'Regular (2–3×/week)' },
+  { product: 'Single Entry',       price: 300,   entries: 1,    type: 'single',   target: 'First-timers, tourists' },
+  { product: '3-Entry Pass',       price: 840,   entries: 3,    type: 'multi',    target: 'Curious / testing' },
+  { product: '10-Entry Pass',      price: 2700,  entries: 10,   type: 'multi',    target: 'Regular (2–3×/week)' },
   { product: 'Weekly Pass',        price: 790,   entries: null, type: 'unlimited',target: 'Hardcore / visitors' },
   { product: 'Monthly (General)',  price: 1490,  entries: null, type: 'monthly',  target: 'Working adults' },
-  { product: 'Monthly (Student/PSU)', price: 1290, entries: null, type: 'monthly', target: 'University students' },
+  { product: 'Monthly (Student/PSU)', price: 1190, entries: null, type: 'monthly', target: 'University students' },
   { product: 'Annual (12M)',       price: 14900, entries: 12,   type: 'annual',   target: 'Core community' },
 ];
 
