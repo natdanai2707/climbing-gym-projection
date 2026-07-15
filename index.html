@@ -465,7 +465,7 @@ header {
   <div class="header-right">
     <button class="hdr-btn" onclick="exportData()">⬇ Export</button>
     <label class="hdr-btn" style="cursor:pointer;">⬆ Import<input type="file" accept=".json" style="display:none" onchange="importData(event)"></label>
-    <div class="pill" id="hvac-badge"><span class="dot"></span> HVAC ON</div>
+    <div class="pill green" id="hvac-badge"><span class="dot"></span> NO HVAC</div>
     <div class="pill">Apr 2026</div>
   </div>
 </header>
@@ -795,7 +795,7 @@ header {
               <div class="toggle-sub">Affects electricity OPEX and Bucket B total</div>
             </div>
             <label class="switch">
-              <input type="checkbox" id="hvac-toggle" checked onchange="recalc()">
+              <input type="checkbox" id="hvac-toggle" onchange="recalc()">
               <span class="switch-slider"></span>
             </label>
           </div>
@@ -1337,28 +1337,26 @@ const DATA = {
   ],
   wall:[
     {name:'Wall labor — Ivan + Shaffi (30 days × SGD 600)',amt:453780,note:'BP team'},
-    {name:'Wall plywood (236 sheets × THB 1,060)',amt:250160,note:'18mm multi-ply'},
+    {name:'Wall plywood (250 sheets × THB 1,000)',amt:250000,note:'18mm multi-ply'},
     {name:'Wall laborers (4 × 30 days)',amt:120000,note:''},
-    {name:'Steel skeleton — S-2000 (590 sqm)',amt:885000,note:'THB 1,500/sqm'},
+    {name:'Steel skeleton — S-2000 (590 sqm)',amt:700000,note:'THB 1,500/sqm'},
     {name:'Timber',amt:100000,note:''},
-    {name:'Wall paint',amt:300000,note:''},
-    {name:'Air filter — chalk dust',amt:80000,note:'2 units'},
+    {name:'Wall paint',amt:110000,note:''},
   ],
   equipment:[
     {name:'Mats — Canvas FLIPP (180 sqm)',amt:340560,note:'€50/sqm'},
     {name:'Mats — Carpet FLIPP (180 sqm)',amt:340560,note:'€50/sqm'},
     {name:'Mats — Foam soft (180 sqm)',amt:240840,note:''},
     {name:'Mats — Foam edge (18 pcs)',amt:24588,note:''},
-    {name:'Climbing holds (USD 100,000)',amt:3212000,note:'Multiple brands'},
+    {name:'Climbing holds (USD 50,000)',amt:1600000,note:'Multiple brands'},
     {name:'Auto belay — 10 units (€2,670/unit)',amt:1010933,note:'Perfect Descent'},
     {name:'Tools rental (SGD 2,000)',amt:50420,note:''},
-    {name:'Setting equipment',amt:230138,note:''},
+    {name:'Setting equipment (impact drivers, ropes, ladders, cordless grinder)',amt:230000,note:''},
     {name:'Shoes (150 pairs) + harness (40 pcs)',amt:323613,note:'Rental stock'},
-    {name:'Fitness equipment',amt:220600,note:''},
-    {name:'Pickleball courts (2 courts)',amt:200000,note:'Phase 1 Day 1'},
+    {name:'Fitness equipment',amt:160000,note:''},
+    {name:'Pickleball courts (2 courts) (badminton as alternative)',amt:200000,note:'Phase 1 Day 1'},
   ],
   fitout:[
-    {name:'HVAC (600 sqm Phase 1 — climbing side)',amt:2500000,note:'Removable if no HVAC'},
     {name:'HVLS fans — 2 units',amt:300000,note:'Alternative to HVAC'},
     {name:'Toilet / wet area',amt:600000,note:'Men + Women'},
     {name:'Renovation (extra)',amt:300000,note:''},
@@ -1370,14 +1368,14 @@ const DATA = {
     {name:'Lockers (12-door × 4 sets)',amt:30000,note:''},
     {name:'Water filter + dispenser',amt:15000,note:''},
     {name:'Office equipment (SGD 5,000)',amt:126050,note:''},
-    {name:'Admin costs (SGD 10,000)',amt:252100,note:''},
+    {name:'Admin costs (SGD 10,000)',amt:50000,note:''},
     {name:'Marketing (SGD 10,000)',amt:252100,note:''},
     {name:'6-month OPEX runway',amt:1422960,note:''},
   ],
   opex:[
     {name:'Staff (6 pax — Operations, Setter, Marketing, HK)',amt:150000,note:'Budget only'},
     {name:'SSO contributions',amt:21560,note:''},
-    {name:'Electricity',amt:80000,note:'HVAC on'},
+    {name:'Electricity',amt:20000,note:'No HVAC (HVLS)'},
     {name:'Water',amt:2400,note:''},
     {name:'POS — Qashier',amt:2400,note:''},
     {name:'Gym software — Mindbody',amt:16000,note:''},
