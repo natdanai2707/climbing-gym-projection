@@ -450,9 +450,96 @@ header {
 
   .be1-label, .be2-label { font-size: 10px; }
 }
+
+/* ── MODE VISIBILITY ─────────────────────── */
+body.mode-solo .jv-only { display: none !important; }
+body.mode-jv   .solo-only { display: none !important; }
+body.mode-solo .ptbl .col-bp { display: none !important; }
+
+/* ── MODE PICKER OVERLAY ─────────────────── */
+#mode-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: linear-gradient(160deg, var(--bg) 0%, var(--bg3) 100%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+#mode-overlay.hidden { display: none; }
+.mode-box { width: 100%; max-width: 860px; }
+.mode-head { text-align: center; margin-bottom: 32px; }
+.mode-logo {
+  width: 44px; height: 44px; background: var(--accent); border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 22px; color: white; font-weight: 600;
+  margin-bottom: 16px;
+}
+.mode-title { font-family: var(--serif); font-size: 26px; color: var(--text); font-weight: 500; margin-bottom: 6px; }
+.mode-sub { font-size: 14px; color: var(--text3); }
+.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.mode-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 28px 26px; cursor: pointer;
+  transition: all 0.15s; box-shadow: var(--shadow);
+  display: flex; flex-direction: column;
+}
+.mode-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.10); }
+.mode-card-icon { font-size: 30px; margin-bottom: 14px; }
+.mode-card-title { font-family: var(--serif); font-size: 19px; color: var(--text); font-weight: 500; margin-bottom: 8px; }
+.mode-card-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 16px; flex: 1; }
+.mode-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.mode-tag {
+  font-size: 11px; font-family: var(--mono); padding: 3px 9px; border-radius: 20px;
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text3);
+}
+.mode-card.accent { border-color: #e6c6b8; }
+.mode-card.accent .mode-card-tags .mode-tag { background: #fdf0eb; border-color: #f2cfc0; color: var(--accent); }
+.mode-card-go {
+  margin-top: 18px; font-size: 12px; font-weight: 600; color: var(--accent);
+  font-family: var(--mono); letter-spacing: 0.5px;
+}
+@media (max-width: 700px) {
+  .mode-cards { grid-template-columns: 1fr; }
+  .mode-title { font-size: 22px; }
+}
 </style>
 </head>
 <body>
+
+<!-- MODE PICKER OVERLAY -->
+<div id="mode-overlay">
+  <div class="mode-box">
+    <div class="mode-head">
+      <div class="mode-logo">H</div>
+      <div class="mode-title">Hat Yai Bouldering Gym</div>
+      <div class="mode-sub">เลือกรูปแบบการทำ Financial Projection</div>
+    </div>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="selectMode('jv')">
+        <div class="mode-card-icon">🤝</div>
+        <div class="mode-card-title">หาคนร่วมลงทุน (JV)</div>
+        <div class="mode-card-desc">โมเดลร่วมทุน — แบ่งการลงทุนเป็น Bucket A / B, มีผู้ร่วมทุน (BP), และมีค่าเช่าหลังผู้ร่วมทุนคืนทุน (Phase 1 → Phase 2)</div>
+        <div class="mode-card-tags">
+          <span class="mode-tag">Bucket A / B</span>
+          <span class="mode-tag">BP equity</span>
+          <span class="mode-tag">Rent phase</span>
+          <span class="mode-tag">Leasehold</span>
+        </div>
+        <div class="mode-card-go">เลือกโหมดนี้ →</div>
+      </div>
+      <div class="mode-card accent" onclick="selectMode('solo')">
+        <div class="mode-card-icon">🧗</div>
+        <div class="mode-card-title">ลงทุนเอง 100%</div>
+        <div class="mode-card-desc">ลงทุนเองทั้งหมด — ไม่มีค่าเช่า ไม่มีผู้ร่วมทุน คิดรวมมูลค่าที่ดินเข้าไปในสินทรัพย์ และคืนทุนจากกำไรเต็ม 100%</div>
+        <div class="mode-card-tags">
+          <span class="mode-tag">No rent</span>
+          <span class="mode-tag">No partner</span>
+          <span class="mode-tag">+ Land value</span>
+          <span class="mode-tag">Single phase</span>
+        </div>
+        <div class="mode-card-go">เลือกโหมดนี้ →</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- HEADER -->
 <header>
@@ -463,6 +550,7 @@ header {
     </div>
   </div>
   <div class="header-right">
+    <button class="hdr-btn" id="mode-switch-btn" onclick="openModePicker()" title="เปลี่ยนรูปแบบ projection">⇄ <span id="mode-switch-label">Mode</span></button>
     <button class="hdr-btn" onclick="exportData()">⬇ Export</button>
     <label class="hdr-btn" style="cursor:pointer;">⬆ Import<input type="file" accept=".json" style="display:none" onchange="importData(event)"></label>
     <div class="pill green" id="hvac-badge"><span class="dot"></span> NO HVAC</div>
@@ -480,10 +568,10 @@ header {
   <div class="nav-section">
     <div class="nav-section-label">Investment</div>
     <div class="nav-item active" onclick="showSection('capex-wh',this)">
-      <span class="nav-icon">🏗</span> Warehouse
+      <span class="nav-icon">🏗</span> <span id="nav-wh-label">Warehouse</span>
     </div>
     <div class="nav-item" onclick="showSection('capex-b',this)">
-      <span class="nav-icon">🧗</span> Bucket B
+      <span class="nav-icon">🧗</span> <span id="nav-bb-label">Bucket B</span>
     </div>
     <div class="nav-item" onclick="showSection('capex-sum',this)">
       <span class="nav-icon">📊</span> Summary
@@ -533,11 +621,11 @@ header {
 
 <!-- ── WAREHOUSE ── -->
 <div id="sec-capex-wh" class="section active">
-  <div class="page-title">Warehouse Structure</div>
-  <div class="page-sub">Bucket A — funded entirely by Surf / View. Not counted in JV equity.</div>
+  <div class="page-title" id="wh-page-title">Warehouse Structure</div>
+  <div class="page-sub" id="wh-page-sub">Bucket A — funded entirely by Surf / View. Not counted in JV equity.</div>
   <div class="card">
     <div class="card-header">
-      <span class="card-title"><span class="card-title-icon">🏗</span> Bucket A — Bare Warehouse</span>
+      <span class="card-title"><span class="card-title-icon">🏗</span> <span id="wh-card-title">Bucket A — Bare Warehouse</span></span>
       <span class="card-total" id="total-warehouse">THB 0</span>
     </div>
     <table class="etbl"><colgroup><col class="col-name"><col class="col-amt"><col class="col-note"><col class="col-del"></colgroup>
@@ -550,8 +638,8 @@ header {
 
 <!-- ── BUCKET B (COMBINED) ── -->
 <div id="sec-capex-b" class="section">
-  <div class="page-title">Bucket B — Gym Fit-out</div>
-  <div class="page-sub">Co-invested by all JV parties. Equity calculated from this bucket only.</div>
+  <div class="page-title" id="bb-page-title">Bucket B — Gym Fit-out</div>
+  <div class="page-sub" id="bb-page-sub">Co-invested by all JV parties. Equity calculated from this bucket only.</div>
 
   <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
     <div style="background:var(--surface);border:1.5px solid var(--accent);border-radius:var(--radius);padding:12px 24px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow-sm);">
@@ -600,7 +688,7 @@ header {
 <!-- ── CAPEX SUMMARY ── -->
 <div id="sec-capex-sum" class="section">
   <div class="page-title">CAPEX Summary</div>
-  <div class="page-sub">Full investment picture including leasehold valuation.</div>
+  <div class="page-sub" id="capex-sum-sub">Full investment picture including leasehold valuation.</div>
   <div class="grid4" id="kpi-capex"></div>
   <div class="card">
     <div class="card-header"><span class="card-title">📊 Full Breakdown</span></div>
@@ -743,18 +831,18 @@ header {
 
 <!-- ── SETTINGS ── -->
 <div id="sec-settings" class="section">
-  <div class="page-title">JV & Model Settings</div>
-  <div class="page-sub">Equity split, rent structure, HVAC toggle, visitor assumptions.</div>
+  <div class="page-title" id="settings-page-title">JV & Model Settings</div>
+  <div class="page-sub" id="settings-page-sub">Equity split, rent structure, HVAC toggle, visitor assumptions.</div>
   <div class="grid2">
     <div class="card">
-      <div class="card-header"><span class="card-title">🤝 JV Structure</span></div>
+      <div class="card-header"><span class="card-title" id="settings-card-title">🤝 JV Structure</span></div>
       <div class="settings-body">
         <div class="settings-grid">
-          <div class="field">
+          <div class="field jv-only">
             <span class="field-label">BP Equity (%)</span>
             <input class="field-input" id="jv-bp" type="number" value="50" oninput="recalc()">
           </div>
-          <div class="field">
+          <div class="field jv-only">
             <span class="field-label">Surf / View Equity (%)</span>
             <input class="field-input" id="jv-surf" type="number" value="50" oninput="recalc()">
           </div>
@@ -767,19 +855,47 @@ header {
             <span class="field-label">Member visits / month</span>
             <input class="field-input" id="jv-visits" type="number" value="8" oninput="recalc()">
           </div>
-          <div class="divider"></div>
-          <div class="field">
+          <div class="divider jv-only"></div>
+          <div class="field jv-only">
             <span class="field-label">Post-payback Rent (THB/sqm)</span>
             <input class="field-input" id="jv-rent-sqm" type="number" value="100" oninput="recalc()">
           </div>
-          <div class="field">
+          <div class="field jv-only">
             <span class="field-label">Building area (sqm)</span>
             <input class="field-input" id="jv-sqm" type="number" value="1200" oninput="recalc()">
           </div>
-          <div class="full">
+          <div class="full jv-only">
             <div style="padding:14px; background:var(--bg3); border-radius:7px; display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:12px; color:var(--text2);">Phase 2 rent / month</span>
               <span id="phase2-rent" style="font-family:var(--mono); font-size:15px; color:var(--green); font-weight:600;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAND (solo mode only) -->
+    <div class="card solo-only">
+      <div class="card-header"><span class="card-title">🌳 มูลค่าที่ดิน (Land)</span></div>
+      <div class="settings-body">
+        <div class="settings-grid">
+          <div class="field">
+            <span class="field-label">ขนาดที่ดิน (ไร่)</span>
+            <input class="field-input" id="land-rai" type="number" step="0.1" value="1" oninput="recalc()">
+          </div>
+          <div class="field">
+            <span class="field-label">ราคาต่อไร่ (THB)</span>
+            <input class="field-input" id="land-per-rai" type="number" value="30000000" oninput="recalc()">
+          </div>
+          <div class="full">
+            <div style="padding:14px; background:var(--bg3); border-radius:7px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--text2);">มูลค่าที่ดินรวม</span>
+              <span id="land-value" style="font-family:var(--mono); font-size:15px; color:var(--green); font-weight:600;"></span>
+            </div>
+          </div>
+          <div class="full">
+            <div style="padding:10px 12px; background:var(--bg2); border-radius:7px; font-size:11px; color:var(--text3); line-height:1.6;">
+              ที่ดินเป็นสินทรัพย์ที่มูลค่าคงอยู่ — รวมในมูลค่าการลงทุนทั้งหมด แต่ <strong style="color:var(--text2);">ไม่นับ</strong> ในการคำนวณจุดคืนทุน (payback คิดจาก CAPEX เท่านั้น)
             </div>
           </div>
         </div>
@@ -822,10 +938,10 @@ header {
 <!-- ── DEPRECIATION ── -->
 <div id="sec-depreciation" class="section">
   <div class="page-title">Depreciation</div>
-  <div class="page-sub">Straight-line depreciation on Bucket B (gym fit-out) only. Bucket A stays with Surf/View and is not charged to the gym P&L.</div>
+  <div class="page-sub" id="depr-page-sub">Straight-line depreciation on Bucket B (gym fit-out) only. Bucket A stays with Surf/View and is not charged to the gym P&L.</div>
 
   <div class="card" style="margin-bottom:20px;">
-    <div class="card-header"><span class="card-title">📉 Asset Useful Life — Bucket B</span></div>
+    <div class="card-header"><span class="card-title" id="depr-life-title">📉 Asset Useful Life — Bucket B</span></div>
     <div class="settings-body">
       <div class="settings-grid">
         <div class="field">
@@ -868,7 +984,7 @@ header {
   </div>
 
   <div class="card">
-    <div class="card-header"><span class="card-title">📊 Depreciation Schedule — Bucket B</span></div>
+    <div class="card-header"><span class="card-title" id="depr-sched-title">📊 Depreciation Schedule — Bucket B</span></div>
     <div style="overflow-x:auto;">
       <table class="ptbl" style="min-width:600px;">
         <thead><tr>
@@ -894,7 +1010,7 @@ header {
   <div class="card" style="margin-bottom:20px;">
     <div class="phase-label phase1-label">
       <span class="phase-dot"></span>
-      Phase 1 — Before BP Recoups &nbsp;·&nbsp; No Rent
+      <span id="phase1-text">Phase 1 — Before BP Recoups &nbsp;·&nbsp; No Rent</span>
       <span style="margin-left:auto; font-family:var(--mono); font-size:11px;" id="be1-label"></span>
     </div>
     <div class="ptbl-wrap">
@@ -903,20 +1019,20 @@ header {
           <col style="width:100px"><col style="width:70px"><col style="width:60px"><col style="width:60px">
           <col style="width:85px"><col style="width:70px"><col style="width:85px">
           <col style="width:85px"><col style="width:85px"><col style="width:85px"><col style="width:85px">
-          <col style="width:85px"><col style="width:75px">
+          <col class="col-bp" style="width:85px"><col style="width:75px">
         </colgroup>
         <thead><tr>
           <th>Scenario</th><th>Total/day</th><th>WI/day</th><th>Members</th>
           <th>Climb Rev</th><th>PB Rev</th><th>Total Rev</th>
           <th>EBITDA/mo</th><th>Depr/mo</th><th>EBIT/mo</th><th>Ann EBIT</th>
-          <th>BP / yr</th><th>Payback</th>
+          <th class="col-bp">BP / yr</th><th id="pbody1-pb-head">Payback</th>
         </tr></thead>
         <tbody id="pbody1"></tbody>
       </table>
     </div>
   </div>
 
-  <div class="card">
+  <div class="card jv-only">
     <div class="phase-label phase2-label">
       <span class="phase-dot"></span>
       Phase 2 — After BP Recoups &nbsp;·&nbsp; Rent applies
@@ -1329,7 +1445,7 @@ refStyles.textContent = `
 document.head.appendChild(refStyles);
 
 // ══ DATA ══════════════════════════════════════════════
-const DATA = {
+const DATA_JV = {
   warehouse:[
     {name:'Building work (1,200 sqm × THB 6,000)',amt:7200000,note:'Steel frame + concrete'},
     {name:'Electrical (15% of building)',amt:1080000,note:'3-phase + distribution'},
@@ -1384,15 +1500,200 @@ const DATA = {
   ],
 };
 
-const SCENARIOS = [
+// Self-invest 100% dataset (from attached hatyai-gym JSON — smaller single-owner build)
+const DATA_SOLO = {
+  warehouse:[
+    {name:'Building work (300 sqm × THB 6,000)',amt:1800000,note:'Steel frame + concrete'},
+    {name:'Electrical (15% of building)',amt:540000,note:'3-phase + distribution'},
+    {name:'Plumbing rough-in',amt:100000,note:'Water + drainage'},
+    {name:'Mezzanine + Staircase (175 x THB 3000)',amt:525000,note:''},
+  ],
+  wall:[
+    {name:'Wall Build Consultation (200sqm x 987Baht )',amt:197520,note:'Project Rock'},
+    {name:'Wall plywood (200sqm x 5761Baht)',amt:250000,note:'18mm multi-ply'},
+    {name:'Wall laborers (4 × 30 days)',amt:120000,note:''},
+    {name:'Steel skeleton  (200sqm x 1234Baht))',amt:246900,note:'THB 1,500/sqm'},
+    {name:'Design',amt:164600,note:''},
+    {name:'Wall Consultation (1 week)',amt:197520,note:''},
+    {name:'Hold Selection',amt:49380,note:''},
+  ],
+  equipment:[
+    {name:'Mats — 300mm (180 sqm)',amt:1111050,note:''},
+    {name:'Climbing holds (Macros x 400)',amt:1481400,note:'Multiple brands'},
+    {name:'Auto belay — 3 units (THB 65840 /unit)',amt:197520,note:'Chinese Brand'},
+    {name:'Setting equipment (impact drivers, ropes, ladders, cordless grinder)',amt:82300,note:''},
+    {name:'Shoes (150 pairs) + harness (40 pcs)',amt:323613,note:'Rental stock'},
+    {name:'Fitness equipment',amt:25000,note:''},
+    {name:'Climbing Holds (Jugs)',amt:197520,note:''},
+    {name:'Volumes',amt:308625,note:''},
+  ],
+  fitout:[
+    {name:'Ceiling Type Air Cond + Fan',amt:800000,note:'for 600 sqm'},
+    {name:'Toilet / wet area 1 toilet + 1 shower room for each gender, (+1 urinal for men) + 1 hold washing room',amt:600000,note:'Men + Women'},
+    {name:'Renovation (extra)',amt:300000,note:''},
+    {name:'Reception + Counter + Office',amt:50000,note:''},
+    {name:'Fixed furniture',amt:100000,note:''},
+    {name:'Loose furniture',amt:100000,note:''},
+    {name:'Security cameras',amt:100000,note:''},
+    {name:'Sound / PA system',amt:50000,note:''},
+    {name:'Lockers (12-door × 4 sets)',amt:30000,note:''},
+    {name:'Water filter + dispenser',amt:15000,note:''},
+    {name:'Office equipment (THB 50000)',amt:50000,note:''},
+    {name:'Marketing (THB 50000)',amt:50000,note:''},
+    {name:'1-month OPEX runway',amt:200000,note:''},
+    {name:'Installation Tool Rental',amt:50000,note:''},
+  ],
+  opex:[
+    {name:'Staff (2 FT pax, 10 PT — Operations, Setter, Marketing, HK)',amt:80000,note:'Budget only'},
+    {name:'Routesetting',amt:30000,note:'On needs basis'},
+    {name:'Electricity',amt:80000,note:'HVAC on'},
+    {name:'Water',amt:2400,note:''},
+    {name:'Gym software — Mindbody',amt:5000,note:''},
+    {name:'Accounting',amt:2400,note:''},
+    {name:'Internet',amt:2400,note:''},
+    {name:'Marketing / Influencers',amt:7000,note:''},
+  ],
+};
+
+const SCENARIOS_JV = [
   {name:'Conservative',visitors:30},
   {name:'Base Case',visitors:50},
   {name:'Good',visitors:80},
   {name:'Strong',visitors:120},
   {name:'Exceptional',visitors:180},
 ];
+const SCENARIOS_SOLO = [
+  {name:'Conservative',visitors:20},
+  {name:'Base Case',visitors:35},
+  {name:'Good',visitors:50},
+  {name:'Strong',visitors:70},
+  {name:'Exceptional',visitors:100},
+];
+
+// Settings presets applied when a mode is chosen
+const SETTINGS_JV = {
+  daypass:'300', membership:'1500', shoe:'100', shoeRate:'95', chalk:'30', chalkRate:'70',
+  harness:'50', harnessRate:'70', pbRate:'200', pbHours:'4', pbCourts:'2', pbDays:'30',
+  jvBp:'50', jvSurf:'50', jvVisits:'8', jvWalkin:'90', jvRentSqm:'100', jvSqm:'1200',
+  hvac:false, elecHvac:'80000', elecNoHvac:'20000',
+  deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
+  landRai:'1', landPerRai:'30000000',
+};
+const SETTINGS_SOLO = {
+  daypass:'290', membership:'1300', shoe:'100', shoeRate:'95', chalk:'100', chalkRate:'70',
+  harness:'50', harnessRate:'70', pbRate:'0', pbHours:'4', pbCourts:'2', pbDays:'30',
+  jvBp:'0', jvSurf:'100', jvVisits:'8', jvWalkin:'70', jvRentSqm:'100', jvSqm:'600',
+  hvac:true, elecHvac:'80000', elecNoHvac:'20000',
+  deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
+  landRai:'1', landPerRai:'30000000',
+};
 
 const LEASEHOLD = 9650000;
+
+// ══ MODE STATE ═════════════════════════════════════════
+let MODE = null;                  // 'jv' | 'solo'
+let DATA = clone(DATA_JV);        // active dataset (reassigned on mode select)
+let SCENARIOS = clone(SCENARIOS_JV);
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+
+function applySettings(s){
+  const set = (id,val)=>{ const el=document.getElementById(id); if(el && val!==undefined) el.value=val; };
+  set('p-daypass',s.daypass); set('p-membership',s.membership);
+  set('p-shoe',s.shoe); set('p-shoe-rate',s.shoeRate);
+  set('p-chalk',s.chalk); set('p-chalk-rate',s.chalkRate);
+  set('p-harness',s.harness); set('p-harness-rate',s.harnessRate);
+  set('pb-rate',s.pbRate); set('pb-hours',s.pbHours);
+  set('pb-courts',s.pbCourts); set('pb-days',s.pbDays);
+  set('jv-bp',s.jvBp); set('jv-surf',s.jvSurf);
+  set('jv-visits',s.jvVisits); set('jv-walkin',s.jvWalkin);
+  set('jv-rent-sqm',s.jvRentSqm); set('jv-sqm',s.jvSqm);
+  set('elec-hvac',s.elecHvac); set('elec-no-hvac',s.elecNoHvac);
+  set('depr-wall',s.deprWall); set('depr-equipment',s.deprEquipment);
+  set('depr-rental',s.deprRental); set('depr-hvac',s.deprHvac);
+  set('depr-fitout',s.deprFitout); set('depr-office',s.deprOffice);
+  set('land-rai',s.landRai); set('land-per-rai',s.landPerRai);
+  const hv=document.getElementById('hvac-toggle'); if(hv) hv.checked=!!s.hvac;
+}
+
+// Text/label swaps between modes
+const MODE_TEXT = {
+  jv: {
+    switchLabel:'JV mode',
+    navWh:'Warehouse', navBb:'Bucket B',
+    whTitle:'Warehouse Structure',
+    whSub:'Bucket A — funded entirely by Surf / View. Not counted in JV equity.',
+    whCard:'Bucket A — Bare Warehouse',
+    bbTitle:'Bucket B — Gym Fit-out',
+    bbSub:'Co-invested by all JV parties. Equity calculated from this bucket only.',
+    settingsTitle:'JV & Model Settings',
+    settingsSub:'Equity split, rent structure, HVAC toggle, visitor assumptions.',
+    settingsCard:'🤝 JV Structure',
+    capexSub:'Full investment picture including leasehold valuation.',
+    deprSub:'Straight-line depreciation on Bucket B (gym fit-out) only. Bucket A stays with Surf/View and is not charged to the gym P&L.',
+    deprLife:'📉 Asset Useful Life — Bucket B',
+    deprSched:'📊 Depreciation Schedule — Bucket B',
+    phase1:'Phase 1 — Before BP Recoups &nbsp;·&nbsp; No Rent',
+  },
+  solo: {
+    switchLabel:'Self-invest 100%',
+    navWh:'Building', navBb:'Gym Fit-out',
+    whTitle:'Building & Structure',
+    whSub:'Bare building shell — part of the total owner investment.',
+    whCard:'Building & Structure',
+    bbTitle:'Gym Fit-out',
+    bbSub:'Walls, equipment and interior — part of the total owner investment.',
+    settingsTitle:'Model Settings',
+    settingsSub:'Pricing split, HVAC toggle, land value, visitor assumptions.',
+    settingsCard:'⚙️ Operating Assumptions',
+    capexSub:'Full owner investment picture including land value.',
+    deprSub:'Straight-line depreciation on all gym capital assets (land is not depreciated).',
+    deprLife:'📉 Asset Useful Life',
+    deprSched:'📊 Depreciation Schedule',
+    phase1:'Projections &nbsp;·&nbsp; No Rent (Self-Invest 100%)',
+  },
+};
+
+function selectMode(mode){
+  MODE = mode;
+  DATA = clone(mode==='solo' ? DATA_SOLO : DATA_JV);
+  SCENARIOS = clone(mode==='solo' ? SCENARIOS_SOLO : SCENARIOS_JV);
+  applySettings(mode==='solo' ? SETTINGS_SOLO : SETTINGS_JV);
+  document.body.classList.remove('mode-jv','mode-solo');
+  document.body.classList.add('mode-'+mode);
+  applyModeText();
+  Object.keys(DATA).forEach(sec => renderTable(sec));
+  renderScenarios();
+  recalc();
+  const ov = document.getElementById('mode-overlay');
+  if(ov) ov.classList.add('hidden');
+}
+
+function openModePicker(){
+  const ov = document.getElementById('mode-overlay');
+  if(ov) ov.classList.remove('hidden');
+}
+
+function applyModeText(){
+  const t = MODE_TEXT[MODE]; if(!t) return;
+  const setTxt = (id,val)=>{ const el=document.getElementById(id); if(el) el.textContent=val; };
+  const setHtml = (id,val)=>{ const el=document.getElementById(id); if(el) el.innerHTML=val; };
+  setTxt('mode-switch-label', t.switchLabel);
+  setTxt('nav-wh-label', t.navWh);
+  setTxt('nav-bb-label', t.navBb);
+  setTxt('wh-page-title', t.whTitle);
+  setTxt('wh-page-sub', t.whSub);
+  setTxt('wh-card-title', t.whCard);
+  setTxt('bb-page-title', t.bbTitle);
+  setTxt('bb-page-sub', t.bbSub);
+  setTxt('settings-page-title', t.settingsTitle);
+  setTxt('settings-page-sub', t.settingsSub);
+  setTxt('settings-card-title', t.settingsCard);
+  setTxt('capex-sum-sub', t.capexSub);
+  setTxt('depr-page-sub', t.deprSub);
+  setTxt('depr-life-title', t.deprLife);
+  setTxt('depr-sched-title', t.deprSched);
+  setHtml('phase1-text', t.phase1);
+}
 
 // ══ DEPRECIATION CONFIG ════════════════════════════════
 // Maps asset groups to their Bucket B costs and which life input to use.
@@ -1615,6 +1916,15 @@ function recalc() {
   const bucketB = hvac ? (bucketBRaw - hvlsItemCost) : (bucketBRaw - hvacItemCost);
   const bpCash  = bucketB*bpEq;
 
+  // Land value (solo mode) — asset value, added to total investment but not to payback
+  const landRai    = parseFloat(document.getElementById('land-rai').value)||0;
+  const landPerRai = parseFloat(document.getElementById('land-per-rai').value)||0;
+  const landValue  = landRai*landPerRai;
+  const lvEl = document.getElementById('land-value'); if(lvEl) lvEl.textContent = 'THB '+fmt(landValue);
+
+  const soloCapex  = bucketA + bucketB;        // total owner CAPEX (no A/B split, no partner)
+  const soloInvest = soloCapex + landValue;    // incl. land asset
+
   // DEPRECIATION
   const deprMo = calcTotalDeprMo();
   renderDeprSection();
@@ -1632,28 +1942,49 @@ function recalc() {
     ? '<span class="dot"></span> HVAC ON'
     : '<span class="dot"></span> NO HVAC';
   document.getElementById('hvac-badge').className = hvac ? 'pill orange' : 'pill green';
-  document.getElementById('nav-total').textContent = 'THB '+Math.round((bucketA+bucketB)/1e6)+'M';
   const bbt = document.getElementById('bucket-b-grand-total');
   if(bbt) bbt.textContent = 'THB '+fmt(bucketB);
   const bbl = document.getElementById('bucket-b-label');
-  if(bbl) bbl.textContent = hvac ? 'Bucket B Total (with HVAC, excl. HVLS)' : 'Bucket B Total (no HVAC, excl. AC)';
+  if(MODE==='solo'){
+    document.getElementById('nav-total').textContent = 'THB '+Math.round(soloInvest/1e6)+'M';
+    if(bbl) bbl.textContent = 'Gym Fit-out Total';
+  } else {
+    document.getElementById('nav-total').textContent = 'THB '+Math.round((bucketA+bucketB)/1e6)+'M';
+    if(bbl) bbl.textContent = hvac ? 'Bucket B Total (with HVAC, excl. HVLS)' : 'Bucket B Total (no HVAC, excl. AC)';
+  }
 
-  // CAPEX KPIs
-  document.getElementById('kpi-capex').innerHTML = `
-    <div class="kpi-card"><div class="kpi-label">Bucket A (Warehouse)</div><div class="kpi-value">THB ${fmt(bucketA)}</div><div class="kpi-sub">Surf / View only</div></div>
-    <div class="kpi-card"><div class="kpi-label">Bucket B (Gym Fit-out)</div><div class="kpi-value blue">THB ${fmt(bucketB)}</div><div class="kpi-sub">Co-invested</div></div>
-    <div class="kpi-card"><div class="kpi-label">BP Cash Required (${Math.round(bpEq*100)}%)</div><div class="kpi-value accent">THB ${fmt(bpCash)}</div><div class="kpi-sub">49% of Bucket B</div></div>
-    <div class="kpi-card"><div class="kpi-label">Total JV Value</div><div class="kpi-value green">THB ${fmt(bucketA+bucketB+LEASEHOLD)}</div><div class="kpi-sub">incl. leasehold THB ${fmt(LEASEHOLD)}</div></div>`;
+  // CAPEX KPIs + Summary — branch by mode
+  if(MODE==='solo'){
+    document.getElementById('kpi-capex').innerHTML = `
+      <div class="kpi-card"><div class="kpi-label">Total CAPEX</div><div class="kpi-value blue">THB ${fmt(soloCapex)}</div><div class="kpi-sub">Building + fit-out</div></div>
+      <div class="kpi-card"><div class="kpi-label">Land Value</div><div class="kpi-value">THB ${fmt(landValue)}</div><div class="kpi-sub">${landRai} rai × THB ${fmt(landPerRai)}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total Investment</div><div class="kpi-value accent">THB ${fmt(soloInvest)}</div><div class="kpi-sub">CAPEX + land</div></div>
+      <div class="kpi-card"><div class="kpi-label">Monthly OPEX (active)</div><div class="kpi-value green">THB ${fmt(baseOpex)}</div><div class="kpi-sub">${hvac?'HVAC on':'No HVAC'}</div></div>`;
 
-  document.getElementById('capex-summary').innerHTML = `
-    <div class="summary-item"><span class="s-label">Bucket A — Warehouse</span><span class="s-val">THB ${fmt(bucketA)}</span></div>
-    <div class="summary-item"><span class="s-label">Bucket B — Gym Fit-out</span><span class="s-val">THB ${fmt(bucketB)}</span></div>
-    <div class="summary-item highlight"><span class="s-label">Total CAPEX (A+B)</span><span class="s-val accent">THB ${fmt(bucketA+bucketB)}</span></div>
-    <div class="summary-item"><span class="s-label">Leasehold (10-yr NPV @ 5%)</span><span class="s-val">THB ${fmt(LEASEHOLD)}</span></div>
-    <div class="summary-item"><span class="s-label">Total JV Value</span><span class="s-val accent">THB ${fmt(bucketA+bucketB+LEASEHOLD)}</span></div>
-    <div class="summary-item highlight-green"><span class="s-label">BP Cash (${Math.round(bpEq*100)}% of Bucket B)</span><span class="s-val green">THB ${fmt(bpCash)}</span></div>
-    <div class="summary-item"><span class="s-label">Surf Cash (${Math.round(sfEq*100)}% of Bucket B)</span><span class="s-val blue">THB ${fmt(bucketB*sfEq)}</span></div>
-    <div class="summary-item"><span class="s-label">Monthly OPEX (active)</span><span class="s-val">THB ${fmt(baseOpex)}</span></div>`;
+    document.getElementById('capex-summary').innerHTML = `
+      <div class="summary-item"><span class="s-label">Building & Structure</span><span class="s-val">THB ${fmt(bucketA)}</span></div>
+      <div class="summary-item"><span class="s-label">Gym Fit-out (wall + equipment + interior)</span><span class="s-val">THB ${fmt(bucketB)}</span></div>
+      <div class="summary-item highlight"><span class="s-label">Total CAPEX</span><span class="s-val accent">THB ${fmt(soloCapex)}</span></div>
+      <div class="summary-item"><span class="s-label">Land (${landRai} rai × THB ${fmt(landPerRai)})</span><span class="s-val">THB ${fmt(landValue)}</span></div>
+      <div class="summary-item highlight-green"><span class="s-label">Total Investment (CAPEX + Land)</span><span class="s-val green">THB ${fmt(soloInvest)}</span></div>
+      <div class="summary-item"><span class="s-label">Monthly OPEX (active)</span><span class="s-val">THB ${fmt(baseOpex)}</span></div>`;
+  } else {
+    document.getElementById('kpi-capex').innerHTML = `
+      <div class="kpi-card"><div class="kpi-label">Bucket A (Warehouse)</div><div class="kpi-value">THB ${fmt(bucketA)}</div><div class="kpi-sub">Surf / View only</div></div>
+      <div class="kpi-card"><div class="kpi-label">Bucket B (Gym Fit-out)</div><div class="kpi-value blue">THB ${fmt(bucketB)}</div><div class="kpi-sub">Co-invested</div></div>
+      <div class="kpi-card"><div class="kpi-label">BP Cash Required (${Math.round(bpEq*100)}%)</div><div class="kpi-value accent">THB ${fmt(bpCash)}</div><div class="kpi-sub">${Math.round(bpEq*100)}% of Bucket B</div></div>
+      <div class="kpi-card"><div class="kpi-label">Total JV Value</div><div class="kpi-value green">THB ${fmt(bucketA+bucketB+LEASEHOLD)}</div><div class="kpi-sub">incl. leasehold THB ${fmt(LEASEHOLD)}</div></div>`;
+
+    document.getElementById('capex-summary').innerHTML = `
+      <div class="summary-item"><span class="s-label">Bucket A — Warehouse</span><span class="s-val">THB ${fmt(bucketA)}</span></div>
+      <div class="summary-item"><span class="s-label">Bucket B — Gym Fit-out</span><span class="s-val">THB ${fmt(bucketB)}</span></div>
+      <div class="summary-item highlight"><span class="s-label">Total CAPEX (A+B)</span><span class="s-val accent">THB ${fmt(bucketA+bucketB)}</span></div>
+      <div class="summary-item"><span class="s-label">Leasehold (10-yr NPV @ 5%)</span><span class="s-val">THB ${fmt(LEASEHOLD)}</span></div>
+      <div class="summary-item"><span class="s-label">Total JV Value</span><span class="s-val accent">THB ${fmt(bucketA+bucketB+LEASEHOLD)}</span></div>
+      <div class="summary-item highlight-green"><span class="s-label">BP Cash (${Math.round(bpEq*100)}% of Bucket B)</span><span class="s-val green">THB ${fmt(bpCash)}</span></div>
+      <div class="summary-item"><span class="s-label">Surf Cash (${Math.round(sfEq*100)}% of Bucket B)</span><span class="s-val blue">THB ${fmt(bucketB*sfEq)}</span></div>
+      <div class="summary-item"><span class="s-label">Monthly OPEX (active)</span><span class="s-val">THB ${fmt(baseOpex)}</span></div>`;
+  }
 
   // PROJECTION CALC
   function calcSc(vis, opex) {
@@ -1665,10 +1996,15 @@ function recalc() {
     const ebitda = rev-opex;
     const ebit   = ebitda - deprMo;
     const annEbit = ebit*12;
-    // Payback still based on EBITDA share (cash basis for BP)
+    // Payback on EBITDA (cash basis)
     const ann = ebitda*12;
     const bpy = Math.max(0,ann)*bpEq;
-    const pb  = bpy>0 ? bpCash/bpy : null;
+    let pb;
+    if(MODE==='solo'){
+      pb = ann>0 ? soloCapex/ann : null;   // owner keeps 100% of profit; payback on CAPEX only (land excluded)
+    } else {
+      pb = bpy>0 ? bpCash/bpy : null;       // BP recoups its share of Bucket B
+    }
     return {wi,mv,mem,rc,rev,ebitda,ebit,annEbit,bpy,pb};
   }
 
@@ -1681,12 +2017,16 @@ function recalc() {
   }
 
   // Projection KPIs
-  const bc = calcSc(50, baseOpex);
+  const baseVis = (SCENARIOS.find(s=>/base/i.test(s.name)) || SCENARIOS[1] || SCENARIOS[0]).visitors;
+  const bc = calcSc(baseVis, baseOpex);
+  const pbLabel = MODE==='solo' ? 'Base Case Owner Payback' : 'Base Case BP Payback';
+  const pbSub   = MODE==='solo' ? 'CAPEX basis (excl. land)' : 'EBITDA basis (cash)';
+  const deprSub = MODE==='solo' ? 'Straight-line, gym assets' : 'Bucket B straight-line';
   document.getElementById('kpi-proj').innerHTML = `
     <div class="kpi-card"><div class="kpi-label">OPEX / month</div><div class="kpi-value">${fmt(baseOpex)}</div><div class="kpi-sub">THB</div></div>
-    <div class="kpi-card"><div class="kpi-label">Depreciation / month</div><div class="kpi-value orange">${fmt(deprMo)}</div><div class="kpi-sub">Bucket B straight-line</div></div>
-    <div class="kpi-card"><div class="kpi-label">Base Case EBIT / mo</div><div class="kpi-value ${bc.ebit>=0?'green':'accent'}">${fmt(bc.ebit)}</div><div class="kpi-sub">50 visitors/day</div></div>
-    <div class="kpi-card"><div class="kpi-label">Base Case BP Payback</div><div class="kpi-value blue">${bc.pb?bc.pb.toFixed(1)+' yrs':'Loss'}</div><div class="kpi-sub">EBITDA basis (cash)</div></div>`;
+    <div class="kpi-card"><div class="kpi-label">Depreciation / month</div><div class="kpi-value orange">${fmt(deprMo)}</div><div class="kpi-sub">${deprSub}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Base Case EBIT / mo</div><div class="kpi-value ${bc.ebit>=0?'green':'accent'}">${fmt(bc.ebit)}</div><div class="kpi-sub">${baseVis} visitors/day</div></div>
+    <div class="kpi-card"><div class="kpi-label">${pbLabel}</div><div class="kpi-value blue">${bc.pb?bc.pb.toFixed(1)+' yrs':'Loss'}</div><div class="kpi-sub">${pbSub}</div></div>`;
 
   // Phase 1
   let b1='';
@@ -1698,7 +2038,7 @@ function recalc() {
       <td style="color:var(--orange);font-family:var(--mono);font-size:11px;">(${fmt(deprMo)})</td>
       <td>${ebiC(c.ebit)}</td>
       <td>${ebiC(c.annEbit)}</td>
-      <td class="pos">${fmt(c.bpy)}</td>
+      <td class="pos col-bp">${fmt(c.bpy)}</td>
       <td>${pbC(c.pb)}</td></tr>`;
   });
   const be1=((baseOpex-pbMo)/(revWI*wiPct*30));
@@ -1764,9 +2104,11 @@ function exportData() {
     deprHvac:     document.getElementById('depr-hvac').value,
     deprFitout:   document.getElementById('depr-fitout').value,
     deprOffice:   document.getElementById('depr-office').value,
+    landRai:      document.getElementById('land-rai').value,
+    landPerRai:   document.getElementById('land-per-rai').value,
     scenarios:    SCENARIOS.map(s=>({name:s.name, visitors:s.visitors})),
   };
-  const payload = { data: DATA, settings };
+  const payload = { mode: MODE, data: DATA, settings };
   const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -1803,6 +2145,7 @@ function importData(event) {
         set('depr-wall', s.deprWall); set('depr-equipment', s.deprEquipment);
         set('depr-rental', s.deprRental); set('depr-hvac', s.deprHvac);
         set('depr-fitout', s.deprFitout); set('depr-office', s.deprOffice);
+        set('land-rai', s.landRai); set('land-per-rai', s.landPerRai);
         document.getElementById('hvac-toggle').checked = s.hvac;
         if (s.scenarios) {
           s.scenarios.forEach((sc,i) => {
@@ -1810,6 +2153,12 @@ function importData(event) {
           });
         }
       }
+      // Restore mode (default JV for older exports without a mode field)
+      MODE = payload.mode || MODE || 'jv';
+      document.body.classList.remove('mode-jv','mode-solo');
+      document.body.classList.add('mode-'+MODE);
+      applyModeText();
+      const ov = document.getElementById('mode-overlay'); if(ov) ov.classList.add('hidden');
       recalc();
       alert('Imported successfully.');
     } catch(err) {
@@ -1915,10 +2264,10 @@ function startEditPrice(i, el) {
 
 // ══ INIT ═══════════════════════════════════════════════
 window.onload = () => {
-  Object.keys(DATA).forEach(sec => renderTable(sec));
-  renderScenarios();
   renderPriceSheet();
-  recalc();
+  // Main app initializes when a mode is chosen from the overlay (selectMode).
+  // Default to JV if the overlay is dismissed without a pick is not possible —
+  // the overlay has no close button, so a mode is always selected first.
 };
 </script>
 </body>
