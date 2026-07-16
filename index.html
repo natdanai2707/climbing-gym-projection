@@ -1021,6 +1021,19 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
   <div class="page-title">Financial Projections</div>
   <div class="page-sub">Auto-calculated from all inputs. Updates live.</div>
 
+  <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 18px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm);">
+      <div>
+        <div class="toggle-text">Include gear rental revenue</div>
+        <div class="toggle-sub" id="gear-toggle-sub">Shoes, chalk & harness revenue included</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="gear-toggle" checked onchange="recalc()">
+        <span class="switch-slider"></span>
+      </label>
+    </div>
+  </div>
+
   <div class="grid4" id="kpi-proj"></div>
 
   <div class="card" style="margin-bottom:20px;">
@@ -1552,7 +1565,7 @@ const DATA_JV = {
 // Self-invest 100% dataset (from attached hatyai-gym JSON — smaller single-owner build)
 const DATA_SOLO = {
   warehouse:[
-    {name:'Building work (300 sqm × THB 6,000)',amt:1800000,note:'Steel frame + concrete'},
+    {name:'Building work (400 sqm × THB 6,000)',amt:2400000,note:'Steel frame + concrete'},
     {name:'Electrical (15% of building)',amt:540000,note:'3-phase + distribution'},
     {name:'Plumbing rough-in',amt:100000,note:'Water + drainage'},
     {name:'Mezzanine + Staircase (175 x THB 3000)',amt:525000,note:''},
@@ -2037,8 +2050,15 @@ function recalc() {
   const chalkR  = (parseFloat(document.getElementById('p-chalk-rate').value)||0)/100;
   const hrns    = parseFloat(document.getElementById('p-harness').value)||0;
   const hrnsR   = (parseFloat(document.getElementById('p-harness-rate').value)||0)/100;
-  const anc     = shoe*shoeR + chalk*chalkR + hrns*hrnsR;
+  const gearEl  = document.getElementById('gear-toggle');
+  const gearOn  = gearEl ? gearEl.checked : true;
+  const ancFull = shoe*shoeR + chalk*chalkR + hrns*hrnsR;
+  const anc     = gearOn ? ancFull : 0;   // ancillary revenue used in projections
   const revWI   = dp + anc;
+  const gts = document.getElementById('gear-toggle-sub');
+  if(gts) gts.textContent = gearOn
+    ? 'Shoes, chalk & harness revenue included'
+    : 'Excluded — visits & membership fees only';
 
   const pbRate  = parseFloat(document.getElementById('pb-rate').value)||0;
   const pbHrs   = parseFloat(document.getElementById('pb-hours').value)||0;
@@ -2105,7 +2125,9 @@ function recalc() {
   renderDeprSection();
 
   // Update display elements
-  document.getElementById('eff-rev').textContent = 'THB '+fmt(revWI);
+  // Pricing page always shows the full per-visit revenue incl. gear;
+  // the projection tables respect the gear-rental toggle via `anc`.
+  document.getElementById('eff-rev').textContent = 'THB '+fmt(dp+ancFull);
   document.getElementById('pb-monthly').textContent = 'THB '+fmt(pbMo);
   document.getElementById('phase2-rent').textContent = 'THB '+fmt(rentP2);
   document.getElementById('note-rent').textContent = 'THB '+fmt(rentP2)+'/month';
@@ -2352,6 +2374,7 @@ function exportData() {
     jvRentSqm:    document.getElementById('jv-rent-sqm').value,
     jvSqm:        document.getElementById('jv-sqm').value,
     hvac:         document.getElementById('hvac-toggle').checked,
+    gearRental:   document.getElementById('gear-toggle').checked,
     elecHvac:     document.getElementById('elec-hvac').value,
     elecNoHvac:   document.getElementById('elec-no-hvac').value,
     deprWall:     document.getElementById('depr-wall').value,
@@ -2407,6 +2430,8 @@ function importData(event) {
         set('depr-fitout', s.deprFitout); set('depr-office', s.deprOffice);
         set('land-rai', s.landRai); set('land-per-rai', s.landPerRai);
         document.getElementById('hvac-toggle').checked = !!s.hvac;
+        // Default to included for older exports without the flag
+        document.getElementById('gear-toggle').checked = s.gearRental===undefined ? true : !!s.gearRental;
         if (s.scenarios) {
           s.scenarios.forEach((sc,i) => {
             if (SCENARIOS[i]) SCENARIOS[i].visitors = sc.visitors;
