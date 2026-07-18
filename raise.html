@@ -282,7 +282,7 @@ body.deck-mode .deck-nav { display: flex; }
 <div id="view-projection">
 <div class="wrap">
 
-  <div class="page-title">Investor Projection — โครงการยิมปีนหน้าผา (Bouldering) แห่งแรกของภาคใต้</div>
+  <div class="page-title">Investor Projection — โครงการยิมปีนหน้าผา (Bouldering) ระดับ commercial ในหาดใหญ่</div>
   <div class="page-sub">ระดมทุนสำหรับ fit-out ยิมทั้งหมด · Founder สร้างและเป็นเจ้าของอาคารเอง (ไม่อยู่ในการระดมทุน) แล้วให้ SPV เช่าในราคาตลาด · Founder ถือหุ้น 25% จากการ sourcing + บริหารเต็มเวลาโดยไม่รับเงินเดือน · นักลงทุนถือ 75%</div>
 
   <div class="grid4" id="kpi-head"></div>
@@ -437,17 +437,9 @@ body.deck-mode .deck-nav { display: flex; }
       <div class="ptbl-wrap"><table class="ptbl" id="tbl-captable"></table></div>
     </div>
     <div class="card">
-      <div class="card-header"><span class="card-title">🤝 ทำไม Founder ถือ 25%</span></div>
+      <div class="card-header"><span class="card-title">💼 มองจากฝั่งนักลงทุน</span></div>
       <div class="card-body">
-        <div class="note-box" style="background:var(--bg2);">
-          Founder ได้หุ้น <strong>25%</strong> โดยไม่ลงเงินในก้อนระดมทุน — แลกกับ:
-          <div style="margin-top:8px;line-height:2;">
-            • ลงทุนสร้างอาคารเองทั้งหมด <strong id="n-shell">—</strong> (ไม่อยู่ในการระดมทุน) แล้วปล่อยเช่าในราคาตลาด<br>
-            • Sourcing อุปกรณ์และการก่อสร้างทั้งหมด<br>
-            • บริหารเต็มเวลา 2 ปี — <strong>ไม่มีเงินเดือน ไม่มี management fee ไม่มี ops fee</strong><br>
-            • ผลตอบแทนต่อหุ้นของ Founder เท่ากับของนักลงทุนทุกประการ
-          </div>
-        </div>
+        <div class="note-box" style="background:var(--bg2);" id="investor-share-note">—</div>
       </div>
     </div>
   </div>
@@ -463,7 +455,7 @@ body.deck-mode .deck-nav { display: flex; }
 <div id="view-deck">
   <div id="deck-slides"></div>
   <div class="deck-nav">
-    <span class="deck-counter" id="deck-counter">1 / 14</span>
+    <span class="deck-counter" id="deck-counter">1 / 15</span>
     <div class="deck-dots" id="deck-dots"></div>
     <div class="deck-btns">
       <button class="hdr-btn" onclick="deckPrev()">← ก่อนหน้า</button>
@@ -706,7 +698,9 @@ function renderProjection(m){
     <tr><td>นักลงทุน (Investors)</td><td>${RAISE.investorShares}</td><td>75%</td><td>${fmt(RAISE.investorShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">เงินสด — ลงทุนค่า fit-out ทั้งหมด</td></tr>
     <tr><td>Founder</td><td>${RAISE.founderShares}</td><td>25%</td><td>${fmt(RAISE.founderShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">Sourcing + บริหาร 2 ปีไม่มีเงินเดือน/ค่า fee</td></tr>
     <tr class="total-row"><td>รวม (post-money)</td><td>${m.totalShares}</td><td>100%</td><td class="pos">${fmt(m.postMoney)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นละ THB ${fmt(RAISE.sharePrice)}</td></tr></tbody>`;
-  document.getElementById('n-shell').textContent = 'THB '+fmt(m.shellTotal);
+  document.getElementById('investor-share-note').innerHTML =
+    `<strong>นักลงทุน:</strong> หุ้นละ THB ${fmt(RAISE.sharePrice)} = ${(100/m.totalShares).toFixed(2)}% ของบริษัท · ลงกี่หุ้นได้สัดส่วนตามนั้น · นักลงทุนถือรวม 75%
+     <div style="margin-top:8px;color:var(--text3);">Founder ถือ 25% โดยไม่ลงเงินในก้อนระดมทุน ไม่รับเงินเดือน ไม่มี management/ops fee — ผลตอบแทนต่อหุ้นเท่านักลงทุนทุกประการ</div>`;
 }
 
 // ══ RENDER: PITCH DECK (same computed model — numbers can never drift) ══
@@ -721,7 +715,7 @@ function renderDeck(m){
   `<div class="slide-kicker">Investor Brief · Confidential</div>
    <div class="slide-title" style="font-size:46px;">Hat Yai<br>Bouldering Gym</div>
    <div class="slide-body">
-     <p>ยิมปีนหน้าผา (bouldering) ในร่มแห่งแรกของภาคใต้ — หาดใหญ่ สงขลา</p>
+     <p>ยิมปีนหน้าผา (bouldering) ในร่มระดับ commercial — หาดใหญ่ สงขลา</p>
      <div class="num-row">
        <div class="num-item"><div class="n accent">THB ${fmt(RAISE.raise)}</div><div class="l">Raise — Fit-out</div></div>
        <div class="num-item"><div class="n">75% / 25%</div><div class="l">Investors / Founder</div></div>
@@ -740,35 +734,37 @@ function renderDeck(m){
        <div class="num-item"><div class="n accent">${base.payback?'≈ '+base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Investor payback (Base ${base.visitors} คน/วัน)</div></div>
        <div class="num-item"><div class="n">${fmtPct(base.yield1)}</div><div class="l">Yield / หุ้น ปีแรก (Base)</div></div>
        <div class="num-item"><div class="n">THB ${fmt(m.postMoney)}</div><div class="l">Post-money valuation</div></div>
+       <div class="num-item"><div class="n">${(100/m.totalShares).toFixed(2)}% ต่อหุ้น</div><div class="l">หุ้นละ THB ${fmt(RAISE.sharePrice)}</div></div>
      </div>
    </div>`,
 
-  // 3 — Greenfield
-  `<div class="slide-kicker">02 · The Opportunity</div>
-   <div class="slide-title">ตลาดที่ยังไม่มีใครเล่น — Greenfield ทั้งภาคใต้</div>
+  // 3 — Why bouldering, why now (category tailwind — no "first/greenfield" claims)
+  `<div class="slide-kicker">02 · Why Bouldering, Why Now</div>
+   <div class="slide-title">ทำไมต้อง Bouldering และทำไมตอนนี้</div>
    <div class="slide-body">
-     <p>Bouldering เป็นกีฬาที่โตเร็วที่สุดประเภทหนึ่งของเอเชียตะวันออกเฉียงใต้ — กรุงเทพฯ สิงคโปร์ และมาเลเซียมียิมเปิดใหม่ต่อเนื่องและแน่นทุกเย็น แต่<strong>ทั้งภาคใต้ของไทยยังไม่มียิมปีนหน้าผาในร่มแม้แต่แห่งเดียว</strong></p>
+     <p>Bouldering เป็นกีฬาที่โตเร็วที่สุดประเภทหนึ่งของเอเชียตะวันออกเฉียงใต้ — กรุงเทพฯ สิงคโปร์ และมาเลเซียมียิมเปิดใหม่ต่อเนื่องและแน่นทุกเย็น</p>
      <ul class="deck-list">
-       <li>ผู้เล่นรายแรกในตลาด (first mover) — ไม่มีคู่แข่งตรงในรัศมีหลายร้อยกิโลเมตร</li>
-       <li>ยิมทั่วไปในหาดใหญ่ขายที่ราคา ฿400–1,300/เดือน — bouldering เป็น experience product คนละตลาด ตั้งราคาได้สูงกว่า</li>
-       <li>เทรนด์กีฬาปีนหน้าผาโตต่อเนื่องหลังบรรจุเป็นกีฬาโอลิมปิก</li>
+       <li>แรงส่งระดับโลกหลังปีนหน้าผาถูกบรรจุเป็นกีฬาโอลิมปิก — ฐานผู้เล่นใหม่โตต่อเนื่องทุกปี</li>
+       <li>เป็น experience / lifestyle product — ลูกค้ามาเพื่อกีฬา + community ไม่ใช่แค่ออกกำลังกาย และจ่ายในระดับที่สูงกว่ายิมทั่วไป</li>
+       <li>ยิมทั่วไปในหาดใหญ่ขายที่ราคา ฿400–1,300/เดือน — bouldering อยู่คนละตลาด ตั้งราคาแบบ experience product ได้</li>
      </ul>
    </div>`,
 
-  // 4 — Catchment
-  `<div class="slide-kicker">03 · The Catchment</div>
-   <div class="slide-title">หาดใหญ่ — ศูนย์กลางของภาคใต้</div>
+  // 4 — Market & Landscape (honest catchment + neutral competitive facts)
+  `<div class="slide-kicker">03 · Market & Landscape</div>
+   <div class="slide-title">ตลาด & Landscape — หาดใหญ่และภาคใต้ตอนล่าง</div>
    <div class="slide-body">
-     <p>หาดใหญ่เป็นศูนย์กลางเศรษฐกิจ การศึกษา และการท่องเที่ยวของภาคใต้ตอนล่าง มีประชากรเขตเมืองหนาแน่นและกำลังซื้อสูงสุดในภูมิภาค</p>
      <div class="num-row">
-       <div class="num-item"><div class="n">~34,000</div><div class="l">นักศึกษา ม.อ. (PSU) วิทยาเขตหาดใหญ่</div></div>
-       <div class="num-item"><div class="n">อันดับ 1</div><div class="l">เมืองเศรษฐกิจภาคใต้ตอนล่าง</div></div>
+       <div class="num-item"><div class="n">~650,000</div><div class="l">ประชากรเขตเมืองหาดใหญ่–สงขลา (metro)</div></div>
+       <div class="num-item"><div class="n">~34,000</div><div class="l">นักศึกษา ม.อ. ทั้งระบบ · วิทยาเขตหาดใหญ่เป็นวิทยาเขตหลัก (ราว 50%+)</div></div>
        <div class="num-item"><div class="n">ชายแดน</div><div class="l">ประตูรับนักท่องเที่ยว MY / SG</div></div>
      </div>
      <ul class="deck-list">
-       <li>นักศึกษามหาวิทยาลัยคือ segment หลักของยิมปีนหน้าผาทั่วโลก — หาดใหญ่มีฐานนักศึกษาขนาดใหญ่ติดเมือง</li>
+       <li>นักศึกษามหาวิทยาลัยคือ segment หลักของยิมปีนหน้าผาทั่วโลก — นอกจาก ม.อ. หาดใหญ่ยังมีมหาวิทยาลัยและวิทยาลัยอื่นในเมืองอีกหลายแห่ง ฐานนักศึกษาในเมืองจึงใหญ่</li>
        <li>นักท่องเที่ยวมาเลเซีย/สิงคโปร์เข้าหาดใหญ่ต่อเนื่องทุกสุดสัปดาห์ — สองประเทศที่วัฒนธรรมปีนหน้าผาแข็งแรงที่สุดในภูมิภาค</li>
      </ul>
+     <p>ปัจจุบันมีสถานที่ปีนในภาคใต้เพียงไม่กี่แห่งและยังเป็นสเกลเล็ก/เพิ่งเปิด (มียิมบูลเดอริ่งเปิดใหม่ในหาดใหญ่ปี 2026 และยิมปีนในร่มที่ภูเก็ต) — ยังไม่มีเจ้าใดทำระดับ commercial เต็มรูปแบบที่รองรับ catchment ภาคใต้ตอนล่าง</p>
+     <p><strong>จุดต่างของโครงการนี้:</strong> ผนังสเกลใหญ่ · auto-belay หลายเลน · แอร์เต็มพื้นที่ · ทำเลติดทางหลวง 4 · ติดฐาน ม.อ. · ดีมานด์ข้ามพรมแดน</p>
    </div>`,
 
   // 5 — Unit economics
@@ -815,34 +811,54 @@ function renderDeck(m){
      <p style="color:var(--text3);font-size:12px;">Yield คำนวณจาก EBITDA ก่อนภาษีและค่าเสื่อม — เงินปันผลจริงจ่ายจาก free cash flow ตามมติผู้ถือหุ้น</p>
    </div>`,
 
-  // 8 — Cold-start risk
-  `<div class="slide-kicker">07 · The Risk We Take Seriously</div>
-   <div class="slide-title">ความเสี่ยงหลัก: ตลาดใหม่เริ่มจากศูนย์</div>
+  // 8 — Risk & downside floor
+  `<div class="slide-kicker">07 · Risk & Our Floor</div>
+   <div class="slide-title">ความเสี่ยง & พื้นของเรา</div>
    <div class="slide-body">
-     <p>หาดใหญ่ยังไม่เคยมียิมปีนหน้าผา — ดีมานด์ต้องถูกสร้าง ไม่ใช่แค่ถูกแย่งชิง เรารับมือแบบนี้:</p>
+     <p>ตลาดปีนหน้าผาในหาดใหญ่ยังเพิ่งเริ่ม — ดีมานด์ส่วนใหญ่ยังต้องสร้าง ไม่ใช่แค่แย่งชิง เรารับมือแบบนี้:</p>
      <ul class="deck-list">
        <li><strong>ความเชี่ยวชาญการเปิดยิม</strong> — โครงการนี้ออกแบบผนัง เลือกอุปกรณ์ และวางระบบปฏิบัติการโดยอิงคำปรึกษาจากผู้มีประสบการณ์เปิดและดำเนินยิมปีนหน้าผาเชิงพาณิชย์ในภูมิภาคนี้จริง</li>
        <li><strong>ดีมานด์ข้ามพรมแดน</strong> — นักปีนมาเลเซีย/สิงคโปร์ที่เข้าหาดใหญ่อยู่แล้วทุกสุดสัปดาห์คือฐานลูกค้าที่ "รู้จักกีฬานี้อยู่แล้ว" ตั้งแต่วันแรก</li>
-       <li><strong>ฐานนักศึกษา</strong> — โปรแกรมราคานักศึกษาและกิจกรรมชมรมเจาะฐาน PSU ~34,000 คน</li>
-       <li><strong>Break-even ต่ำ</strong> — ที่ ≈ ${Math.ceil(m.breakEven)} คน/วัน แม้ ramp-up ช้ากว่าแผน โครงการก็ยังไม่เผาเงินสด (Conservative ${cons.visitors} คน/วันยังมี EBITDA เป็นบวก)</li>
+       <li><strong>ฐานนักศึกษา</strong> — โปรแกรมราคานักศึกษาและกิจกรรมชมรมเจาะฐานนักศึกษา ม.อ. และสถาบันอื่นในเมือง</li>
      </ul>
-   </div>`,
-
-  // 9 — Fair ownership
-  `<div class="slide-kicker">08 · Fair Ownership</div>
-   <div class="slide-title">Founder 25% — โปร่งใสว่าแลกกับอะไร</div>
-   <div class="slide-body">
-     <p>นักลงทุนถือ <strong>75%</strong> · Founder ถือ <strong>25%</strong> โดยไม่ลงเงินในก้อนระดมทุน — สิ่งที่ Founder ใส่เข้ามาแทนเงิน:</p>
+     <p style="margin-top:16px;"><strong>พื้นของเรา (downside floor):</strong></p>
      <ul class="deck-list">
-       <li><strong>อาคารทั้งหลัง THB ${fmt(m.shellTotal)}</strong> — Founder จ่ายเองทั้งหมด ไม่อยู่ในการระดมทุน แล้วปล่อยเช่าให้บริษัทที่<strong>ราคาตลาด</strong> THB ${fmt(RAISE.rent.baseMo)}/เดือน (${RAISE.rent.sqm} sqm × ${RAISE.rent.ratePerSqm}) — ไม่ได้คิดแพงกว่าตลาดเพื่อดูดกำไร</li>
-       <li><strong>Sourcing ทั้งโครงการ</strong> — ผนัง อุปกรณ์ ผู้รับเหมา และการเจรจาราคา</li>
-       <li><strong>บริหารเต็มเวลา 2 ปี</strong> — ไม่มีเงินเดือน ไม่มี management fee ไม่มี ops fee รายได้ทางเดียวของ Founder คือเงินปันผลตามหุ้น เหมือนนักลงทุนทุกคน</li>
-       <li><strong>Incentive ตรงกัน</strong> — Founder ได้เงินก็ต่อเมื่อนักลงทุนได้เงิน</li>
+       <li><strong>Break-even ต่ำ</strong> ≈ ${Math.ceil(m.breakEven)} คน/วัน — แม้ ramp-up ช้ากว่าแผน โครงการก็ยังไม่เผาเงินสด (Conservative ${cons.visitors} คน/วันยังมี EBITDA เป็นบวก)</li>
+       <li>ในช่วงที่ผลต่ำกว่าคาด <strong>Founder ลด/พักค่าเช่าได้</strong>โดยนักลงทุนไม่ต้องเติมเงิน</li>
+       <li>มีรายได้ผู้เช่าโซนฟิตเนส/recovery ที่<strong>ไม่ผูกกับจำนวนคนปีน</strong></li>
+       <li>หากต้องเติมทุนจริง ทำเป็น <strong>rights issue ตามสัดส่วนเดิม</strong>ในราคายุติธรรม ไม่ใช่ down-round</li>
+     </ul>
+     <p style="color:var(--text3);font-size:12px;">นี่คือประมาณการ ไม่ใช่การรับประกันผลตอบแทน</p>
+   </div>`,
+
+  // 9 — Team & execution (moved up — the answer to the cold-start risk)
+  `<div class="slide-kicker">08 · Team & Execution</div>
+   <div class="slide-title">ทีม & การลงมือทำ</div>
+   <div class="slide-body">
+     <p>ในโปรเจกต์แรก ๆ ของ category คำตอบของความเสี่ยงคือทีมที่ลงมือทำ:</p>
+     <ul class="deck-list">
+       <li><strong>Founder / Operator</strong> — บริหารธุรกิจครอบครัวด้านก่อสร้าง/โครงสร้างเหล็กในหาดใหญ่ จึงก่อสร้างและคุมงานเองได้ทั้งโครงการในราคาทุน — ลดความเสี่ยง CAPEX และงานก่อสร้างโดยตรง · เป็นเจ้าของที่ดินและอาคารเอง (สร้างอาคาร THB ${fmt(m.shellTotal)} ด้วยทุนตัวเอง ไม่อยู่ในการระดมทุน แล้วให้บริษัทเช่าราคาตลาด)</li>
+       <li><strong>Operator เต็มเวลา 2 ปี</strong> — ไม่มีเงินเดือน ไม่มี fee — รายได้ทางเดียวคือเงินปันผลตามหุ้น เหมือนนักลงทุน</li>
+       <li><strong>ที่ปรึกษาด้านยิม</strong> — การออกแบบผนัง การเลือกอุปกรณ์ และ routesetting อิงจากผู้มีประสบการณ์เปิดและดำเนินยิมปีนหน้าผาเชิงพาณิชย์จริงในภูมิภาค</li>
+       <li><strong>ทีมปฏิบัติการ</strong> — พนักงานประจำ + routesetter ตามงบ OPEX ที่แสดงในโมเดล</li>
      </ul>
    </div>`,
 
-  // 10 — Use of funds
-  `<div class="slide-kicker">09 · Use of Funds</div>
+  // 10 — Structure, investor-first (condensed from the old Fair Ownership slide)
+  `<div class="slide-kicker">09 · Structure — Investor View</div>
+   <div class="slide-title">โครงสร้างหุ้น — มองจากฝั่งนักลงทุน</div>
+   <div class="slide-body">
+     <div class="num-row">
+       <div class="num-item"><div class="n accent">${(100/m.totalShares).toFixed(2)}%</div><div class="l">ต่อหุ้น · หุ้นละ THB ${fmt(RAISE.sharePrice)}</div></div>
+       <div class="num-item"><div class="n">75%</div><div class="l">นักลงทุนรวม (${RAISE.investorShares} หุ้น)</div></div>
+       <div class="num-item"><div class="n">25%</div><div class="l">Founder (${RAISE.founderShares} หุ้น)</div></div>
+     </div>
+     <p>หุ้นละ THB ${fmt(RAISE.sharePrice)} = ${(100/m.totalShares).toFixed(2)}% ของบริษัท · ลงกี่หุ้นได้สัดส่วนตามนั้น · นักลงทุนถือรวม 75% (${RAISE.investorShares} หุ้น) · Founder 25% (${RAISE.founderShares} หุ้น)</p>
+     <p>Founder ไม่ลงเงินในก้อนระดมทุน ไม่รับเงินเดือน/ค่า fee ใด ๆ รับเฉพาะปันผลตามหุ้นเท่านักลงทุน — incentive ตรงกัน</p>
+   </div>`,
+
+  // 11 — Use of funds
+  `<div class="slide-kicker">10 · Use of Funds</div>
    <div class="slide-title">เงินระดมทุนไปไหน — 3 Buckets</div>
    <div class="slide-body">
      <table class="deck-tbl">
@@ -856,8 +872,8 @@ function renderDeck(m){
      <p>เงินทุกบาทลงในสินทรัพย์ของบริษัทที่นักลงทุนถือ 75% — ไม่มีส่วนไหนไหลไปที่อาคาร (Founder จ่ายเอง) หรือค่าตอบแทน Founder</p>
    </div>`,
 
-  // 11 — Cap table
-  `<div class="slide-kicker">10 · Cap Table</div>
+  // 12 — Cap table
+  `<div class="slide-kicker">11 · Cap Table</div>
    <div class="slide-title">โครงสร้างผู้ถือหุ้น</div>
    <div class="slide-body">
      <table class="deck-tbl">
@@ -875,19 +891,22 @@ function renderDeck(m){
      </div>
    </div>`,
 
-  // 12 — Team
-  `<div class="slide-kicker">11 · Team</div>
-   <div class="slide-title">ทีม — Founder-led</div>
+  // 13 — Exit & liquidity
+  `<div class="slide-kicker">12 · Exit & Liquidity</div>
+   <div class="slide-title">ผลตอบแทน & ทางออก (Exit / Liquidity)</div>
    <div class="slide-body">
      <ul class="deck-list">
-       <li><strong>Founder / Operator</strong> — ผู้พัฒนาโครงการและเจ้าของอาคาร บริหารเต็มเวลา 2 ปีแรกโดยไม่รับค่าตอบแทน มีประสบการณ์บริหารธุรกิจครอบครัวด้านก่อสร้าง/อสังหาริมทรัพย์ในหาดใหญ่ — คุมงานก่อสร้างและต้นทุนเองได้ทั้งโครงการ</li>
-       <li><strong>ที่ปรึกษาด้านยิม</strong> — การออกแบบผนัง การเลือกอุปกรณ์ และระบบปฏิบัติการ อิงจากผู้มีประสบการณ์เปิดยิมปีนหน้าผาเชิงพาณิชย์จริงในภูมิภาค</li>
-       <li><strong>ทีมปฏิบัติการ</strong> — พนักงานประจำ + routesetter ตามงบ OPEX ที่แสดงในโมเดล</li>
+       <li><strong>เงินปันผลคือทางหลัก</strong> — เงินลงทุนส่วนใหญ่คืนผ่านปันผล (base case คืนทุน ≈ ${base.payback?base.payback.toFixed(1):'—'} ปี) หลังจากนั้นถือหุ้นรับ yield ต่อเนื่อง</li>
+       <li><strong>การขายหุ้น</strong> — โอนหุ้นได้ โดยผู้ถือหุ้นเดิม/บริษัทมีสิทธิ์ซื้อก่อน (right of first refusal) ที่สูตรราคาตกลงล่วงหน้า เช่น EBITDA multiple หรือการประเมินมูลค่าโดยอิสระ</li>
+       <li><strong>Lock-up 2–3 ปี</strong> — ช่วง ramp-up เพื่อความมั่นคงของบริษัท</li>
+       <li><strong>Tag-along / Drag-along</strong> — หากมีผู้ซื้อทั้งกิจการ ทุกหุ้นได้เงื่อนไขเดียวกัน</li>
+       <li><strong>ไม่มี forced buy-back</strong> — Founder ไม่มีภาระผูกพันต้องซื้อหุ้นคืน (ไม่มี put option)</li>
      </ul>
+     <p style="color:var(--text3);font-size:12px;">เงื่อนไขทั้งหมดจะระบุใน shareholders' agreement ที่จัดทำโดยที่ปรึกษากฎหมาย</p>
    </div>`,
 
-  // 13 — Terms & timeline
-  `<div class="slide-kicker">12 · Terms & Timeline</div>
+  // 14 — Terms & timeline
+  `<div class="slide-kicker">13 · Terms & Timeline</div>
    <div class="slide-title">เงื่อนไขและไทม์ไลน์</div>
    <div class="slide-body">
      <table class="deck-tbl">
@@ -902,8 +921,8 @@ function renderDeck(m){
      </table>
    </div>`,
 
-  // 14 — Close + assumptions
-  `<div class="slide-kicker">13 · Key Assumptions & Close</div>
+  // 15 — Close + assumptions
+  `<div class="slide-kicker">14 · Key Assumptions & Close</div>
    <div class="slide-title">สมมติฐานหลักทั้งหมด — อยู่บนโต๊ะ</div>
    <div class="slide-body">
      <ul class="deck-list">
