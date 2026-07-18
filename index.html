@@ -733,8 +733,9 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
         <div class="card-header"><span class="card-title">📝 Notes</span></div>
         <div style="padding:16px; display:flex; flex-direction:column; gap:10px;">
           <div style="padding:12px; background:var(--bg3); border-radius:7px; font-size:12px; color:var(--text2); line-height:1.7;">
-            <div>• Rent = <strong style="color:var(--accent)">THB 0</strong> during Phase 1</div>
-            <div>• Phase 2 rent: <strong id="note-rent" style="color:var(--green)">—</strong></div>
+            <div class="jv-only">• Rent = <strong style="color:var(--accent)">THB 0</strong> during Phase 1</div>
+            <div class="jv-only">• Phase 2 rent: <strong id="note-rent" style="color:var(--green)">—</strong></div>
+            <div class="solo-only">• No rent — owner-occupied building</div>
             <div>• Electricity switches with HVAC toggle</div>
             <div>• Staff THB 150,000 budget — individual breakdown TBD</div>
           </div>
@@ -1644,7 +1645,7 @@ const SETTINGS_JV = {
 const SETTINGS_SOLO = {
   daypass:'290', membership:'1300', shoe:'100', shoeRate:'95', chalk:'100', chalkRate:'70',
   harness:'50', harnessRate:'70', pbRate:'0', pbHours:'4', pbCourts:'2', pbDays:'30',
-  jvBp:'0', jvSurf:'100', jvVisits:'8', jvWalkin:'70', jvRentSqm:'100', jvSqm:'600',
+  jvBp:'0', jvSurf:'100', jvVisits:'8', jvWalkin:'70', jvRentSqm:'0', jvSqm:'600',
   hvac:true, elecHvac:'80000', elecNoHvac:'20000',
   deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
   landRai:'1', landPerRai:'30000000',
