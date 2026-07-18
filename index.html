@@ -464,7 +464,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
   padding: 24px;
 }
 #mode-overlay.hidden { display: none; }
-.mode-box { width: 100%; max-width: 860px; }
+.mode-box { width: 100%; max-width: 1100px; }
 .mode-head { text-align: center; margin-bottom: 32px; }
 .mode-logo {
   width: 44px; height: 44px; background: var(--accent); border-radius: 10px;
@@ -474,7 +474,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
 }
 .mode-title { font-family: var(--serif); font-size: 26px; color: var(--text); font-weight: 500; margin-bottom: 6px; }
 .mode-sub { font-size: 14px; color: var(--text3); }
-.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.mode-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .mode-card {
   background: var(--surface); border: 1.5px solid var(--border);
   border-radius: 14px; padding: 28px 26px; cursor: pointer;
@@ -496,7 +496,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
   margin-top: 18px; font-size: 12px; font-weight: 600; color: var(--accent);
   font-family: var(--mono); letter-spacing: 0.5px;
 }
-@media (max-width: 700px) {
+@media (max-width: 960px) {
   .mode-cards { grid-template-columns: 1fr; }
   .mode-title { font-size: 22px; }
 }
@@ -537,6 +537,18 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
         </div>
         <div class="mode-card-go">เลือกโหมดนี้ →</div>
       </div>
+      <div class="mode-card" onclick="window.location.href='raise.html'">
+        <div class="mode-card-icon">📈</div>
+        <div class="mode-card-title">ระดมทุน — Founder 25%</div>
+        <div class="mode-card-desc">Investor view — หน้าสำหรับนักลงทุน: ระดมทุนค่า fit-out, นักลงทุนถือ 75% / Founder 25% พร้อม Pitch Deck (เปิดเป็นหน้าแยก แชร์ให้นักลงทุนได้)</div>
+        <div class="mode-card-tags">
+          <span class="mode-tag">Investor 75%</span>
+          <span class="mode-tag">Founder 25%</span>
+          <span class="mode-tag">Pitch deck</span>
+          <span class="mode-tag">Shareable</span>
+        </div>
+        <div class="mode-card-go">เปิด Investor view →</div>
+      </div>
     </div>
   </div>
 </div>
@@ -551,6 +563,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
   </div>
   <div class="header-right">
     <button class="hdr-btn" id="mode-switch-btn" onclick="openModePicker()" title="เปลี่ยนรูปแบบ projection">⇄ <span id="mode-switch-label">Mode</span></button>
+    <a class="hdr-btn" href="raise.html" style="text-decoration:none;" title="หน้าสำหรับนักลงทุน (shareable)">Investor view →</a>
     <button class="hdr-btn" onclick="exportData()">⬇ Export</button>
     <label class="hdr-btn" style="cursor:pointer;">⬆ Import<input type="file" accept=".json" style="display:none" onchange="importData(event)"></label>
     <div class="pill green" id="hvac-badge"><span class="dot"></span> NO HVAC</div>
@@ -733,8 +746,9 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
         <div class="card-header"><span class="card-title">📝 Notes</span></div>
         <div style="padding:16px; display:flex; flex-direction:column; gap:10px;">
           <div style="padding:12px; background:var(--bg3); border-radius:7px; font-size:12px; color:var(--text2); line-height:1.7;">
-            <div>• Rent = <strong style="color:var(--accent)">THB 0</strong> during Phase 1</div>
-            <div>• Phase 2 rent: <strong id="note-rent" style="color:var(--green)">—</strong></div>
+            <div class="jv-only">• Rent = <strong style="color:var(--accent)">THB 0</strong> during Phase 1</div>
+            <div class="jv-only">• Phase 2 rent: <strong id="note-rent" style="color:var(--green)">—</strong></div>
+            <div class="solo-only">• No rent — owner-occupied building</div>
             <div>• Electricity switches with HVAC toggle</div>
             <div>• Staff THB 150,000 budget — individual breakdown TBD</div>
           </div>
@@ -1644,7 +1658,7 @@ const SETTINGS_JV = {
 const SETTINGS_SOLO = {
   daypass:'290', membership:'1300', shoe:'100', shoeRate:'95', chalk:'100', chalkRate:'70',
   harness:'50', harnessRate:'70', pbRate:'0', pbHours:'4', pbCourts:'2', pbDays:'30',
-  jvBp:'0', jvSurf:'100', jvVisits:'8', jvWalkin:'70', jvRentSqm:'100', jvSqm:'600',
+  jvBp:'0', jvSurf:'100', jvVisits:'8', jvWalkin:'70', jvRentSqm:'0', jvSqm:'600',
   hvac:true, elecHvac:'80000', elecNoHvac:'20000',
   deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
   landRai:'1', landPerRai:'30000000',

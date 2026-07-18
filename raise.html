@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hat Yai Bouldering Gym — Investor View</title>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wh1vpz6z89");
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #f5f0e8;
+  --bg2:       #faf7f2;
+  --bg3:       #f0ebe0;
+  --surface:   #ffffff;
+  --border:    #e2d9cc;
+  --border2:   #d4c9b8;
+  --text:      #1a1410;
+  --text2:     #5c5244;
+  --text3:     #9c8f82;
+  --accent:    #c96442;
+  --accent2:   #7b6e5d;
+  --green:     #4a7c59;
+  --blue:      #4a6b8a;
+  --orange:    #c8883a;
+  --red:       #b84040;
+  --shadow:    0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --sans:  'Source Sans 3', system-ui, sans-serif;
+  --serif: 'Lora', Georgia, serif;
+  --mono:  'JetBrains Mono', monospace;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ── HEADER ─────────────────────────────── */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-logo {
+  width: 28px; height: 28px; background: var(--accent);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 14px; color: white; font-weight: 600;
+}
+.header-title { font-family: var(--serif); font-size: 16px; color: var(--text); font-weight: 500; }
+.header-sub { font-size: 11px; color: var(--text3); }
+.header-right { display: flex; align-items: center; gap: 8px; }
+.hdr-btn {
+  padding: 6px 14px; border-radius: 7px; font-size: 12px; font-weight: 500;
+  background: var(--bg3); border: 1px solid var(--border2); color: var(--text2);
+  cursor: pointer; font-family: var(--sans); transition: all 0.12s;
+  display: inline-flex; align-items: center; gap: 4px; text-decoration: none;
+}
+.hdr-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+.hdr-btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+.hdr-btn.primary:hover { background: #b25538; }
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 20px;
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: 11px; color: var(--text2); font-family: var(--mono);
+}
+
+/* ── LAYOUT ─────────────────────────────── */
+.wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 80px; }
+.page-title { font-family: var(--serif); font-size: 24px; color: var(--text); margin-bottom: 4px; font-weight: 500; }
+.page-sub { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
+.sec-label {
+  font-size: 11px; font-family: var(--mono); color: var(--text3);
+  letter-spacing: 2px; text-transform: uppercase; margin: 36px 0 12px;
+}
+
+/* ── CARDS / KPI ─────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.card-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg2);
+}
+.card-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.card-total {
+  font-family: var(--mono); font-size: 13px;
+  color: var(--accent); font-weight: 500;
+  background: #fdf0eb; border: 1px solid #f2cfc0;
+  padding: 3px 10px; border-radius: 5px;
+}
+.card-body { padding: 20px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+.kpi-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.kpi-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.5px; }
+.kpi-value { font-family: var(--serif); font-size: 22px; color: var(--text); font-weight: 500; line-height: 1.2; }
+.kpi-value.accent { color: var(--accent); }
+.kpi-value.green  { color: var(--green); }
+.kpi-value.blue   { color: var(--blue); }
+.kpi-value.orange { color: var(--orange); }
+.kpi-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+/* ── FIELDS ──────────────────────────────── */
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field-label { font-size: 11px; color: var(--text2); font-weight: 500; letter-spacing: 0.3px; }
+.field-input {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 7px;
+  padding: 8px 12px; color: var(--text); font-family: var(--mono); font-size: 13px;
+  outline: none; transition: border-color 0.12s, box-shadow 0.12s; width: 100%;
+}
+.field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,100,66,0.08); }
+.field-hint { font-size: 11px; color: var(--text3); }
+.full { grid-column: 1/-1; }
+
+/* ── TABLES ──────────────────────────────── */
+.ptbl-wrap { overflow-x: auto; }
+.ptbl { width: 100%; border-collapse: collapse; }
+.ptbl thead th {
+  padding: 9px 12px; font-size: 10px; font-family: var(--mono);
+  letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3);
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  text-align: right; font-weight: 500; white-space: nowrap;
+}
+.ptbl thead th:first-child { text-align: left; }
+.ptbl tbody tr { border-bottom: 1px solid rgba(226,217,204,0.5); }
+.ptbl tbody tr:last-child { border-bottom: none; }
+.ptbl tbody tr:hover { background: #fdf9f4; }
+.ptbl td {
+  padding: 9px 12px; text-align: right;
+  font-family: var(--mono); font-size: 12px; color: var(--text2);
+  white-space: nowrap;
+}
+.ptbl td:first-child { text-align: left; font-family: var(--sans); font-weight: 600; color: var(--text); font-size: 12px; }
+.ptbl .pos { color: var(--green); }
+.ptbl .neg { color: var(--red); }
+.ptbl .neutral { color: var(--text3); }
+.ptbl .warn { color: var(--orange); }
+.ptbl .total-row { background: var(--bg2); border-top: 2px solid var(--border); }
+.ptbl .total-row td { font-weight: 700; }
+.note-box {
+  padding: 12px 16px; background: var(--bg3); border-radius: 7px;
+  font-size: 12px; color: var(--text2); line-height: 1.7;
+}
+.sc-pill {
+  padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+  cursor: pointer; font-family: var(--sans); transition: all 0.12s;
+}
+.sc-pill:hover { border-color: var(--accent); color: var(--accent); }
+.sc-pill.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* ── VIEW SWITCH ─────────────────────────── */
+#view-deck { display: none; }
+body.deck-mode #view-projection { display: none; }
+body.deck-mode #view-deck { display: block; }
+
+/* ── DECK ────────────────────────────────── */
+.deck-slide {
+  display: none;
+  min-height: calc(100vh - 130px);
+  padding: 60px 24px 40px;
+  align-items: center; justify-content: center;
+}
+.deck-slide.active { display: flex; }
+.slide-inner { width: 100%; max-width: 880px; }
+.slide-kicker {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 18px;
+}
+.slide-title { font-family: var(--serif); font-size: 36px; font-weight: 500; color: var(--text); line-height: 1.25; margin-bottom: 20px; }
+.slide-body { font-size: 15px; color: var(--text2); line-height: 1.9; }
+.slide-body p { margin-bottom: 14px; }
+.slide-body strong { color: var(--text); }
+.big-num { font-family: var(--serif); font-size: 56px; color: var(--accent); line-height: 1.1; }
+.num-row { display: flex; gap: 40px; flex-wrap: wrap; margin: 28px 0; }
+.num-item .n { font-family: var(--serif); font-size: 30px; color: var(--text); }
+.num-item .n.accent { color: var(--accent); }
+.num-item .n.green { color: var(--green); }
+.num-item .l { font-size: 11px; font-family: var(--mono); letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-top: 4px; }
+.deck-tbl { width: 100%; border-collapse: collapse; margin: 20px 0; }
+.deck-tbl th {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text3); text-align: right; padding: 10px 12px; border-bottom: 1px solid var(--border2); font-weight: 500;
+}
+.deck-tbl th:first-child { text-align: left; }
+.deck-tbl td { padding: 12px; text-align: right; font-family: var(--mono); font-size: 14px; color: var(--text2); border-bottom: 1px solid var(--border); }
+.deck-tbl td:first-child { text-align: left; font-family: var(--sans); font-weight: 600; color: var(--text); }
+.deck-list { list-style: none; margin: 16px 0; }
+.deck-list li { padding: 10px 0 10px 26px; position: relative; border-bottom: 1px solid rgba(226,217,204,0.5); font-size: 14px; color: var(--text2); line-height: 1.7; }
+.deck-list li:before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+.deck-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 12px 24px; display: none; align-items: center; justify-content: space-between;
+  z-index: 100;
+}
+body.deck-mode .deck-nav { display: flex; }
+.deck-dots { display: flex; gap: 6px; }
+.deck-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border2); cursor: pointer; transition: all 0.15s; }
+.deck-dot.active { background: var(--accent); transform: scale(1.3); }
+.deck-counter { font-family: var(--mono); font-size: 11px; color: var(--text3); width: 70px; }
+.deck-btns { display: flex; gap: 8px; }
+
+/* ── MOBILE ──────────────────────────────── */
+@media (max-width: 768px) {
+  header { padding: 0 14px; }
+  .header-sub { display: none; }
+  .pill { display: none; }
+  .wrap { padding: 20px 14px 80px; }
+  .grid2, .grid4 { grid-template-columns: 1fr; }
+  .settings-grid { grid-template-columns: 1fr 1fr; }
+  .slide-title { font-size: 26px; }
+  .big-num { font-size: 40px; }
+  .num-row { gap: 22px; }
+  .deck-slide { padding: 30px 14px 40px; }
+  .deck-dots { display: none; }
+}
+
+/* ── PRINT ───────────────────────────────── */
+@media print {
+  header, .deck-nav { display: none !important; }
+  body { background: white; }
+  body.deck-mode .deck-slide { display: flex !important; page-break-after: always; min-height: auto; padding: 40px 20px; }
+  .card, .kpi-card { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="header-logo">H</div>
+    <div>
+      <div class="header-title">Hat Yai Bouldering Gym</div>
+      <div class="header-sub">Investor View — ระดมทุน Fit-out · Founder 25% / Investors 75%</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="pill">THB · 2026</div>
+    <button class="hdr-btn" onclick="window.print()">🖨 Print / PDF</button>
+    <button class="hdr-btn primary" id="view-toggle-btn" onclick="toggleDeck()">อ่าน Pitch Deck / Investor Brief</button>
+  </div>
+</header>
+
+<!-- ════════════════ PROJECTION VIEW ════════════════ -->
+<div id="view-projection">
+<div class="wrap">
+
+  <div class="page-title">Investor Projection — โครงการยิมปีนหน้าผา (Bouldering) แห่งแรกของภาคใต้</div>
+  <div class="page-sub">ระดมทุนสำหรับ fit-out ยิมทั้งหมด · Founder สร้างและเป็นเจ้าของอาคารเอง (ไม่อยู่ในการระดมทุน) แล้วให้ SPV เช่าในราคาตลาด · Founder ถือหุ้น 25% จากการ sourcing + บริหารเต็มเวลาโดยไม่รับเงินเดือน · นักลงทุนถือ 75%</div>
+
+  <div class="grid4" id="kpi-head"></div>
+
+  <!-- STRUCTURE -->
+  <div class="sec-label">Structure — โครงสร้างดีล</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🏗 อาคาร — Founder ลงทุนเอง (ไม่อยู่ในการระดมทุน)</span>
+        <span class="card-total" id="t-warehouse">—</span>
+      </div>
+      <div class="ptbl-wrap"><table class="ptbl" id="tbl-warehouse"></table></div>
+      <div style="padding:12px 16px;border-top:1px solid var(--border);">
+        <div class="note-box">Founder สร้างอาคารเปล่า (shell) ด้วยทุนตัวเองทั้งหมด แล้วให้บริษัทยิม (SPV) เช่าในราคาตลาด <strong id="n-rent-formula">—</strong> — นี่คือเหตุผลที่โมเดลมีค่าเช่า และเป็นเหตุผลหนึ่งของสัดส่วน Founder 25%</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">💼 การระดมทุน — นักลงทุนลงทุนค่า Fit-out</span>
+        <span class="card-total" id="t-raise">—</span>
+      </div>
+      <div class="ptbl-wrap"><table class="ptbl" id="tbl-buckets"></table></div>
+      <div style="padding:12px 16px;border-top:1px solid var(--border);">
+        <div class="note-box" id="n-raise-round">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USE OF FUNDS DETAIL -->
+  <div class="card">
+    <div class="card-header"><span class="card-title">🧾 Use of Funds — เงินระดมทุนซื้ออะไรบ้าง</span></div>
+    <div class="card-body">
+      <div class="grid2" style="grid-template-columns:1fr 1fr 1fr;" id="uof-detail"></div>
+    </div>
+  </div>
+
+  <!-- REVENUE -->
+  <div class="sec-label">Revenue Model — รายได้ต่อการเข้าใช้ 1 ครั้ง (แก้ไขได้)</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">🏷 Revenue per Visit</span>
+      <span class="card-total" id="t-rpv">—</span>
+    </div>
+    <div class="card-body">
+      <div class="settings-grid">
+        <div class="field">
+          <span class="field-label">Day Pass (THB)</span>
+          <input class="field-input" id="in-daypass" type="number" value="290" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <span class="field-label">Operating days / year</span>
+          <input class="field-input" id="in-days" type="number" value="350" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <span class="field-label">&nbsp;</span>
+          <div class="note-box" style="padding:8px 12px;">rev/visit = day pass + Σ(gear price × attach rate)</div>
+        </div>
+        <div class="field">
+          <span class="field-label">Shoe rental (THB)</span>
+          <input class="field-input" id="in-shoe" type="number" value="100" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <span class="field-label">Chalk rental (THB)</span>
+          <input class="field-input" id="in-chalk" type="number" value="100" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <span class="field-label">Harness rental (THB)</span>
+          <input class="field-input" id="in-harness" type="number" value="50" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <span class="field-label">Shoe attach rate (%)</span>
+          <input class="field-input" id="in-shoe-rate" type="number" value="80" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <span class="field-label">Chalk attach rate (%)</span>
+          <input class="field-input" id="in-chalk-rate" type="number" value="50" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <span class="field-label">Harness attach rate (%)</span>
+          <input class="field-input" id="in-harness-rate" type="number" value="50" oninput="recalcAll()">
+        </div>
+        <div class="full">
+          <div style="padding:14px;background:var(--bg3);border-radius:7px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--text2);">Blended revenue / visit (คำนวณอัตโนมัติ)</span>
+            <span id="rpv-inline" style="font-family:var(--mono);font-size:16px;color:var(--accent);font-weight:600;">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPEX -->
+  <div class="sec-label">Operating Costs — ค่าใช้จ่ายดำเนินงาน</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">💰 Operating OPEX / month</span>
+        <span class="card-total" id="t-opex-mo">—</span>
+      </div>
+      <div class="ptbl-wrap"><table class="ptbl" id="tbl-opex"></table></div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">🏠 Rent — ค่าเช่าอาคาร (จ่ายให้ Founder ราคาตลาด)</span></div>
+        <div class="ptbl-wrap"><table class="ptbl" id="tbl-rent"></table></div>
+        <div style="padding:12px 16px;border-top:1px solid var(--border);">
+          <div class="note-box">เริ่มเดือนที่ 1 · ปรับขึ้น <strong>+10% ทุก 3 ปี</strong> ตามสัญญาเช่ามาตรฐาน</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Σ Year-1 Total OPEX</span></div>
+        <div class="card-body">
+          <div class="ptbl-wrap"><table class="ptbl" id="tbl-opex-y1"></table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENARIOS -->
+  <div class="sec-label">Scenarios — ผลตอบแทนตามจำนวนผู้เข้าใช้ต่อวัน</div>
+  <div class="grid4" id="kpi-scen"></div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">📈 Scenario Table (Year-1, ค่าเช่าปีที่ 1)</span>
+      <span class="card-total" id="t-breakeven">—</span>
+    </div>
+    <div class="ptbl-wrap"><table class="ptbl" id="tbl-scenarios"></table></div>
+    <div style="padding:12px 16px;border-top:1px solid var(--border);">
+      <div class="note-box" id="n-scen">—</div>
+    </div>
+  </div>
+
+  <!-- 10-YEAR CASHFLOW -->
+  <div class="sec-label">10-Year Cash Flow — กระแสเงินสดและการคืนทุนของนักลงทุน</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">📅 รายปี — รวมค่าเช่าที่ปรับขึ้น และเงินสดสะสมฝั่งนักลงทุน (75%)</span>
+      <div style="display:flex;gap:6px;" id="cf-scenario-pills"></div>
+    </div>
+    <div class="ptbl-wrap"><table class="ptbl" id="tbl-cashflow"></table></div>
+    <div style="padding:12px 16px;border-top:1px solid var(--border);">
+      <div class="note-box">Investor payback = จุดที่ <strong>เงินสดสะสมฝั่งนักลงทุน (75% ของ EBITDA)</strong> ครอบคลุมเงินระดมทุนทั้งก้อน — คิดหลังหักส่วน Founder 25% แล้ว และใช้ตารางค่าเช่าที่ปรับขึ้นทุก 3 ปี (interpolate ภายในปีที่ข้ามเส้น)</div>
+    </div>
+  </div>
+
+  <!-- CAP TABLE -->
+  <div class="sec-label">Cap Table — โครงสร้างผู้ถือหุ้น</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">🧮 Cap Table</span></div>
+      <div class="ptbl-wrap"><table class="ptbl" id="tbl-captable"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">🤝 ทำไม Founder ถือ 25%</span></div>
+      <div class="card-body">
+        <div class="note-box" style="background:var(--bg2);">
+          Founder ได้หุ้น <strong>25%</strong> โดยไม่ลงเงินในก้อนระดมทุน — แลกกับ:
+          <div style="margin-top:8px;line-height:2;">
+            • ลงทุนสร้างอาคารเองทั้งหมด <strong id="n-shell">—</strong> (ไม่อยู่ในการระดมทุน) แล้วปล่อยเช่าในราคาตลาด<br>
+            • Sourcing อุปกรณ์และการก่อสร้างทั้งหมด<br>
+            • บริหารเต็มเวลา 2 ปี — <strong>ไม่มีเงินเดือน ไม่มี management fee ไม่มี ops fee</strong><br>
+            • ผลตอบแทนต่อหุ้นของ Founder เท่ากับของนักลงทุนทุกประการ
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box" style="margin-top:24px;">
+    ⚠️ เอกสารนี้เป็นประมาณการทางการเงิน (financial projection) จัดทำจากสมมติฐานที่ระบุไว้ในหน้านี้ ไม่ใช่คำมั่นเรื่องผลตอบแทน ตัวเลขจริงขึ้นกับผลประกอบการ
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════ PITCH DECK VIEW ════════════════ -->
+<div id="view-deck">
+  <div id="deck-slides"></div>
+  <div class="deck-nav">
+    <span class="deck-counter" id="deck-counter">1 / 14</span>
+    <div class="deck-dots" id="deck-dots"></div>
+    <div class="deck-btns">
+      <button class="hdr-btn" onclick="deckPrev()">← ก่อนหน้า</button>
+      <button class="hdr-btn primary" onclick="deckNext()">ถัดไป →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ RAISE DATASET (investor-safe — no internal/JV/partner data) ══
+const RAISE = {
+  sharePrice: 100000,
+  investorShares: 84,
+  founderShares: 28,
+  founderPct: 0.25,
+  raise: 8400000,                 // 84 shares × 100,000 (rounded up from bucket total)
+  horizonYears: 12,
+
+  // Founder-funded building shell — context only, NOT part of the raise
+  warehouse: [
+    { name: 'งานก่อสร้างอาคาร (400 sqm × 6,000)', amt: 2400000 },
+    { name: 'ระบบไฟฟ้า (15% ของงานอาคาร)',        amt: 540000 },
+    { name: 'งานประปา (rough-in)',                amt: 100000 },
+    { name: 'ชั้นลอย + บันได (175 × 3,000)',       amt: 525000 },
+  ],
+
+  // Investor-funded fit-out — bucket totals only (no supplier / unit pricing)
+  buckets: [
+    { key: 'wall', icon: '🧗', label: 'Wall — ผนังปีน', amt: 2128120,
+      items: ['โครงสร้างผนังปีนและงานเหล็ก', 'แผ่นผนัง climbing-grade', 'งานออกแบบผนังและ route layout', 'ค่าที่ปรึกษาผู้เชี่ยวชาญการสร้างผนังปีน', 'ค่าแรงติดตั้ง'] },
+    { key: 'equipment', icon: '🎯', label: 'Equipment — อุปกรณ์', amt: 3727028,
+      items: ['เบาะรองรับแรงกระแทกมาตรฐานสากล', 'Climbing holds, macros และ volumes', 'Auto-belay สำหรับโซนปีนสูง', 'รองเท้าปีน/อุปกรณ์ให้เช่า (rental stock)', 'เครื่องมือ routesetting', 'อุปกรณ์ฟิตเนสเสริม'] },
+    { key: 'fitout', icon: '🏠', label: 'Fit-out — ตกแต่งภายใน', amt: 2495000,
+      items: ['ระบบปรับอากาศและระบายอากาศ', 'ห้องน้ำ–ห้องอาบน้ำ ชาย/หญิง', 'Reception, counter และ office', 'เฟอร์นิเจอร์ กล้องวงจรปิด ระบบเสียง lockers', 'งบการตลาดเปิดตัว', 'เงินทุนหมุนเวียนช่วงเริ่มต้น'] },
+  ],
+
+  // Operating OPEX (monthly) — excludes rent
+  opexMonthly: [
+    { name: 'พนักงาน (Staff)',                amt: 80000 },
+    { name: 'Routesetting',                   amt: 30000 },
+    { name: 'ค่าไฟฟ้า (Electricity)',          amt: 80000 },
+    { name: 'ค่าน้ำ (Water)',                  amt: 2400 },
+    { name: 'Gym software',                   amt: 5000 },
+    { name: 'บัญชี (Accounting)',              amt: 2400 },
+    { name: 'อินเทอร์เน็ต (Internet)',          amt: 2400 },
+    { name: 'การตลาด (Marketing)',             amt: 7000 },
+    { name: 'Holds ใหม่ (New holds)',          amt: 2000 },
+    { name: 'บำรุงรักษา Auto-belay',           amt: 2000 },
+    { name: 'เบ็ดเตล็ด (Misc)',                amt: 4000 },
+    { name: 'เปลี่ยนรองเท้าเช่า (Shoe replacement)', amt: 2500 },
+  ],
+
+  // Rent: market rate paid by the SPV to the founder-owned building
+  rent: { baseMo: 48000, sqm: 400, ratePerSqm: 120, escalatePct: 10, everyYears: 3 },
+};
+
+const DEFAULT_SCENARIOS = [
+  { name: 'Conservative', visitors: 25 },
+  { name: 'Base',         visitors: 40 },
+  { name: 'Good',         visitors: 55 },
+  { name: 'Strong',       visitors: 70 },
+];
+let SCENARIOS = JSON.parse(JSON.stringify(DEFAULT_SCENARIOS));
+let cfScenarioIdx = 1;   // cash-flow table default = Base
+let deckIdx = 0;
+
+// ══ FORMAT (same as index.html) ══
+const fmt = n => isNaN(n)||n===null ? '—' : Math.round(n).toLocaleString('en-US');
+const fmtPct = n => isNaN(n)||n===null ? '—' : (n*100).toFixed(1)+'%';
+const num = id => parseFloat(document.getElementById(id).value)||0;
+
+// ══ SINGLE SOURCE OF TRUTH — compute once, render everywhere ══
+function computeModel(){
+  const daypass = num('in-daypass');
+  const days    = num('in-days');
+  const gear = [
+    { label: 'Shoe rental',    price: num('in-shoe'),    attach: num('in-shoe-rate') },
+    { label: 'Chalk rental',   price: num('in-chalk'),   attach: num('in-chalk-rate') },
+    { label: 'Harness rental', price: num('in-harness'), attach: num('in-harness-rate') },
+  ];
+  const rpv = daypass + gear.reduce((s,g)=>s + g.price*g.attach/100, 0);
+
+  const opexMo   = RAISE.opexMonthly.reduce((s,r)=>s+r.amt,0);            // 219,700
+  const opexAnn  = opexMo*12;                                             // 2,636,400
+  const rentMoY  = y => RAISE.rent.baseMo * Math.pow(1+RAISE.rent.escalatePct/100, Math.floor((y-1)/RAISE.rent.everyYears));
+  const opexY    = y => opexAnn + rentMoY(y)*12;
+
+  const totalShares = RAISE.investorShares + RAISE.founderShares;         // 112
+  const postMoney   = totalShares * RAISE.sharePrice;                     // 11,200,000
+  const bucketTotal = RAISE.buckets.reduce((s,b)=>s+b.amt,0);             // 8,350,148
+  const shellTotal  = RAISE.warehouse.reduce((s,r)=>s+r.amt,0);           // 3,565,000
+
+  const scenarios = SCENARIOS.map(sc => {
+    const revenue = sc.visitors * rpv * days;                             // flat across years
+    const years = []; let cum = 0; let payback = null;
+    for (let y=1; y<=RAISE.horizonYears; y++){
+      const ebitda = revenue - opexY(y);
+      const inv = ebitda * (1-RAISE.founderPct);
+      const fdr = ebitda * RAISE.founderPct;
+      const prev = cum;
+      cum += inv;
+      if (payback===null && inv>0 && cum >= RAISE.raise)
+        payback = (y-1) + (RAISE.raise - prev)/inv;                       // interpolate within crossover year
+      years.push({ y, rentMo: rentMoY(y), opex: opexY(y), revenue, ebitda, inv, fdr, cum });
+    }
+    const e1 = years[0].ebitda;
+    return { ...sc, revenue, years, ebitda1: e1, payback,
+             yield1: e1/postMoney, investor1: e1*(1-RAISE.founderPct), founder1: e1*RAISE.founderPct };
+  });
+
+  const breakEven = opexY(1) / (rpv*days);
+  return { daypass, days, gear, rpv, opexMo, opexAnn, opexY, rentMoY,
+           totalShares, postMoney, bucketTotal, shellTotal, scenarios, breakEven };
+}
+
+const pbText = p => p===null ? '> 10 ปี (not viable)' : '≈ '+p.toFixed(1)+' ปี';
+const pbCls  = p => p===null ? 'neg' : p<2 ? 'pos' : p<5 ? 'warn' : 'neutral';
+
+// ══ RENDER: PROJECTION VIEW ══
+function renderProjection(m){
+  // Headline KPIs
+  const base = m.scenarios.find(s=>s.name==='Base') || m.scenarios[1];
+  document.getElementById('kpi-head').innerHTML = `
+    <div class="kpi-card"><div class="kpi-label">การระดมทุน (Raise)</div><div class="kpi-value accent">THB ${fmt(RAISE.raise)}</div><div class="kpi-sub">${RAISE.investorShares} หุ้น × ${fmt(RAISE.sharePrice)} · 75%</div></div>
+    <div class="kpi-card"><div class="kpi-label">Post-money Valuation</div><div class="kpi-value">THB ${fmt(m.postMoney)}</div><div class="kpi-sub">${m.totalShares} หุ้นรวม · Founder 25% = THB ${fmt(RAISE.founderShares*RAISE.sharePrice)}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Base Case Payback (นักลงทุน)</div><div class="kpi-value green">${base.payback?base.payback.toFixed(1)+' ปี':'—'}</div><div class="kpi-sub">${base.visitors} คน/วัน · หลังหักส่วน Founder 25%</div></div>
+    <div class="kpi-card"><div class="kpi-label">Break-even</div><div class="kpi-value blue">≈ ${Math.ceil(m.breakEven)} คน/วัน</div><div class="kpi-sub">rev/visit THB ${fmt(m.rpv)} · ${m.days} วัน/ปี</div></div>`;
+
+  // Warehouse (context)
+  document.getElementById('t-warehouse').textContent = 'THB '+fmt(m.shellTotal);
+  document.getElementById('tbl-warehouse').innerHTML =
+    `<thead><tr><th>รายการ (Founder จ่ายเอง)</th><th>THB</th></tr></thead><tbody>` +
+    RAISE.warehouse.map(r=>`<tr><td>${r.name}</td><td>${fmt(r.amt)}</td></tr>`).join('') +
+    `<tr class="total-row"><td>รวมอาคาร (ไม่อยู่ในการระดมทุน)</td><td>${fmt(m.shellTotal)}</td></tr></tbody>`;
+  document.getElementById('n-rent-formula').textContent =
+    `THB ${fmt(RAISE.rent.baseMo)}/เดือน (${RAISE.rent.sqm} sqm × ${RAISE.rent.ratePerSqm})`;
+
+  // Raise buckets
+  document.getElementById('t-raise').textContent = 'THB '+fmt(RAISE.raise);
+  document.getElementById('tbl-buckets').innerHTML =
+    `<thead><tr><th>Bucket</th><th>THB</th><th>% of raise</th></tr></thead><tbody>` +
+    RAISE.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.amt)}</td><td class="neutral">${(b.amt/RAISE.raise*100).toFixed(1)}%</td></tr>`).join('') +
+    `<tr><td style="color:var(--text3);font-weight:400;">รวมตามรายการ</td><td class="neutral">${fmt(m.bucketTotal)}</td><td></td></tr>
+     <tr class="total-row"><td>ยอดระดมทุน (ปัดขึ้น)</td><td class="pos">${fmt(RAISE.raise)}</td><td>100%</td></tr></tbody>`;
+  document.getElementById('n-raise-round').innerHTML =
+    `ยอดตามรายการ THB ${fmt(m.bucketTotal)} ปัดขึ้นเป็น <strong>THB ${fmt(RAISE.raise)}</strong> = ${RAISE.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)} — ส่วนต่าง THB ${fmt(RAISE.raise-m.bucketTotal)} เป็นงบสำรอง (contingency)`;
+
+  // Use of funds detail
+  document.getElementById('uof-detail').innerHTML = RAISE.buckets.map(b=>`
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+        <span style="font-size:13px;font-weight:600;">${b.icon} ${b.label}</span>
+        <span style="font-family:var(--mono);color:var(--accent);font-weight:600;">${fmt(b.amt)}</span>
+      </div>
+      <div style="font-size:12px;color:var(--text3);line-height:1.9;">${b.items.map(i=>'• '+i).join('<br>')}</div>
+    </div>`).join('');
+
+  // Revenue
+  document.getElementById('t-rpv').textContent = 'THB '+fmt(m.rpv)+' / visit';
+  document.getElementById('rpv-inline').textContent =
+    `THB ${fmt(m.daypass)} + ${m.gear.map(g=>fmt(g.price*g.attach/100)).join(' + ')} = THB ${fmt(m.rpv)}`;
+
+  // OPEX
+  document.getElementById('t-opex-mo').textContent = 'THB '+fmt(m.opexMo)+' /mo';
+  document.getElementById('tbl-opex').innerHTML =
+    `<thead><tr><th>รายการ</th><th>THB / เดือน</th></tr></thead><tbody>` +
+    RAISE.opexMonthly.map(r=>`<tr><td>${r.name}</td><td>${fmt(r.amt)}</td></tr>`).join('') +
+    `<tr class="total-row"><td>รวม Operating OPEX</td><td>${fmt(m.opexMo)} /mo · ${fmt(m.opexAnn)} /yr</td></tr></tbody>`;
+
+  // Rent schedule
+  const bands = [[1,3],[4,6],[7,9],[10,12]];
+  document.getElementById('tbl-rent').innerHTML =
+    `<thead><tr><th>ปี</th><th>ค่าเช่า / เดือน</th><th>ค่าเช่า / ปี</th></tr></thead><tbody>` +
+    bands.map(([a,b])=>`<tr><td>ปีที่ ${a}–${b}</td><td>${fmt(m.rentMoY(a))}</td><td>${fmt(m.rentMoY(a)*12)}</td></tr>`).join('') +
+    `</tbody>`;
+
+  // Year-1 OPEX total
+  document.getElementById('tbl-opex-y1').innerHTML = `<tbody>
+    <tr><td>Operating OPEX (ปี 1)</td><td>${fmt(m.opexAnn)}</td></tr>
+    <tr><td>Rent (ปี 1)</td><td>${fmt(m.rentMoY(1)*12)}</td></tr>
+    <tr class="total-row"><td>Total OPEX ปีที่ 1</td><td class="warn">${fmt(m.opexY(1))}</td></tr></tbody>`;
+
+  // Scenario KPI cards
+  document.getElementById('kpi-scen').innerHTML = m.scenarios.map(s=>`
+    <div class="kpi-card">
+      <div class="kpi-label">${s.name} — ${s.visitors} คน/วัน</div>
+      <div class="kpi-value ${pbCls(s.payback)==='neg'?'orange':'green'}" style="font-size:19px;">${pbText(s.payback)}</div>
+      <div class="kpi-sub">EBITDA ปี 1: THB ${fmt(s.ebitda1)} · yield/หุ้น ${fmtPct(s.yield1)}</div>
+    </div>`).join('');
+
+  // Scenario table (editable visitors)
+  document.getElementById('t-breakeven').textContent = 'Break-even ≈ '+Math.ceil(m.breakEven)+' คน/วัน';
+  document.getElementById('tbl-scenarios').innerHTML =
+    `<thead><tr><th>Scenario</th><th>คน/วัน</th><th>รายได้ / ปี</th><th>EBITDA ปี 1</th>
+      <th>นักลงทุน 75% / ปี</th><th>Founder 25% / ปี</th><th>Yield / หุ้น (ปี 1)</th><th>Investor Payback</th></tr></thead><tbody>` +
+    m.scenarios.map((s,i)=>`<tr>
+      <td>${s.name}</td>
+      <td><input class="field-input" data-sc-idx="${i}" style="width:64px;padding:4px 8px;text-align:right;" type="number" value="${SCENARIOS[i].visitors}"
+        oninput="SCENARIOS[${i}].visitors=parseInt(this.value)||0;recalcAll()"></td>
+      <td>${fmt(s.revenue)}</td>
+      <td class="${s.ebitda1>=0?'pos':'neg'}">${fmt(s.ebitda1)}</td>
+      <td>${fmt(s.investor1)}</td>
+      <td>${fmt(s.founder1)}</td>
+      <td>${fmtPct(s.yield1)}</td>
+      <td class="${pbCls(s.payback)}">${pbText(s.payback)}</td></tr>`).join('') +
+    `</tbody>`;
+  document.getElementById('n-scen').innerHTML =
+    `Annual revenue = คน/วัน × rev/visit (THB ${fmt(m.rpv)}) × ${m.days} วัน · EBITDA = revenue − OPEX (OPEX ขยับตามค่าเช่าทุก 3 ปี) · Yield/หุ้น = EBITDA ÷ ${m.totalShares} หุ้น ÷ THB ${fmt(RAISE.sharePrice)} — เท่ากันทุกหุ้นทั้ง Founder และนักลงทุน · Break-even ≈ ${Math.ceil(m.breakEven)} คน/วัน`;
+
+  // Cash-flow scenario pills
+  document.getElementById('cf-scenario-pills').innerHTML = m.scenarios.map((s,i)=>
+    `<button class="sc-pill ${i===cfScenarioIdx?'active':''}" onclick="cfScenarioIdx=${i};recalcAll()">${s.name} ${s.visitors}</button>`).join('');
+
+  // Cash-flow table (first 10 years shown)
+  const sc = m.scenarios[cfScenarioIdx] || m.scenarios[0];
+  let crossed = false;
+  document.getElementById('tbl-cashflow').innerHTML =
+    `<thead><tr><th>ปี</th><th>ค่าเช่า/เดือน</th><th>OPEX รวม</th><th>รายได้</th><th>EBITDA</th>
+      <th>นักลงทุน 75%</th><th>สะสมนักลงทุน</th><th>% ของเงินระดมทุน</th><th>Founder 25%</th></tr></thead><tbody>` +
+    sc.years.slice(0,10).map(r=>{
+      const isCross = !crossed && r.cum >= RAISE.raise && r.inv>0;
+      if (isCross) crossed = true;
+      return `<tr ${isCross?'style="background:#eef5f0;"':''}>
+        <td>ปีที่ ${r.y}${isCross?' ✓ คืนทุน':''}</td>
+        <td>${fmt(r.rentMo)}</td>
+        <td>${fmt(r.opex)}</td>
+        <td>${fmt(r.revenue)}</td>
+        <td class="${r.ebitda>=0?'pos':'neg'}">${fmt(r.ebitda)}</td>
+        <td>${fmt(r.inv)}</td>
+        <td class="${r.cum>=RAISE.raise?'pos':'neutral'}">${fmt(r.cum)}</td>
+        <td class="${r.cum>=RAISE.raise?'pos':'neutral'}">${Math.min(999,(r.cum/RAISE.raise*100)).toFixed(0)}%</td>
+        <td>${fmt(r.fdr)}</td></tr>`;
+    }).join('') +
+    `<tr class="be-row"><td colspan="9" style="text-align:left;font-family:var(--sans);font-weight:400;color:var(--text3);font-style:italic;">
+      ${sc.name} (${sc.visitors} คน/วัน) — Investor payback: <strong style="color:${sc.payback?'var(--green)':'var(--red)'};">${pbText(sc.payback)}</strong> (interpolated)</td></tr></tbody>`;
+
+  // Cap table
+  document.getElementById('tbl-captable').innerHTML =
+    `<thead><tr><th>ผู้ถือหุ้น</th><th>หุ้น</th><th>%</th><th>มูลค่า (THB)</th><th style="text-align:left;">ที่มา</th></tr></thead><tbody>
+    <tr><td>นักลงทุน (Investors)</td><td>${RAISE.investorShares}</td><td>75%</td><td>${fmt(RAISE.investorShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">เงินสด — ลงทุนค่า fit-out ทั้งหมด</td></tr>
+    <tr><td>Founder</td><td>${RAISE.founderShares}</td><td>25%</td><td>${fmt(RAISE.founderShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">Sourcing + บริหาร 2 ปีไม่มีเงินเดือน/ค่า fee</td></tr>
+    <tr class="total-row"><td>รวม (post-money)</td><td>${m.totalShares}</td><td>100%</td><td class="pos">${fmt(m.postMoney)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นละ THB ${fmt(RAISE.sharePrice)}</td></tr></tbody>`;
+  document.getElementById('n-shell').textContent = 'THB '+fmt(m.shellTotal);
+}
+
+// ══ RENDER: PITCH DECK (same computed model — numbers can never drift) ══
+function renderDeck(m){
+  const base = m.scenarios.find(s=>s.name==='Base') || m.scenarios[1];
+  const cons = m.scenarios[0], good = m.scenarios[2], strong = m.scenarios[3];
+  const scRow = s => `<tr><td>${s.name} — ${s.visitors} คน/วัน</td><td>${fmt(s.ebitda1)}</td><td>${fmt(s.investor1)}</td><td class="${s.payback?'':'neg'}" style="color:${s.payback?'var(--green)':'var(--red)'};font-weight:600;">${pbText(s.payback)}</td></tr>`;
+
+  const slides = [
+
+  // 1 — Cover
+  `<div class="slide-kicker">Investor Brief · Confidential</div>
+   <div class="slide-title" style="font-size:46px;">Hat Yai<br>Bouldering Gym</div>
+   <div class="slide-body">
+     <p>ยิมปีนหน้าผา (bouldering) ในร่มแห่งแรกของภาคใต้ — หาดใหญ่ สงขลา</p>
+     <div class="num-row">
+       <div class="num-item"><div class="n accent">THB ${fmt(RAISE.raise)}</div><div class="l">Raise — Fit-out</div></div>
+       <div class="num-item"><div class="n">75% / 25%</div><div class="l">Investors / Founder</div></div>
+       <div class="num-item"><div class="n green">${base.payback?base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Base-case Payback</div></div>
+     </div>
+     <p style="color:var(--text3);font-size:12px;">เอกสารประกอบการพิจารณาลงทุน · 2026 · อ่านต่อด้วยปุ่ม "ถัดไป" หรือลูกศร →</p>
+   </div>`,
+
+  // 2 — Offer summary
+  `<div class="slide-kicker">01 · The Offer</div>
+   <div class="slide-title">ข้อเสนอการลงทุน</div>
+   <div class="slide-body">
+     <p>ระดมทุน <strong>THB ${fmt(RAISE.raise)}</strong> (${RAISE.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)}) เพื่อลงทุน <strong>fit-out ยิมทั้งหมด</strong> — ผนังปีน อุปกรณ์ และการตกแต่งภายใน นักลงทุนถือหุ้น <strong>75%</strong> ของบริษัท</p>
+     <p>Founder สร้างอาคารด้วยทุนตัวเอง (ไม่อยู่ในการระดมทุน) ให้บริษัทเช่าราคาตลาด และรับหุ้น <strong>25%</strong> แลกกับการ sourcing + บริหารเต็มเวลา 2 ปี โดยไม่มีเงินเดือนหรือค่า fee ใด ๆ</p>
+     <div class="num-row">
+       <div class="num-item"><div class="n accent">${base.payback?'≈ '+base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Investor payback (Base ${base.visitors} คน/วัน)</div></div>
+       <div class="num-item"><div class="n">${fmtPct(base.yield1)}</div><div class="l">Yield / หุ้น ปีแรก (Base)</div></div>
+       <div class="num-item"><div class="n">THB ${fmt(m.postMoney)}</div><div class="l">Post-money valuation</div></div>
+     </div>
+   </div>`,
+
+  // 3 — Greenfield
+  `<div class="slide-kicker">02 · The Opportunity</div>
+   <div class="slide-title">ตลาดที่ยังไม่มีใครเล่น — Greenfield ทั้งภาคใต้</div>
+   <div class="slide-body">
+     <p>Bouldering เป็นกีฬาที่โตเร็วที่สุดประเภทหนึ่งของเอเชียตะวันออกเฉียงใต้ — กรุงเทพฯ สิงคโปร์ และมาเลเซียมียิมเปิดใหม่ต่อเนื่องและแน่นทุกเย็น แต่<strong>ทั้งภาคใต้ของไทยยังไม่มียิมปีนหน้าผาในร่มแม้แต่แห่งเดียว</strong></p>
+     <ul class="deck-list">
+       <li>ผู้เล่นรายแรกในตลาด (first mover) — ไม่มีคู่แข่งตรงในรัศมีหลายร้อยกิโลเมตร</li>
+       <li>ยิมทั่วไปในหาดใหญ่ขายที่ราคา ฿400–1,300/เดือน — bouldering เป็น experience product คนละตลาด ตั้งราคาได้สูงกว่า</li>
+       <li>เทรนด์กีฬาปีนหน้าผาโตต่อเนื่องหลังบรรจุเป็นกีฬาโอลิมปิก</li>
+     </ul>
+   </div>`,
+
+  // 4 — Catchment
+  `<div class="slide-kicker">03 · The Catchment</div>
+   <div class="slide-title">หาดใหญ่ — ศูนย์กลางของภาคใต้</div>
+   <div class="slide-body">
+     <p>หาดใหญ่เป็นศูนย์กลางเศรษฐกิจ การศึกษา และการท่องเที่ยวของภาคใต้ตอนล่าง มีประชากรเขตเมืองหนาแน่นและกำลังซื้อสูงสุดในภูมิภาค</p>
+     <div class="num-row">
+       <div class="num-item"><div class="n">~34,000</div><div class="l">นักศึกษา ม.อ. (PSU) วิทยาเขตหาดใหญ่</div></div>
+       <div class="num-item"><div class="n">อันดับ 1</div><div class="l">เมืองเศรษฐกิจภาคใต้ตอนล่าง</div></div>
+       <div class="num-item"><div class="n">ชายแดน</div><div class="l">ประตูรับนักท่องเที่ยว MY / SG</div></div>
+     </div>
+     <ul class="deck-list">
+       <li>นักศึกษามหาวิทยาลัยคือ segment หลักของยิมปีนหน้าผาทั่วโลก — หาดใหญ่มีฐานนักศึกษาขนาดใหญ่ติดเมือง</li>
+       <li>นักท่องเที่ยวมาเลเซีย/สิงคโปร์เข้าหาดใหญ่ต่อเนื่องทุกสุดสัปดาห์ — สองประเทศที่วัฒนธรรมปีนหน้าผาแข็งแรงที่สุดในภูมิภาค</li>
+     </ul>
+   </div>`,
+
+  // 5 — Unit economics
+  `<div class="slide-kicker">04 · Unit Economics</div>
+   <div class="slide-title">เครื่องยนต์ทำเงิน — ตัวเลขต่อการเข้าใช้ 1 ครั้ง</div>
+   <div class="slide-body">
+     <table class="deck-tbl">
+       <thead><tr><th>รายการ</th><th>ราคา</th><th>Attach</th><th>ต่อ visit</th></tr></thead>
+       <tbody>
+         <tr><td>Day pass</td><td>${fmt(m.daypass)}</td><td>100%</td><td>${fmt(m.daypass)}</td></tr>
+         ${m.gear.map(g=>`<tr><td>${g.label}</td><td>${fmt(g.price)}</td><td>${g.attach}%</td><td>${fmt(g.price*g.attach/100)}</td></tr>`).join('')}
+         <tr class="total-row"><td><strong>Revenue / visit</strong></td><td></td><td></td><td style="color:var(--accent);font-weight:700;">${fmt(m.rpv)}</td></tr>
+       </tbody>
+     </table>
+     <div class="num-row">
+       <div class="num-item"><div class="n">THB ${fmt(m.opexY(1))}</div><div class="l">Total OPEX ปีที่ 1 (รวมค่าเช่า)</div></div>
+       <div class="num-item"><div class="n">${m.days} วัน/ปี</div><div class="l">วันเปิดทำการ</div></div>
+       <div class="num-item"><div class="n green">≈ ${Math.ceil(m.breakEven)} คน/วัน</div><div class="l">Break-even</div></div>
+     </div>
+     <p>คุ้มทุนที่ราว ${Math.ceil(m.breakEven)} คน/วันเท่านั้น — ทุกคนที่เกินจากนั้นเกือบทั้งหมดไหลลงเป็นกำไร เพราะต้นทุนแทบทั้งหมดเป็น fixed cost</p>
+   </div>`,
+
+  // 6 — Payback scenarios
+  `<div class="slide-kicker">05 · Payback Scenarios</div>
+   <div class="slide-title">คืนทุนเร็วแค่ไหน — 4 สถานการณ์</div>
+   <div class="slide-body">
+     <table class="deck-tbl">
+       <thead><tr><th>Scenario</th><th>EBITDA ปี 1</th><th>นักลงทุน 75% / ปี</th><th>Investor payback</th></tr></thead>
+       <tbody>${m.scenarios.map(scRow).join('')}</tbody>
+     </table>
+     <p>Payback คิดจาก<strong>เงินสดสะสมฝั่งนักลงทุน (75% ของ EBITDA)</strong> เทียบกับเงินระดมทุน THB ${fmt(RAISE.raise)} — หักส่วน Founder แล้ว และรวมค่าเช่าที่ปรับขึ้น +10% ทุก 3 ปี</p>
+     <p>Base case ${base.visitors} คน/วัน ยังต่ำกว่าความหนาแน่นของยิมลักษณะเดียวกันในเมืองรองของภูมิภาคนี้</p>
+   </div>`,
+
+  // 7 — Per-share returns
+  `<div class="slide-kicker">06 · Per-share Returns</div>
+   <div class="slide-title">ผลตอบแทนต่อหุ้น — เท่ากันทุกหุ้น</div>
+   <div class="slide-body">
+     <p>หุ้นทุกหุ้นมีสิทธิ์เท่ากัน — yield ต่อหุ้นของ Founder เท่ากับของนักลงทุนทุกประการ (EBITDA ÷ ${m.totalShares} หุ้น ÷ THB ${fmt(RAISE.sharePrice)})</p>
+     <table class="deck-tbl">
+       <thead><tr><th>Scenario</th><th>EBITDA ปี 1</th><th>EBITDA / หุ้น</th><th>Yield / หุ้น</th></tr></thead>
+       <tbody>${m.scenarios.map(s=>`<tr><td>${s.name} — ${s.visitors} คน/วัน</td><td>${fmt(s.ebitda1)}</td><td>${fmt(s.ebitda1/m.totalShares)}</td><td style="color:var(--green);font-weight:600;">${fmtPct(s.yield1)}</td></tr>`).join('')}</tbody>
+     </table>
+     <p style="color:var(--text3);font-size:12px;">Yield คำนวณจาก EBITDA ก่อนภาษีและค่าเสื่อม — เงินปันผลจริงจ่ายจาก free cash flow ตามมติผู้ถือหุ้น</p>
+   </div>`,
+
+  // 8 — Cold-start risk
+  `<div class="slide-kicker">07 · The Risk We Take Seriously</div>
+   <div class="slide-title">ความเสี่ยงหลัก: ตลาดใหม่เริ่มจากศูนย์</div>
+   <div class="slide-body">
+     <p>หาดใหญ่ยังไม่เคยมียิมปีนหน้าผา — ดีมานด์ต้องถูกสร้าง ไม่ใช่แค่ถูกแย่งชิง เรารับมือแบบนี้:</p>
+     <ul class="deck-list">
+       <li><strong>ความเชี่ยวชาญการเปิดยิม</strong> — โครงการนี้ออกแบบผนัง เลือกอุปกรณ์ และวางระบบปฏิบัติการโดยอิงคำปรึกษาจากผู้มีประสบการณ์เปิดและดำเนินยิมปีนหน้าผาเชิงพาณิชย์ในภูมิภาคนี้จริง</li>
+       <li><strong>ดีมานด์ข้ามพรมแดน</strong> — นักปีนมาเลเซีย/สิงคโปร์ที่เข้าหาดใหญ่อยู่แล้วทุกสุดสัปดาห์คือฐานลูกค้าที่ "รู้จักกีฬานี้อยู่แล้ว" ตั้งแต่วันแรก</li>
+       <li><strong>ฐานนักศึกษา</strong> — โปรแกรมราคานักศึกษาและกิจกรรมชมรมเจาะฐาน PSU ~34,000 คน</li>
+       <li><strong>Break-even ต่ำ</strong> — ที่ ≈ ${Math.ceil(m.breakEven)} คน/วัน แม้ ramp-up ช้ากว่าแผน โครงการก็ยังไม่เผาเงินสด (Conservative ${cons.visitors} คน/วันยังมี EBITDA เป็นบวก)</li>
+     </ul>
+   </div>`,
+
+  // 9 — Fair ownership
+  `<div class="slide-kicker">08 · Fair Ownership</div>
+   <div class="slide-title">Founder 25% — โปร่งใสว่าแลกกับอะไร</div>
+   <div class="slide-body">
+     <p>นักลงทุนถือ <strong>75%</strong> · Founder ถือ <strong>25%</strong> โดยไม่ลงเงินในก้อนระดมทุน — สิ่งที่ Founder ใส่เข้ามาแทนเงิน:</p>
+     <ul class="deck-list">
+       <li><strong>อาคารทั้งหลัง THB ${fmt(m.shellTotal)}</strong> — Founder จ่ายเองทั้งหมด ไม่อยู่ในการระดมทุน แล้วปล่อยเช่าให้บริษัทที่<strong>ราคาตลาด</strong> THB ${fmt(RAISE.rent.baseMo)}/เดือน (${RAISE.rent.sqm} sqm × ${RAISE.rent.ratePerSqm}) — ไม่ได้คิดแพงกว่าตลาดเพื่อดูดกำไร</li>
+       <li><strong>Sourcing ทั้งโครงการ</strong> — ผนัง อุปกรณ์ ผู้รับเหมา และการเจรจาราคา</li>
+       <li><strong>บริหารเต็มเวลา 2 ปี</strong> — ไม่มีเงินเดือน ไม่มี management fee ไม่มี ops fee รายได้ทางเดียวของ Founder คือเงินปันผลตามหุ้น เหมือนนักลงทุนทุกคน</li>
+       <li><strong>Incentive ตรงกัน</strong> — Founder ได้เงินก็ต่อเมื่อนักลงทุนได้เงิน</li>
+     </ul>
+   </div>`,
+
+  // 10 — Use of funds
+  `<div class="slide-kicker">09 · Use of Funds</div>
+   <div class="slide-title">เงินระดมทุนไปไหน — 3 Buckets</div>
+   <div class="slide-body">
+     <table class="deck-tbl">
+       <thead><tr><th>Bucket</th><th>THB</th><th>% of raise</th></tr></thead>
+       <tbody>
+         ${RAISE.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.amt)}</td><td>${(b.amt/RAISE.raise*100).toFixed(1)}%</td></tr>`).join('')}
+         <tr><td style="color:var(--text3);">งบสำรอง (contingency จากการปัดขึ้น)</td><td style="color:var(--text3);">${fmt(RAISE.raise-m.bucketTotal)}</td><td style="color:var(--text3);">${((RAISE.raise-m.bucketTotal)/RAISE.raise*100).toFixed(1)}%</td></tr>
+         <tr class="total-row"><td><strong>รวมการระดมทุน</strong></td><td style="color:var(--accent);font-weight:700;">${fmt(RAISE.raise)}</td><td>100%</td></tr>
+       </tbody>
+     </table>
+     <p>เงินทุกบาทลงในสินทรัพย์ของบริษัทที่นักลงทุนถือ 75% — ไม่มีส่วนไหนไหลไปที่อาคาร (Founder จ่ายเอง) หรือค่าตอบแทน Founder</p>
+   </div>`,
+
+  // 11 — Cap table
+  `<div class="slide-kicker">10 · Cap Table</div>
+   <div class="slide-title">โครงสร้างผู้ถือหุ้น</div>
+   <div class="slide-body">
+     <table class="deck-tbl">
+       <thead><tr><th>ผู้ถือหุ้น</th><th>หุ้น</th><th>%</th><th>มูลค่า (THB)</th></tr></thead>
+       <tbody>
+         <tr><td>นักลงทุน (เงินสด)</td><td>${RAISE.investorShares}</td><td>75%</td><td>${fmt(RAISE.investorShares*RAISE.sharePrice)}</td></tr>
+         <tr><td>Founder (sourcing + operate)</td><td>${RAISE.founderShares}</td><td>25%</td><td>${fmt(RAISE.founderShares*RAISE.sharePrice)}</td></tr>
+         <tr class="total-row"><td>รวม</td><td>${m.totalShares}</td><td>100%</td><td style="color:var(--accent);font-weight:700;">${fmt(m.postMoney)}</td></tr>
+       </tbody>
+     </table>
+     <div class="num-row">
+       <div class="num-item"><div class="n">THB ${fmt(RAISE.sharePrice)}</div><div class="l">ราคาต่อหุ้น</div></div>
+       <div class="num-item"><div class="n">THB ${fmt(m.postMoney)}</div><div class="l">Post-money valuation</div></div>
+       <div class="num-item"><div class="n">THB ${fmt(RAISE.founderShares*RAISE.sharePrice)}</div><div class="l">มูลค่าหุ้น Founder</div></div>
+     </div>
+   </div>`,
+
+  // 12 — Team
+  `<div class="slide-kicker">11 · Team</div>
+   <div class="slide-title">ทีม — Founder-led</div>
+   <div class="slide-body">
+     <ul class="deck-list">
+       <li><strong>Founder / Operator</strong> — ผู้พัฒนาโครงการและเจ้าของอาคาร บริหารเต็มเวลา 2 ปีแรกโดยไม่รับค่าตอบแทน มีประสบการณ์บริหารธุรกิจครอบครัวด้านก่อสร้าง/อสังหาริมทรัพย์ในหาดใหญ่ — คุมงานก่อสร้างและต้นทุนเองได้ทั้งโครงการ</li>
+       <li><strong>ที่ปรึกษาด้านยิม</strong> — การออกแบบผนัง การเลือกอุปกรณ์ และระบบปฏิบัติการ อิงจากผู้มีประสบการณ์เปิดยิมปีนหน้าผาเชิงพาณิชย์จริงในภูมิภาค</li>
+       <li><strong>ทีมปฏิบัติการ</strong> — พนักงานประจำ + routesetter ตามงบ OPEX ที่แสดงในโมเดล</li>
+     </ul>
+   </div>`,
+
+  // 13 — Terms & timeline
+  `<div class="slide-kicker">12 · Terms & Timeline</div>
+   <div class="slide-title">เงื่อนไขและไทม์ไลน์</div>
+   <div class="slide-body">
+     <table class="deck-tbl">
+       <tbody>
+         <tr><td>โครงสร้าง</td><td style="text-align:left;font-family:var(--sans);">บริษัทจำกัด (SPV) ดำเนินธุรกิจยิม — เช่าอาคารจาก Founder ราคาตลาด</td></tr>
+         <tr><td>ขนาดการระดมทุน</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(RAISE.raise)} — ${RAISE.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)}</td></tr>
+         <tr><td>สัดส่วนหุ้น</td><td style="text-align:left;font-family:var(--sans);">นักลงทุน 75% · Founder 25%</td></tr>
+         <tr><td>ค่าตอบแทน Founder</td><td style="text-align:left;font-family:var(--sans);">ไม่มีเงินเดือน / fee — รับเฉพาะเงินปันผลตามหุ้น</td></tr>
+         <tr><td>สัญญาเช่า</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(RAISE.rent.baseMo)}/เดือน เริ่มเดือนที่ 1 · ปรับ +10% ทุก 3 ปี</td></tr>
+         <tr><td>ไทม์ไลน์</td><td style="text-align:left;font-family:var(--sans);">ปิดรอบระดมทุน → ก่อสร้าง/ติดตั้ง fit-out → เปิดบริการ ภายใน 2026</td></tr>
+       </tbody>
+     </table>
+   </div>`,
+
+  // 14 — Close + assumptions
+  `<div class="slide-kicker">13 · Key Assumptions & Close</div>
+   <div class="slide-title">สมมติฐานหลักทั้งหมด — อยู่บนโต๊ะ</div>
+   <div class="slide-body">
+     <ul class="deck-list">
+       <li>Revenue / visit <strong>THB ${fmt(m.rpv)}</strong> = day pass ${fmt(m.daypass)} + gear rental ตาม attach rate · เปิด ${m.days} วัน/ปี</li>
+       <li>Operating OPEX <strong>THB ${fmt(m.opexAnn)}/ปี</strong> + ค่าเช่า ${fmt(RAISE.rent.baseMo)}/เดือน (+10% ทุก 3 ปี) → OPEX ปีแรก <strong>THB ${fmt(m.opexY(1))}</strong></li>
+       <li>Scenarios: ${m.scenarios.map(s=>s.name+' '+s.visitors).join(' · ')} คน/วัน · Break-even ≈ ${Math.ceil(m.breakEven)} คน/วัน</li>
+       <li>Payback นักลงทุนคิดจาก 75% ของ EBITDA สะสม เทียบกับ THB ${fmt(RAISE.raise)} (interpolate ในปีที่ข้ามเส้น)</li>
+       <li>รายได้คงที่ทุกปีในโมเดล (ไม่ assume การเติบโต) — upside จากสมาชิกรายเดือน กิจกรรม และการเติบโตของตลาดไม่ได้ถูกนับ</li>
+     </ul>
+     <p style="margin-top:20px;">ทุกตัวเลขในเด็คนี้คำนวณสดจากโมเดลเดียวกับหน้า Projection — ปรับสมมติฐานแล้วดูผลได้ทันที</p>
+     <div class="num-row">
+       <div class="num-item"><div class="n accent">THB ${fmt(RAISE.raise)}</div><div class="l">The ask</div></div>
+       <div class="num-item"><div class="n green">${base.payback?'≈ '+base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Base-case payback</div></div>
+       <div class="num-item"><div class="n">75%</div><div class="l">Investor ownership</div></div>
+     </div>
+     <p style="color:var(--text3);font-size:12px;">เอกสารนี้เป็นประมาณการ ไม่ใช่คำมั่นเรื่องผลตอบแทน</p>
+   </div>`,
+  ];
+
+  document.getElementById('deck-slides').innerHTML = slides.map((s,i)=>
+    `<div class="deck-slide ${i===deckIdx?'active':''}" id="slide-${i}"><div class="slide-inner">${s}</div></div>`).join('');
+  document.getElementById('deck-dots').innerHTML = slides.map((_,i)=>
+    `<span class="deck-dot ${i===deckIdx?'active':''}" onclick="deckGo(${i})"></span>`).join('');
+  document.getElementById('deck-counter').textContent = (deckIdx+1)+' / '+slides.length;
+  window.DECK_LEN = slides.length;
+}
+
+// ══ ORCHESTRATION ══
+function recalcAll(){
+  // Scenario-table inputs are re-created on render; remember which one was focused
+  const active = document.activeElement;
+  const focusIdx = (active && active.dataset && active.dataset.scIdx !== undefined) ? active.dataset.scIdx : null;
+  const m = computeModel();
+  renderProjection(m);
+  renderDeck(m);
+  if (focusIdx !== null){
+    const el = document.querySelector(`#tbl-scenarios input[data-sc-idx="${focusIdx}"]`);
+    if (el) el.focus();
+  }
+}
+
+// ══ DECK NAV ══
+function toggleDeck(){
+  document.body.classList.toggle('deck-mode');
+  const on = document.body.classList.contains('deck-mode');
+  document.getElementById('view-toggle-btn').textContent = on ? '← กลับหน้า Projection' : 'อ่าน Pitch Deck / Investor Brief';
+  window.scrollTo(0,0);
+}
+function deckGo(i){
+  deckIdx = Math.max(0, Math.min(window.DECK_LEN-1, i));
+  document.querySelectorAll('.deck-slide').forEach((el,j)=>el.classList.toggle('active', j===deckIdx));
+  document.querySelectorAll('.deck-dot').forEach((el,j)=>el.classList.toggle('active', j===deckIdx));
+  document.getElementById('deck-counter').textContent = (deckIdx+1)+' / '+window.DECK_LEN;
+  window.scrollTo(0,0);
+}
+function deckNext(){ deckGo(deckIdx+1); }
+function deckPrev(){ deckGo(deckIdx-1); }
+document.addEventListener('keydown', e => {
+  if (!document.body.classList.contains('deck-mode')) return;
+  if (document.activeElement && document.activeElement.tagName==='INPUT') return;
+  if (e.key==='ArrowRight' || e.key==='PageDown' || e.key===' ') { e.preventDefault(); deckNext(); }
+  if (e.key==='ArrowLeft'  || e.key==='PageUp') { e.preventDefault(); deckPrev(); }
+});
+
+// ══ INIT ══
+window.onload = () => recalcAll();
+</script>
+</body>
+</html>
