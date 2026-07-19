@@ -177,6 +177,47 @@ header {
   padding: 12px 16px; background: var(--bg3); border-radius: 7px;
   font-size: 12px; color: var(--text2); line-height: 1.7;
 }
+/* ── EDITABLE TABLES ─────────────────────── */
+.etbl { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.etbl col.c-nm { width: 62%; }
+.etbl col.c-am { width: 30%; }
+.etbl col.c-dl { width: 8%; }
+.etbl thead th {
+  padding: 9px 14px; font-size: 10px; font-family: var(--mono); letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text3); background: var(--bg2);
+  border-bottom: 1px solid var(--border); text-align: left; font-weight: 500;
+}
+.etbl thead th.r { text-align: right; }
+.etbl tbody tr { border-bottom: 1px solid rgba(226,217,204,0.6); }
+.etbl tbody tr:hover { background: #fdf9f4; }
+.etbl td { padding: 0; }
+.etbl .cell-name { padding: 7px 14px; }
+.etbl .cell-name input {
+  background: transparent; border: none; outline: none;
+  color: var(--text); font-family: var(--sans); font-size: 13px; width: 100%;
+}
+.etbl .cell-amt { padding: 7px 14px; text-align: right; }
+.etbl .cell-amt input {
+  background: transparent; border: none; outline: none;
+  color: var(--text); font-family: var(--mono); font-size: 13px; text-align: right; width: 100%;
+}
+.etbl .cell-name input:focus, .etbl .cell-amt input:focus { color: var(--blue); }
+.etbl .cell-del {
+  padding: 7px 10px; text-align: center; color: var(--border2);
+  cursor: pointer; font-size: 15px; line-height: 1;
+}
+.etbl tbody tr:hover .cell-del { color: var(--red); }
+.etbl .sum-row { background: var(--bg2); border-top: 1px solid var(--border); }
+.etbl .sum-row td { padding: 9px 14px; font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text2); }
+.etbl .sum-row td.r { text-align: right; color: var(--accent); }
+.add-btn {
+  width: 100%; padding: 9px 14px; background: transparent; border: none;
+  border-top: 1px dashed var(--border); color: var(--text3); cursor: pointer;
+  font-family: var(--sans); font-size: 12px; text-align: left; transition: all 0.12s;
+  display: flex; align-items: center; gap: 6px;
+}
+.add-btn:hover { background: #fdf9f4; color: var(--accent); }
+
 .sc-pill {
   padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
   background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
@@ -316,7 +357,11 @@ body.deck-mode .deck-nav { display: flex; }
         <span class="card-title">🏗 อาคาร (ไม่อยู่ในการระดมทุน)</span>
         <span class="card-total" id="t-warehouse">—</span>
       </div>
-      <div class="ptbl-wrap"><table class="ptbl" id="tbl-warehouse"></table></div>
+      <table class="etbl"><colgroup><col class="c-nm"><col class="c-am"><col class="c-dl"></colgroup>
+        <thead><tr><th>รายการ</th><th class="r">THB</th><th></th></tr></thead>
+        <tbody id="tb-warehouse"></tbody>
+      </table>
+      <button class="add-btn" onclick="addRowR('warehouse')">＋ เพิ่มรายการ</button>
       <div style="padding:12px 16px;border-top:1px solid var(--border);">
         <div class="note-box">อาคารเป็นโกดังเปล่า ไม่อยู่ในการระดมทุน — บริษัทเช่าในเรตโกดังเปล่า <strong id="n-rent-formula">—</strong> ซึ่งต่ำกว่าเรตอาคารติดแอร์ (ระบบแอร์เป็นส่วนหนึ่งของ fit-out ที่บริษัทเป็นเจ้าของ)</div>
       </div>
@@ -329,16 +374,45 @@ body.deck-mode .deck-nav { display: flex; }
       <div class="ptbl-wrap"><table class="ptbl" id="tbl-buckets"></table></div>
       <div style="padding:12px 16px;border-top:1px solid var(--border);">
         <div class="note-box" id="n-raise-round">—</div>
+        <div class="note-box" style="margin-top:8px;background:var(--bg2);">ยอดระดมทุนคำนวณอัตโนมัติจากรายการด้านล่าง: ปัดขึ้นเป็นจำนวนหุ้นเต็ม (หุ้นละ THB 100,000) ที่หารลงตัวกับสัดส่วน 75/25 — แก้รายการใดยอดจะอัปเดตทั้งหน้าและ Pitch Deck ทันที</div>
       </div>
     </div>
   </div>
 
-  <!-- USE OF FUNDS DETAIL -->
+  <!-- USE OF FUNDS — full editable detail -->
+  <div class="sec-label">Use of Funds — รายละเอียดทุกรายการ (แก้ไขได้)</div>
   <div class="card">
-    <div class="card-header"><span class="card-title">🧾 Use of Funds — เงินระดมทุนซื้ออะไรบ้าง</span></div>
-    <div class="card-body">
-      <div class="uof-grid" id="uof-detail"></div>
+    <div class="card-header">
+      <span class="card-title">🧗 Wall — ผนังปีน</span>
+      <span class="card-total" id="t-wall">—</span>
     </div>
+    <table class="etbl"><colgroup><col class="c-nm"><col class="c-am"><col class="c-dl"></colgroup>
+      <thead><tr><th>รายการ</th><th class="r">THB</th><th></th></tr></thead>
+      <tbody id="tb-wall"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRowR('wall')">＋ เพิ่มรายการ</button>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">🎯 Equipment — อุปกรณ์</span>
+      <span class="card-total" id="t-equipment">—</span>
+    </div>
+    <table class="etbl"><colgroup><col class="c-nm"><col class="c-am"><col class="c-dl"></colgroup>
+      <thead><tr><th>รายการ</th><th class="r">THB</th><th></th></tr></thead>
+      <tbody id="tb-equipment"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRowR('equipment')">＋ เพิ่มรายการ</button>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">🏠 Fit-out — ตกแต่งภายใน</span>
+      <span class="card-total" id="t-fitout">—</span>
+    </div>
+    <table class="etbl"><colgroup><col class="c-nm"><col class="c-am"><col class="c-dl"></colgroup>
+      <thead><tr><th>รายการ</th><th class="r">THB</th><th></th></tr></thead>
+      <tbody id="tb-fitout"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRowR('fitout')">＋ เพิ่มรายการ</button>
   </div>
 
   <!-- REVENUE -->
@@ -401,17 +475,33 @@ body.deck-mode .deck-nav { display: flex; }
   <div class="grid2">
     <div class="card">
       <div class="card-header">
-        <span class="card-title">💰 Operating OPEX / month</span>
+        <span class="card-title">💰 Operating OPEX / month (แก้ไขได้)</span>
         <span class="card-total" id="t-opex-mo">—</span>
       </div>
-      <div class="ptbl-wrap"><table class="ptbl" id="tbl-opex"></table></div>
+      <table class="etbl"><colgroup><col class="c-nm"><col class="c-am"><col class="c-dl"></colgroup>
+        <thead><tr><th>รายการ</th><th class="r">THB / เดือน</th><th></th></tr></thead>
+        <tbody id="tb-opex"></tbody>
+      </table>
+      <button class="add-btn" onclick="addRowR('opex')">＋ เพิ่มรายการ</button>
     </div>
     <div>
       <div class="card">
         <div class="card-header"><span class="card-title">🏠 ค่าเช่าอาคาร — เรตโกดังเปล่า (ต่ำกว่าเรตอาคารติดแอร์)</span></div>
+        <div class="card-body" style="padding-bottom:12px;">
+          <div class="settings-grid" style="grid-template-columns:1fr 1fr;">
+            <div class="field">
+              <span class="field-label">ค่าเช่า / เดือน (THB)</span>
+              <input class="field-input" id="in-rent-base" type="number" value="48000" oninput="recalcAll()">
+            </div>
+            <div class="field">
+              <span class="field-label">ปรับขึ้นทุก 3 ปี (%)</span>
+              <input class="field-input" id="in-rent-esc" type="number" value="10" oninput="recalcAll()">
+            </div>
+          </div>
+        </div>
         <div class="ptbl-wrap"><table class="ptbl" id="tbl-rent"></table></div>
         <div style="padding:12px 16px;border-top:1px solid var(--border);">
-          <div class="note-box">เริ่มเดือนที่ 1 · <strong>+10% ทุก 3 ปี</strong></div>
+          <div class="note-box" id="n-rent-note">เริ่มเดือนที่ 1</div>
         </div>
       </div>
       <div class="card">
@@ -486,13 +576,10 @@ body.deck-mode .deck-nav { display: flex; }
 </div>
 
 <script>
-// ══ RAISE DATASET (investor-safe — no internal/JV/partner data) ══
+// ══ RAISE DATASET (investor-safe — fully itemized & editable) ══
 const RAISE = {
   sharePrice: 100000,
-  investorShares: 93,
-  founderShares: 31,
-  founderPct: 0.25,
-  raise: 9300000,                 // 93 shares × 100,000 (rounded up from bucket total)
+  founderRatio: 3,     // investor : founder shares = 3 : 1  →  75% / 25%
   horizonYears: 12,
 
   // Founder-funded building shell — context only, NOT part of the raise
@@ -503,14 +590,43 @@ const RAISE = {
     { name: 'ชั้นลอย + บันได (175 × 3,000)',       amt: 525000 },
   ],
 
-  // Investor-funded fit-out — bucket totals only (no supplier / unit pricing)
+  // Investor-funded fit-out — itemized; bucket totals and the raise are computed live
   buckets: [
-    { key: 'wall', icon: '🧗', label: 'Wall — ผนังปีน', amt: 2128120,
-      items: ['โครงสร้างผนังปีนและงานเหล็ก', 'แผ่นผนัง climbing-grade', 'งานออกแบบผนังและ route layout', 'ค่าที่ปรึกษาผู้เชี่ยวชาญการสร้างผนังปีน', 'ค่าแรงติดตั้ง'] },
-    { key: 'equipment', icon: '🎯', label: 'Equipment — อุปกรณ์', amt: 3727028,
-      items: ['เบาะรองรับแรงกระแทกมาตรฐานสากล', 'Climbing holds, macros และ volumes', 'Auto-belay สำหรับโซนปีนสูง', 'รองเท้าปีน/อุปกรณ์ให้เช่า (rental stock)', 'เครื่องมือ routesetting', 'อุปกรณ์ฟิตเนสเสริม'] },
-    { key: 'fitout', icon: '🏠', label: 'Fit-out — ตกแต่งภายใน', amt: 3295000,
-      items: ['ระบบปรับอากาศ VRV และระบายอากาศ', 'ห้องน้ำ–ห้องอาบน้ำ ชาย/หญิง', 'Reception, counter และ office', 'เฟอร์นิเจอร์ กล้องวงจรปิด ระบบเสียง lockers', 'งบการตลาดเปิดตัว', 'เงินทุนหมุนเวียนช่วงเริ่มต้น'] },
+    { key: 'wall', icon: '🧗', label: 'Wall — ผนังปีน', items: [
+      { name: 'Wall build consultation (200 sqm)',            amt: 197520 },
+      { name: 'Wall plywood — climbing grade (200 sqm)',      amt: 1152200 },
+      { name: 'ค่าแรงติดตั้งผนัง (4 คน × 30 วัน)',              amt: 120000 },
+      { name: 'โครงเหล็กผนังปีน (200 sqm)',                    amt: 246900 },
+      { name: 'งานออกแบบผนังและ route layout',                amt: 164600 },
+      { name: 'Wall consultation (1 สัปดาห์)',                 amt: 197520 },
+      { name: 'Hold selection',                               amt: 49380 },
+    ]},
+    { key: 'equipment', icon: '🎯', label: 'Equipment — อุปกรณ์', items: [
+      { name: 'เบาะรองรับแรงกระแทก 300mm (180 sqm)',           amt: 1111050 },
+      { name: 'Climbing holds — Macros × 400',                amt: 1481400 },
+      { name: 'Auto-belay — 3 เครื่อง',                        amt: 197520 },
+      { name: 'เครื่องมือ routesetting (สว่าน เชือก บันได เครื่องเจียร)', amt: 82300 },
+      { name: 'รองเท้าเช่า 150 คู่ + harness 40 ชุด',           amt: 323613 },
+      { name: 'อุปกรณ์ฟิตเนสเสริม',                            amt: 25000 },
+      { name: 'Climbing holds — Jugs',                        amt: 197520 },
+      { name: 'Volumes',                                      amt: 308625 },
+    ]},
+    { key: 'fitout', icon: '🏠', label: 'Fit-out — ตกแต่งภายใน', items: [
+      { name: 'ระบบแอร์ VRV + พัดลม',                          amt: 1600000 },
+      { name: 'ห้องน้ำ–ห้องอาบน้ำ ชาย/หญิง + ห้องล้าง holds',    amt: 600000 },
+      { name: 'งานรีโนเวท (เพิ่มเติม)',                         amt: 300000 },
+      { name: 'Reception + counter + office',                 amt: 50000 },
+      { name: 'เฟอร์นิเจอร์ fixed',                            amt: 100000 },
+      { name: 'เฟอร์นิเจอร์ loose',                            amt: 100000 },
+      { name: 'กล้องวงจรปิด',                                  amt: 100000 },
+      { name: 'ระบบเสียง / PA',                                amt: 50000 },
+      { name: 'Lockers (12 ช่อง × 4 ชุด)',                     amt: 30000 },
+      { name: 'เครื่องกรองน้ำ + ตู้กดน้ำ',                       amt: 15000 },
+      { name: 'อุปกรณ์สำนักงาน',                               amt: 50000 },
+      { name: 'การตลาดเปิดตัว',                                amt: 50000 },
+      { name: 'เงินทุนหมุนเวียน 1 เดือน',                       amt: 200000 },
+      { name: 'ค่าเช่าเครื่องมือติดตั้ง',                        amt: 50000 },
+    ]},
   ],
 
   // Operating OPEX (monthly) — excludes rent
@@ -529,9 +645,36 @@ const RAISE = {
     { name: 'เปลี่ยนรองเท้าเช่า (Shoe replacement)', amt: 2500 },
   ],
 
-  // Rent: market rate paid by the SPV to the founder-owned building
-  rent: { baseMo: 48000, sqm: 400, ratePerSqm: 120, escalatePct: 10, everyYears: 3 },
+  // Rent defaults (editable on the page): bare-warehouse rate
+  rent: { baseMo: 48000, escalatePct: 10, everyYears: 3 },
 };
+
+// ══ EDITABLE SECTIONS ══
+const EDIT_SECTIONS = {
+  warehouse: () => RAISE.warehouse,
+  wall:      () => RAISE.buckets[0].items,
+  equipment: () => RAISE.buckets[1].items,
+  fitout:    () => RAISE.buckets[2].items,
+  opex:      () => RAISE.opexMonthly,
+};
+
+function renderEditableTables(){
+  Object.keys(EDIT_SECTIONS).forEach(key => {
+    const arr = EDIT_SECTIONS[key]();
+    const tb = document.getElementById('tb-'+key);
+    if (!tb) return;
+    tb.innerHTML = arr.map((r,i) => `<tr>
+      <td class="cell-name"><input type="text" value="${(r.name||'').replace(/"/g,'&quot;')}"
+        onchange="EDIT_SECTIONS['${key}']()[${i}].name=this.value;recalcAll()"></td>
+      <td class="cell-amt"><input type="number" value="${r.amt}"
+        oninput="EDIT_SECTIONS['${key}']()[${i}].amt=parseFloat(this.value)||0;recalcAll()"></td>
+      <td class="cell-del" onclick="delRowR('${key}',${i})">×</td>
+    </tr>`).join('') +
+    `<tr class="sum-row"><td>รวม</td><td class="r"><span id="sum-${key}">—</span></td><td></td></tr>`;
+  });
+}
+function addRowR(key){ EDIT_SECTIONS[key]().push({name:'รายการใหม่', amt:0}); renderEditableTables(); recalcAll(); }
+function delRowR(key,i){ EDIT_SECTIONS[key]().splice(i,1); renderEditableTables(); recalcAll(); }
 
 const DEFAULT_SCENARIOS = [
   { name: 'Conservative', visitors: 25 },
@@ -559,37 +702,52 @@ function computeModel(){
   ];
   const rpv = daypass + gear.reduce((s,g)=>s + g.price*g.attach/100, 0);
 
-  const opexMo   = RAISE.opexMonthly.reduce((s,r)=>s+r.amt,0);            // 219,700
-  const opexAnn  = opexMo*12;                                             // 2,636,400
-  const rentMoY  = y => RAISE.rent.baseMo * Math.pow(1+RAISE.rent.escalatePct/100, Math.floor((y-1)/RAISE.rent.everyYears));
-  const opexY    = y => opexAnn + rentMoY(y)*12;
+  const shellTotal  = RAISE.warehouse.reduce((s,r)=>s+(parseFloat(r.amt)||0),0);
+  const buckets     = RAISE.buckets.map(b => ({ key:b.key, icon:b.icon, label:b.label,
+                        total: b.items.reduce((s,r)=>s+(parseFloat(r.amt)||0),0) }));
+  const bucketTotal = buckets.reduce((s,b)=>s+b.total,0);
 
-  const totalShares = RAISE.investorShares + RAISE.founderShares;         // 112
-  const postMoney   = totalShares * RAISE.sharePrice;                     // 11,200,000
-  const bucketTotal = RAISE.buckets.reduce((s,b)=>s+b.amt,0);             // 8,350,148
-  const shellTotal  = RAISE.warehouse.reduce((s,r)=>s+r.amt,0);           // 3,565,000
+  // Share structure derived live from the bucket total: investors fund the full
+  // fit-out at sharePrice per share; investor shares round up until divisible by
+  // founderRatio so founder shares stay whole and the split is exactly 75/25.
+  let investorShares = Math.max(RAISE.founderRatio, Math.ceil(bucketTotal/RAISE.sharePrice));
+  while (investorShares % RAISE.founderRatio !== 0) investorShares++;
+  const raise         = investorShares * RAISE.sharePrice;
+  const founderShares = investorShares / RAISE.founderRatio;
+  const totalShares   = investorShares + founderShares;
+  const postMoney     = totalShares * RAISE.sharePrice;
+  const contingency   = raise - bucketTotal;
+  const founderPct    = founderShares / totalShares;                      // 0.25
+
+  const opexMo   = RAISE.opexMonthly.reduce((s,r)=>s+(parseFloat(r.amt)||0),0);
+  const opexAnn  = opexMo*12;
+  const rentBase = num('in-rent-base');
+  const rentEsc  = num('in-rent-esc');
+  const rentMoY  = y => rentBase * Math.pow(1+rentEsc/100, Math.floor((y-1)/RAISE.rent.everyYears));
+  const opexY    = y => opexAnn + rentMoY(y)*12;
 
   const scenarios = SCENARIOS.map(sc => {
     const revenue = sc.visitors * rpv * days;                             // flat across years
     const years = []; let cum = 0; let payback = null;
     for (let y=1; y<=RAISE.horizonYears; y++){
       const ebitda = revenue - opexY(y);
-      const inv = ebitda * (1-RAISE.founderPct);
-      const fdr = ebitda * RAISE.founderPct;
+      const inv = ebitda * (1-founderPct);
+      const fdr = ebitda * founderPct;
       const prev = cum;
       cum += inv;
-      if (payback===null && inv>0 && cum >= RAISE.raise)
-        payback = (y-1) + (RAISE.raise - prev)/inv;                       // interpolate within crossover year
+      if (payback===null && inv>0 && cum >= raise)
+        payback = (y-1) + (raise - prev)/inv;                             // interpolate within crossover year
       years.push({ y, rentMo: rentMoY(y), opex: opexY(y), revenue, ebitda, inv, fdr, cum });
     }
     const e1 = years[0].ebitda;
     return { ...sc, revenue, years, ebitda1: e1, payback,
-             yield1: e1/postMoney, investor1: e1*(1-RAISE.founderPct), founder1: e1*RAISE.founderPct };
+             yield1: e1/postMoney, investor1: e1*(1-founderPct), founder1: e1*founderPct };
   });
 
   const breakEven = opexY(1) / (rpv*days);
-  return { daypass, days, gear, rpv, opexMo, opexAnn, opexY, rentMoY,
-           totalShares, postMoney, bucketTotal, shellTotal, scenarios, breakEven };
+  return { daypass, days, gear, rpv, opexMo, opexAnn, opexY, rentMoY, rentBase, rentEsc,
+           shellTotal, buckets, bucketTotal, raise, contingency,
+           investorShares, founderShares, totalShares, postMoney, scenarios, breakEven };
 }
 
 const pbText = p => p===null ? '> 10 ปี (not viable)' : '≈ '+p.toFixed(1)+' ปี';
@@ -600,51 +758,37 @@ function renderProjection(m){
   // Headline KPIs
   const base = m.scenarios.find(s=>s.name==='Base') || m.scenarios[1];
   document.getElementById('kpi-head').innerHTML = `
-    <div class="kpi-card"><div class="kpi-label">การระดมทุน (Raise)</div><div class="kpi-value accent">THB ${fmt(RAISE.raise)}</div><div class="kpi-sub">${RAISE.investorShares} หุ้น × ${fmt(RAISE.sharePrice)} · 75%</div></div>
-    <div class="kpi-card"><div class="kpi-label">Post-money Valuation</div><div class="kpi-value">THB ${fmt(m.postMoney)}</div><div class="kpi-sub">${m.totalShares} หุ้นรวม · Founder 25% = THB ${fmt(RAISE.founderShares*RAISE.sharePrice)}</div></div>
+    <div class="kpi-card"><div class="kpi-label">การระดมทุน (Raise)</div><div class="kpi-value accent">THB ${fmt(m.raise)}</div><div class="kpi-sub">${m.investorShares} หุ้น × ${fmt(RAISE.sharePrice)} · 75%</div></div>
+    <div class="kpi-card"><div class="kpi-label">Post-money Valuation</div><div class="kpi-value">THB ${fmt(m.postMoney)}</div><div class="kpi-sub">${m.totalShares} หุ้นรวม · Founder 25% = THB ${fmt(m.founderShares*RAISE.sharePrice)}</div></div>
     <div class="kpi-card"><div class="kpi-label">Base Case Payback (นักลงทุน)</div><div class="kpi-value green">${base.payback?base.payback.toFixed(1)+' ปี':'—'}</div><div class="kpi-sub">${base.visitors} คน/วัน · หลังหักส่วน Founder 25%</div></div>
     <div class="kpi-card"><div class="kpi-label">Break-even</div><div class="kpi-value blue">≈ ${Math.ceil(m.breakEven)} คน/วัน</div><div class="kpi-sub">rev/visit THB ${fmt(m.rpv)} · ${m.days} วัน/ปี</div></div>`;
 
-  // Warehouse (context)
-  document.getElementById('t-warehouse').textContent = 'THB '+fmt(m.shellTotal);
-  document.getElementById('tbl-warehouse').innerHTML =
-    `<thead><tr><th>รายการ</th><th>THB</th></tr></thead><tbody>` +
-    RAISE.warehouse.map(r=>`<tr><td>${r.name}</td><td>${fmt(r.amt)}</td></tr>`).join('') +
-    `<tr class="total-row"><td>รวมอาคาร (ไม่อยู่ในการระดมทุน)</td><td>${fmt(m.shellTotal)}</td></tr></tbody>`;
-  document.getElementById('n-rent-formula').textContent =
-    `THB ${fmt(RAISE.rent.baseMo)}/เดือน`;
+  // Editable-table totals (chips + in-table sum rows)
+  const sums = { warehouse: m.shellTotal, wall: m.buckets[0].total,
+                 equipment: m.buckets[1].total, fitout: m.buckets[2].total, opex: m.opexMo };
+  Object.entries(sums).forEach(([k,v]) => {
+    const s = document.getElementById('sum-'+k); if (s) s.textContent = fmt(v);
+    const c = document.getElementById('t-'+k);   if (c) c.textContent = 'THB '+fmt(v);
+  });
+  document.getElementById('n-rent-formula').textContent = `THB ${fmt(m.rentBase)}/เดือน`;
 
-  // Raise buckets
-  document.getElementById('t-raise').textContent = 'THB '+fmt(RAISE.raise);
+  // Raise summary (computed from the editable buckets)
+  document.getElementById('t-raise').textContent = 'THB '+fmt(m.raise);
   document.getElementById('tbl-buckets').innerHTML =
     `<thead><tr><th>Bucket</th><th>THB</th><th>% of raise</th></tr></thead><tbody>` +
-    RAISE.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.amt)}</td><td class="neutral">${(b.amt/RAISE.raise*100).toFixed(1)}%</td></tr>`).join('') +
-    `<tr><td style="color:var(--text3);font-weight:400;">สำรอง (contingency)</td><td class="neutral">${fmt(RAISE.raise-m.bucketTotal)}</td><td class="neutral">${((RAISE.raise-m.bucketTotal)/RAISE.raise*100).toFixed(1)}%</td></tr>
-     <tr class="total-row"><td>ยอดระดมทุน</td><td class="pos">${fmt(RAISE.raise)}</td><td>100%</td></tr></tbody>`;
+    m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.total)}</td><td class="neutral">${(b.total/m.raise*100).toFixed(1)}%</td></tr>`).join('') +
+    `<tr><td style="color:var(--text3);font-weight:400;">สำรอง (contingency)</td><td class="neutral">${fmt(m.contingency)}</td><td class="neutral">${(m.contingency/m.raise*100).toFixed(1)}%</td></tr>
+     <tr class="total-row"><td>ยอดระดมทุน</td><td class="pos">${fmt(m.raise)}</td><td>100%</td></tr></tbody>`;
   document.getElementById('n-raise-round').innerHTML =
-    `ยอดระดมทุน <strong>THB ${fmt(RAISE.raise)}</strong> = ${RAISE.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)} — 3 buckets รวม THB ${fmt(m.bucketTotal)} + สำรอง (contingency) THB ${fmt(RAISE.raise-m.bucketTotal)}`;
-
-  // Use of funds detail
-  document.getElementById('uof-detail').innerHTML = RAISE.buckets.map(b=>`
-    <div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
-        <span style="font-size:13px;font-weight:600;">${b.icon} ${b.label}</span>
-        <span style="font-family:var(--mono);color:var(--accent);font-weight:600;">${fmt(b.amt)}</span>
-      </div>
-      <div style="font-size:12px;color:var(--text3);line-height:1.9;">${b.items.map(i=>'• '+i).join('<br>')}</div>
-    </div>`).join('');
+    `ยอดระดมทุน <strong>THB ${fmt(m.raise)}</strong> = ${m.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)} — 3 buckets รวม THB ${fmt(m.bucketTotal)} + สำรอง (contingency) THB ${fmt(m.contingency)}`;
 
   // Revenue
   document.getElementById('t-rpv').textContent = 'THB '+fmt(m.rpv)+' / visit';
   document.getElementById('rpv-inline').textContent =
     `THB ${fmt(m.daypass)} + ${m.gear.map(g=>fmt(g.price*g.attach/100)).join(' + ')} = THB ${fmt(m.rpv)}`;
 
-  // OPEX
-  document.getElementById('t-opex-mo').textContent = 'THB '+fmt(m.opexMo)+' /mo';
-  document.getElementById('tbl-opex').innerHTML =
-    `<thead><tr><th>รายการ</th><th>THB / เดือน</th></tr></thead><tbody>` +
-    RAISE.opexMonthly.map(r=>`<tr><td>${r.name}</td><td>${fmt(r.amt)}</td></tr>`).join('') +
-    `<tr class="total-row"><td>รวม Operating OPEX</td><td>${fmt(m.opexMo)} /mo · ${fmt(m.opexAnn)} /yr</td></tr></tbody>`;
+  // OPEX chip (items are in the editable table)
+  document.getElementById('t-opex-mo').textContent = 'THB '+fmt(m.opexMo)+' /mo · '+fmt(m.opexAnn)+' /yr';
 
   // Rent schedule
   const bands = [[1,3],[4,6],[7,9],[10,12]];
@@ -652,6 +796,8 @@ function renderProjection(m){
     `<thead><tr><th>ปี</th><th>ค่าเช่า / เดือน</th><th>ค่าเช่า / ปี</th></tr></thead><tbody>` +
     bands.map(([a,b])=>`<tr><td>ปีที่ ${a}–${b}</td><td>${fmt(m.rentMoY(a))}</td><td>${fmt(m.rentMoY(a)*12)}</td></tr>`).join('') +
     `</tbody>`;
+  document.getElementById('n-rent-note').innerHTML =
+    `เริ่มเดือนที่ 1 · <strong>+${m.rentEsc}% ทุก ${RAISE.rent.everyYears} ปี</strong>`;
 
   // Year-1 OPEX total
   document.getElementById('tbl-opex-y1').innerHTML = `<tbody>
@@ -697,7 +843,7 @@ function renderProjection(m){
     `<thead><tr><th>ปี</th><th>ค่าเช่า/เดือน</th><th>OPEX รวม</th><th>รายได้</th><th>EBITDA</th>
       <th>นักลงทุน 75%</th><th>สะสมนักลงทุน</th><th>% ของเงินระดมทุน</th><th>Founder 25%</th></tr></thead><tbody>` +
     sc.years.slice(0,10).map(r=>{
-      const isCross = !crossed && r.cum >= RAISE.raise && r.inv>0;
+      const isCross = !crossed && r.cum >= m.raise && r.inv>0;
       if (isCross) crossed = true;
       return `<tr ${isCross?'style="background:#eef5f0;"':''}>
         <td>ปีที่ ${r.y}${isCross?' ✓ คืนทุน':''}</td>
@@ -706,8 +852,8 @@ function renderProjection(m){
         <td>${fmt(r.revenue)}</td>
         <td class="${r.ebitda>=0?'pos':'neg'}">${fmt(r.ebitda)}</td>
         <td>${fmt(r.inv)}</td>
-        <td class="${r.cum>=RAISE.raise?'pos':'neutral'}">${fmt(r.cum)}</td>
-        <td class="${r.cum>=RAISE.raise?'pos':'neutral'}">${Math.min(999,(r.cum/RAISE.raise*100)).toFixed(0)}%</td>
+        <td class="${r.cum>=m.raise?'pos':'neutral'}">${fmt(r.cum)}</td>
+        <td class="${r.cum>=m.raise?'pos':'neutral'}">${Math.min(999,(r.cum/m.raise*100)).toFixed(0)}%</td>
         <td>${fmt(r.fdr)}</td></tr>`;
     }).join('') +
     `<tr class="be-row"><td colspan="9" style="text-align:left;font-family:var(--sans);font-weight:400;color:var(--text3);font-style:italic;">
@@ -716,8 +862,8 @@ function renderProjection(m){
   // Cap table
   document.getElementById('tbl-captable').innerHTML =
     `<thead><tr><th>ผู้ถือหุ้น</th><th>หุ้น</th><th>%</th><th>มูลค่า (THB)</th><th style="text-align:left;">ที่มา</th></tr></thead><tbody>
-    <tr><td>นักลงทุน (Investors)</td><td>${RAISE.investorShares}</td><td>75%</td><td>${fmt(RAISE.investorShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">เงินสด — ลงทุนค่า fit-out ทั้งหมด</td></tr>
-    <tr><td>Founder</td><td>${RAISE.founderShares}</td><td>25%</td><td>${fmt(RAISE.founderShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นผู้ก่อตั้ง (founder shares)</td></tr>
+    <tr><td>นักลงทุน (Investors)</td><td>${m.investorShares}</td><td>75%</td><td>${fmt(m.investorShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">เงินสด — ลงทุนค่า fit-out ทั้งหมด</td></tr>
+    <tr><td>Founder</td><td>${m.founderShares}</td><td>25%</td><td>${fmt(m.founderShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นผู้ก่อตั้ง (founder shares)</td></tr>
     <tr class="total-row"><td>รวม (post-money)</td><td>${m.totalShares}</td><td>100%</td><td class="pos">${fmt(m.postMoney)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นละ THB ${fmt(RAISE.sharePrice)}</td></tr></tbody>`;
   document.getElementById('investor-share-note').innerHTML =
     `<strong>นักลงทุน:</strong> หุ้นละ THB ${fmt(RAISE.sharePrice)} = ${(100/m.totalShares).toFixed(2)}% ของบริษัท · ลงกี่หุ้นได้สัดส่วนตามนั้น · นักลงทุนถือรวม 75% · ผลตอบแทนต่อหุ้นเท่ากันทุกหุ้น`;
@@ -737,7 +883,7 @@ function renderDeck(m){
    <div class="slide-body">
      <p>ยิมปีนหน้าผา (bouldering) ในร่มระดับ commercial — หาดใหญ่ สงขลา</p>
      <div class="num-row">
-       <div class="num-item"><div class="n accent">THB ${fmt(RAISE.raise)}</div><div class="l">Raise — Fit-out</div></div>
+       <div class="num-item"><div class="n accent">THB ${fmt(m.raise)}</div><div class="l">Raise — Fit-out</div></div>
        <div class="num-item"><div class="n">75% / 25%</div><div class="l">Investors / Founder</div></div>
        <div class="num-item"><div class="n green">${base.payback?base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Base-case Payback</div></div>
      </div>
@@ -748,7 +894,7 @@ function renderDeck(m){
   `<div class="slide-kicker">01 · The Offer</div>
    <div class="slide-title">ข้อเสนอการลงทุน</div>
    <div class="slide-body">
-     <p>ระดมทุน <strong>THB ${fmt(RAISE.raise)}</strong> (${RAISE.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)}) เพื่อลงทุน <strong>fit-out ยิมทั้งหมด</strong> — ผนังปีน อุปกรณ์ และการตกแต่งภายใน นักลงทุนถือหุ้น <strong>75%</strong> ของบริษัท</p>
+     <p>ระดมทุน <strong>THB ${fmt(m.raise)}</strong> (${m.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)}) เพื่อลงทุน <strong>fit-out ยิมทั้งหมด</strong> — ผนังปีน อุปกรณ์ และการตกแต่งภายใน นักลงทุนถือหุ้น <strong>75%</strong> ของบริษัท</p>
      <p>อาคารไม่อยู่ในการระดมทุน — บริษัทเช่าอาคารในเรตโกดังเปล่า · เงินระดมทุนทั้งหมดลงใน fit-out ที่เป็นทรัพย์สินของบริษัท</p>
      <div class="num-row">
        <div class="num-item"><div class="n accent">${base.payback?'≈ '+base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Investor payback (Base ${base.visitors} คน/วัน)</div></div>
@@ -816,7 +962,7 @@ function renderDeck(m){
        <thead><tr><th>Scenario</th><th>EBITDA ปี 1</th><th>นักลงทุน 75% / ปี</th><th>Investor payback</th></tr></thead>
        <tbody>${m.scenarios.map(scRow).join('')}</tbody>
      </table>
-     <p>Payback คิดจาก<strong>เงินสดสะสมฝั่งนักลงทุน (75% ของ EBITDA)</strong> เทียบกับเงินระดมทุน THB ${fmt(RAISE.raise)} — หักส่วน Founder แล้ว และรวมค่าเช่าที่ปรับขึ้น +10% ทุก 3 ปี</p>
+     <p>Payback คิดจาก<strong>เงินสดสะสมฝั่งนักลงทุน (75% ของ EBITDA)</strong> เทียบกับเงินระดมทุน THB ${fmt(m.raise)} — หักส่วน Founder แล้ว และรวมค่าเช่าที่ปรับขึ้น +${m.rentEsc}% ทุก 3 ปี</p>
      <p>Base case ${base.visitors} คน/วัน ยังต่ำกว่าความหนาแน่นของยิมลักษณะเดียวกันในเมืองรองของภูมิภาคนี้</p>
    </div>`,
 
@@ -870,9 +1016,9 @@ function renderDeck(m){
      <table class="deck-tbl">
        <thead><tr><th>Bucket</th><th>THB</th><th>% of raise</th></tr></thead>
        <tbody>
-         ${RAISE.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.amt)}</td><td>${(b.amt/RAISE.raise*100).toFixed(1)}%</td></tr>`).join('')}
-         <tr><td style="color:var(--text3);">สำรอง (contingency)</td><td style="color:var(--text3);">${fmt(RAISE.raise-m.bucketTotal)}</td><td style="color:var(--text3);">${((RAISE.raise-m.bucketTotal)/RAISE.raise*100).toFixed(1)}%</td></tr>
-         <tr class="total-row"><td><strong>รวมการระดมทุน</strong></td><td style="color:var(--accent);font-weight:700;">${fmt(RAISE.raise)}</td><td>100%</td></tr>
+         ${m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.total)}</td><td>${(b.total/m.raise*100).toFixed(1)}%</td></tr>`).join('')}
+         <tr><td style="color:var(--text3);">สำรอง (contingency)</td><td style="color:var(--text3);">${fmt(m.contingency)}</td><td style="color:var(--text3);">${(m.contingency/m.raise*100).toFixed(1)}%</td></tr>
+         <tr class="total-row"><td><strong>รวมการระดมทุน</strong></td><td style="color:var(--accent);font-weight:700;">${fmt(m.raise)}</td><td>100%</td></tr>
        </tbody>
      </table>
      <p>เงินระดมทุนทั้งหมดลงใน fit-out ที่เป็นทรัพย์สินของบริษัท</p>
@@ -885,15 +1031,15 @@ function renderDeck(m){
      <table class="deck-tbl">
        <thead><tr><th>ผู้ถือหุ้น</th><th>หุ้น</th><th>%</th><th>มูลค่า (THB)</th></tr></thead>
        <tbody>
-         <tr><td>นักลงทุน (เงินสด)</td><td>${RAISE.investorShares}</td><td>75%</td><td>${fmt(RAISE.investorShares*RAISE.sharePrice)}</td></tr>
-         <tr><td>Founder</td><td>${RAISE.founderShares}</td><td>25%</td><td>${fmt(RAISE.founderShares*RAISE.sharePrice)}</td></tr>
+         <tr><td>นักลงทุน (เงินสด)</td><td>${m.investorShares}</td><td>75%</td><td>${fmt(m.investorShares*RAISE.sharePrice)}</td></tr>
+         <tr><td>Founder</td><td>${m.founderShares}</td><td>25%</td><td>${fmt(m.founderShares*RAISE.sharePrice)}</td></tr>
          <tr class="total-row"><td>รวม</td><td>${m.totalShares}</td><td>100%</td><td style="color:var(--accent);font-weight:700;">${fmt(m.postMoney)}</td></tr>
        </tbody>
      </table>
      <div class="num-row">
        <div class="num-item"><div class="n">THB ${fmt(RAISE.sharePrice)}</div><div class="l">ราคาต่อหุ้น</div></div>
        <div class="num-item"><div class="n">THB ${fmt(m.postMoney)}</div><div class="l">Post-money valuation</div></div>
-       <div class="num-item"><div class="n">THB ${fmt(RAISE.founderShares*RAISE.sharePrice)}</div><div class="l">มูลค่าหุ้น Founder</div></div>
+       <div class="num-item"><div class="n">THB ${fmt(m.founderShares*RAISE.sharePrice)}</div><div class="l">มูลค่าหุ้น Founder</div></div>
      </div>
    </div>`,
 
@@ -918,9 +1064,9 @@ function renderDeck(m){
      <table class="deck-tbl">
        <tbody>
          <tr><td>โครงสร้าง</td><td style="text-align:left;font-family:var(--sans);">บริษัทจำกัด (SPV) ดำเนินธุรกิจยิม</td></tr>
-         <tr><td>ขนาดการระดมทุน</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(RAISE.raise)} — ${RAISE.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)}</td></tr>
+         <tr><td>ขนาดการระดมทุน</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(m.raise)} — ${m.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)}</td></tr>
          <tr><td>สัดส่วนหุ้น</td><td style="text-align:left;font-family:var(--sans);">นักลงทุน 75% · Founder 25%</td></tr>
-         <tr><td>สัญญาเช่า</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(RAISE.rent.baseMo)}/เดือน · เรตโกดังเปล่า (ต่ำกว่าอาคารติดแอร์) · เริ่มเดือนที่ 1 · +10% ทุก 3 ปี</td></tr>
+         <tr><td>สัญญาเช่า</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(m.rentBase)}/เดือน · เรตโกดังเปล่า (ต่ำกว่าอาคารติดแอร์) · เริ่มเดือนที่ 1 · +${m.rentEsc}% ทุก 3 ปี</td></tr>
          <tr><td>Related party</td><td style="text-align:left;font-family:var(--sans);">อาคารเช่าจากเจ้าของ (founder) — related party ระบุใน shareholders' agreement</td></tr>
          <tr><td>ไทม์ไลน์</td><td style="text-align:left;font-family:var(--sans);">ปิดรอบระดมทุน → ก่อสร้าง/ติดตั้ง fit-out → เปิดบริการ ภายใน 2026</td></tr>
        </tbody>
@@ -933,14 +1079,14 @@ function renderDeck(m){
    <div class="slide-body">
      <ul class="deck-list">
        <li>Revenue / visit <strong>THB ${fmt(m.rpv)}</strong> = day pass ${fmt(m.daypass)} + gear rental ตาม attach rate · เปิด ${m.days} วัน/ปี</li>
-       <li>Operating OPEX <strong>THB ${fmt(m.opexAnn)}/ปี</strong> + ค่าเช่า ${fmt(RAISE.rent.baseMo)}/เดือน (+10% ทุก 3 ปี) → OPEX ปีแรก <strong>THB ${fmt(m.opexY(1))}</strong></li>
+       <li>Operating OPEX <strong>THB ${fmt(m.opexAnn)}/ปี</strong> + ค่าเช่า ${fmt(m.rentBase)}/เดือน (+${m.rentEsc}% ทุก 3 ปี) → OPEX ปีแรก <strong>THB ${fmt(m.opexY(1))}</strong></li>
        <li>Scenarios: ${m.scenarios.map(s=>s.name+' '+s.visitors).join(' · ')} คน/วัน · Break-even ≈ ${Math.ceil(m.breakEven)} คน/วัน</li>
-       <li>Payback นักลงทุนคิดจาก 75% ของ EBITDA สะสม เทียบกับ THB ${fmt(RAISE.raise)} (interpolate ในปีที่ข้ามเส้น)</li>
+       <li>Payback นักลงทุนคิดจาก 75% ของ EBITDA สะสม เทียบกับ THB ${fmt(m.raise)} (interpolate ในปีที่ข้ามเส้น)</li>
        <li>รายได้คงที่ทุกปีในโมเดล (ไม่ assume การเติบโต) — upside จากสมาชิกรายเดือน กิจกรรม และการเติบโตของตลาดไม่ได้ถูกนับ</li>
      </ul>
      <p style="margin-top:20px;">ทุกตัวเลขในเด็คนี้คำนวณสดจากโมเดลเดียวกับหน้า Projection — ปรับสมมติฐานแล้วดูผลได้ทันที</p>
      <div class="num-row">
-       <div class="num-item"><div class="n accent">THB ${fmt(RAISE.raise)}</div><div class="l">The ask</div></div>
+       <div class="num-item"><div class="n accent">THB ${fmt(m.raise)}</div><div class="l">The ask</div></div>
        <div class="num-item"><div class="n green">${base.payback?'≈ '+base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Base-case payback</div></div>
        <div class="num-item"><div class="n">75%</div><div class="l">Investor ownership</div></div>
      </div>
@@ -994,7 +1140,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ══ INIT ══
-window.onload = () => recalcAll();
+window.onload = () => { renderEditableTables(); recalcAll(); };
 </script>
 </body>
 </html>
