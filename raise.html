@@ -121,6 +121,7 @@ header {
 .card-body { padding: 20px; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+.uof-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
 .kpi-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 18px 20px;
@@ -238,16 +239,36 @@ body.deck-mode .deck-nav { display: flex; }
 
 /* ── MOBILE ──────────────────────────────── */
 @media (max-width: 768px) {
-  header { padding: 0 14px; }
+  header {
+    padding: 8px 12px; height: auto; min-height: 52px;
+    flex-wrap: wrap; gap: 8px; row-gap: 6px;
+  }
+  .header-title { font-size: 14px; }
   .header-sub { display: none; }
+  .header-right { flex-wrap: wrap; justify-content: flex-end; }
+  .hdr-btn { font-size: 11px; padding: 5px 10px; }
   .pill { display: none; }
-  .wrap { padding: 20px 14px 80px; }
-  .grid2, .grid4 { grid-template-columns: 1fr; }
+  .wrap { padding: 20px 12px 80px; }
+  .grid2, .grid4, .uof-grid { grid-template-columns: 1fr; }
   .settings-grid { grid-template-columns: 1fr 1fr; }
+  .page-title { font-size: 19px; }
+
+  /* Tables: let the name column wrap so 2-3 column tables fit the screen;
+     wide tables still scroll inside .ptbl-wrap */
+  .ptbl td, .ptbl thead th { padding: 8px 8px; }
+  .ptbl td { font-size: 11px; }
+  .ptbl thead th { font-size: 9px; }
+  .ptbl td:first-child { white-space: normal; word-break: break-word; }
+  .card-header { flex-wrap: wrap; gap: 8px; }
+  #cf-scenario-pills { flex-wrap: wrap; }
+  .sc-pill { padding: 4px 10px; font-size: 11px; }
+
   .slide-title { font-size: 26px; }
   .big-num { font-size: 40px; }
   .num-row { gap: 22px; }
   .deck-slide { padding: 30px 14px 40px; }
+  .deck-tbl td, .deck-tbl th { padding: 8px 6px; font-size: 12px; }
+  .deck-tbl td:first-child { white-space: normal; word-break: break-word; }
   .deck-dots { display: none; }
 }
 
@@ -316,7 +337,7 @@ body.deck-mode .deck-nav { display: flex; }
   <div class="card">
     <div class="card-header"><span class="card-title">🧾 Use of Funds — เงินระดมทุนซื้ออะไรบ้าง</span></div>
     <div class="card-body">
-      <div class="grid2" style="grid-template-columns:1fr 1fr 1fr;" id="uof-detail"></div>
+      <div class="uof-grid" id="uof-detail"></div>
     </div>
   </div>
 
