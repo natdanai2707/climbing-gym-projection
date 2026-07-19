@@ -947,7 +947,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
           </div>
           <div class="field">
             <span class="field-label">Electricity with HVAC (THB/mo)</span>
-            <input class="field-input" id="elec-hvac" type="number" value="80000" oninput="recalc()">
+            <input class="field-input" id="elec-hvac" type="number" value="45000" oninput="recalc()">
           </div>
           <div class="field">
             <span class="field-label">Electricity without HVAC (THB/mo)</span>
@@ -1604,7 +1604,7 @@ const DATA_SOLO = {
     {name:'Volumes',amt:308625,note:''},
   ],
   fitout:[
-    {name:'Ceiling Type Air Cond + Fan',amt:800000,note:'for 600 sqm'},
+    {name:'Air Cond — VRV system + Fan',amt:1600000,note:'for 600 sqm'},
     {name:'Toilet / wet area 1 toilet + 1 shower room for each gender, (+1 urinal for men) + 1 hold washing room',amt:600000,note:'Men + Women'},
     {name:'Renovation (extra)',amt:300000,note:''},
     {name:'Reception + Counter + Office',amt:50000,note:''},
@@ -1622,7 +1622,7 @@ const DATA_SOLO = {
   opex:[
     {name:'Staff (2 FT pax, 10 PT — Operations, Setter, Marketing, HK)',amt:80000,note:'Budget only'},
     {name:'Routesetting',amt:30000,note:'On needs basis'},
-    {name:'Electricity',amt:80000,note:'HVAC on'},
+    {name:'Electricity',amt:45000,note:'HVAC on'},
     {name:'Water',amt:2400,note:''},
     {name:'Gym software — Mindbody',amt:5000,note:''},
     {name:'Accounting',amt:2400,note:''},
@@ -1651,7 +1651,7 @@ const SETTINGS_JV = {
   daypass:'300', membership:'1500', shoe:'100', shoeRate:'95', chalk:'30', chalkRate:'70',
   harness:'50', harnessRate:'70', pbRate:'200', pbHours:'4', pbCourts:'2', pbDays:'30',
   jvBp:'50', jvSurf:'50', jvVisits:'8', jvWalkin:'90', jvRentSqm:'100', jvSqm:'1200',
-  hvac:false, elecHvac:'80000', elecNoHvac:'20000',
+  hvac:false, elecHvac:'45000', elecNoHvac:'20000',
   deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
   landRai:'1', landPerRai:'30000000',
 };
@@ -1659,7 +1659,7 @@ const SETTINGS_SOLO = {
   daypass:'290', membership:'1300', shoe:'100', shoeRate:'95', chalk:'100', chalkRate:'70',
   harness:'50', harnessRate:'70', pbRate:'0', pbHours:'4', pbCourts:'2', pbDays:'30',
   jvBp:'0', jvSurf:'100', jvVisits:'8', jvWalkin:'70', jvRentSqm:'0', jvSqm:'600',
-  hvac:true, elecHvac:'80000', elecNoHvac:'20000',
+  hvac:true, elecHvac:'45000', elecNoHvac:'20000',
   deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
   landRai:'1', landPerRai:'30000000',
 };
