@@ -377,8 +377,13 @@ header {
 
 /* ── MOBILE ──────────────────────────────── */
 @media (max-width: 768px) {
-  header { padding: 0 16px; height: 52px; }
+  header {
+    padding: 8px 12px; height: auto; min-height: 52px;
+    flex-wrap: wrap; gap: 8px; row-gap: 6px;
+  }
   .header-title { font-size: 14px; }
+  .header-right { flex-wrap: wrap; justify-content: flex-end; }
+  .hdr-btn { font-size: 11px; padding: 5px 9px; }
   .pill { display: none; }
   .pill#hvac-badge { display: inline-flex; }
   .save-note { display: none; }
@@ -459,12 +464,16 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
 /* ── MODE PICKER OVERLAY ─────────────────── */
 #mode-overlay {
   position: fixed; inset: 0; z-index: 1000;
+  height: 100vh;
+  height: 100dvh;
   background: linear-gradient(160deg, var(--bg) 0%, var(--bg3) 100%);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
   padding: 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 #mode-overlay.hidden { display: none; }
-.mode-box { width: 100%; max-width: 1100px; }
+.mode-box { width: 100%; max-width: 1100px; margin: auto; }
 .mode-head { text-align: center; margin-bottom: 32px; }
 .mode-logo {
   width: 44px; height: 44px; background: var(--accent); border-radius: 10px;
@@ -499,6 +508,17 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
 @media (max-width: 960px) {
   .mode-cards { grid-template-columns: 1fr; }
   .mode-title { font-size: 22px; }
+}
+@media (max-width: 700px) {
+  #mode-overlay { padding: 16px; }
+  .mode-head { margin-bottom: 20px; }
+  .mode-logo { width: 36px; height: 36px; font-size: 18px; margin-bottom: 10px; }
+  .mode-cards { gap: 14px; }
+  .mode-card { padding: 18px 18px; border-radius: 12px; }
+  .mode-card-icon { font-size: 24px; margin-bottom: 8px; }
+  .mode-card-title { font-size: 17px; margin-bottom: 6px; }
+  .mode-card-desc { font-size: 12px; line-height: 1.55; margin-bottom: 12px; }
+  .mode-card-go { margin-top: 12px; }
 }
 </style>
 </head>
@@ -539,11 +559,12 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
       </div>
       <div class="mode-card" onclick="window.location.href='raise.html'">
         <div class="mode-card-icon">📈</div>
-        <div class="mode-card-title">ระดมทุน — Founder 25%</div>
-        <div class="mode-card-desc">Investor view — หน้าสำหรับนักลงทุน: ระดมทุนค่า fit-out, นักลงทุนถือ 75% / Founder 25% พร้อม Pitch Deck (เปิดเป็นหน้าแยก แชร์ให้นักลงทุนได้)</div>
+        <div class="mode-card-title">ระดมทุน — Investor view</div>
+        <div class="mode-card-desc">หน้าสำหรับนักลงทุน: ระดมทุนค่า fit-out — นักลงทุน 70% / Founder 20% / Kae Vin 10% พร้อม Pitch Deck (เปิดเป็นหน้าแยก แชร์ให้นักลงทุนได้ · สัดส่วนปรับได้ในหน้านั้น)</div>
         <div class="mode-card-tags">
-          <span class="mode-tag">Investor 75%</span>
-          <span class="mode-tag">Founder 25%</span>
+          <span class="mode-tag">Investor 70%</span>
+          <span class="mode-tag">Founder 20%</span>
+          <span class="mode-tag">Kae Vin 10%</span>
           <span class="mode-tag">Pitch deck</span>
           <span class="mode-tag">Shareable</span>
         </div>
