@@ -885,6 +885,18 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
             <span class="field-label">Member visits / month</span>
             <input class="field-input" id="jv-visits" type="number" value="8" oninput="recalc()">
           </div>
+          <div class="divider solo-only"></div>
+          <div class="field solo-only">
+            <span class="field-label">Brand royalty (% of revenue)</span>
+            <input class="field-input" id="royalty-pct" type="number" step="0.5" value="2" oninput="recalc()">
+            <span class="field-hint">Project Rock brand licence — charged on gross revenue</span>
+          </div>
+          <div class="full solo-only">
+            <div style="padding:14px; background:var(--bg3); border-radius:7px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; color:var(--text2);">Royalty / month (Base Case)</span>
+              <span id="royalty-mo" style="font-family:var(--mono); font-size:15px; color:var(--orange); font-weight:600;"></span>
+            </div>
+          </div>
           <div class="divider jv-only"></div>
           <div class="field jv-only">
             <span class="field-label">Post-payback Rent (THB/sqm)</span>
@@ -1632,6 +1644,7 @@ const DATA_SOLO = {
     {name:'Auto-belay service',amt:2000,note:''},
     {name:'Misc',amt:4000,note:''},
     {name:'Shoe replacement',amt:2500,note:''},
+    {name:'Brand advisory retainer (RM 2,500)',amt:19250,note:'@ MYR 7.7'},
   ],
 };
 
@@ -1655,7 +1668,7 @@ const SETTINGS_JV = {
   daypass:'300', membership:'1500', shoe:'100', shoeRate:'95', chalk:'30', chalkRate:'70',
   harness:'50', harnessRate:'70', pbRate:'200', pbHours:'4', pbCourts:'2', pbDays:'30',
   jvBp:'50', jvSurf:'50', jvVisits:'8', jvWalkin:'90', jvRentSqm:'100', jvSqm:'1200',
-  hvac:false, elecHvac:'45000', elecNoHvac:'20000',
+  hvac:false, elecHvac:'45000', elecNoHvac:'20000', royaltyPct:'0',
   deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
   landRai:'1', landPerRai:'30000000',
 };
@@ -1663,7 +1676,7 @@ const SETTINGS_SOLO = {
   daypass:'290', membership:'1300', shoe:'100', shoeRate:'95', chalk:'100', chalkRate:'70',
   harness:'50', harnessRate:'70', pbRate:'0', pbHours:'4', pbCourts:'2', pbDays:'30',
   jvBp:'0', jvSurf:'100', jvVisits:'8', jvWalkin:'70', jvRentSqm:'0', jvSqm:'600',
-  hvac:true, elecHvac:'45000', elecNoHvac:'20000',
+  hvac:true, elecHvac:'45000', elecNoHvac:'20000', royaltyPct:'2',
   deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
   landRai:'1', landPerRai:'30000000',
 };
@@ -1815,6 +1828,7 @@ function applySettings(s){
   set('jv-visits',s.jvVisits); set('jv-walkin',s.jvWalkin);
   set('jv-rent-sqm',s.jvRentSqm); set('jv-sqm',s.jvSqm);
   set('elec-hvac',s.elecHvac); set('elec-no-hvac',s.elecNoHvac);
+  set('royalty-pct', s.royaltyPct);
   set('depr-wall',s.deprWall); set('depr-equipment',s.deprEquipment);
   set('depr-rental',s.deprRental); set('depr-hvac',s.deprHvac);
   set('depr-fitout',s.deprFitout); set('depr-office',s.deprOffice);
@@ -2092,6 +2106,10 @@ function recalc() {
   const sqm     = parseFloat(document.getElementById('jv-sqm').value)||0;
   const rentP2  = rentSqm*sqm;
 
+  const royEl   = document.getElementById('royalty-pct');
+  const royPct  = (royEl ? (parseFloat(royEl.value)||0) : 0)/100;   // brand licence on gross revenue
+  const royKeep = 1-royPct;                                        // share of revenue left after royalty
+
   const hvac    = document.getElementById('hvac-toggle').checked;
   const elHvac  = parseFloat(document.getElementById('elec-hvac').value)||0;
   const elNoAc  = parseFloat(document.getElementById('elec-no-hvac').value)||0;
@@ -2147,6 +2165,7 @@ function recalc() {
   // the projection tables respect the gear-rental toggle via `anc`.
   document.getElementById('eff-rev').textContent = 'THB '+fmt(dp+ancFull);
   document.getElementById('pb-monthly').textContent = 'THB '+fmt(pbMo);
+  const royMoEl = document.getElementById('royalty-mo');
   document.getElementById('phase2-rent').textContent = 'THB '+fmt(rentP2);
   document.getElementById('note-rent').textContent = 'THB '+fmt(rentP2)+'/month';
   document.getElementById('active-elec').textContent = 'THB '+fmt(elec)+'/month';
@@ -2208,7 +2227,8 @@ function recalc() {
     const mem = Math.round(mv*30/visAmo);
     const rc  = wi*30*revWI + mem*mem_fee + mv*30*anc;
     const rev = rc+pbMo;
-    const ebitda = rev-opex;
+    const royalty = rev*royPct;
+    const ebitda = rev-opex-royalty;
     const ebit   = ebitda - deprMo;
     const annEbit = ebit*12;
     // Payback on EBITDA (cash basis)
@@ -2220,7 +2240,7 @@ function recalc() {
     } else {
       pb = bpy>0 ? bpCash/bpy : null;       // BP recoups its share of Bucket B
     }
-    return {wi,mv,mem,rc,rev,ebitda,ebit,annEbit,bpy,pb};
+    return {wi,mv,mem,rc,rev,royalty,ebitda,ebit,annEbit,bpy,pb};
   }
 
   function ebiC(v){ return v>=0?`<span class="pos">${fmt(v)}</span>`:`<span class="neg">${fmt(v)}</span>`; }
@@ -2234,6 +2254,7 @@ function recalc() {
   // Projection KPIs
   const baseVis = (SCENARIOS.find(s=>/base/i.test(s.name)) || SCENARIOS[1] || SCENARIOS[0]).visitors;
   const bc = calcSc(baseVis, baseOpex);
+  if(royMoEl) royMoEl.textContent = 'THB '+fmt(bc.royalty)+'/month  ·  '+fmt(bc.royalty*12)+'/yr';
   const pbLabel = MODE==='solo' ? 'Base Case Owner Payback' : 'Base Case BP Payback';
   const pbSub   = MODE==='solo' ? 'CAPEX basis (excl. land)' : 'EBITDA basis (cash)';
   const deprSub = MODE==='solo' ? 'Straight-line, gym assets' : 'Bucket B straight-line';
@@ -2256,8 +2277,8 @@ function recalc() {
       <td class="pos col-bp">${fmt(c.bpy)}</td>
       <td>${pbC(c.pb)}</td></tr>`;
   });
-  const be1=((baseOpex-pbMo)/(revWI*wiPct*30));
-  document.getElementById('pbody1').innerHTML=b1+`<tr class="be-row"><td colspan="13">Break-even (EBITDA): ${be1.toFixed(0)} visitors/day &nbsp;|&nbsp; EBIT break-even: ${((baseOpex+deprMo-pbMo)/(revWI*wiPct*30)).toFixed(0)} visitors/day</td></tr>`;
+  const be1=((baseOpex-pbMo)/(revWI*wiPct*30*royKeep));
+  document.getElementById('pbody1').innerHTML=b1+`<tr class="be-row"><td colspan="13">Break-even (EBITDA): ${be1.toFixed(0)} visitors/day${royPct>0?` &nbsp;|&nbsp; incl. brand royalty ${(royPct*100).toFixed(1)}% of revenue`:''} &nbsp;|&nbsp; EBIT break-even: ${((baseOpex+deprMo-pbMo)/(revWI*wiPct*30*royKeep)).toFixed(0)} visitors/day</td></tr>`;
   document.getElementById('be1-label').textContent=`EBITDA BE: ${be1.toFixed(0)}/day`;
 
   // Phase 2
@@ -2273,8 +2294,8 @@ function recalc() {
       <td>${ebiC(c.annEbit)}</td>
       <td class="pos">${fmt(c.bpy)}</td></tr>`;
   });
-  const be2=((opex2-pbMo)/(revWI*wiPct*30));
-  document.getElementById('pbody2').innerHTML=b2+`<tr class="be-row"><td colspan="12">Break-even (EBITDA): ${be2.toFixed(0)} visitors/day &nbsp;|&nbsp; EBIT break-even: ${((opex2+deprMo-pbMo)/(revWI*wiPct*30)).toFixed(0)} visitors/day</td></tr>`;
+  const be2=((opex2-pbMo)/(revWI*wiPct*30*royKeep));
+  document.getElementById('pbody2').innerHTML=b2+`<tr class="be-row"><td colspan="12">Break-even (EBITDA): ${be2.toFixed(0)} visitors/day &nbsp;|&nbsp; EBIT break-even: ${((opex2+deprMo-pbMo)/(revWI*wiPct*30*royKeep)).toFixed(0)} visitors/day</td></tr>`;
   document.getElementById('be2-label').textContent=`EBITDA BE: ${be2.toFixed(0)}/day`;
 
   // ══ COMMUNITY SPACE VENTURES ══
@@ -2390,6 +2411,7 @@ function exportData() {
     jvVisits:     document.getElementById('jv-visits').value,
     jvWalkin:     document.getElementById('jv-walkin').value,
     jvRentSqm:    document.getElementById('jv-rent-sqm').value,
+    royaltyPct:   document.getElementById('royalty-pct').value,
     jvSqm:        document.getElementById('jv-sqm').value,
     hvac:         document.getElementById('hvac-toggle').checked,
     gearRental:   document.getElementById('gear-toggle').checked,
@@ -2442,6 +2464,7 @@ function importData(event) {
         set('jv-bp', s.jvBp); set('jv-surf', s.jvSurf);
         set('jv-visits', s.jvVisits); set('jv-walkin', s.jvWalkin);
         set('jv-rent-sqm', s.jvRentSqm); set('jv-sqm', s.jvSqm);
+        set('royalty-pct', s.royaltyPct);
         set('elec-hvac', s.elecHvac); set('elec-no-hvac', s.elecNoHvac);
         set('depr-wall', s.deprWall); set('depr-equipment', s.deprEquipment);
         set('depr-rental', s.deprRental); set('depr-hvac', s.deprHvac);
