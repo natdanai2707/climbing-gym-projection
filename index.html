@@ -667,6 +667,9 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
     <div class="nav-item" onclick="showSection('venture-icebath',this)">
       <span class="nav-icon">🧊</span> Ice Bath / Sauna
     </div>
+    <div class="nav-item" onclick="showSection('landlord',this)">
+      <span class="nav-icon">🏢</span> Landlord / Common Area
+    </div>
     <div class="nav-item" onclick="showSection('community',this)">
       <span class="nav-icon">🏘</span> Overall Summary
       <span class="nav-badge" id="nav-community-total">—</span>
@@ -791,6 +794,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
             <div class="jv-only">• Phase 2 rent: <strong id="note-rent" style="color:var(--green)">—</strong></div>
             <div class="solo-only solo-strict">• No rent — owner-occupied building</div>
             <div class="pr-only" id="note-pr-rent">• Rent paid to founder from month 1 — not in this table</div>
+            <div class="pr-only" id="note-pr-cam">—</div>
             <div>• Electricity switches with HVAC toggle</div>
             <div>• Staff THB 150,000 budget — individual breakdown TBD</div>
           </div>
@@ -936,6 +940,16 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
           <div class="field pr-only">
             <span class="field-label">Rent escalation every 3 yrs (%)</span>
             <input class="field-input" id="pr-rent-esc" type="number" step="1" value="10" oninput="recalc()">
+          </div>
+          <div class="field pr-only">
+            <span class="field-label">Gym area for CAM fee (sqm)</span>
+            <input class="field-input" id="pr-cam-sqm" type="number" value="400" oninput="recalc()">
+            <span class="field-hint">Same basis as the rent (400 sqm)</span>
+          </div>
+          <div class="field pr-only">
+            <span class="field-label">Common-area fee (THB / sqm / month)</span>
+            <input class="field-input" id="pr-cam-rate" type="number" value="15" oninput="recalc()">
+            <span class="field-hint">Paid by the gym to the landlord <strong>from month 1</strong> — separate from rent</span>
           </div>
           <div class="divider solo-only"></div>
           <div class="field solo-only">
@@ -1153,7 +1167,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
           <thead><tr>
             <th>Scenario</th><th>/day</th><th>Rev / yr</th><th>Royalty / yr</th><th>EBITDA / yr (Y1)</th>
             <th id="pr-h-pr">PR</th><th id="pr-h-inv">Investors</th><th id="pr-h-fdr">Founder div.</th><th>Rent → Founder (Y1)</th>
-            <th>Investor payback</th><th>You — equity seat</th><th>You — landlord</th><th>You — combined</th>
+            <th>Investor payback</th><th>You — equity seat</th><th>You — landlord (gym bldg)</th><th>You — combined (gym only)</th>
           </tr></thead>
           <tbody id="pr-body"></tbody>
         </table>
@@ -1200,6 +1214,59 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
   </div>
 </div>
 
+<!-- ── LANDLORD / COMMON AREA (hat 1: property owner & developer) ── -->
+<div id="sec-landlord" class="section">
+  <div class="page-title">🏢 Landlord &amp; Common Area — หมวกที่ 1: เจ้าของ/ผู้พัฒนาพื้นที่</div>
+  <div class="page-sub">You own the land and every building, lease space to the gym company and to the tenants, collect common-area (CAM) fees and service charges, and pay for shared upkeep. Hat 2 — gym founder — is in Projections; both hats are combined at the bottom.</div>
+  <div class="grid4" id="kpi-landlord"></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title"><span class="card-title-icon">🧹</span> Common-Area Expenses — Monthly</span>
+        <span class="card-total" id="total-commonOpex">THB 0</span>
+      </div>
+      <table class="etbl"><colgroup><col class="col-name"><col class="col-amt"><col class="col-note"><col class="col-del"></colgroup>
+        <thead><tr><th>Item</th><th class="r" style="width:150px">THB / month</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
+        <tbody id="tbody-commonOpex"></tbody>
+      </table>
+      <button class="add-btn" onclick="addRow('commonOpex')">＋ Add item</button>
+      <div style="padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.6;">
+        Upkeep of leased areas, common areas, parking, fence, landscaping and anything shared. Partly recovered through CAM fees (THB/sqm) charged to the gym and the tenants.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title"><span class="card-title-icon">💵</span> Landlord Income — Monthly (Base Case)</span>
+        <span class="card-total" id="total-landlord-income">—</span>
+      </div>
+      <div class="ptbl-wrap">
+        <table class="ptbl" style="min-width:560px;">
+          <thead><tr><th style="text-align:left">Source</th><th>Rent</th><th>CAM fee</th><th>Services</th><th>Total / mo</th></tr></thead>
+          <tbody id="landlord-income"></tbody>
+        </table>
+      </div>
+      <div style="padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.6;" id="landlord-income-note"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+      <span class="card-title"><span class="card-title-icon">📅</span> Landlord Cash Flow — 10 Years (Base Case)</span>
+      <span class="card-total" id="landlord-cf-label">—</span>
+    </div>
+    <div class="ptbl-wrap">
+      <table class="ptbl" style="min-width:960px;">
+        <thead><tr><th>Year</th><th>Tenants (rent + CAM + services)</th><th>Gym CAM</th><th>Gym rent</th><th>Ice bath net</th><th>Common expenses</th><th>Landlord net</th><th>Cumulative</th></tr></thead>
+        <tbody id="landlord-cf"></tbody>
+      </table>
+    </div>
+    <div style="padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.6;" id="landlord-note"></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title"><span class="card-title-icon">🎩</span> Two Hats — Your Total Position (Base Case)</span></div>
+    <div class="summary-grid" id="two-hats"></div>
+  </div>
+</div>
+
 <!-- ── COMMUNITY SPACE: VENTURE PAGES (generated by JS) + OVERALL SUMMARY ── -->
 <div id="sec-community" class="section">
   <div class="page-title">🏘 Community Space — Overall Projection</div>
@@ -1223,7 +1290,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
       </table>
     </div>
     <div style="padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.6;">
-      Gym row = Base Case scenario, Phase 1 OPEX (no rent), cash basis (EBITDA — before depreciation). Venture rows = revenue (area × rent/sqm for leased zones; visitors × price for the recovery zone) minus monthly OPEX. Payback = CAPEX ÷ annual net cash flow.
+      Gym row = Base Case scenario, Phase 1 OPEX (no rent), cash basis (EBITDA — before depreciation). Venture rows = landlord income (rent + CAM + services for leased zones; visitors × price for the recovery zone) minus monthly OPEX. Landlord row = gym CAM fee received minus common-area upkeep (tenant CAM already sits in the venture rows). Payback = CAPEX ÷ annual net cash flow.
     </div>
   </div>
 
@@ -1777,7 +1844,7 @@ const SETTINGS_SOLO = {
 };
 
 const SETTINGS_PR = Object.assign({}, SETTINGS_SOLO, {
-  prEq:'10', prSweat:'20', prFcash:'21', prDisc:'15', prRent:'48000', prRentEsc:'10', royaltyPct:'2',
+  prEq:'10', prSweat:'20', prFcash:'21', prDisc:'15', prRent:'48000', prRentEsc:'10', prCamSqm:'400', prCamRate:'15', royaltyPct:'2',
 });
 
 const LEASEHOLD = 9650000;
@@ -1790,15 +1857,15 @@ const VENTURES = [
     key:'tennis', icon:'🎾', title:'Tennis Simulator — Space Rental',
     sub:'200 sqm built and air-conditioned by us, leased to a tennis-simulator operator at a per-sqm monthly rent. Tenant runs the business.',
     hint:'',
-    rental:{ sqm:200, rate:150, buildRate:12000 },
-    revHint:'Rent = area × rate/sqm/month · tenant pays its own utilities and staff · build cost THB 12,000/sqm incl. AC + basic architecture',
+    rental:{ sqm:200, rate:150, cam:15, svc:4000, svcLabel:'Cleaning service (charged to tenant)', buildRate:12000 },
+    revHint:'Landlord income = area × (rent + CAM fee) + service charges · tenant runs the business and pays its own utilities/staff · build THB 12,000/sqm incl. AC + basic architecture',
   },
   {
     key:'hyrox', icon:'🏋️', title:'Hyrox / Functional Zone — Space Rental',
     sub:'400 sqm built and air-conditioned by us, leased to a functional-training operator at a per-sqm monthly rent. Tenant runs the business.',
     hint:'',
-    rental:{ sqm:400, rate:150, buildRate:12000 },
-    revHint:'Rent = area × rate/sqm/month · tenant pays its own utilities and staff · build cost THB 12,000/sqm incl. AC + basic architecture',
+    rental:{ sqm:400, rate:150, cam:15, svc:0, svcLabel:'Service charges (optional)', buildRate:12000 },
+    revHint:'Landlord income = area × (rent + CAM fee) + service charges · tenant runs the business and pays its own utilities/staff · build THB 12,000/sqm incl. AC + basic architecture',
   },
   {
     key:'icebath', icon:'🧊', title:'Ice Bath & Sauna — Outdoor Recovery Zone',
@@ -1842,6 +1909,18 @@ const VENTURE_DATA_DEFAULTS = {
     {name:'Towels & laundry',amt:4000,note:''},
     {name:'Cleaning & hygiene supplies',amt:3000,note:''},
     {name:'Attendant (part-time) — safety & turnover',amt:8000,note:''},
+  ],
+  // Shared-property upkeep (landlord hat) — mode-independent
+  commonOpex:[
+    {name:'Housekeeper — common areas & toilets',amt:10000,note:'1 FT'},
+    {name:'Gardener / landscaping (part-time)',amt:4000,note:''},
+    {name:'Common-area electricity — street/parking lights, CCTV',amt:4000,note:''},
+    {name:'Common-area water',amt:1000,note:''},
+    {name:'Waste collection',amt:1500,note:''},
+    {name:'Maintenance fund — road, parking, fence, repainting',amt:3000,note:'Reserve'},
+    {name:'Property insurance',amt:2500,note:''},
+    {name:'Land & building tax (monthly average)',amt:2000,note:'Reserve'},
+    {name:'Cleaning supplies & small tools',amt:1000,note:''},
   ],
 };
 
@@ -1929,10 +2008,19 @@ Object.assign(DATA_PR,   JSON.parse(JSON.stringify(VENTURE_DATA_DEFAULTS)));
               <span class="field-label">Rent (THB / sqm / month)</span>
               <input class="field-input" id="v-rate-${v.key}" type="number" value="${v.rental.rate}" oninput="recalc()">
             </div>
+            <div class="field">
+              <span class="field-label">Common-area fee (THB / sqm / month)</span>
+              <input class="field-input" id="v-cam-${v.key}" type="number" value="${v.rental.cam}" oninput="recalc()">
+              <span class="field-hint">Contribution to shared upkeep</span>
+            </div>
+            <div class="field">
+              <span class="field-label">${v.rental.svcLabel} (THB / month)</span>
+              <input class="field-input" id="v-svc-${v.key}" type="number" value="${v.rental.svc}" oninput="recalc()">
+            </div>
             <div class="field full">
-              <span class="field-label">Rental revenue (THB / month) — computed</span>
-              <input class="field-input" id="v-rev-${v.key}" type="number" value="${v.rental.sqm*v.rental.rate}" readonly style="background:var(--bg3);color:var(--accent);font-weight:600;">
-              <span class="field-hint">${v.revHint}</span>
+              <span class="field-label">Landlord income from this zone (THB / month) — computed</span>
+              <input class="field-input" id="v-rev-${v.key}" type="number" value="${v.rental.sqm*(v.rental.rate+v.rental.cam)+v.rental.svc}" readonly style="background:var(--bg3);color:var(--accent);font-weight:600;">
+              <span class="field-hint" id="v-revhint-${v.key}">${v.revHint}</span>
             </div>` : `
             <div class="field full">
               <span class="field-label">Expected Revenue (THB / month)</span>
@@ -1984,6 +2072,7 @@ function applySettings(s){
   set('royalty-pct', s.royaltyPct);
   set('pr-eq',s.prEq); set('pr-sweat',s.prSweat); set('pr-fcash',s.prFcash); set('pr-disc',s.prDisc);
   set('pr-rent',s.prRent); set('pr-rent-esc',s.prRentEsc);
+  set('pr-cam-sqm',s.prCamSqm); set('pr-cam-rate',s.prCamRate);
   set('depr-wall',s.deprWall); set('depr-equipment',s.deprEquipment);
   set('depr-rental',s.deprRental); set('depr-hvac',s.deprHvac);
   set('depr-fitout',s.deprFitout); set('depr-office',s.deprOffice);
@@ -2333,6 +2422,8 @@ function recalc() {
   const prControl= prFEq + prEq;                                             // founder + PR e.g. 51%
   const prRentMo  = isPR ? gv('pr-rent') : 0;
   const prRentEsc = isPR ? gv('pr-rent-esc')/100 : 0;
+  const camGym    = isPR ? gv('pr-cam-sqm')*gv('pr-cam-rate') : 0;      // common-area fee paid by the gym from month 1
+  const commonExp = getTotal('commonOpex');                                 // landlord's shared-upkeep cost
   const bucketBGross = getGross('wall')+getGross('equipment')+getGross('fitout') - (hvac ? hvlsItemCost : hvacItemCost);
   const prDiscount   = bucketBGross - bucketB;                               // THB saved by the PR discount
   const pricePerPct  = (isPR && cashPool>0) ? bucketB/(cashPool*100) : 0;    // THB per 1% of equity
@@ -2443,14 +2534,16 @@ function recalc() {
 
   // Project Rock mode: no rent until the co-investors have recouped their cash
   // (same idea as JV Phase 1 -> Phase 2). Year-1 tables are therefore rent-free.
-  const opex1 = baseOpex;
+  const opex1 = baseOpex + camGym;                                          // CAM fee is a month-1 cost; rent is not
+  const npc = document.getElementById('note-pr-cam');
+  if(npc) npc.innerHTML = `• Common-area fee <strong style="color:var(--orange)">THB ${fmt(camGym)}/month</strong> (${gv('pr-cam-sqm')} sqm × ${gv('pr-cam-rate')}) paid to the landlord <strong>from month 1</strong> — included in projections, not in this table`;
 
   // Multi-year cash flows from three seats. Rent switches on at the investor
   // payback point (pro-rated inside that year) and escalates every 3 yrs from then.
   function prMulti(revMo){
     const rows=[]; let cI=0,cF=0,cL=0,cO=0; let pI=null,pF=null,pL=null,pO=null;
     const bld=bucketA;
-    const e0 = 12*(revMo - baseOpex - revMo*royPct);         // annual EBITDA before rent
+    const e0 = 12*(revMo - baseOpex - camGym - revMo*royPct);   // annual EBITDA before rent (CAM fee already in)
     let rentAge = investorCash>0 ? null : 0;                   // null = rent not started yet
     for(let y=1;y<=15;y++){
       let rentRate=0, rY=0, f=null, startMo=null;
@@ -2521,7 +2614,7 @@ function recalc() {
   const bph = document.getElementById('pbody1-bp-head'); if(bph) bph.textContent = isPR ? 'Investors / yr' : 'BP / yr';
   const pbh = document.getElementById('pbody1-pb-head'); if(pbh) pbh.textContent = isPR ? 'Investor payback' : MODE==='solo' ? 'Owner payback' : 'Payback';
   document.getElementById('kpi-proj').innerHTML = `
-    <div class="kpi-card"><div class="kpi-label">OPEX / month</div><div class="kpi-value">${fmt(opex1)}</div><div class="kpi-sub">${isPR?'THB · rent '+fmt(prRentMo)+' starts after investor payback · royalty '+(royPct*100).toFixed(0)+'% on top':'THB'}</div></div>
+    <div class="kpi-card"><div class="kpi-label">OPEX / month</div><div class="kpi-value">${fmt(opex1)}</div><div class="kpi-sub">${isPR?'THB · incl. CAM fee '+fmt(camGym)+' · rent '+fmt(prRentMo)+' starts after investor payback · royalty '+(royPct*100).toFixed(0)+'% on top':'THB'}</div></div>
     <div class="kpi-card"><div class="kpi-label">Depreciation / month</div><div class="kpi-value orange">${fmt(deprMo)}</div><div class="kpi-sub">${deprSub}</div></div>
     <div class="kpi-card"><div class="kpi-label">Base Case EBIT / mo</div><div class="kpi-value ${bc.ebit>=0?'green':'accent'}">${fmt(bc.ebit)}</div><div class="kpi-sub">${baseVis} visitors/day</div></div>
     <div class="kpi-card"><div class="kpi-label">${pbLabel}</div><div class="kpi-value blue">${bc.pb?bc.pb.toFixed(1)+' yrs':'Loss'}</div><div class="kpi-sub">${pbSub}</div></div>`;
@@ -2565,7 +2658,7 @@ function recalc() {
     });
     document.getElementById('pr-body').innerHTML = pr;
     document.getElementById('pr-note').innerHTML =
-      `Year-1 figures. EBITDA = revenue − OPEX − royalty ${(royPct*100).toFixed(1)}% − rent, split by equity. <strong>Rent to you starts only after the co-investors recoup</strong> (pro-rated in that year, +${(prRentEsc*100).toFixed(0)}% every 3 yrs from then), so early years carry no rent. ` +
+      `Year-1 figures. EBITDA = revenue − OPEX − CAM fee ${fmt(camGym)}/mo − royalty ${(royPct*100).toFixed(1)}% − rent, split by equity. <strong>Rent to you starts only after the co-investors recoup</strong> (pro-rated in that year, +${(prRentEsc*100).toFixed(0)}% every 3 yrs from then), so early years carry no rent. ` +
       `<strong>Investor payback</strong>: their fit-out cash THB ${fmt(investorCash)} vs cumulative ${pct(prIEq)} of EBITDA. ` +
       `<strong>You — equity seat</strong>: the THB ${fmt(founderCash)} you pay for ${pct(prFcash)} vs cumulative dividends on your full ${pct(prFEq)} (sweat + bought) — the bought ${pct(prFcash)} alone pays back exactly like the investors' seat, since the price per 1% is identical. ` +
       `<strong>You — landlord</strong>: building THB ${fmt(bucketA)} vs cumulative rent, which only begins at investor payback. ` +
@@ -2584,7 +2677,7 @@ function recalc() {
       <div class="kpi-card"><div class="kpi-label">Investor payback (Base)</div><div class="kpi-value green">${investorCash>0&&bc.pm.pI?bc.pm.pI.toFixed(1)+' yrs':investorCash>0?'Loss':'n/a'}</div><div class="kpi-sub">THB ${fmt(investorCash)} · ${pct(prIEq)} of EBITDA</div></div>
       <div class="kpi-card"><div class="kpi-label">You — equity seat (Base)</div><div class="kpi-value blue">${founderCash>0&&bc.pm.pF?bc.pm.pF.toFixed(1)+' yrs':founderCash>0?'Loss':'n/a'}</div><div class="kpi-sub">THB ${fmt(founderCash)} for ${pct(prFcash)} · earns ${pct(prFEq)} incl. sweat</div></div>
       <div class="kpi-card"><div class="kpi-label">You — landlord (Base)</div><div class="kpi-value orange">${bc.pm.pL?bc.pm.pL.toFixed(1)+' yrs':'> 15 yrs'}</div><div class="kpi-sub">Building THB ${fmt(bucketA)} · rent ${fmt(prRentMo)}/mo from investor payback</div></div>
-      <div class="kpi-card"><div class="kpi-label">You — combined (Base)</div><div class="kpi-value accent">${bc.pm.pO?bc.pm.pO.toFixed(1)+' yrs':'Loss'}</div><div class="kpi-sub">THB ${fmt(bucketA+founderCash)} · rent + dividends</div></div>`;
+      <div class="kpi-card"><div class="kpi-label">You — combined, gym only (Base)</div><div class="kpi-value accent">${bc.pm.pO?bc.pm.pO.toFixed(1)+' yrs':'Loss'}</div><div class="kpi-sub">THB ${fmt(bucketA+founderCash)} · rent + dividends</div></div>`;
   }
 
   // Phase 2
@@ -2611,10 +2704,15 @@ function recalc() {
     const op  = getTotal(v.key+'Opex');
     const revEl = document.getElementById('v-rev-'+v.key);
     let rev = revEl ? (parseFloat(revEl.value)||0) : 0;
+    let rentPart=0, camPart=0, svcPart=0;
     if(v.rental){
-      const sqmEl=document.getElementById('v-sqm-'+v.key), rateEl=document.getElementById('v-rate-'+v.key);
-      rev = (sqmEl?(parseFloat(sqmEl.value)||0):0) * (rateEl?(parseFloat(rateEl.value)||0):0);
+      const g=id=>{const el=document.getElementById(id+'-'+v.key); return el?(parseFloat(el.value)||0):0;};
+      const sqm=g('v-sqm');
+      rentPart = sqm*g('v-rate'); camPart = sqm*g('v-cam'); svcPart = g('v-svc');
+      rev = rentPart + camPart + svcPart;
       if(revEl) revEl.value = Math.round(rev);
+      const rh=document.getElementById('v-revhint-'+v.key);
+      if(rh) rh.innerHTML = `Rent ${fmt(rentPart)} + CAM ${fmt(camPart)} + services ${fmt(svcPart)} = <strong>THB ${fmt(rev)}</strong> · ${v.revHint}`;
     }
     if(v.pricing){
       const g=id=>{const el=document.getElementById(id+'-'+v.key); return el?(parseFloat(el.value)||0):0;};
@@ -2634,7 +2732,7 @@ function recalc() {
       <div class="kpi-card"><div class="kpi-label">Payback</div><div class="kpi-value ${net>0?'accent':'orange'}">${vpb?vpb.toFixed(1)+' yrs':'—'}</div><div class="kpi-sub">${net>0?'Net THB '+fmt(net)+'/mo':'Not profitable at these numbers'}</div></div>`;
     const ne = document.getElementById('v-net-'+v.key);
     if(ne){ ne.textContent='THB '+fmt(net); ne.style.color = net>=0?'var(--green)':'var(--red)'; }
-    return {v,cap,op,rev,net,vpb};
+    return {v,cap,op,rev,net,vpb,rentPart,camPart,svcPart};
   });
 
   // ══ COMMUNITY OVERALL SUMMARY ══
@@ -2642,8 +2740,8 @@ function recalc() {
   const gymNet   = bc.ebitda;                       // base case, Phase 1 OPEX, cash basis
   const gymPb    = gymNet>0 ? gymCapex/(gymNet*12) : null;
   const totCap = gymCapex+ventCapex;
-  const totOp  = baseOpex+ventOpexTot;
-  const totRev = bc.rev+ventRevTot;
+  const totOp  = opex1+ventOpexTot+commonExp;         // gym OPEX (incl. CAM paid) + venture OPEX + shared upkeep
+  const totRev = bc.rev+ventRevTot+camGym;            // gym CAM is landlord income (offsets the gym's cost)
   const totNet = totRev-totOp;
   const totPb  = totNet>0 ? totCap/(totNet*12) : null;
 
@@ -2651,7 +2749,7 @@ function recalc() {
   if(cb){
     let rows = `<tr>
       <td>🧗 Climbing Gym (Base Case)</td>
-      <td>${fmt(gymCapex)}</td><td>${fmt(baseOpex)}</td><td>${fmt(bc.rev)}</td>
+      <td>${fmt(gymCapex)}</td><td>${fmt(opex1)}</td><td>${fmt(bc.rev)}</td>
       <td>${ebiC(gymNet)}</td><td>${ebiC(gymNet*12)}</td><td>${pbC(gymPb)}</td></tr>`;
     ventRows.forEach(r=>{
       rows += `<tr>
@@ -2659,6 +2757,10 @@ function recalc() {
         <td>${fmt(r.cap)}</td><td>${fmt(r.op)}</td><td>${fmt(r.rev)}</td>
         <td>${ebiC(r.net)}</td><td>${ebiC(r.net*12)}</td><td>${pbC(r.vpb)}</td></tr>`;
     });
+    rows += `<tr>
+      <td>🏢 Landlord — common area (CAM from gym ${isPR?'':'n/a · '}− shared upkeep)</td>
+      <td>—</td><td>${fmt(commonExp)}</td><td>${fmt(camGym)}</td>
+      <td>${ebiC(camGym-commonExp)}</td><td>${ebiC((camGym-commonExp)*12)}</td><td class="neutral">—</td></tr>`;
     rows += `<tr style="background:var(--bg2);border-top:2px solid var(--border);">
       <td style="font-weight:700;">🏘 TOTAL COMMUNITY</td>
       <td style="font-weight:700;">${fmt(totCap)}</td>
@@ -2689,13 +2791,84 @@ function recalc() {
       <div class="summary-item"><span class="s-label">Ventures CAPEX (${VENTURES.length} businesses)</span><span class="s-val">THB ${fmt(ventCapex)}</span></div>
       <div class="summary-item highlight"><span class="s-label">Total Community CAPEX</span><span class="s-val accent">THB ${fmt(totCap)}</span></div>
       ${landRow}
-      <div class="summary-item"><span class="s-label">Combined OPEX / month</span><span class="s-val">THB ${fmt(totOp)}</span></div>
+      <div class="summary-item"><span class="s-label">Combined OPEX / month (incl. common-area upkeep THB ${fmt(commonExp)})</span><span class="s-val">THB ${fmt(totOp)}</span></div>
       <div class="summary-item"><span class="s-label">Combined Revenue / month</span><span class="s-val blue">THB ${fmt(totRev)}</span></div>
       <div class="summary-item"><span class="s-label">Combined Net / month</span><span class="s-val ${totNet>=0?'green':'accent'}">THB ${fmt(totNet)}</span></div>`;
   }
 
   const ncb = document.getElementById('nav-community-total');
   if(ncb) ncb.textContent = 'THB '+(totCap/1e6).toFixed(1).replace(/\.0$/,'')+'M';
+
+  // ══ LANDLORD / COMMON AREA (hat 1) + TWO HATS ══
+  {
+    const tenants = ventRows.filter(r=>r.v.rental);
+    const ops     = ventRows.filter(r=>!r.v.rental);                 // ventures we operate ourselves (ice bath)
+    const tenantMo = tenants.reduce((s,r)=>s+r.rev,0);
+    const opsNetMo = ops.reduce((s,r)=>s+r.net,0);
+    const gymRentRow = (y)=> (isPR && bc.pm) ? bc.pm.rows[y-1].rY : 0;
+    const landlordCapex = bucketA + ventCapex;                        // gym shell + every zone we build
+    const netMo0 = tenantMo + camGym + opsNetMo - commonExp;          // before gym rent
+    // income table
+    const li = document.getElementById('landlord-income');
+    if(li){
+      let h='';
+      tenants.forEach(r=>{ h+=`<tr><td>${r.v.icon} ${r.v.title}</td><td>${fmt(r.rentPart)}</td><td>${fmt(r.camPart)}</td><td>${fmt(r.svcPart)}</td><td class="pos">${fmt(r.rev)}</td></tr>`; });
+      h+=`<tr><td>🧗 Gym — CAM fee (from month 1)</td><td>—</td><td>${isPR?fmt(camGym):'<span class="neutral">owner-occupied</span>'}</td><td>—</td><td class="${isPR?'pos':'neutral'}">${isPR?fmt(camGym):'—'}</td></tr>`;
+      h+=`<tr><td>🧗 Gym — rent (after co-investors recoup)</td><td>${isPR?fmt(prRentMo)+' <span class="neutral">from yr '+(bc.pm&&bc.pm.pI?bc.pm.pI.toFixed(1):'—')+'</span>':'<span class="neutral">n/a</span>'}</td><td>—</td><td>—</td><td class="neutral">${isPR?'not in year 1':'—'}</td></tr>`;
+      ops.forEach(r=>{ h+=`<tr><td>${r.v.icon} ${r.v.title} — net (we operate)</td><td>—</td><td>—</td><td>${fmt(r.rev)} − ${fmt(r.op)}</td><td class="${r.net>=0?'pos':'neg'}">${fmt(r.net)}</td></tr>`; });
+      h+=`<tr><td style="color:var(--red);">🧹 Common-area expenses</td><td>—</td><td>—</td><td>—</td><td class="neg">(${fmt(commonExp)})</td></tr>`;
+      h+=`<tr class="total-row"><td style="font-weight:700;">Landlord net / month — before gym rent</td><td></td><td></td><td></td><td style="font-weight:700;">${ebiC(netMo0)}</td></tr>`;
+      li.innerHTML=h;
+    }
+    const tli=document.getElementById('total-landlord-income'); if(tli) tli.textContent='THB '+fmt(tenantMo+camGym+opsNetMo)+' /mo';
+    const lin=document.getElementById('landlord-income-note');
+    if(lin) lin.innerHTML = isPR
+      ? `Gym rent THB ${fmt(prRentMo)}/mo begins only when the co-investors have recouped (base case ≈ yr ${bc.pm&&bc.pm.pI?bc.pm.pI.toFixed(1):'—'}), then +${(prRentEsc*100).toFixed(0)}% every 3 yrs; the CAM fee is charged from month 1.`
+      : `In this mode the gym is owner-occupied: no rent or CAM flows from the gym to the landlord (its full EBITDA is already yours).`;
+    // 10-yr cash flow + payback
+    let cum=0, pbL=null, cumAll=0, pbAll=null, cf='';
+    const founderCashPR = isPR ? founderCash : 0;
+    for(let y=1;y<=15;y++){
+      const rentY=gymRentRow(y);
+      const cash = 12*netMo0 + rentY;
+      const prev=cum; cum+=cash;
+      if(pbL===null && cash>0 && cum>=landlordCapex) pbL=(y-1)+(landlordCapex-prev)/cash;
+      const divF = (isPR && bc.pm) ? bc.pm.rows[y-1].dF : 0;
+      const prevA=cumAll; cumAll+=cash+divF;
+      if(pbAll===null && (cash+divF)>0 && cumAll>=landlordCapex+founderCashPR) pbAll=(y-1)+(landlordCapex+founderCashPR-prevA)/(cash+divF);
+      if(y<=10) cf+=`<tr${(pbL!==null&&Math.ceil(pbL)===y)?' style="background:#eef5f0;"':''}><td>Year ${y}${(pbL!==null&&Math.ceil(pbL)===y)?' ✓':''}</td>
+        <td>${fmt(tenantMo*12)}</td><td>${fmt(camGym*12)}</td><td>${rentY>0?fmt(rentY):'<span class="neutral">—</span>'}</td><td>${fmt(opsNetMo*12)}</td>
+        <td class="neg">(${fmt(commonExp*12)})</td><td>${ebiC(cash)}</td><td class="${cum>=landlordCapex?'pos':'neutral'}">${fmt(cum)}</td></tr>`;
+    }
+    const lcf=document.getElementById('landlord-cf'); if(lcf) lcf.innerHTML=cf;
+    const lcl=document.getElementById('landlord-cf-label'); if(lcl) lcl.textContent='CAPEX THB '+fmt(landlordCapex)+' · payback '+(pbL?pbL.toFixed(1)+' yrs':'> 15 yrs');
+    const ln=document.getElementById('landlord-note');
+    if(ln) ln.innerHTML = `Landlord CAPEX = gym building shell THB ${fmt(bucketA)} + every zone we build (tennis, hyrox, ice bath) THB ${fmt(ventCapex)}. Land is excluded from payback. Tenant and CAM income are assumed flat; only the gym rent escalates.`;
+    const kl=document.getElementById('kpi-landlord');
+    if(kl) kl.innerHTML = `
+      <div class="kpi-card"><div class="kpi-label">Landlord CAPEX</div><div class="kpi-value blue">THB ${fmt(landlordCapex)}</div><div class="kpi-sub">Gym shell + tennis + hyrox + ice bath (excl. land)</div></div>
+      <div class="kpi-card"><div class="kpi-label">Income / month (before gym rent)</div><div class="kpi-value green">THB ${fmt(tenantMo+camGym+opsNetMo)}</div><div class="kpi-sub">Tenants ${fmt(tenantMo)} · gym CAM ${fmt(camGym)} · ice bath net ${fmt(opsNetMo)}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Common-area expenses / month</div><div class="kpi-value orange">THB ${fmt(commonExp)}</div><div class="kpi-sub">Net ${fmt(netMo0)}/mo before gym rent</div></div>
+      <div class="kpi-card"><div class="kpi-label">Landlord payback (Base)</div><div class="kpi-value accent">${pbL?pbL.toFixed(1)+' yrs':'> 15 yrs'}</div><div class="kpi-sub">${isPR?'incl. gym rent from investor payback':'no gym rent in this mode'}</div></div>`;
+    // two hats
+    const th=document.getElementById('two-hats');
+    if(th){
+      const y1cash = 12*netMo0 + gymRentRow(1);
+      const y1div  = (isPR && bc.pm) ? bc.pm.rows[0].dF : 0;
+      th.innerHTML = isPR ? `
+        <div class="summary-item"><span class="s-label">🎩 Hat 1 — Landlord: cash out (shell + zones, excl. land)</span><span class="s-val">THB ${fmt(landlordCapex)}</span></div>
+        <div class="summary-item"><span class="s-label">Hat 1 — cash in, year 1 (tenants + gym CAM + ice bath − upkeep)</span><span class="s-val green">THB ${fmt(y1cash)}</span></div>
+        <div class="summary-item"><span class="s-label">🎩 Hat 2 — Gym founder: cash out (${(prFcash*100).toFixed(0)}% bought at investor price)</span><span class="s-val">THB ${fmt(founderCash)}</span></div>
+        <div class="summary-item"><span class="s-label">Hat 2 — dividends, year 1 (${(prFEq*100).toFixed(0)}% incl. ${(prSweat*100).toFixed(0)}% sweat)</span><span class="s-val green">THB ${fmt(y1div)}</span></div>
+        <div class="summary-item highlight"><span class="s-label">Both hats — total cash out</span><span class="s-val accent">THB ${fmt(landlordCapex+founderCash)}</span></div>
+        <div class="summary-item highlight"><span class="s-label">Both hats — total cash in, year 1</span><span class="s-val accent">THB ${fmt(y1cash+y1div)}</span></div>
+        <div class="summary-item highlight-green"><span class="s-label">Hat 1 payback · Hat 2 payback</span><span class="s-val green">${pbL?pbL.toFixed(1):'>15'} yrs · ${bc.pm&&bc.pm.pF?bc.pm.pF.toFixed(1):'—'} yrs</span></div>
+        <div class="summary-item highlight-green"><span class="s-label">Both hats combined payback (rent + CAM + zones + dividends)</span><span class="s-val green">${pbAll?pbAll.toFixed(1)+' yrs':'> 15 yrs'}</span></div>
+        <div class="summary-item"><span class="s-label">Land (not in payback)</span><span class="s-val">THB ${fmt(landValue)}</span></div>
+        <div class="summary-item"><span class="s-label">Total position incl. land</span><span class="s-val">THB ${fmt(landlordCapex+founderCash+landValue)}</span></div>`
+      : `<div class="summary-item" style="grid-column:1/-1;"><span class="s-label">Two-hat view applies to the Project Rock + co-investors mode (gym company pays rent and CAM to you). In this mode you own the gym outright — see Overall Summary.</span><span class="s-val"></span></div>`;
+    }
+  }
 }
 
 // ══ NAV ════════════════════════════════════════════════
@@ -2732,6 +2905,8 @@ function exportData() {
     prDisc:       document.getElementById('pr-disc').value,
     prRent:       document.getElementById('pr-rent').value,
     prRentEsc:    document.getElementById('pr-rent-esc').value,
+    prCamSqm:     document.getElementById('pr-cam-sqm').value,
+    prCamRate:    document.getElementById('pr-cam-rate').value,
     jvSqm:        document.getElementById('jv-sqm').value,
     hvac:         document.getElementById('hvac-toggle').checked,
     gearRental:   document.getElementById('gear-toggle').checked,
@@ -2752,7 +2927,9 @@ function exportData() {
                   })),
     ventureRental:Object.fromEntries(VENTURES.filter(v=>v.rental).map(v=>[v.key,{
                     sqm: document.getElementById('v-sqm-'+v.key).value,
-                    rate: document.getElementById('v-rate-'+v.key).value }])),
+                    rate: document.getElementById('v-rate-'+v.key).value,
+                    cam: document.getElementById('v-cam-'+v.key).value,
+                    svc: document.getElementById('v-svc-'+v.key).value }])),
     venturePricing:Object.fromEntries(VENTURES.filter(v=>v.pricing).map(v=>[v.key,{
                     pass: document.getElementById('v-pass-'+v.key).value,
                     addon: document.getElementById('v-addon-'+v.key).value,
@@ -2794,6 +2971,7 @@ function importData(event) {
         set('royalty-pct', s.royaltyPct);
         set('pr-eq', s.prEq); set('pr-sweat', s.prSweat); set('pr-fcash', s.prFcash); set('pr-disc', s.prDisc);
         set('pr-rent', s.prRent); set('pr-rent-esc', s.prRentEsc);
+        set('pr-cam-sqm', s.prCamSqm); set('pr-cam-rate', s.prCamRate);
         set('elec-hvac', s.elecHvac); set('elec-no-hvac', s.elecNoHvac);
         set('depr-wall', s.deprWall); set('depr-equipment', s.deprEquipment);
         set('depr-rental', s.deprRental); set('depr-hvac', s.deprHvac);
@@ -2812,7 +2990,7 @@ function importData(event) {
           Object.entries(s.ventureRev).forEach(([k,val]) => { const v=VENTURES.find(x=>x.key===k); if(v && !v.rental && !v.pricing) set('v-rev-'+k, val); });
         }
         if (s.ventureRental) {
-          Object.entries(s.ventureRental).forEach(([k,o]) => { set('v-sqm-'+k, o.sqm); set('v-rate-'+k, o.rate); });
+          Object.entries(s.ventureRental).forEach(([k,o]) => { set('v-sqm-'+k, o.sqm); set('v-rate-'+k, o.rate); set('v-cam-'+k, o.cam); set('v-svc-'+k, o.svc); });
         }
         if (s.venturePricing) {
           Object.entries(s.venturePricing).forEach(([k,o]) => { set('v-pass-'+k,o.pass); set('v-addon-'+k,o.addon); set('v-attach-'+k,o.attach); set('v-vis-'+k,o.visitors); set('v-days-'+k,o.days); });
