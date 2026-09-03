@@ -658,8 +658,8 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
   </div>
   <div class="nav-section">
     <div class="nav-section-label">Community Space</div>
-    <div class="nav-item" onclick="showSection('venture-pickleball',this)">
-      <span class="nav-icon">🏓</span> Pickleball
+    <div class="nav-item" onclick="showSection('venture-tennis',this)">
+      <span class="nav-icon">🎾</span> Tennis Simulator
     </div>
     <div class="nav-item" onclick="showSection('venture-hyrox',this)">
       <span class="nav-icon">🏋️</span> Hyrox Zone
@@ -1244,7 +1244,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
       </table>
     </div>
     <div style="padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.6;">
-      Gym row = Base Case scenario, Phase 1 OPEX (no rent), cash basis (EBITDA — before depreciation). Venture rows = your typed revenue minus monthly OPEX. Payback = CAPEX ÷ annual net cash flow.
+      Gym row = Base Case scenario, Phase 1 OPEX (no rent), cash basis (EBITDA — before depreciation). Venture rows = revenue (typed, or area × rent/sqm for leased zones) minus monthly OPEX. Payback = CAPEX ÷ annual net cash flow.
     </div>
   </div>
 
@@ -1809,18 +1809,18 @@ const LEASEHOLD = 9650000;
 // CAPEX table, an editable monthly OPEX table, and a typed revenue assumption.
 const VENTURES = [
   {
-    key:'pickleball', icon:'🏓', title:'Pickleball Courts',
-    sub:'Dedicated pickleball courts as a separate investment alongside the gym.',
-    hint:'⚠️ The gym model already includes indoor pickleball revenue (Pricing → Pickleball). Use this page for <strong>additional dedicated courts</strong> only — set one of the two to 0 to avoid double counting.',
-    defaultRev:48000,
-    revHint:'e.g. 2 courts × 4 hrs/day × THB 200/hr × 30 days ≈ THB 48,000',
+    key:'tennis', icon:'🎾', title:'Tennis Simulator — Space Rental',
+    sub:'200 sqm built and air-conditioned by us, leased to a tennis-simulator operator at a per-sqm monthly rent. Tenant runs the business.',
+    hint:'',
+    rental:{ sqm:200, rate:150, buildRate:12000 },
+    revHint:'Rent = area × rate/sqm/month · tenant pays its own utilities and staff · build cost THB 12,000/sqm incl. AC + basic architecture',
   },
   {
-    key:'hyrox', icon:'🏋️', title:'Hyrox / Functional Zone',
-    sub:'Hyrox-style functional training area — turf lane, ergs, sleds, classes.',
+    key:'hyrox', icon:'🏋️', title:'Hyrox / Functional Zone — Space Rental',
+    sub:'400 sqm built and air-conditioned by us, leased to a functional-training operator at a per-sqm monthly rent. Tenant runs the business.',
     hint:'',
-    defaultRev:75000,
-    revHint:'e.g. 5 classes/week × 10 pax × THB 350 ≈ THB 75,000/mo',
+    rental:{ sqm:400, rate:150, buildRate:12000 },
+    revHint:'Rent = area × rate/sqm/month · tenant pays its own utilities and staff · build cost THB 12,000/sqm incl. AC + basic architecture',
   },
   {
     key:'icebath', icon:'🧊', title:'Ice Bath & Sauna',
@@ -1832,27 +1832,19 @@ const VENTURES = [
 ];
 
 const VENTURE_DATA_DEFAULTS = {
-  pickleballCapex:[
-    {name:'Court construction — 2 courts (concrete + acrylic)',amt:500000,note:'Outdoor'},
-    {name:'Nets, posts & perimeter fencing',amt:100000,note:''},
-    {name:'LED floodlights',amt:80000,note:'Night sessions'},
-    {name:'Paddles + balls (rental stock)',amt:30000,note:''},
+  tennisCapex:[
+    {name:'Build-out 200 sqm × THB 12,000/sqm (incl. AC + basic architecture)',amt:2400000,note:'Shell + AC + finish'},
   ],
-  pickleballOpex:[
-    {name:'Utilities & lighting',amt:5000,note:''},
-    {name:'Court maintenance fund',amt:3000,note:'Resurfacing reserve'},
-    {name:'Booking system',amt:1000,note:''},
+  tennisOpex:[
+    {name:'Maintenance & AC service reserve',amt:2000,note:'Tenant pays utilities'},
+    {name:'Insurance / admin',amt:1000,note:''},
   ],
   hyroxCapex:[
-    {name:'Turf lane + rubber flooring (100 sqm)',amt:180000,note:''},
-    {name:'Cardio machines — SkiErg, Row Erg, Assault Bike',amt:250000,note:''},
-    {name:'Sleds, sandbags, wall balls, kettlebells',amt:120000,note:''},
-    {name:'Storage rig + timing system',amt:80000,note:''},
+    {name:'Build-out 400 sqm × THB 12,000/sqm (incl. AC + basic architecture)',amt:4800000,note:'Shell + AC + finish'},
   ],
   hyroxOpex:[
-    {name:'Coach / class instructor',amt:20000,note:'Part-time'},
-    {name:'Equipment maintenance',amt:3000,note:''},
-    {name:'Consumables (chalk, tape)',amt:1000,note:''},
+    {name:'Maintenance & AC service reserve',amt:4000,note:'Tenant pays utilities'},
+    {name:'Insurance / admin',amt:1000,note:''},
   ],
   icebathCapex:[
     {name:'Barrel sauna — 6 person',amt:350000,note:''},
@@ -1912,11 +1904,26 @@ Object.assign(DATA_PR,   JSON.parse(JSON.stringify(VENTURE_DATA_DEFAULTS)));
         <div class="card-header"><span class="card-title"><span class="card-title-icon">📈</span> Revenue Assumption</span></div>
         <div class="settings-body">
           <div class="settings-grid">
+            ${v.rental ? `
+            <div class="field">
+              <span class="field-label">Area leased (sqm)</span>
+              <input class="field-input" id="v-sqm-${v.key}" type="number" value="${v.rental.sqm}" oninput="syncRentalCapex('${v.key}');recalc()">
+              <span class="field-hint">Build-out row in CAPEX follows this area at THB ${v.rental.buildRate.toLocaleString('en-US')}/sqm</span>
+            </div>
+            <div class="field">
+              <span class="field-label">Rent (THB / sqm / month)</span>
+              <input class="field-input" id="v-rate-${v.key}" type="number" value="${v.rental.rate}" oninput="recalc()">
+            </div>
+            <div class="field full">
+              <span class="field-label">Rental revenue (THB / month) — computed</span>
+              <input class="field-input" id="v-rev-${v.key}" type="number" value="${v.rental.sqm*v.rental.rate}" readonly style="background:var(--bg3);color:var(--accent);font-weight:600;">
+              <span class="field-hint">${v.revHint}</span>
+            </div>` : `
             <div class="field full">
               <span class="field-label">Expected Revenue (THB / month)</span>
               <input class="field-input" id="v-rev-${v.key}" type="number" value="${v.defaultRev}" oninput="recalc()">
               <span class="field-hint">${v.revHint}</span>
-            </div>
+            </div>`}
             <div class="full">
               <div style="padding:14px;background:var(--bg3);border-radius:7px;display:flex;justify-content:space-between;align-items:center;">
                 <span style="font-size:12px;color:var(--text2);">Net cash flow / month (revenue − OPEX)</span>
@@ -1931,6 +1938,17 @@ Object.assign(DATA_PR,   JSON.parse(JSON.stringify(VENTURE_DATA_DEFAULTS)));
 </div>`).join('');
   main.insertAdjacentHTML('beforeend', html);
 })();
+
+// Rental ventures: keep the build-out CAPEX row in step with the leased area
+function syncRentalCapex(key){
+  const v = VENTURES.find(x=>x.key===key); if(!v || !v.rental) return;
+  const sqm = parseFloat(document.getElementById('v-sqm-'+key).value)||0;
+  const row = (DATA[key+'Capex']||[]).find(r=>/build-out/i.test(r.name));
+  if(!row) return;
+  row.amt  = sqm*v.rental.buildRate;
+  row.name = `Build-out ${sqm} sqm × THB ${v.rental.buildRate.toLocaleString('en-US')}/sqm (incl. AC + basic architecture)`;
+  renderTable(key+'Capex');
+}
 
 // ══ MODE STATE ═════════════════════════════════════════
 let MODE = null;                  // 'jv' | 'solo'
@@ -2559,7 +2577,12 @@ function recalc() {
     const cap = getTotal(v.key+'Capex');
     const op  = getTotal(v.key+'Opex');
     const revEl = document.getElementById('v-rev-'+v.key);
-    const rev = revEl ? (parseFloat(revEl.value)||0) : 0;
+    let rev = revEl ? (parseFloat(revEl.value)||0) : 0;
+    if(v.rental){
+      const sqmEl=document.getElementById('v-sqm-'+v.key), rateEl=document.getElementById('v-rate-'+v.key);
+      rev = (sqmEl?(parseFloat(sqmEl.value)||0):0) * (rateEl?(parseFloat(rateEl.value)||0):0);
+      if(revEl) revEl.value = Math.round(rev);
+    }
     const net = rev-op;
     const vpb = net>0 ? cap/(net*12) : null;
     ventCapex+=cap; ventOpexTot+=op; ventRevTot+=rev;
@@ -2567,7 +2590,7 @@ function recalc() {
     if(kc) kc.innerHTML = `
       <div class="kpi-card"><div class="kpi-label">CAPEX</div><div class="kpi-value blue">THB ${fmt(cap)}</div><div class="kpi-sub">One-time investment</div></div>
       <div class="kpi-card"><div class="kpi-label">OPEX / month</div><div class="kpi-value orange">THB ${fmt(op)}</div><div class="kpi-sub">Running cost</div></div>
-      <div class="kpi-card"><div class="kpi-label">Revenue / month</div><div class="kpi-value green">THB ${fmt(rev)}</div><div class="kpi-sub">Your assumption</div></div>
+      <div class="kpi-card"><div class="kpi-label">Revenue / month</div><div class="kpi-value green">THB ${fmt(rev)}</div><div class="kpi-sub">${v.rental?'Area × rent/sqm (tenant operates)':'Your assumption'}</div></div>
       <div class="kpi-card"><div class="kpi-label">Payback</div><div class="kpi-value ${net>0?'accent':'orange'}">${vpb?vpb.toFixed(1)+' yrs':'—'}</div><div class="kpi-sub">${net>0?'Net THB '+fmt(net)+'/mo':'Not profitable at these numbers'}</div></div>`;
     const ne = document.getElementById('v-net-'+v.key);
     if(ne){ ne.textContent='THB '+fmt(net); ne.style.color = net>=0?'var(--green)':'var(--red)'; }
@@ -2690,6 +2713,9 @@ function exportData() {
                     const el=document.getElementById('v-rev-'+v.key);
                     return [v.key, el?el.value:''];
                   })),
+    ventureRental:Object.fromEntries(VENTURES.filter(v=>v.rental).map(v=>[v.key,{
+                    sqm: document.getElementById('v-sqm-'+v.key).value,
+                    rate: document.getElementById('v-rate-'+v.key).value }])),
   };
   const payload = { mode: MODE, data: DATA, settings };
   const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
@@ -2742,7 +2768,10 @@ function importData(event) {
           renderScenarios();
         }
         if (s.ventureRev) {
-          Object.entries(s.ventureRev).forEach(([k,val]) => set('v-rev-'+k, val));
+          Object.entries(s.ventureRev).forEach(([k,val]) => { const v=VENTURES.find(x=>x.key===k); if(v && !v.rental) set('v-rev-'+k, val); });
+        }
+        if (s.ventureRental) {
+          Object.entries(s.ventureRental).forEach(([k,o]) => { set('v-sqm-'+k, o.sqm); set('v-rate-'+k, o.rate); });
         }
       }
       // Restore mode (default JV for older exports without a mode field)
