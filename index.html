@@ -567,12 +567,12 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
       <div class="mode-card" onclick="selectMode('pr')">
         <div class="mode-card-icon">🪨</div>
         <div class="mode-card-title">Project Rock ถือหุ้น + ผู้ร่วมลงทุน</div>
-        <div class="mode-card-desc">ต่อยอดจากโหมดลงทุนเอง — Project Rock ถือหุ้น 10% แลกกับส่วนลดงานรับเหมาผนัง (ผนัง โครงเหล็ก มือจับ เบาะ) 15%, royalty 2% ของรายได้, ค่าที่ปรึกษารายเดือน และหาผู้ร่วมลงทุนเพิ่ม · ดูคืนทุนทั้งในฐานะเจ้าของอาคารและผู้ร่วมลงทุน</div>
+        <div class="mode-card-desc">ต่อยอดจากโหมดลงทุนเอง — คุณ 20% sweat + Project Rock 10% (แลกส่วนลดงานผนัง 15% + แบรนด์) แล้วขายหุ้นเงินสด 70% ราคาเดียวกัน — คุณซื้อเพิ่ม 21% ให้คุณ+PR ถือ 51%, ผู้ร่วมลงทุน 49% · royalty 2%, ค่าที่ปรึกษารายเดือน · ดูคืนทุนทั้งฐานะเจ้าของอาคารและผู้ถือหุ้น</div>
         <div class="mode-card-tags">
-          <span class="mode-tag">PR 10%</span>
+          <span class="mode-tag">You 41% + PR 10% = 51%</span>
+          <span class="mode-tag">Investors 49%</span>
           <span class="mode-tag">Wall scope −15%</span>
           <span class="mode-tag">Royalty 2%</span>
-          <span class="mode-tag">Co-investors</span>
           <span class="mode-tag">Rent from M1</span>
         </div>
         <div class="mode-card-go">เลือกโหมดนี้ →</div>
@@ -929,19 +929,27 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
           </div>
           <div class="divider pr-only"></div>
           <div class="field pr-only">
-            <span class="field-label">Project Rock equity (%)</span>
+            <span class="field-label">Founder sweat equity (%) — free</span>
+            <input class="field-input" id="pr-sweat" type="number" step="0.5" value="20" oninput="recalc()">
+            <span class="field-hint">For building, sourcing and operating — no cash</span>
+          </div>
+          <div class="field pr-only">
+            <span class="field-label">Project Rock equity (%) — free</span>
             <input class="field-input" id="pr-eq" type="number" step="0.5" value="10" oninput="recalc()">
-            <span class="field-hint">No cash in — earned via wall-scope discount + brand</span>
+            <span class="field-hint">For the wall-scope discount + brand — no cash</span>
           </div>
           <div class="field pr-only">
-            <span class="field-label">Founder equity (%)</span>
-            <input class="field-input" id="pr-founder" type="number" step="0.5" value="45" oninput="recalc()">
-            <span class="field-hint">Your share; co-investors get the remainder</span>
+            <span class="field-label">Founder cash equity (%) — bought at investor price</span>
+            <input class="field-input" id="pr-fcash" type="number" step="0.5" value="21" oninput="recalc()">
+            <span class="field-hint">Out of the cash pool (100 − sweat − PR); same price per 1% as investors</span>
           </div>
           <div class="field pr-only">
-            <span class="field-label">Co-investors equity (%)</span>
+            <span class="field-label">Co-investors equity (%) — cash</span>
             <div class="field-computed" id="pr-investor">—</div>
-            <span class="field-hint">= 100 − PR − Founder · fit-out cash split Founder : Investors by equity</span>
+            <span class="field-hint">= cash pool − your cash equity</span>
+          </div>
+          <div class="full pr-only">
+            <div style="padding:14px; background:var(--bg3); border-radius:7px; font-size:12px; color:var(--text2); line-height:1.9;" id="pr-cap-note">—</div>
           </div>
           <div class="field pr-only">
             <span class="field-label">PR discount on wall-contract scope (%)</span>
@@ -1174,7 +1182,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
           <thead><tr>
             <th>Scenario</th><th>/day</th><th>Rev / yr</th><th>Royalty / yr</th><th>EBITDA / yr (Y1)</th>
             <th id="pr-h-pr">PR</th><th id="pr-h-inv">Investors</th><th id="pr-h-fdr">Founder div.</th><th>Rent → Founder</th>
-            <th>Investor payback</th><th>You — co-investor</th><th>You — landlord</th><th>You — combined</th>
+            <th>Investor payback</th><th>You — equity seat</th><th>You — landlord</th><th>You — combined</th>
           </tr></thead>
           <tbody id="pr-body"></tbody>
         </table>
@@ -1799,7 +1807,7 @@ const SETTINGS_SOLO = {
 };
 
 const SETTINGS_PR = Object.assign({}, SETTINGS_SOLO, {
-  prEq:'10', prFounder:'45', prDisc:'15', prRent:'48000', prRentEsc:'10', royaltyPct:'2',
+  prEq:'10', prSweat:'20', prFcash:'21', prDisc:'15', prRent:'48000', prRentEsc:'10', royaltyPct:'2',
 });
 
 const LEASEHOLD = 9650000;
@@ -1969,7 +1977,7 @@ function applySettings(s){
   set('jv-rent-sqm',s.jvRentSqm); set('jv-sqm',s.jvSqm);
   set('elec-hvac',s.elecHvac); set('elec-no-hvac',s.elecNoHvac);
   set('royalty-pct', s.royaltyPct);
-  set('pr-eq',s.prEq); set('pr-founder',s.prFounder); set('pr-disc',s.prDisc);
+  set('pr-eq',s.prEq); set('pr-sweat',s.prSweat); set('pr-fcash',s.prFcash); set('pr-disc',s.prDisc);
   set('pr-rent',s.prRent); set('pr-rent-esc',s.prRentEsc);
   set('depr-wall',s.deprWall); set('depr-equipment',s.deprEquipment);
   set('depr-rental',s.deprRental); set('depr-hvac',s.deprHvac);
@@ -2314,17 +2322,28 @@ function recalc() {
   // ── Project Rock mode: equity split, discount, rent, cash split ──
   const isPR = MODE==='pr';
   const gv = id => { const el=document.getElementById(id); return el ? (parseFloat(el.value)||0) : 0; };
-  const prEq   = isPR ? gv('pr-eq')/100 : 0;
-  const prFEq  = isPR ? gv('pr-founder')/100 : 0;
-  const prIEq  = isPR ? Math.max(0, 1 - prEq - prFEq) : 0;
+  // Free equity (sweat + Project Rock) comes off the top; the remaining "cash pool"
+  // is sold at one price per 1% to whoever puts cash in — founder and investors alike.
+  const prEq     = isPR ? gv('pr-eq')/100 : 0;                               // Project Rock, free
+  const prSweat  = isPR ? gv('pr-sweat')/100 : 0;                            // founder sweat, free
+  const cashPool = isPR ? Math.max(0, 1 - prEq - prSweat) : 0;               // e.g. 70%
+  const prFcash  = isPR ? Math.min(cashPool, Math.max(0, gv('pr-fcash')/100)) : 0;   // founder buys e.g. 21%
+  const prIEq    = isPR ? cashPool - prFcash : 0;                            // investors e.g. 49%
+  const prFEq    = prSweat + prFcash;                                        // founder total e.g. 41%
+  const prControl= prFEq + prEq;                                             // founder + PR e.g. 51%
   const prRentMo  = isPR ? gv('pr-rent') : 0;
   const prRentEsc = isPR ? gv('pr-rent-esc')/100 : 0;
   const bucketBGross = getGross('wall')+getGross('equipment')+getGross('fitout') - (hvac ? hvlsItemCost : hvacItemCost);
   const prDiscount   = bucketBGross - bucketB;                               // THB saved by the PR discount
-  const cashPool     = prFEq + prIEq;
-  const founderCash  = isPR ? (cashPool>0 ? bucketB*prFEq/cashPool : bucketB) : 0;   // founder's share of net fit-out
+  const pricePerPct  = (isPR && cashPool>0) ? bucketB/(cashPool*100) : 0;    // THB per 1% of equity
+  const founderCash  = isPR ? pricePerPct*prFcash*100 : 0;                   // founder's cash for its bought %
   const investorCash = isPR ? bucketB - founderCash : 0;
   const prIEl = document.getElementById('pr-investor'); if(prIEl) prIEl.textContent = (prIEq*100).toFixed(1)+'%';
+  const prCap = document.getElementById('pr-cap-note');
+  if(prCap) prCap.innerHTML =
+    `<strong>Cap table</strong> — Founder ${(prFEq*100).toFixed(1)}% (sweat ${(prSweat*100).toFixed(1)}% + cash ${(prFcash*100).toFixed(1)}%) · Project Rock ${(prEq*100).toFixed(1)}% · Investors ${(prIEq*100).toFixed(1)}%<br>` +
+    `<strong>Control block (you + Project Rock): ${(prControl*100).toFixed(1)}%</strong>${prControl>0.5?' ✓ majority':' ⚠ below 51%'}<br>` +
+    `Cash pool ${(cashPool*100).toFixed(1)}% raises the net fit-out THB ${fmt(bucketB)} → <strong>THB ${fmt(pricePerPct)} per 1%</strong> · you pay THB ${fmt(founderCash)} · investors pay THB ${fmt(investorCash)}`;
 
   // Land value (solo mode) — asset value, added to total investment but not to payback
   const landRai    = parseFloat(document.getElementById('land-rai').value)||0;
@@ -2375,9 +2394,9 @@ function recalc() {
   if(isPR){
     document.getElementById('kpi-capex').innerHTML = `
       <div class="kpi-card"><div class="kpi-label">Total CAPEX (net)</div><div class="kpi-value blue">THB ${fmt(soloCapex)}</div><div class="kpi-sub">Building + fit-out after PR −${prDiscPct()}% (saves THB ${fmt(prDiscount)})</div></div>
-      <div class="kpi-card"><div class="kpi-label">Your cash — building + fit-out share</div><div class="kpi-value accent">THB ${fmt(bucketA+founderCash)}</div><div class="kpi-sub">Building ${fmt(bucketA)} + ${(prFEq*100).toFixed(0)}% seat ${fmt(founderCash)}</div></div>
-      <div class="kpi-card"><div class="kpi-label">Co-investors cash (${(prIEq*100).toFixed(0)}%)</div><div class="kpi-value green">THB ${fmt(investorCash)}</div><div class="kpi-sub">Their share of net fit-out</div></div>
-      <div class="kpi-card"><div class="kpi-label">Total Investment</div><div class="kpi-value">THB ${fmt(soloInvest)}</div><div class="kpi-sub">CAPEX + land (Project Rock ${(prEq*100).toFixed(0)}% — no cash)</div></div>`;
+      <div class="kpi-card"><div class="kpi-label">Your cash — building + ${(prFcash*100).toFixed(0)}% bought</div><div class="kpi-value accent">THB ${fmt(bucketA+founderCash)}</div><div class="kpi-sub">Building ${fmt(bucketA)} + equity ${fmt(founderCash)} · you hold ${(prFEq*100).toFixed(0)}% incl. ${(prSweat*100).toFixed(0)}% sweat</div></div>
+      <div class="kpi-card"><div class="kpi-label">Co-investors cash (${(prIEq*100).toFixed(0)}%)</div><div class="kpi-value green">THB ${fmt(investorCash)}</div><div class="kpi-sub">THB ${fmt(pricePerPct)} per 1% — same price as you</div></div>
+      <div class="kpi-card"><div class="kpi-label">Control block</div><div class="kpi-value ${prControl>0.5?'blue':'orange'}">${(prControl*100).toFixed(0)}%</div><div class="kpi-sub">You ${(prFEq*100).toFixed(0)}% + Project Rock ${(prEq*100).toFixed(0)}% · total investment THB ${fmt(soloInvest)} incl. land</div></div>`;
 
     document.getElementById('capex-summary').innerHTML = `
       <div class="summary-item"><span class="s-label">Building & Structure (founder-owned, leased to company)</span><span class="s-val">THB ${fmt(bucketA)}</span></div>
@@ -2386,9 +2405,10 @@ function recalc() {
       <div class="summary-item"><span class="s-label">Gym Fit-out — net</span><span class="s-val">THB ${fmt(bucketB)}</span></div>
       <div class="summary-item highlight"><span class="s-label">Total CAPEX (building + net fit-out)</span><span class="s-val accent">THB ${fmt(soloCapex)}</span></div>
       <div class="summary-item"><span class="s-label">Land (${landRai} rai × THB ${fmt(landPerRai)}) — not in payback</span><span class="s-val">THB ${fmt(landValue)}</span></div>
-      <div class="summary-item highlight-green"><span class="s-label">Founder fit-out cash (${(prFEq*100).toFixed(0)}% of ${(cashPool*100).toFixed(0)}% cash pool)</span><span class="s-val green">THB ${fmt(founderCash)}</span></div>
-      <div class="summary-item highlight-green"><span class="s-label">Co-investors fit-out cash (${(prIEq*100).toFixed(0)}% of ${(cashPool*100).toFixed(0)}% cash pool)</span><span class="s-val blue">THB ${fmt(investorCash)}</span></div>
-      <div class="summary-item"><span class="s-label">Equity: Founder ${(prFEq*100).toFixed(0)}% · Co-investors ${(prIEq*100).toFixed(0)}% · Project Rock ${(prEq*100).toFixed(0)}% (no cash)</span><span class="s-val">100%</span></div>
+      <div class="summary-item"><span class="s-label">Cash pool ${(cashPool*100).toFixed(0)}% = net fit-out → price per 1% of equity</span><span class="s-val">THB ${fmt(pricePerPct)}</span></div>
+      <div class="summary-item highlight-green"><span class="s-label">Founder buys ${(prFcash*100).toFixed(0)}% (on top of ${(prSweat*100).toFixed(0)}% sweat)</span><span class="s-val green">THB ${fmt(founderCash)}</span></div>
+      <div class="summary-item highlight-green"><span class="s-label">Co-investors buy ${(prIEq*100).toFixed(0)}%</span><span class="s-val blue">THB ${fmt(investorCash)}</span></div>
+      <div class="summary-item"><span class="s-label">Equity: Founder ${(prFEq*100).toFixed(0)}% · Investors ${(prIEq*100).toFixed(0)}% · Project Rock ${(prEq*100).toFixed(0)}% — control ${(prControl*100).toFixed(0)}%</span><span class="s-val">100%</span></div>
       <div class="summary-item"><span class="s-label">Monthly OPEX (active) + rent THB ${fmt(prRentMo)}</span><span class="s-val">THB ${fmt(baseOpex+prRentMo)}</span></div>`;
   } else if(MODE==='solo'){
     document.getElementById('kpi-capex').innerHTML = `
@@ -2521,7 +2541,7 @@ function recalc() {
     document.getElementById('pr-cf-h-inv').textContent = 'Investors '+pct(prIEq);
     document.getElementById('pr-cf-h-fdr').textContent = 'Founder div. '+pct(prFEq);
     document.getElementById('pr-split-label').textContent =
-      `Founder ${pct(prFEq)} · Investors ${pct(prIEq)} · PR ${pct(prEq)} · your cash ${fmt(bucketA+founderCash)} · investors ${fmt(investorCash)}`;
+      `You ${pct(prFEq)} (${pct(prSweat)} sweat + ${pct(prFcash)} cash) · Investors ${pct(prIEq)} · PR ${pct(prEq)} · control ${pct(prControl)} · your cash ${fmt(bucketA+founderCash)} · investors ${fmt(investorCash)}`;
     let pr='';
     SCENARIOS.forEach(sc=>{
       const c=calcSc(sc.visitors,opex1); const y1=c.pm.rows[0];
@@ -2534,7 +2554,7 @@ function recalc() {
     document.getElementById('pr-note').innerHTML =
       `Year-1 figures. EBITDA = revenue − OPEX − rent − royalty ${(royPct*100).toFixed(1)}%, split by equity. ` +
       `<strong>Investor payback</strong>: their fit-out cash THB ${fmt(investorCash)} vs cumulative ${pct(prIEq)} of EBITDA. ` +
-      `<strong>You — co-investor</strong>: your fit-out cash THB ${fmt(founderCash)} vs cumulative ${pct(prFEq)} of EBITDA. ` +
+      `<strong>You — equity seat</strong>: the THB ${fmt(founderCash)} you pay for ${pct(prFcash)} vs cumulative dividends on your full ${pct(prFEq)} (sweat + bought) — the bought ${pct(prFcash)} alone pays back exactly like the investors' seat, since the price per 1% is identical. ` +
       `<strong>You — landlord</strong>: building THB ${fmt(bucketA)} vs cumulative rent (+${(prRentEsc*100).toFixed(0)}% every 3 yrs). ` +
       `<strong>You — combined</strong>: building + fit-out cash THB ${fmt(bucketA+founderCash)} vs rent + dividends. Land excluded. Cumulative with interpolation; "Loss" = not recovered within 15 yrs.`;
     let cf='';
@@ -2549,7 +2569,7 @@ function recalc() {
     const kpr = document.getElementById('kpi-pr');
     if(kpr) kpr.innerHTML = `
       <div class="kpi-card"><div class="kpi-label">Investor payback (Base)</div><div class="kpi-value green">${investorCash>0&&bc.pm.pI?bc.pm.pI.toFixed(1)+' yrs':investorCash>0?'Loss':'n/a'}</div><div class="kpi-sub">THB ${fmt(investorCash)} · ${pct(prIEq)} of EBITDA</div></div>
-      <div class="kpi-card"><div class="kpi-label">You — co-investor (Base)</div><div class="kpi-value blue">${founderCash>0&&bc.pm.pF?bc.pm.pF.toFixed(1)+' yrs':founderCash>0?'Loss':'n/a'}</div><div class="kpi-sub">THB ${fmt(founderCash)} · ${pct(prFEq)} of EBITDA</div></div>
+      <div class="kpi-card"><div class="kpi-label">You — equity seat (Base)</div><div class="kpi-value blue">${founderCash>0&&bc.pm.pF?bc.pm.pF.toFixed(1)+' yrs':founderCash>0?'Loss':'n/a'}</div><div class="kpi-sub">THB ${fmt(founderCash)} for ${pct(prFcash)} · earns ${pct(prFEq)} incl. sweat</div></div>
       <div class="kpi-card"><div class="kpi-label">You — landlord (Base)</div><div class="kpi-value orange">${bc.pm.pL?bc.pm.pL.toFixed(1)+' yrs':'> 15 yrs'}</div><div class="kpi-sub">Building THB ${fmt(bucketA)} · rent ${fmt(prRentMo)}/mo</div></div>
       <div class="kpi-card"><div class="kpi-label">You — combined (Base)</div><div class="kpi-value accent">${bc.pm.pO?bc.pm.pO.toFixed(1)+' yrs':'Loss'}</div><div class="kpi-sub">THB ${fmt(bucketA+founderCash)} · rent + dividends</div></div>`;
   }
@@ -2691,7 +2711,8 @@ function exportData() {
     jvRentSqm:    document.getElementById('jv-rent-sqm').value,
     royaltyPct:   document.getElementById('royalty-pct').value,
     prEq:         document.getElementById('pr-eq').value,
-    prFounder:    document.getElementById('pr-founder').value,
+    prSweat:      document.getElementById('pr-sweat').value,
+    prFcash:      document.getElementById('pr-fcash').value,
     prDisc:       document.getElementById('pr-disc').value,
     prRent:       document.getElementById('pr-rent').value,
     prRentEsc:    document.getElementById('pr-rent-esc').value,
@@ -2751,7 +2772,7 @@ function importData(event) {
         set('jv-visits', s.jvVisits); set('jv-walkin', s.jvWalkin);
         set('jv-rent-sqm', s.jvRentSqm); set('jv-sqm', s.jvSqm);
         set('royalty-pct', s.royaltyPct);
-        set('pr-eq', s.prEq); set('pr-founder', s.prFounder); set('pr-disc', s.prDisc);
+        set('pr-eq', s.prEq); set('pr-sweat', s.prSweat); set('pr-fcash', s.prFcash); set('pr-disc', s.prDisc);
         set('pr-rent', s.prRent); set('pr-rent-esc', s.prRentEsc);
         set('elec-hvac', s.elecHvac); set('elec-no-hvac', s.elecNoHvac);
         set('depr-wall', s.deprWall); set('depr-equipment', s.deprEquipment);
