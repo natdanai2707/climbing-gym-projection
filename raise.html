@@ -486,11 +486,11 @@ body.deck-mode .deck-nav { display: flex; }
     </div>
     <div>
       <div class="card">
-        <div class="card-header"><span class="card-title">🏠 ค่าเช่าอาคาร — เรตโกดังเปล่า (ต่ำกว่าเรตอาคารติดแอร์)</span></div>
+        <div class="card-header"><span class="card-title">🏠 ค่าเช่าอาคาร — เรตโกดังเปล่า · เริ่มหลังนักลงทุนคืนทุน</span></div>
         <div class="card-body" style="padding-bottom:12px;">
           <div class="settings-grid" style="grid-template-columns:1fr 1fr;">
             <div class="field">
-              <span class="field-label">ค่าเช่า / เดือน (THB)</span>
+              <span class="field-label">ค่าเช่า / เดือน (THB) — เริ่มหลังนักลงทุนคืนทุน</span>
               <input class="field-input" id="in-rent-base" type="number" value="48000" oninput="recalcAll()">
             </div>
             <div class="field">
@@ -533,20 +533,41 @@ body.deck-mode .deck-nav { display: flex; }
           <span class="field-hint">Retainer รายเดือน = RM 2,500 (@ MYR 7.7) — คงที่ ไม่ผูกกับรายได้</span>
         </div>
         <div class="field">
-          <span class="field-label">สัดส่วนหุ้น Founder (%)</span>
-          <input class="field-input" id="in-founder-pct" type="number" step="0.5" value="20" oninput="recalcAll()">
-          <span class="field-hint">หุ้นผู้ก่อตั้ง</span>
+          <span class="field-label">ส่วนลดงานผนังจาก Project Rock (%)</span>
+          <input class="field-input" id="in-pr-disc" type="number" step="1" value="15" oninput="renderEditableTables();recalcAll()">
+          <span class="field-hint">ใช้กับรายการที่ติดป้าย PR (ผนัง โครงเหล็ก มือจับ เบาะ volumes)</span>
         </div>
         <div class="field">
-          <span class="field-label">สัดส่วนหุ้น Kae Vin (%)</span>
+          <span class="field-label">Founder — sweat equity (%) ฟรี</span>
+          <input class="field-input" id="in-sweat-pct" type="number" step="0.5" value="20" oninput="recalcAll()">
+          <span class="field-hint">อาคาร sourcing บริหาร</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Founder — หุ้นที่จ่ายด้วยงาน in-kind (%)</span>
+          <input class="field-input" id="in-inkind-pct" type="number" step="0.5" value="21" oninput="recalcAll()">
+          <span class="field-hint">จ่ายด้วยงานที่ Founder สร้าง (รายการติดป้าย In-kind) ราคาหุ้นเดียวกับนักลงทุน</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Project Rock equity (%) ฟรี</span>
           <input class="field-input" id="in-kaevin-pct" type="number" step="0.5" value="10" oninput="recalcAll()">
-          <span class="field-hint">หุ้นพันธมิตรแบรนด์</span>
+          <span class="field-hint">แลกส่วนลดงานผนัง + แบรนด์</span>
+        </div>
+        <div class="field">
+          <span class="field-label">ราคาหุ้น (THB / หุ้น)</span>
+          <input class="field-input" id="in-share-price" type="number" step="1000" value="120000" oninput="recalcAll()">
+          <span class="field-hint">จำนวนหุ้นคำนวณให้ทุกฝ่ายเป็นหุ้นเต็มพอดี</span>
+        </div>
+        <div class="field">
+          <span class="field-label">ค่าส่วนกลาง (CAM) — พื้นที่ยิม (sqm)</span>
+          <input class="field-input" id="in-cam-sqm" type="number" value="400" oninput="recalcAll()">
+        </div>
+        <div class="field">
+          <span class="field-label">ค่าส่วนกลาง (THB / sqm / เดือน) — จ่ายตั้งแต่เดือน 1</span>
+          <input class="field-input" id="in-cam-rate" type="number" value="15" oninput="recalcAll()">
+          <span class="field-hint">แยกจากค่าเช่า ซึ่งเริ่มหลังนักลงทุนคืนทุน</span>
         </div>
         <div class="full">
-          <div style="padding:14px;background:var(--bg3);border-radius:7px;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:12px;color:var(--text2);">ส่วนของนักลงทุน (ที่เหลือ)</span>
-            <span id="h-kaevin" style="font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:600;">—</span>
-          </div>
+          <div style="padding:14px;background:var(--bg3);border-radius:7px;font-size:12px;color:var(--text2);line-height:1.9;" id="h-kaevin">—</div>
         </div>
       </div>
       <div class="ptbl-wrap" style="margin-top:14px;"><table class="ptbl" id="tbl-brand"></table></div>
@@ -618,7 +639,6 @@ body.deck-mode .deck-nav { display: flex; }
 <script>
 // ══ RAISE DATASET (investor-safe — fully itemized & editable) ══
 const RAISE = {
-  sharePrice: 100000,
   horizonYears: 12,
 
   // Founder-funded building shell — context only, NOT part of the raise
@@ -688,6 +708,13 @@ const RAISE = {
   rent: { baseMo: 48000, escalatePct: 10, everyYears: 3 },
 };
 
+// Project Rock scope (discounted) and founder in-kind items (contributed for equity)
+RAISE.buckets[0].items.forEach(r => { r.pr = true; });
+RAISE.buckets[1].items.forEach(r => { const n=r.name.toLowerCase(); if (n.includes('เบาะ')||n.includes('holds')||n.includes('volumes')) r.pr = true; });
+RAISE.buckets[2].items.forEach(r => { const n=r.name.toLowerCase(); if (n.includes('แอร์')||n.includes('ห้องน้ำ')||n.includes('รีโนเวท')||n.includes('กรองน้ำ')) r.ik = true; });
+function prDisc(){ const el=document.getElementById('in-pr-disc'); return el?(parseFloat(el.value)||0):0; }
+function effAmt(r){ const a=parseFloat(r.amt)||0; return r.pr ? a*(1-prDisc()/100) : a; }
+
 // ══ EDITABLE SECTIONS ══
 const EDIT_SECTIONS = {
   warehouse: () => RAISE.warehouse,
@@ -703,8 +730,8 @@ function renderEditableTables(){
     const tb = document.getElementById('tb-'+key);
     if (!tb) return;
     tb.innerHTML = arr.map((r,i) => `<tr>
-      <td class="cell-name"><input type="text" value="${(r.name||'').replace(/"/g,'&quot;')}"
-        onchange="EDIT_SECTIONS['${key}']()[${i}].name=this.value;recalcAll()"></td>
+      <td class="cell-name"><div style="display:flex;align-items:center;gap:6px;">${r.pr?`<span class="sc-pill" style="padding:1px 7px;font-size:9px;font-family:var(--mono);cursor:default;background:#fdf0eb;border-color:#f2cfc0;color:var(--accent);">PR −${prDisc()}%</span>`:''}${r.ik?`<span class="sc-pill" style="padding:1px 7px;font-size:9px;font-family:var(--mono);cursor:default;background:#eef5f0;border-color:#c8ddd0;color:var(--green);">In-kind</span>`:''}<input type="text" value="${(r.name||'').replace(/"/g,'&quot;')}"
+        onchange="EDIT_SECTIONS['${key}']()[${i}].name=this.value;recalcAll()"></div></td>
       <td class="cell-amt"><input type="number" value="${r.amt}"
         oninput="EDIT_SECTIONS['${key}']()[${i}].amt=parseFloat(this.value)||0;recalcAll()"></td>
       <td class="cell-del" onclick="delRowR('${key}',${i})">×</td>
@@ -743,70 +770,96 @@ function computeModel(){
 
   const shellTotal  = RAISE.warehouse.reduce((s,r)=>s+(parseFloat(r.amt)||0),0);
   const buckets     = RAISE.buckets.map(b => ({ key:b.key, icon:b.icon, label:b.label,
-                        total: b.items.reduce((s,r)=>s+(parseFloat(r.amt)||0),0) }));
-  const bucketTotal = buckets.reduce((s,b)=>s+b.total,0);
+                        gross: b.items.reduce((s,r)=>s+(parseFloat(r.amt)||0),0),
+                        total: b.items.reduce((s,r)=>s+effAmt(r),0) }));
+  const bucketGross = buckets.reduce((s,b)=>s+b.gross,0);
+  const bucketTotal = buckets.reduce((s,b)=>s+b.total,0);             // net of Project Rock discount
+  const prDiscount  = bucketGross - bucketTotal;
+  const inkindValue = RAISE.buckets[2].items.reduce((s,r)=>s+(r.ik?effAmt(r):0),0);   // works the founder builds
 
-  // Founder and Kae Vin stakes are entered directly; investors take the rest.
-  // Share count is the smallest whole-share structure that (a) raises at least
-  // the fit-out cost and (b) makes every stake an exact whole number of shares,
-  // so the cap table lands on the entered percentages with no rounding drift.
+  // Equity: sweat (free) + Project Rock (free) come off the top. The remaining
+  // "capital pool" is priced at ONE price per share: investors pay cash, the
+  // founder pays with the in-kind works. Share count = smallest whole-share
+  // structure whose capital pool covers the net fit-out.
   const gcd = (a,b) => b ? gcd(b, a%b) : a;
-  const fPctIn = Math.max(0, num('in-founder-pct'));
-  const kPctIn = Math.max(0, num('in-kaevin-pct'));
-  const sponsorPctIn = Math.min(95, fPctIn + kPctIn);
-  const iPctIn = 100 - sponsorPctIn;
-  const mi = Math.round(iPctIn*10), mf = Math.round(fPctIn*10), mk = Math.round(kPctIn*10);
-  const unit = 1000 / gcd(gcd(gcd(mi, mf), mk), 1000);
-  const invPerUnit = unit*mi/1000;
-  const needed = Math.ceil(bucketTotal/RAISE.sharePrice);
-  const totalShares    = unit * Math.max(1, Math.ceil(needed/invPerUnit));
+  const sharePrice = Math.max(1000, num('in-share-price'));
+  const sPct = Math.max(0, num('in-sweat-pct'));
+  const kPct = Math.max(0, num('in-inkind-pct'));
+  const pPct = Math.max(0, num('in-kaevin-pct'));
+  const iPct = Math.max(5, 100 - sPct - kPct - pPct);
+  const mi=Math.round(iPct*10), ms=Math.round(sPct*10), mk=Math.round(kPct*10), mp=Math.round(pPct*10);
+  const unit = 1000 / gcd(gcd(gcd(gcd(mi,ms),mk),mp),1000);
+  const poolPerUnit = unit*(mi+mk)/1000;
+  const needed = Math.ceil(bucketTotal/sharePrice);
+  const totalShares    = unit * Math.max(1, Math.ceil(needed/poolPerUnit));
   const investorShares = totalShares*mi/1000;
-  const founderShares  = totalShares*mf/1000;
-  const kaeVinShares   = totalShares*mk/1000;
-  const raise          = investorShares * RAISE.sharePrice;
-  const postMoney      = totalShares * RAISE.sharePrice;
-  const contingency    = raise - bucketTotal;
+  const sweatShares    = totalShares*ms/1000;
+  const inkindShares   = totalShares*mk/1000;
+  const kaeVinShares   = totalShares*mp/1000;
+  const founderShares  = sweatShares + inkindShares;
+  const raise          = investorShares * sharePrice;                 // investors' cash
+  const founderPrice   = inkindShares * sharePrice;                   // value the founder must contribute
+  const capitalPool    = raise + founderPrice;
+  const contingency    = capitalPool - bucketTotal;
+  const founderTopUp   = Math.max(0, founderPrice - inkindValue);
+  const inkindExcess   = Math.max(0, inkindValue - founderPrice);
+  const postMoney      = totalShares * sharePrice;
   const investorPct    = investorShares / totalShares;
   const founderPct     = founderShares  / totalShares;
+  const sweatPct       = sweatShares    / totalShares;
+  const inkindPct      = inkindShares   / totalShares;
   const kaeVinPct      = kaeVinShares   / totalShares;
+  const controlPct     = founderPct + kaeVinPct;
 
   const opexMo        = RAISE.opexMonthly.reduce((s,r)=>s+(parseFloat(r.amt)||0),0);
   const opexAnn       = opexMo*12;
   const royaltyPct    = num('in-royalty-pct');
   const consultingMo  = num('in-consulting-mo');
   const consultingAnn = consultingMo*12;
+  const camMo         = num('in-cam-sqm')*num('in-cam-rate');       // common-area fee, from month 1
+  const camAnn        = camMo*12;
   const rentBase = num('in-rent-base');
   const rentEsc  = num('in-rent-esc');
-  const rentMoY  = y => rentBase * Math.pow(1+rentEsc/100, Math.floor((y-1)/RAISE.rent.everyYears));
-  const opexY    = y => opexAnn + consultingAnn + rentMoY(y)*12;
+  const opexPreRent = opexAnn + consultingAnn + camAnn;               // annual, before rent
+  const opexY    = y => opexPreRent;                                  // rent is added per-scenario once it starts
 
   const scenarios = SCENARIOS.map(sc => {
-    const revenue = sc.visitors * rpv * days;                             // flat across years
-    const royalty = revenue * royaltyPct/100;                             // brand licence on gross revenue
-    const years = []; let cum = 0; let payback = null;
+    const revenue = sc.visitors * rpv * days;                         // flat across years
+    const royalty = revenue * royaltyPct/100;
+    const e0 = revenue - opexPreRent - royalty;                       // EBITDA before rent
+    const years = []; let cum = 0; let payback = null; let rentAge = null;
     for (let y=1; y<=RAISE.horizonYears; y++){
-      const ebitda = revenue - opexY(y) - royalty;
-      const inv = ebitda * investorPct;
-      const fdr = ebitda * founderPct;
-      const kvn = ebitda * kaeVinPct;
-      const prev = cum;
+      let rentRate=0, rY=0, f=null, startMo=null;
+      if (rentAge===null){
+        const dI0 = e0*investorPct;
+        if (dI0>0 && cum + dI0 >= raise){                             // investors recoup inside this year
+          f = (raise-cum)/dI0; payback = (y-1)+f;
+          rentRate = rentBase; rY = rentRate*12*(1-f); startMo = Math.min(12, Math.floor(f*12)+1);
+          rentAge = 1-f;
+        }
+      } else {
+        rentRate = rentBase*Math.pow(1+rentEsc/100, Math.floor(rentAge/RAISE.rent.everyYears));
+        rY = rentRate*12; rentAge += 1;
+      }
+      const ebitda = e0 - rY;
+      const inv = ebitda*investorPct, fdr = ebitda*founderPct, kvn = ebitda*kaeVinPct;
       cum += inv;
-      if (payback===null && inv>0 && cum >= raise)
-        payback = (y-1) + (raise - prev)/inv;                             // interpolate within crossover year
-      years.push({ y, rentMo: rentMoY(y), opex: opexY(y), royalty, revenue, ebitda, inv, fdr, kvn, cum });
+      years.push({ y, rentMo: rentRate, startMo, rY, opex: opexPreRent + rY, royalty, revenue, ebitda, inv, fdr, kvn, cum });
     }
     const e1 = years[0].ebitda;
     return { ...sc, revenue, royalty, years, ebitda1: e1, payback,
-             yield1: e1/postMoney, investor1: e1*investorPct,
-             founder1: e1*founderPct, kaeVin1: e1*kaeVinPct };
+             yield1: e1/postMoney, investor1: e1*investorPct, founder1: e1*founderPct, kaeVin1: e1*kaeVinPct };
   });
 
-  const breakEven = opexY(1) / (rpv*days*(1-royaltyPct/100));
-  return { daypass, days, gear, rpv, opexMo, opexAnn, opexY, rentMoY, rentBase, rentEsc,
-           royaltyPct, consultingMo, consultingAnn,
-           shellTotal, buckets, bucketTotal, raise, contingency,
-           investorShares, founderShares, kaeVinShares,
-           investorPct, founderPct, kaeVinPct, totalShares, postMoney, scenarios, breakEven };
+  const breakEven = opexPreRent / (rpv*days*(1-royaltyPct/100));
+  const rentMoY = y => rentBase*Math.pow(1+rentEsc/100, Math.floor((y-1)/RAISE.rent.everyYears));   // schedule once started
+  return { daypass, days, gear, rpv, opexMo, opexAnn, opexY, opexPreRent, rentMoY, rentBase, rentEsc,
+           royaltyPct, consultingMo, consultingAnn, camMo, camAnn,
+           shellTotal, buckets, bucketGross, bucketTotal, prDiscount, inkindValue,
+           sharePrice, raise, founderPrice, capitalPool, contingency, founderTopUp, inkindExcess,
+           investorShares, sweatShares, inkindShares, founderShares, kaeVinShares,
+           investorPct, founderPct, sweatPct, inkindPct, kaeVinPct, controlPct,
+           totalShares, postMoney, scenarios, breakEven };
 }
 
 const pbText = p => p===null ? '> 10 ปี (not viable)' : '≈ '+p.toFixed(1)+' ปี';
@@ -814,72 +867,71 @@ const pbCls  = p => p===null ? 'neg' : p<2 ? 'pos' : p<5 ? 'warn' : 'neutral';
 
 // ══ RENDER: PROJECTION VIEW ══
 function renderProjection(m){
-  // Headline KPIs
   const base = m.scenarios.find(s=>s.name==='Base') || m.scenarios[1];
+  const pc = v => (v*100).toFixed(1)+'%';
   document.getElementById('kpi-head').innerHTML = `
-    <div class="kpi-card"><div class="kpi-label">การระดมทุน (Raise)</div><div class="kpi-value accent">THB ${fmt(m.raise)}</div><div class="kpi-sub">${m.investorShares} หุ้น × ${fmt(RAISE.sharePrice)} · ${(m.investorPct*100).toFixed(1)}%</div></div>
-    <div class="kpi-card"><div class="kpi-label">Post-money Valuation</div><div class="kpi-value">THB ${fmt(m.postMoney)}</div><div class="kpi-sub">${m.totalShares} หุ้นรวม · Founder ${(m.founderPct*100).toFixed(1)}% · Kae Vin ${(m.kaeVinPct*100).toFixed(1)}%</div></div>
-    <div class="kpi-card"><div class="kpi-label">Base Case Payback (นักลงทุน)</div><div class="kpi-value green">${base.payback?base.payback.toFixed(1)+' ปี':'—'}</div><div class="kpi-sub">${base.visitors} คน/วัน · หลังหักส่วนผู้ถือหุ้นอื่น ${((1-m.investorPct)*100).toFixed(1)}%</div></div>
-    <div class="kpi-card"><div class="kpi-label">Break-even</div><div class="kpi-value blue">≈ ${Math.ceil(m.breakEven)} คน/วัน</div><div class="kpi-sub">rev/visit THB ${fmt(m.rpv)} · ${m.days} วัน/ปี</div></div>`;
+    <div class="kpi-card"><div class="kpi-label">ระดมทุนเงินสดจากนักลงทุน</div><div class="kpi-value accent">THB ${fmt(m.raise)}</div><div class="kpi-sub">${m.investorShares} หุ้น × ${fmt(m.sharePrice)} · ${pc(m.investorPct)}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Post-money Valuation</div><div class="kpi-value">THB ${fmt(m.postMoney)}</div><div class="kpi-sub">${m.totalShares} หุ้น · Founder ${pc(m.founderPct)} · Project Rock ${pc(m.kaeVinPct)}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Base Case Payback (นักลงทุน)</div><div class="kpi-value green">${base.payback?base.payback.toFixed(1)+' ปี':'—'}</div><div class="kpi-sub">${base.visitors} คน/วัน · ${pc(m.investorPct)} ของ EBITDA · ค่าเช่าเริ่มหลังคืนทุน</div></div>
+    <div class="kpi-card"><div class="kpi-label">Break-even</div><div class="kpi-value blue">≈ ${Math.ceil(m.breakEven)} คน/วัน</div><div class="kpi-sub">rev/visit THB ${fmt(m.rpv)} · ${m.days} วัน/ปี · ก่อนค่าเช่า</div></div>`;
 
-  // Editable-table totals (chips + in-table sum rows)
   const sums = { warehouse: m.shellTotal, wall: m.buckets[0].total,
                  equipment: m.buckets[1].total, fitout: m.buckets[2].total, opex: m.opexMo };
   Object.entries(sums).forEach(([k,v]) => {
     const s = document.getElementById('sum-'+k); if (s) s.textContent = fmt(v);
     const c = document.getElementById('t-'+k);   if (c) c.textContent = 'THB '+fmt(v);
   });
-  document.getElementById('n-rent-formula').textContent = `THB ${fmt(m.rentBase)}/เดือน`;
+  document.getElementById('n-rent-formula').textContent = `THB ${fmt(m.rentBase)}/เดือน (เริ่มหลังนักลงทุนคืนทุน)`;
 
-  // Raise summary (computed from the editable buckets)
-  document.getElementById('t-raise').textContent = 'THB '+fmt(m.raise);
+  // Raise summary
+  document.getElementById('t-raise').textContent = 'THB '+fmt(m.raise)+' เงินสด';
   document.getElementById('tbl-buckets').innerHTML =
-    `<thead><tr><th>Bucket</th><th>THB</th><th>% of raise</th></tr></thead><tbody>` +
-    m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.total)}</td><td class="neutral">${(b.total/m.raise*100).toFixed(1)}%</td></tr>`).join('') +
-    `<tr><td style="color:var(--text3);font-weight:400;">สำรอง (contingency)</td><td class="neutral">${fmt(m.contingency)}</td><td class="neutral">${(m.contingency/m.raise*100).toFixed(1)}%</td></tr>
-     <tr class="total-row"><td>ยอดระดมทุน</td><td class="pos">${fmt(m.raise)}</td><td>100%</td></tr></tbody>`;
+    `<thead><tr><th>Bucket</th><th>ราคาเต็ม</th><th>สุทธิ (หลังส่วนลด PR)</th></tr></thead><tbody>` +
+    m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td class="neutral">${fmt(b.gross)}</td><td>${fmt(b.total)}</td></tr>`).join('') +
+    `<tr><td style="color:var(--text3);font-weight:400;">ส่วนลดจาก Project Rock (−${prDisc()}% รายการ PR)</td><td></td><td class="pos">− ${fmt(m.prDiscount)}</td></tr>
+     <tr><td style="color:var(--text3);font-weight:400;">สำรอง (contingency)</td><td></td><td class="neutral">${fmt(m.contingency)}</td></tr>
+     <tr class="total-row"><td>ทุนที่ต้องใส่ (capital pool ${pc(m.investorPct+m.inkindPct)})</td><td></td><td class="pos">${fmt(m.capitalPool)}</td></tr>
+     <tr><td>· นักลงทุน — เงินสด (${m.investorShares} หุ้น)</td><td></td><td class="pos">${fmt(m.raise)}</td></tr>
+     <tr><td>· Founder — งาน in-kind (${m.inkindShares} หุ้น)</td><td></td><td class="pos">${fmt(m.founderPrice)}</td></tr></tbody>`;
   document.getElementById('n-raise-round').innerHTML =
-    `ยอดระดมทุน <strong>THB ${fmt(m.raise)}</strong> = ${m.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)} — 3 buckets รวม THB ${fmt(m.bucketTotal)} + สำรอง (contingency) THB ${fmt(m.contingency)}`;
+    `หุ้นละ <strong>THB ${fmt(m.sharePrice)}</strong> · ${m.totalShares} หุ้น = post-money THB ${fmt(m.postMoney)} · นักลงทุนใส่เงินสด <strong>THB ${fmt(m.raise)}</strong> ได้ ${pc(m.investorPct)} · Founder ใส่งานที่สร้างเอง (แอร์ ห้องน้ำ รีโนเวท เครื่องกรองน้ำ) มูลค่า THB ${fmt(m.inkindValue)} ได้ ${pc(m.inkindPct)}` +
+    (m.founderTopUp>0 ? ` + เงินสด ${fmt(m.founderTopUp)}` : m.inkindExcess>0 ? ` (เกินราคาหุ้น ${fmt(m.inkindExcess)})` : '') +
+    ` · Founder รวม ${pc(m.founderPct)} (sweat ${pc(m.sweatPct)}) · Project Rock ${pc(m.kaeVinPct)} · <strong>Founder + Project Rock = ${pc(m.controlPct)}</strong>`;
 
-  // Revenue
   document.getElementById('t-rpv').textContent = 'THB '+fmt(m.rpv)+' / visit';
   document.getElementById('rpv-inline').textContent =
     `THB ${fmt(m.daypass)} + ${m.gear.map(g=>fmt(g.price*g.attach/100)).join(' + ')} = THB ${fmt(m.rpv)}`;
-
-  // OPEX chip (items are in the editable table)
   document.getElementById('t-opex-mo').textContent = 'THB '+fmt(m.opexMo)+' /mo · '+fmt(m.opexAnn)+' /yr';
 
-  // Rent schedule
   const bands = [[1,3],[4,6],[7,9],[10,12]];
   document.getElementById('tbl-rent').innerHTML =
-    `<thead><tr><th>ปี</th><th>ค่าเช่า / เดือน</th><th>ค่าเช่า / ปี</th></tr></thead><tbody>` +
-    bands.map(([a,b])=>`<tr><td>ปีที่ ${a}–${b}</td><td>${fmt(m.rentMoY(a))}</td><td>${fmt(m.rentMoY(a)*12)}</td></tr>`).join('') +
-    `</tbody>`;
+    `<thead><tr><th>ปีที่ (นับจากเริ่มเช่า)</th><th>ค่าเช่า / เดือน</th><th>ค่าเช่า / ปี</th></tr></thead><tbody>` +
+    bands.map(([a,b])=>`<tr><td>ปีที่ ${a}–${b}</td><td>${fmt(m.rentMoY(a))}</td><td>${fmt(m.rentMoY(a)*12)}</td></tr>`).join('') + `</tbody>`;
   document.getElementById('n-rent-note').innerHTML =
-    `เริ่มเดือนที่ 1 · <strong>+${m.rentEsc}% ทุก ${RAISE.rent.everyYears} ปี</strong>`;
+    `ค่าเช่า<strong>เริ่มเมื่อนักลงทุนคืนทุนครบ</strong> (Base ≈ ปีที่ ${base.payback?base.payback.toFixed(1):'—'}) · <strong>+${m.rentEsc}% ทุก ${RAISE.rent.everyYears} ปี</strong>นับจากวันเริ่มเช่า · ค่าส่วนกลาง THB ${fmt(m.camMo)}/เดือน จ่ายตั้งแต่เดือน 1`;
 
-  // Year-1 OPEX total
   document.getElementById('tbl-opex-y1').innerHTML = `<tbody>
     <tr><td>Operating OPEX (ปี 1)</td><td>${fmt(m.opexAnn)}</td></tr>
     <tr><td>ค่าที่ปรึกษา (ปี 1)</td><td>${fmt(m.consultingAnn)}</td></tr>
-    <tr><td>Rent (ปี 1)</td><td>${fmt(m.rentMoY(1)*12)}</td></tr>
-    <tr class="total-row"><td>Total OPEX ปีที่ 1 (ก่อน royalty)</td><td class="warn">${fmt(m.opexY(1))}</td></tr>
+    <tr><td>ค่าส่วนกลาง (CAM) ปี 1</td><td>${fmt(m.camAnn)}</td></tr>
+    <tr><td style="color:var(--text3);font-weight:400;">ค่าเช่า (ปี 1)</td><td class="neutral">0 — เริ่มหลังคืนทุน</td></tr>
+    <tr class="total-row"><td>Total OPEX ปีที่ 1 (ก่อน royalty)</td><td class="warn">${fmt(m.opexPreRent)}</td></tr>
     <tr><td style="color:var(--text3);font-weight:400;">+ Royalty ${m.royaltyPct}% (Base ${base.visitors} คน/วัน)</td><td class="neutral">${fmt(base.royalty)}</td></tr>
-    <tr class="total-row"><td>รวมทั้งหมด (Base)</td><td class="warn">${fmt(m.opexY(1)+base.royalty)}</td></tr></tbody>`;
+    <tr class="total-row"><td>รวมทั้งหมด (Base)</td><td class="warn">${fmt(m.opexPreRent+base.royalty)}</td></tr></tbody>`;
 
-  // Brand licence & advisory
-  document.getElementById('h-kaevin').textContent =
-    `${(m.investorPct*100).toFixed(1)}% · ${m.investorShares} หุ้น · THB ${fmt(m.raise)}`;
+  document.getElementById('h-kaevin').innerHTML =
+    `<strong>Cap table</strong> — นักลงทุน ${pc(m.investorPct)} (${m.investorShares} หุ้น เงินสด THB ${fmt(m.raise)}) · Founder ${pc(m.founderPct)} = sweat ${pc(m.sweatPct)} + in-kind ${pc(m.inkindPct)} (งาน THB ${fmt(m.inkindValue)}${m.founderTopUp>0?' + เงินสด '+fmt(m.founderTopUp):''}) · Project Rock ${pc(m.kaeVinPct)}<br>` +
+    `<strong>Founder + Project Rock = ${pc(m.controlPct)}</strong>${m.controlPct>0.5?' ✓':' ⚠ ต่ำกว่า 51%'} · หุ้นละ THB ${fmt(m.sharePrice)} · ${m.totalShares} หุ้น`;
   document.getElementById('t-brand').textContent = 'THB '+fmt(base.royalty+m.consultingAnn)+' /ปี (Base)';
   document.getElementById('tbl-brand').innerHTML =
     `<thead><tr><th>รายการ</th><th>ฐานคิด</th><th>ปี 1 — Base (${base.visitors} คน/วัน)</th></tr></thead><tbody>
      <tr><td>Royalty — ค่าสิทธิ์แบรนด์</td><td class="neutral">${m.royaltyPct}% ของรายได้รวม</td><td>${fmt(base.royalty)}</td></tr>
      <tr><td>ค่าที่ปรึกษา</td><td class="neutral">${fmt(m.consultingMo)} / เดือน (RM 2,500)</td><td>${fmt(m.consultingAnn)}</td></tr>
-     <tr class="total-row"><td>รวม</td><td></td><td class="warn">${fmt(base.royalty+m.consultingAnn)}</td></tr>
+     <tr><td>ส่วนลดงานผนังจาก Project Rock</td><td class="neutral">−${prDisc()}% รายการ PR (ครั้งเดียว)</td><td class="pos">− ${fmt(m.prDiscount)}</td></tr>
+     <tr class="total-row"><td>รวมค่าใช้จ่ายรายปี</td><td></td><td class="warn">${fmt(base.royalty+m.consultingAnn)}</td></tr>
      <tr class="be-row"><td colspan="3" style="text-align:left;font-family:var(--sans);font-weight:400;color:var(--text3);font-style:italic;">
-       ทั้งสองรายการเป็นค่าใช้จ่ายของบริษัท หักก่อน EBITDA — กระทบผู้ถือหุ้นทุกฝ่ายเท่ากันตามสัดส่วน · Kae Vin ถือหุ้น ${(m.kaeVinPct*100).toFixed(1)}% (${m.kaeVinShares} หุ้น) · นักลงทุนถือ ${(m.investorPct*100).toFixed(1)}%</td></tr></tbody>`;
+       Royalty และค่าที่ปรึกษาหักก่อน EBITDA — กระทบผู้ถือหุ้นทุกฝ่ายตามสัดส่วน · Project Rock ถือ ${pc(m.kaeVinPct)} (${m.kaeVinShares} หุ้น) แลกส่วนลดงานผนัง + แบรนด์ · นักลงทุนถือ ${pc(m.investorPct)}</td></tr></tbody>`;
 
-  // Scenario KPI cards
   document.getElementById('kpi-scen').innerHTML = m.scenarios.map(s=>`
     <div class="kpi-card">
       <div class="kpi-label">${s.name} — ${s.visitors} คน/วัน</div>
@@ -887,12 +939,11 @@ function renderProjection(m){
       <div class="kpi-sub">EBITDA ปี 1: THB ${fmt(s.ebitda1)} · yield/หุ้น ${fmtPct(s.yield1)}</div>
     </div>`).join('');
 
-  // Scenario table (editable visitors)
   document.getElementById('t-breakeven').textContent = 'Break-even ≈ '+Math.ceil(m.breakEven)+' คน/วัน';
   document.getElementById('tbl-scenarios').innerHTML =
     `<thead><tr><th>Scenario</th><th>คน/วัน</th><th>รายได้ / ปี</th><th>Royalty ${m.royaltyPct}%</th><th>EBITDA ปี 1</th>
-      <th>นักลงทุน ${(m.investorPct*100).toFixed(0)}% / ปี</th><th>Founder ${(m.founderPct*100).toFixed(1)}% / ปี</th>
-      <th>Kae Vin ${(m.kaeVinPct*100).toFixed(1)}% / ปี</th><th>Yield / หุ้น (ปี 1)</th><th>Investor Payback</th></tr></thead><tbody>` +
+      <th>นักลงทุน ${pc(m.investorPct)} / ปี</th><th>Founder ${pc(m.founderPct)} / ปี</th>
+      <th>Project Rock ${pc(m.kaeVinPct)} / ปี</th><th>Yield / หุ้น (ปี 1)</th><th>Investor Payback</th></tr></thead><tbody>` +
     m.scenarios.map((s,i)=>`<tr>
       <td>${s.name}</td>
       <td><input class="field-input" data-sc-idx="${i}" style="width:64px;padding:4px 8px;text-align:right;" type="number" value="${SCENARIOS[i].visitors}"
@@ -900,32 +951,26 @@ function renderProjection(m){
       <td>${fmt(s.revenue)}</td>
       <td class="neutral">(${fmt(s.royalty)})</td>
       <td class="${s.ebitda1>=0?'pos':'neg'}">${fmt(s.ebitda1)}</td>
-      <td>${fmt(s.investor1)}</td>
-      <td>${fmt(s.founder1)}</td>
-      <td>${fmt(s.kaeVin1)}</td>
+      <td>${fmt(s.investor1)}</td><td>${fmt(s.founder1)}</td><td>${fmt(s.kaeVin1)}</td>
       <td>${fmtPct(s.yield1)}</td>
-      <td class="${pbCls(s.payback)}">${pbText(s.payback)}</td></tr>`).join('') +
-    `</tbody>`;
+      <td class="${pbCls(s.payback)}">${pbText(s.payback)}</td></tr>`).join('') + `</tbody>`;
   document.getElementById('n-scen').innerHTML =
-    `Annual revenue = คน/วัน × rev/visit (THB ${fmt(m.rpv)}) × ${m.days} วัน · EBITDA = revenue − OPEX − royalty ${m.royaltyPct}% (OPEX รวมค่าที่ปรึกษา และขยับตามค่าเช่าทุก 3 ปี) · Yield/หุ้น = EBITDA ÷ ${m.totalShares} หุ้น ÷ THB ${fmt(RAISE.sharePrice)} — เท่ากันทุกหุ้นทุกฝ่าย · Break-even ≈ ${Math.ceil(m.breakEven)} คน/วัน`;
+    `Annual revenue = คน/วัน × rev/visit (THB ${fmt(m.rpv)}) × ${m.days} วัน · EBITDA ปี 1 = revenue − OPEX (รวมค่าที่ปรึกษาและค่าส่วนกลาง) − royalty ${m.royaltyPct}% — ยังไม่มีค่าเช่า · Yield/หุ้น = EBITDA ÷ ${m.totalShares} หุ้น ÷ THB ${fmt(m.sharePrice)} เท่ากันทุกหุ้นทุกฝ่าย · Break-even ≈ ${Math.ceil(m.breakEven)} คน/วัน`;
 
-  // Cash-flow scenario pills
   document.getElementById('cf-scenario-pills').innerHTML = m.scenarios.map((s,i)=>
     `<button class="sc-pill ${i===cfScenarioIdx?'active':''}" onclick="cfScenarioIdx=${i};recalcAll()">${s.name} ${s.visitors}</button>`).join('');
-
-  // Cash-flow table (first 10 years shown)
   const sc = m.scenarios[cfScenarioIdx] || m.scenarios[0];
   let crossed = false;
   document.getElementById('tbl-cashflow').innerHTML =
     `<thead><tr><th>ปี</th><th>ค่าเช่า/เดือน</th><th>OPEX รวม</th><th>Royalty</th><th>รายได้</th><th>EBITDA</th>
-      <th>นักลงทุน ${(m.investorPct*100).toFixed(0)}%</th><th>สะสมนักลงทุน</th><th>% ของเงินระดมทุน</th>
-      <th>Founder ${(m.founderPct*100).toFixed(1)}%</th><th>Kae Vin ${(m.kaeVinPct*100).toFixed(1)}%</th></tr></thead><tbody>` +
+      <th>นักลงทุน ${pc(m.investorPct)}</th><th>สะสมนักลงทุน</th><th>% ของเงินลงทุน</th>
+      <th>Founder ${pc(m.founderPct)}</th><th>Project Rock ${pc(m.kaeVinPct)}</th></tr></thead><tbody>` +
     sc.years.slice(0,10).map(r=>{
       const isCross = !crossed && r.cum >= m.raise && r.inv>0;
       if (isCross) crossed = true;
       return `<tr ${isCross?'style="background:#eef5f0;"':''}>
         <td>ปีที่ ${r.y}${isCross?' ✓ คืนทุน':''}</td>
-        <td>${fmt(r.rentMo)}</td>
+        <td>${r.rY>0?fmt(r.rentMo)+(r.startMo?' <span class="neutral">(จาก M'+r.startMo+')</span>':''):'<span class="neutral">— ยังไม่มี</span>'}</td>
         <td>${fmt(r.opex)}</td>
         <td class="neutral">(${fmt(r.royalty)})</td>
         <td>${fmt(r.revenue)}</td>
@@ -933,25 +978,24 @@ function renderProjection(m){
         <td>${fmt(r.inv)}</td>
         <td class="${r.cum>=m.raise?'pos':'neutral'}">${fmt(r.cum)}</td>
         <td class="${r.cum>=m.raise?'pos':'neutral'}">${Math.min(999,(r.cum/m.raise*100)).toFixed(0)}%</td>
-        <td>${fmt(r.fdr)}</td>
-        <td>${fmt(r.kvn)}</td></tr>`;
+        <td>${fmt(r.fdr)}</td><td>${fmt(r.kvn)}</td></tr>`;
     }).join('') +
     `<tr class="be-row"><td colspan="11" style="text-align:left;font-family:var(--sans);font-weight:400;color:var(--text3);font-style:italic;">
-      ${sc.name} (${sc.visitors} คน/วัน) — Investor payback: <strong style="color:${sc.payback?'var(--green)':'var(--red)'};">${pbText(sc.payback)}</strong> (interpolated)</td></tr></tbody>`;
+      ${sc.name} (${sc.visitors} คน/วัน) — Investor payback: <strong style="color:${sc.payback?'var(--green)':'var(--red)'};">${pbText(sc.payback)}</strong> · ค่าเช่าเริ่มหลังจุดนั้น (interpolated)</td></tr></tbody>`;
 
-  // Cap table
   document.getElementById('tbl-captable').innerHTML =
     `<thead><tr><th>ผู้ถือหุ้น</th><th>หุ้น</th><th>%</th><th>มูลค่า (THB)</th><th style="text-align:left;">ที่มา</th></tr></thead><tbody>
-    <tr><td>นักลงทุน (Investors)</td><td>${m.investorShares}</td><td>${(m.investorPct*100).toFixed(1)}%</td><td>${fmt(m.investorShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">เงินสด — ลงทุนค่า fit-out ทั้งหมด</td></tr>
-    <tr><td>Founder</td><td>${m.founderShares}</td><td>${(m.founderPct*100).toFixed(1)}%</td><td>${fmt(m.founderShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นผู้ก่อตั้ง (founder shares)</td></tr>
-    <tr><td>Kae Vin</td><td>${m.kaeVinShares}</td><td>${(m.kaeVinPct*100).toFixed(1)}%</td><td>${fmt(m.kaeVinShares*RAISE.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นพันธมิตรแบรนด์ (brand partner)</td></tr>
-    <tr class="total-row"><td>รวม (post-money)</td><td>${m.totalShares}</td><td>100%</td><td class="pos">${fmt(m.postMoney)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นละ THB ${fmt(RAISE.sharePrice)}</td></tr></tbody>`;
+    <tr><td>นักลงทุน (Investors)</td><td>${m.investorShares}</td><td>${pc(m.investorPct)}</td><td>${fmt(m.investorShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">เงินสด THB ${fmt(m.raise)}</td></tr>
+    <tr><td>Founder — sweat</td><td>${m.sweatShares}</td><td>${pc(m.sweatPct)}</td><td>${fmt(m.sweatShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">อาคาร sourcing บริหาร</td></tr>
+    <tr><td>Founder — in-kind</td><td>${m.inkindShares}</td><td>${pc(m.inkindPct)}</td><td>${fmt(m.inkindShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">งานที่สร้างเอง THB ${fmt(m.inkindValue)} (แอร์ ห้องน้ำ รีโนเวท เครื่องกรองน้ำ)</td></tr>
+    <tr><td>Project Rock</td><td>${m.kaeVinShares}</td><td>${pc(m.kaeVinPct)}</td><td>${fmt(m.kaeVinShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">ส่วนลดงานผนัง ${prDisc()}% + แบรนด์</td></tr>
+    <tr class="total-row"><td>รวม (post-money)</td><td>${m.totalShares}</td><td>100%</td><td class="pos">${fmt(m.postMoney)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นละ THB ${fmt(m.sharePrice)} · Founder + PR ${pc(m.controlPct)}</td></tr></tbody>`;
   document.getElementById('investor-share-note').innerHTML =
-    `<strong>นักลงทุน:</strong> หุ้นละ THB ${fmt(RAISE.sharePrice)} = ${(100/m.totalShares).toFixed(2)}% ของบริษัท · ลงกี่หุ้นได้สัดส่วนตามนั้น · นักลงทุนถือรวม ${(m.investorPct*100).toFixed(1)}% · ผลตอบแทนต่อหุ้นเท่ากันทุกหุ้น`;
+    `<strong>นักลงทุน:</strong> หุ้นละ THB ${fmt(m.sharePrice)} = ${(100/m.totalShares).toFixed(2)}% ของบริษัท · ลงกี่หุ้นได้สัดส่วนตามนั้น · นักลงทุนถือรวม ${pc(m.investorPct)} · ผลตอบแทนต่อหุ้นเท่ากันทุกหุ้น · Founder จ่ายหุ้นที่ซื้อด้วยงานก่อสร้างในราคาหุ้นเดียวกัน`;
   document.getElementById('page-sub').textContent =
-    `ระดมทุนสำหรับ fit-out ยิมทั้งหมด · อาคารไม่อยู่ในการระดมทุน — บริษัทเช่าอาคารในเรตโกดังเปล่า · นักลงทุน ${(m.investorPct*100).toFixed(1)}% · Founder ${(m.founderPct*100).toFixed(1)}% · Kae Vin ${(m.kaeVinPct*100).toFixed(1)}%`;
+    `ระดมทุนเงินสดสำหรับ fit-out ยิม · อาคารไม่อยู่ในการระดมทุน — บริษัทเช่าเรตโกดังเปล่าหลังนักลงทุนคืนทุน · นักลงทุน ${pc(m.investorPct)} · Founder ${pc(m.founderPct)} · Project Rock ${pc(m.kaeVinPct)}`;
   document.getElementById('n-cf').innerHTML =
-    `Investor payback = จุดที่ <strong>เงินสดสะสมฝั่งนักลงทุน (${(m.investorPct*100).toFixed(1)}% ของ EBITDA)</strong> ครอบคลุมเงินระดมทุนทั้งก้อน — คิดหลังหักส่วนผู้ถือหุ้นอื่นแล้ว และใช้ตารางค่าเช่าที่ปรับขึ้นทุก 3 ปี (interpolate ภายในปีที่ข้ามเส้น)`;
+    `Investor payback = จุดที่ <strong>เงินสดสะสมฝั่งนักลงทุน (${pc(m.investorPct)} ของ EBITDA)</strong> ครอบคลุมเงินสดที่นักลงทุนใส่ THB ${fmt(m.raise)} — ก่อนจุดนั้นบริษัทไม่จ่ายค่าเช่า (จ่ายเฉพาะค่าส่วนกลาง) หลังจากนั้นค่าเช่าเริ่มและปรับขึ้นทุก 3 ปี (interpolate ภายในปีที่ข้ามเส้น)`;
 }
 
 // ══ RENDER: PITCH DECK (same computed model — numbers can never drift) ══
@@ -968,7 +1012,7 @@ function renderDeck(m){
    <div class="slide-body">
      <p>ยิมปีนหน้าผา (bouldering) ในร่มระดับ commercial — หาดใหญ่ สงขลา</p>
      <div class="num-row">
-       <div class="num-item"><div class="n accent">THB ${fmt(m.raise)}</div><div class="l">Raise — Fit-out</div></div>
+       <div class="num-item"><div class="n accent">THB ${fmt(m.raise)}</div><div class="l">ระดมทุนเงินสด — Fit-out</div></div>
        <div class="num-item"><div class="n">${(m.investorPct*100).toFixed(0)}%</div><div class="l">Investors</div></div>
        <div class="num-item"><div class="n green">${base.payback?base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Base-case Payback</div></div>
      </div>
@@ -979,13 +1023,13 @@ function renderDeck(m){
   `<div class="slide-kicker">01 · The Offer</div>
    <div class="slide-title">ข้อเสนอการลงทุน</div>
    <div class="slide-body">
-     <p>ระดมทุน <strong>THB ${fmt(m.raise)}</strong> (${m.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)}) เพื่อลงทุน <strong>fit-out ยิมทั้งหมด</strong> — ผนังปีน อุปกรณ์ และการตกแต่งภายใน นักลงทุนถือหุ้น <strong>${(m.investorPct*100).toFixed(1)}%</strong> ของบริษัท</p>
-     <p>อาคารไม่อยู่ในการระดมทุน — บริษัทเช่าอาคารในเรตโกดังเปล่า · เงินระดมทุนทั้งหมดลงใน fit-out ที่เป็นทรัพย์สินของบริษัท</p>
+     <p>ระดมทุนเงินสด <strong>THB ${fmt(m.raise)}</strong> (${m.investorShares} หุ้น × THB ${fmt(m.sharePrice)}) สำหรับ <strong>fit-out ยิม</strong> — ผนังปีน อุปกรณ์ และการตกแต่งภายใน นักลงทุนถือหุ้น <strong>${(m.investorPct*100).toFixed(1)}%</strong> ของบริษัท</p>
+     <p>Founder ถือ ${(m.founderPct*100).toFixed(0)}% (sweat ${(m.sweatPct*100).toFixed(0)}% + ${(m.inkindPct*100).toFixed(0)}% ที่จ่ายด้วยงานก่อสร้างมูลค่า THB ${fmt(m.inkindValue)} ในราคาหุ้นเดียวกับนักลงทุน) · Project Rock ${(m.kaeVinPct*100).toFixed(0)}% แลกส่วนลดงานผนัง ${prDisc()}% (ประหยัด THB ${fmt(m.prDiscount)}) + แบรนด์ · อาคารไม่อยู่ในการระดมทุน — บริษัทเช่าเรตโกดังเปล่า <strong>หลังนักลงทุนคืนทุน</strong></p>
      <div class="num-row">
        <div class="num-item"><div class="n accent">${base.payback?'≈ '+base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Investor payback (Base ${base.visitors} คน/วัน)</div></div>
        <div class="num-item"><div class="n">${fmtPct(base.yield1)}</div><div class="l">Yield / หุ้น ปีแรก (Base)</div></div>
        <div class="num-item"><div class="n">THB ${fmt(m.postMoney)}</div><div class="l">Post-money valuation</div></div>
-       <div class="num-item"><div class="n">${(100/m.totalShares).toFixed(2)}%</div><div class="l">ต่อหุ้น (หุ้นละ THB ${fmt(RAISE.sharePrice)})</div></div>
+       <div class="num-item"><div class="n">${(100/m.totalShares).toFixed(2)}%</div><div class="l">ต่อหุ้น (หุ้นละ THB ${fmt(m.sharePrice)})</div></div>
        <div class="num-item"><div class="n">${(m.investorPct*100).toFixed(0)}%</div><div class="l">นักลงทุนถือรวม</div></div>
      </div>
    </div>`,
@@ -1032,7 +1076,7 @@ function renderDeck(m){
        </tbody>
      </table>
      <div class="num-row">
-       <div class="num-item"><div class="n">THB ${fmt(m.opexY(1))}</div><div class="l">Total OPEX ปีที่ 1 (รวมค่าเช่า + ค่าที่ปรึกษา)</div></div>
+       <div class="num-item"><div class="n">THB ${fmt(m.opexPreRent)}</div><div class="l">Total OPEX ปีที่ 1 (รวมค่าที่ปรึกษา + ค่าส่วนกลาง · ก่อนค่าเช่า)</div></div>
        <div class="num-item"><div class="n">${m.royaltyPct}%</div><div class="l">Royalty ค่าแบรนด์ (ของรายได้)</div></div>
        <div class="num-item"><div class="n">${m.days} วัน/ปี</div><div class="l">วันเปิดทำการ</div></div>
        <div class="num-item"><div class="n green">≈ ${Math.ceil(m.breakEven)} คน/วัน</div><div class="l">Break-even</div></div>
@@ -1048,7 +1092,7 @@ function renderDeck(m){
        <thead><tr><th>Scenario</th><th>EBITDA ปี 1</th><th>นักลงทุน ${(m.investorPct*100).toFixed(0)}% / ปี</th><th>Investor payback</th></tr></thead>
        <tbody>${m.scenarios.map(scRow).join('')}</tbody>
      </table>
-     <p>Payback คิดจาก<strong>เงินสดสะสมฝั่งนักลงทุน (${(m.investorPct*100).toFixed(1)}% ของ EBITDA)</strong> เทียบกับเงินระดมทุน THB ${fmt(m.raise)} — หักส่วนผู้ถือหุ้นอื่นแล้ว และรวมค่าเช่าที่ปรับขึ้น +${m.rentEsc}% ทุก 3 ปี</p>
+     <p>Payback คิดจาก<strong>เงินสดสะสมฝั่งนักลงทุน (${(m.investorPct*100).toFixed(1)}% ของ EBITDA)</strong> เทียบกับเงินสดที่นักลงทุนใส่ THB ${fmt(m.raise)} — <strong>ก่อนคืนทุนบริษัทไม่จ่ายค่าเช่า</strong> (จ่ายเฉพาะค่าส่วนกลาง THB ${fmt(m.camMo)}/เดือน) หลังคืนทุนค่าเช่า THB ${fmt(m.rentBase)}/เดือนจึงเริ่ม (+${m.rentEsc}% ทุก 3 ปี)</p>
      <p>Base case ${base.visitors} คน/วัน ยังต่ำกว่าความหนาแน่นของยิมลักษณะเดียวกันในเมืองรองของภูมิภาคนี้</p>
    </div>`,
 
@@ -1056,7 +1100,7 @@ function renderDeck(m){
   `<div class="slide-kicker">06 · Per-share Returns</div>
    <div class="slide-title">ผลตอบแทนต่อหุ้น — เท่ากันทุกหุ้น</div>
    <div class="slide-body">
-     <p>หุ้นทุกหุ้นมีสิทธิ์เท่ากัน — yield ต่อหุ้นของผู้ถือหุ้นทุกฝ่ายเท่ากันทั้งหมด (EBITDA ÷ ${m.totalShares} หุ้น ÷ THB ${fmt(RAISE.sharePrice)})</p>
+     <p>หุ้นทุกหุ้นมีสิทธิ์เท่ากัน — yield ต่อหุ้นของผู้ถือหุ้นทุกฝ่ายเท่ากันทั้งหมด (EBITDA ÷ ${m.totalShares} หุ้น ÷ THB ${fmt(m.sharePrice)})</p>
      <table class="deck-tbl">
        <thead><tr><th>Scenario</th><th>EBITDA ปี 1</th><th>EBITDA / หุ้น</th><th>Yield / หุ้น</th></tr></thead>
        <tbody>${m.scenarios.map(s=>`<tr><td>${s.name} — ${s.visitors} คน/วัน</td><td>${fmt(s.ebitda1)}</td><td>${fmt(s.ebitda1/m.totalShares)}</td><td style="color:var(--green);font-weight:600;">${fmtPct(s.yield1)}</td></tr>`).join('')}</tbody>
@@ -1097,17 +1141,21 @@ function renderDeck(m){
 
   // 10 — Use of funds
   `<div class="slide-kicker">09 · Use of Funds</div>
-   <div class="slide-title">เงินระดมทุนไปไหน — 3 Buckets</div>
+   <div class="slide-title">ทุนไปไหน — 3 Buckets และใครใส่อะไร</div>
    <div class="slide-body">
      <table class="deck-tbl">
-       <thead><tr><th>Bucket</th><th>THB</th><th>% of raise</th></tr></thead>
+       <thead><tr><th>Bucket</th><th>ราคาเต็ม</th><th>สุทธิหลังส่วนลด PR</th><th>% ของทุน</th></tr></thead>
        <tbody>
-         ${m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.total)}</td><td>${(b.total/m.raise*100).toFixed(1)}%</td></tr>`).join('')}
-         <tr><td style="color:var(--text3);">สำรอง (contingency)</td><td style="color:var(--text3);">${fmt(m.contingency)}</td><td style="color:var(--text3);">${(m.contingency/m.raise*100).toFixed(1)}%</td></tr>
-         <tr class="total-row"><td><strong>รวมการระดมทุน</strong></td><td style="color:var(--accent);font-weight:700;">${fmt(m.raise)}</td><td>100%</td></tr>
+         ${m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td style="color:var(--text3);">${fmt(b.gross)}</td><td>${fmt(b.total)}</td><td>${(b.total/m.capitalPool*100).toFixed(1)}%</td></tr>`).join('')}
+         <tr><td style="color:var(--text3);">สำรอง (contingency)</td><td></td><td style="color:var(--text3);">${fmt(m.contingency)}</td><td style="color:var(--text3);">${(m.contingency/m.capitalPool*100).toFixed(1)}%</td></tr>
+         <tr class="total-row"><td><strong>ทุนที่ใส่รวม</strong></td><td style="color:var(--text3);">ส่วนลด PR −${fmt(m.prDiscount)}</td><td style="color:var(--accent);font-weight:700;">${fmt(m.capitalPool)}</td><td>100%</td></tr>
        </tbody>
      </table>
-     <p>เงินระดมทุนทั้งหมดลงใน fit-out ที่เป็นทรัพย์สินของบริษัท</p>
+     <div class="num-row">
+       <div class="num-item"><div class="n accent">THB ${fmt(m.raise)}</div><div class="l">นักลงทุน — เงินสด (${m.investorShares} หุ้น)</div></div>
+       <div class="num-item"><div class="n">THB ${fmt(m.founderPrice)}</div><div class="l">Founder — งานก่อสร้าง in-kind (${m.inkindShares} หุ้น)</div></div>
+     </div>
+     <p>ทุนทั้งหมดกลายเป็นทรัพย์สินของบริษัท — รวมแอร์ ห้องน้ำ และงานรีโนเวทที่ Founder สร้างและโอนเข้าบริษัทในราคาต้นทุน (มีเอกสารตรวจสอบได้)</p>
    </div>`,
 
   // 11 — Cap table
@@ -1117,16 +1165,17 @@ function renderDeck(m){
      <table class="deck-tbl">
        <thead><tr><th>ผู้ถือหุ้น</th><th>หุ้น</th><th>%</th><th>มูลค่า (THB)</th></tr></thead>
        <tbody>
-         <tr><td>นักลงทุน (เงินสด)</td><td>${m.investorShares}</td><td>${(m.investorPct*100).toFixed(1)}%</td><td>${fmt(m.investorShares*RAISE.sharePrice)}</td></tr>
-         <tr><td>Founder</td><td>${m.founderShares}</td><td>${(m.founderPct*100).toFixed(1)}%</td><td>${fmt(m.founderShares*RAISE.sharePrice)}</td></tr>
-         <tr><td>Kae Vin (brand partner)</td><td>${m.kaeVinShares}</td><td>${(m.kaeVinPct*100).toFixed(1)}%</td><td>${fmt(m.kaeVinShares*RAISE.sharePrice)}</td></tr>
+         <tr><td>นักลงทุน (เงินสด)</td><td>${m.investorShares}</td><td>${(m.investorPct*100).toFixed(1)}%</td><td>${fmt(m.investorShares*m.sharePrice)}</td></tr>
+         <tr><td>Founder — sweat (อาคาร sourcing บริหาร)</td><td>${m.sweatShares}</td><td>${(m.sweatPct*100).toFixed(1)}%</td><td>${fmt(m.sweatShares*m.sharePrice)}</td></tr>
+         <tr><td>Founder — in-kind (แอร์ ห้องน้ำ รีโนเวท)</td><td>${m.inkindShares}</td><td>${(m.inkindPct*100).toFixed(1)}%</td><td>${fmt(m.inkindShares*m.sharePrice)}</td></tr>
+         <tr><td>Project Rock (ส่วนลดงานผนัง + แบรนด์)</td><td>${m.kaeVinShares}</td><td>${(m.kaeVinPct*100).toFixed(1)}%</td><td>${fmt(m.kaeVinShares*m.sharePrice)}</td></tr>
          <tr class="total-row"><td>รวม</td><td>${m.totalShares}</td><td>100%</td><td style="color:var(--accent);font-weight:700;">${fmt(m.postMoney)}</td></tr>
        </tbody>
      </table>
      <div class="num-row">
-       <div class="num-item"><div class="n">THB ${fmt(RAISE.sharePrice)}</div><div class="l">ราคาต่อหุ้น</div></div>
+       <div class="num-item"><div class="n">THB ${fmt(m.sharePrice)}</div><div class="l">ราคาต่อหุ้น (ทุกฝ่ายเท่ากัน)</div></div>
        <div class="num-item"><div class="n">THB ${fmt(m.postMoney)}</div><div class="l">Post-money valuation</div></div>
-       <div class="num-item"><div class="n">${(m.kaeVinPct*100).toFixed(1)}%</div><div class="l">Kae Vin — brand partner (${m.kaeVinShares} หุ้น)</div></div>
+       <div class="num-item"><div class="n">${(m.controlPct*100).toFixed(0)}%</div><div class="l">Founder + Project Rock</div></div>
      </div>
    </div>`,
 
@@ -1151,12 +1200,14 @@ function renderDeck(m){
      <table class="deck-tbl">
        <tbody>
          <tr><td>โครงสร้าง</td><td style="text-align:left;font-family:var(--sans);">บริษัทจำกัด (SPV) ดำเนินธุรกิจยิม</td></tr>
-         <tr><td>ขนาดการระดมทุน</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(m.raise)} — ${m.investorShares} หุ้น × THB ${fmt(RAISE.sharePrice)}</td></tr>
-         <tr><td>สัดส่วนหุ้น</td><td style="text-align:left;font-family:var(--sans);">นักลงทุน ${(m.investorPct*100).toFixed(1)}% · Founder ${(m.founderPct*100).toFixed(1)}% · Kae Vin ${(m.kaeVinPct*100).toFixed(1)}%</td></tr>
-         <tr><td>สัญญาเช่า</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(m.rentBase)}/เดือน · เรตโกดังเปล่า (ต่ำกว่าอาคารติดแอร์) · เริ่มเดือนที่ 1 · +${m.rentEsc}% ทุก 3 ปี</td></tr>
+         <tr><td>ขนาดการระดมทุน</td><td style="text-align:left;font-family:var(--sans);">เงินสด THB ${fmt(m.raise)} — ${m.investorShares} หุ้น × THB ${fmt(m.sharePrice)} (post-money THB ${fmt(m.postMoney)})</td></tr>
+         <tr><td>สัดส่วนหุ้น</td><td style="text-align:left;font-family:var(--sans);">นักลงทุน ${(m.investorPct*100).toFixed(1)}% · Founder ${(m.founderPct*100).toFixed(1)}% (sweat ${(m.sweatPct*100).toFixed(0)}% + in-kind ${(m.inkindPct*100).toFixed(0)}%) · Project Rock ${(m.kaeVinPct*100).toFixed(1)}% — Founder + PR ${(m.controlPct*100).toFixed(0)}%</td></tr>
+         <tr><td>In-kind</td><td style="text-align:left;font-family:var(--sans);">Founder สร้างแอร์ ห้องน้ำ งานรีโนเวท เครื่องกรองน้ำ มูลค่า THB ${fmt(m.inkindValue)} โอนเข้าบริษัทในราคาต้นทุน แลกหุ้น ${m.inkindShares} หุ้น (ราคาหุ้นเดียวกับนักลงทุน)</td></tr>
+         <tr><td>ส่วนลด Project Rock</td><td style="text-align:left;font-family:var(--sans);">−${prDisc()}% บนงานผนัง โครงเหล็ก มือจับ เบาะ volumes = ประหยัด THB ${fmt(m.prDiscount)}</td></tr>
+         <tr><td>สัญญาเช่า</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(m.rentBase)}/เดือน เรตโกดังเปล่า · <strong>เริ่มเมื่อนักลงทุนคืนทุน</strong> · +${m.rentEsc}% ทุก 3 ปี · ค่าส่วนกลาง THB ${fmt(m.camMo)}/เดือน จ่ายตั้งแต่เดือน 1</td></tr>
          <tr><td>Brand licence</td><td style="text-align:left;font-family:var(--sans);">ใช้ชื่อแบรนด์ Project Rock · royalty ${m.royaltyPct}% ของรายได้รวม</td></tr>
          <tr><td>ค่าที่ปรึกษา</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(m.consultingMo)}/เดือน (RM 2,500 retainer) — ที่ปรึกษาด้านการออกแบบผนัง อุปกรณ์ และระบบปฏิบัติการ</td></tr>
-         <tr><td>Related party</td><td style="text-align:left;font-family:var(--sans);">อาคารเช่าจากเจ้าของ (founder) และสัญญาแบรนด์/ที่ปรึกษากับผู้ถือหุ้น ${(m.kaeVinPct*100).toFixed(1)}% — related party ระบุใน shareholders' agreement</td></tr>
+         <tr><td>Related party</td><td style="text-align:left;font-family:var(--sans);">อาคารเช่าจากเจ้าของ (founder), งาน in-kind ของ founder และสัญญาแบรนด์/ที่ปรึกษากับ Project Rock (ผู้ถือหุ้น ${(m.kaeVinPct*100).toFixed(1)}%) — related party ระบุใน shareholders' agreement</td></tr>
          <tr><td>ไทม์ไลน์</td><td style="text-align:left;font-family:var(--sans);">ปิดรอบระดมทุน → ก่อสร้าง/ติดตั้ง fit-out → เปิดบริการ ภายใน 2026</td></tr>
        </tbody>
      </table>
@@ -1168,15 +1219,15 @@ function renderDeck(m){
    <div class="slide-body">
      <ul class="deck-list">
        <li>Revenue / visit <strong>THB ${fmt(m.rpv)}</strong> = day pass ${fmt(m.daypass)} + gear rental ตาม attach rate · เปิด ${m.days} วัน/ปี</li>
-       <li>Operating OPEX <strong>THB ${fmt(m.opexAnn)}/ปี</strong> + ค่าที่ปรึกษา ${fmt(m.consultingMo)}/เดือน + ค่าเช่า ${fmt(m.rentBase)}/เดือน (+${m.rentEsc}% ทุก 3 ปี) → OPEX ปีแรก <strong>THB ${fmt(m.opexY(1))}</strong></li>
-       <li>Royalty ค่าแบรนด์ <strong>${m.royaltyPct}% ของรายได้รวม</strong> — หักก่อน EBITDA · Cap table: นักลงทุน ${(m.investorPct*100).toFixed(1)}% · Founder ${(m.founderPct*100).toFixed(1)}% · Kae Vin ${(m.kaeVinPct*100).toFixed(1)}%</li>
+       <li>Operating OPEX <strong>THB ${fmt(m.opexAnn)}/ปี</strong> + ค่าที่ปรึกษา ${fmt(m.consultingMo)}/เดือน + ค่าส่วนกลาง ${fmt(m.camMo)}/เดือน → OPEX ปีแรก <strong>THB ${fmt(m.opexPreRent)}</strong> · ค่าเช่า ${fmt(m.rentBase)}/เดือน เริ่มหลังนักลงทุนคืนทุน (+${m.rentEsc}% ทุก 3 ปี)</li>
+       <li>Royalty ค่าแบรนด์ <strong>${m.royaltyPct}% ของรายได้รวม</strong> — หักก่อน EBITDA · ส่วนลดงานผนัง ${prDisc()}% · Cap table: นักลงทุน ${(m.investorPct*100).toFixed(1)}% · Founder ${(m.founderPct*100).toFixed(1)}% · Project Rock ${(m.kaeVinPct*100).toFixed(1)}%</li>
        <li>Scenarios: ${m.scenarios.map(s=>s.name+' '+s.visitors).join(' · ')} คน/วัน · Break-even ≈ ${Math.ceil(m.breakEven)} คน/วัน</li>
        <li>Payback นักลงทุนคิดจาก ${(m.investorPct*100).toFixed(1)}% ของ EBITDA สะสม เทียบกับ THB ${fmt(m.raise)} (interpolate ในปีที่ข้ามเส้น)</li>
        <li>รายได้คงที่ทุกปีในโมเดล (ไม่ assume การเติบโต) — upside จากสมาชิกรายเดือน กิจกรรม และการเติบโตของตลาดไม่ได้ถูกนับ</li>
      </ul>
      <p style="margin-top:20px;">ทุกตัวเลขในเด็คนี้คำนวณสดจากโมเดลเดียวกับหน้า Projection — ปรับสมมติฐานแล้วดูผลได้ทันที</p>
      <div class="num-row">
-       <div class="num-item"><div class="n accent">THB ${fmt(m.raise)}</div><div class="l">The ask</div></div>
+       <div class="num-item"><div class="n accent">THB ${fmt(m.raise)}</div><div class="l">The ask (เงินสด)</div></div>
        <div class="num-item"><div class="n green">${base.payback?'≈ '+base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Base-case payback</div></div>
        <div class="num-item"><div class="n">${(m.investorPct*100).toFixed(0)}%</div><div class="l">Investor ownership</div></div>
      </div>
