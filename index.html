@@ -1252,7 +1252,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
       </table>
     </div>
     <div style="padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.6;">
-      Gym row = Base Case scenario, Phase 1 OPEX (no rent), cash basis (EBITDA — before depreciation). Venture rows = revenue (typed, or area × rent/sqm for leased zones) minus monthly OPEX. Payback = CAPEX ÷ annual net cash flow.
+      Gym row = Base Case scenario, Phase 1 OPEX (no rent), cash basis (EBITDA — before depreciation). Venture rows = revenue (area × rent/sqm for leased zones; visitors × price for the recovery zone) minus monthly OPEX. Payback = CAPEX ÷ annual net cash flow.
     </div>
   </div>
 
@@ -1831,11 +1831,11 @@ const VENTURES = [
     revHint:'Rent = area × rate/sqm/month · tenant pays its own utilities and staff · build cost THB 12,000/sqm incl. AC + basic architecture',
   },
   {
-    key:'icebath', icon:'🧊', title:'Ice Bath & Sauna',
-    sub:'Recovery zone — cold plunge tubs and sauna, sessions + recovery memberships.',
+    key:'icebath', icon:'🧊', title:'Ice Bath & Sauna — Outdoor Recovery Zone',
+    sub:'Outdoor zone: barrel sauna + cold-plunge tubs under a partial rain/sun canopy, no air-conditioning, with its own toilet + shower block (not shared with the main building).',
     hint:'',
-    defaultRev:45000,
-    revHint:'e.g. 8 sessions/day × THB 180 × 30 days ≈ THB 43,000/mo',
+    pricing:{ pass:280, addon:100, addonLabel:'Ice bath add-on', attach:50, visitors:6, days:30 },
+    revHint:'Revenue = visitors/day × days × (day pass + add-on × attach rate) · sauna day pass THB 280, ice bath +THB 100',
   },
 ];
 
@@ -1855,16 +1855,23 @@ const VENTURE_DATA_DEFAULTS = {
     {name:'Insurance / admin',amt:1000,note:''},
   ],
   icebathCapex:[
-    {name:'Barrel sauna — 6 person',amt:350000,note:''},
+    {name:'Barrel sauna — 6 person',amt:350000,note:'Outdoor-rated'},
     {name:'Ice bath tubs ×2 + water chiller',amt:250000,note:''},
     {name:'Plumbing, filtration & water treatment',amt:80000,note:''},
+    {name:'Partial roof canopy — steel frame + metal sheet (~60 sqm, rain/sun)',amt:200000,note:'No AC — open air'},
+    {name:'Dedicated toilet + shower block (M/F) — separate from main building',amt:300000,note:'Own septic/drain'},
+    {name:'Outdoor electrical run, lighting & water supply',amt:60000,note:''},
+    {name:'Non-slip outdoor flooring & drainage',amt:80000,note:''},
     {name:'Deck, privacy screen & towel station',amt:60000,note:''},
+    {name:'Lockers, benches & signage',amt:40000,note:''},
   ],
   icebathOpex:[
-    {name:'Electricity — chiller + sauna heater',amt:15000,note:''},
+    {name:'Electricity — chiller + sauna heater',amt:15000,note:'No AC'},
     {name:'Water & filtration consumables',amt:3000,note:''},
+    {name:'Toilet/shower block — water & cleaning',amt:2500,note:''},
     {name:'Towels & laundry',amt:4000,note:''},
     {name:'Cleaning & hygiene supplies',amt:3000,note:''},
+    {name:'Attendant (part-time) — safety & turnover',amt:8000,note:''},
   ],
 };
 
@@ -1912,7 +1919,37 @@ Object.assign(DATA_PR,   JSON.parse(JSON.stringify(VENTURE_DATA_DEFAULTS)));
         <div class="card-header"><span class="card-title"><span class="card-title-icon">📈</span> Revenue Assumption</span></div>
         <div class="settings-body">
           <div class="settings-grid">
-            ${v.rental ? `
+            ${v.pricing ? `
+            <div class="field">
+              <span class="field-label">Sauna day pass (THB / person)</span>
+              <input class="field-input" id="v-pass-${v.key}" type="number" value="${v.pricing.pass}" oninput="recalc()">
+            </div>
+            <div class="field">
+              <span class="field-label">${v.pricing.addonLabel} (+THB)</span>
+              <input class="field-input" id="v-addon-${v.key}" type="number" value="${v.pricing.addon}" oninput="recalc()">
+            </div>
+            <div class="field">
+              <span class="field-label">Add-on attach rate (%)</span>
+              <input class="field-input" id="v-attach-${v.key}" type="number" value="${v.pricing.attach}" oninput="recalc()">
+              <span class="field-hint">% of visitors who add the ice bath</span>
+            </div>
+            <div class="field">
+              <span class="field-label">Visitors / day</span>
+              <input class="field-input" id="v-vis-${v.key}" type="number" value="${v.pricing.visitors}" oninput="recalc()">
+            </div>
+            <div class="field">
+              <span class="field-label">Days / month</span>
+              <input class="field-input" id="v-days-${v.key}" type="number" value="${v.pricing.days}" oninput="recalc()">
+            </div>
+            <div class="field">
+              <span class="field-label">Blended revenue / visit</span>
+              <div class="field-computed" id="v-rpv-${v.key}">—</div>
+            </div>
+            <div class="field full">
+              <span class="field-label">Revenue (THB / month) — computed</span>
+              <input class="field-input" id="v-rev-${v.key}" type="number" value="${v.pricing.visitors*v.pricing.days*(v.pricing.pass+v.pricing.addon*v.pricing.attach/100)}" readonly style="background:var(--bg3);color:var(--accent);font-weight:600;">
+              <span class="field-hint">${v.revHint}</span>
+            </div>` : v.rental ? `
             <div class="field">
               <span class="field-label">Area leased (sqm)</span>
               <input class="field-input" id="v-sqm-${v.key}" type="number" value="${v.rental.sqm}" oninput="syncRentalCapex('${v.key}');recalc()">
@@ -2603,6 +2640,13 @@ function recalc() {
       rev = (sqmEl?(parseFloat(sqmEl.value)||0):0) * (rateEl?(parseFloat(rateEl.value)||0):0);
       if(revEl) revEl.value = Math.round(rev);
     }
+    if(v.pricing){
+      const g=id=>{const el=document.getElementById(id+'-'+v.key); return el?(parseFloat(el.value)||0):0;};
+      const rpvV = g('v-pass') + g('v-addon')*g('v-attach')/100;
+      rev = g('v-vis') * g('v-days') * rpvV;
+      const re=document.getElementById('v-rpv-'+v.key); if(re) re.textContent='THB '+fmt(rpvV);
+      if(revEl) revEl.value = Math.round(rev);
+    }
     const net = rev-op;
     const vpb = net>0 ? cap/(net*12) : null;
     ventCapex+=cap; ventOpexTot+=op; ventRevTot+=rev;
@@ -2610,7 +2654,7 @@ function recalc() {
     if(kc) kc.innerHTML = `
       <div class="kpi-card"><div class="kpi-label">CAPEX</div><div class="kpi-value blue">THB ${fmt(cap)}</div><div class="kpi-sub">One-time investment</div></div>
       <div class="kpi-card"><div class="kpi-label">OPEX / month</div><div class="kpi-value orange">THB ${fmt(op)}</div><div class="kpi-sub">Running cost</div></div>
-      <div class="kpi-card"><div class="kpi-label">Revenue / month</div><div class="kpi-value green">THB ${fmt(rev)}</div><div class="kpi-sub">${v.rental?'Area × rent/sqm (tenant operates)':'Your assumption'}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Revenue / month</div><div class="kpi-value green">THB ${fmt(rev)}</div><div class="kpi-sub">${v.rental?'Area × rent/sqm (tenant operates)':v.pricing?'Visitors × days × blended price':'Your assumption'}</div></div>
       <div class="kpi-card"><div class="kpi-label">Payback</div><div class="kpi-value ${net>0?'accent':'orange'}">${vpb?vpb.toFixed(1)+' yrs':'—'}</div><div class="kpi-sub">${net>0?'Net THB '+fmt(net)+'/mo':'Not profitable at these numbers'}</div></div>`;
     const ne = document.getElementById('v-net-'+v.key);
     if(ne){ ne.textContent='THB '+fmt(net); ne.style.color = net>=0?'var(--green)':'var(--red)'; }
@@ -2737,6 +2781,12 @@ function exportData() {
     ventureRental:Object.fromEntries(VENTURES.filter(v=>v.rental).map(v=>[v.key,{
                     sqm: document.getElementById('v-sqm-'+v.key).value,
                     rate: document.getElementById('v-rate-'+v.key).value }])),
+    venturePricing:Object.fromEntries(VENTURES.filter(v=>v.pricing).map(v=>[v.key,{
+                    pass: document.getElementById('v-pass-'+v.key).value,
+                    addon: document.getElementById('v-addon-'+v.key).value,
+                    attach: document.getElementById('v-attach-'+v.key).value,
+                    visitors: document.getElementById('v-vis-'+v.key).value,
+                    days: document.getElementById('v-days-'+v.key).value }])),
   };
   const payload = { mode: MODE, data: DATA, settings };
   const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
@@ -2789,10 +2839,13 @@ function importData(event) {
           renderScenarios();
         }
         if (s.ventureRev) {
-          Object.entries(s.ventureRev).forEach(([k,val]) => { const v=VENTURES.find(x=>x.key===k); if(v && !v.rental) set('v-rev-'+k, val); });
+          Object.entries(s.ventureRev).forEach(([k,val]) => { const v=VENTURES.find(x=>x.key===k); if(v && !v.rental && !v.pricing) set('v-rev-'+k, val); });
         }
         if (s.ventureRental) {
           Object.entries(s.ventureRental).forEach(([k,o]) => { set('v-sqm-'+k, o.sqm); set('v-rate-'+k, o.rate); });
+        }
+        if (s.venturePricing) {
+          Object.entries(s.venturePricing).forEach(([k,o]) => { set('v-pass-'+k,o.pass); set('v-addon-'+k,o.addon); set('v-attach-'+k,o.attach); set('v-vis-'+k,o.visitors); set('v-days-'+k,o.days); });
         }
       }
       // Restore mode (default JV for older exports without a mode field)
