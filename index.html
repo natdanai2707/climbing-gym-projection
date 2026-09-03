@@ -817,7 +817,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
 <div id="sec-pricing" class="section">
   <div class="page-title">Pricing</div>
   <div class="page-sub">Entry fees and ancillary rental rates per visit.</div>
-  <div class="grid3">
+  <div class="grid2">
     <div class="card">
       <div class="card-header"><span class="card-title">🏷 Climbing Pricing</span></div>
       <div class="settings-body">
@@ -858,35 +858,6 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
             <div style="padding:14px; background:var(--bg3); border-radius:7px; display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:12px; color:var(--text2);">Effective revenue / walk-in visit</span>
               <span id="eff-rev" class="field-computed" style="border:none; padding:4px 0; background:transparent;"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header"><span class="card-title">🏓 Pickleball</span></div>
-      <div class="settings-body">
-        <div class="settings-grid">
-          <div class="field">
-            <span class="field-label">Rate (THB / hr / court)</span>
-            <input class="field-input" id="pb-rate" type="number" value="200" oninput="recalc()">
-          </div>
-          <div class="field">
-            <span class="field-label">Hours / day / court</span>
-            <input class="field-input" id="pb-hours" type="number" value="4" oninput="recalc()">
-          </div>
-          <div class="field">
-            <span class="field-label">Number of courts</span>
-            <input class="field-input" id="pb-courts" type="number" value="2" oninput="recalc()">
-          </div>
-          <div class="field">
-            <span class="field-label">Days / month</span>
-            <input class="field-input" id="pb-days" type="number" value="30" oninput="recalc()">
-          </div>
-          <div class="full">
-            <div style="padding:14px; background:var(--bg3); border-radius:7px; display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:12px; color:var(--text2);">Pickleball revenue / month</span>
-              <span id="pb-monthly" style="font-family:var(--mono); font-size:15px; color:var(--green); font-weight:600;"></span>
             </div>
           </div>
         </div>
@@ -1153,13 +1124,13 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
       <table class="ptbl">
         <colgroup>
           <col style="width:100px"><col style="width:70px"><col style="width:60px"><col style="width:60px">
-          <col style="width:85px"><col style="width:70px"><col style="width:85px">
+          <col style="width:85px"><col style="width:85px">
           <col style="width:85px"><col style="width:85px"><col style="width:85px"><col style="width:85px">
           <col class="col-bp" style="width:85px"><col style="width:75px">
         </colgroup>
         <thead><tr>
           <th>Scenario</th><th>Total/day</th><th>WI/day</th><th>Members</th>
-          <th>Climb Rev</th><th>PB Rev</th><th>Total Rev</th>
+          <th>Climb Rev</th><th>Total Rev</th>
           <th>EBITDA/mo</th><th>Depr/mo</th><th>EBIT/mo</th><th>Ann EBIT</th>
           <th class="col-bp" id="pbody1-bp-head">BP / yr</th><th id="pbody1-pb-head">Payback</th>
         </tr></thead>
@@ -1213,13 +1184,13 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
       <table class="ptbl">
         <colgroup>
           <col style="width:100px"><col style="width:70px"><col style="width:60px"><col style="width:60px">
-          <col style="width:85px"><col style="width:70px"><col style="width:85px">
+          <col style="width:85px"><col style="width:85px">
           <col style="width:85px"><col style="width:85px"><col style="width:85px"><col style="width:85px">
           <col style="width:85px">
         </colgroup>
         <thead><tr>
           <th>Scenario</th><th>Total/day</th><th>WI/day</th><th>Members</th>
-          <th>Climb Rev</th><th>PB Rev</th><th>Total Rev</th>
+          <th>Climb Rev</th><th>Total Rev</th>
           <th>EBITDA/mo</th><th>Depr/mo</th><th>EBIT/mo</th><th>Ann EBIT</th>
           <th>BP / yr</th>
         </tr></thead>
@@ -1674,7 +1645,6 @@ const DATA_JV = {
     {name:'Setting equipment (impact drivers, ropes, ladders, cordless grinder)',amt:230000,note:''},
     {name:'Shoes (150 pairs) + harness (40 pcs)',amt:323613,note:'Rental stock'},
     {name:'Fitness equipment',amt:160000,note:''},
-    {name:'Pickleball courts (2 courts) (badminton as alternative)',amt:200000,note:'Phase 1 Day 1'},
   ],
   fitout:[
     {name:'HVLS fans — 2 units',amt:300000,note:'Alternative to HVAC'},
@@ -1791,7 +1761,7 @@ const SCENARIOS_SOLO = [
 // Settings presets applied when a mode is chosen
 const SETTINGS_JV = {
   daypass:'300', membership:'1500', shoe:'100', shoeRate:'95', chalk:'30', chalkRate:'70',
-  harness:'50', harnessRate:'70', pbRate:'200', pbHours:'4', pbCourts:'2', pbDays:'30',
+  harness:'50', harnessRate:'70',
   jvBp:'50', jvSurf:'50', jvVisits:'8', jvWalkin:'90', jvRentSqm:'100', jvSqm:'1200',
   hvac:false, elecHvac:'45000', elecNoHvac:'20000', royaltyPct:'0',
   deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
@@ -1799,7 +1769,7 @@ const SETTINGS_JV = {
 };
 const SETTINGS_SOLO = {
   daypass:'290', membership:'1300', shoe:'100', shoeRate:'95', chalk:'100', chalkRate:'70',
-  harness:'50', harnessRate:'70', pbRate:'0', pbHours:'4', pbCourts:'2', pbDays:'30',
+  harness:'50', harnessRate:'70',
   jvBp:'0', jvSurf:'100', jvVisits:'8', jvWalkin:'70', jvRentSqm:'0', jvSqm:'600',
   hvac:true, elecHvac:'45000', elecNoHvac:'20000', royaltyPct:'2',
   deprWall:'10', deprEquipment:'10', deprRental:'5', deprHvac:'15', deprFitout:'10', deprOffice:'5',
@@ -2007,8 +1977,6 @@ function applySettings(s){
   set('p-shoe',s.shoe); set('p-shoe-rate',s.shoeRate);
   set('p-chalk',s.chalk); set('p-chalk-rate',s.chalkRate);
   set('p-harness',s.harness); set('p-harness-rate',s.harnessRate);
-  set('pb-rate',s.pbRate); set('pb-hours',s.pbHours);
-  set('pb-courts',s.pbCourts); set('pb-days',s.pbDays);
   set('jv-bp',s.jvBp); set('jv-surf',s.jvSurf);
   set('jv-visits',s.jvVisits); set('jv-walkin',s.jvWalkin);
   set('jv-rent-sqm',s.jvRentSqm); set('jv-sqm',s.jvSqm);
@@ -2301,11 +2269,6 @@ function recalc() {
     ? 'Shoes, chalk & harness revenue included'
     : 'Excluded — visits & membership fees only';
 
-  const pbRate  = parseFloat(document.getElementById('pb-rate').value)||0;
-  const pbHrs   = parseFloat(document.getElementById('pb-hours').value)||0;
-  const pbCts   = parseFloat(document.getElementById('pb-courts').value)||0;
-  const pbDays  = parseFloat(document.getElementById('pb-days').value)||30;
-  const pbMo    = pbRate*pbHrs*pbCts*pbDays;
 
   const bpEq    = (parseFloat(document.getElementById('jv-bp').value)||0)/100;
   const sfEq    = (parseFloat(document.getElementById('jv-surf').value)||0)/100;
@@ -2399,7 +2362,6 @@ function recalc() {
   // Pricing page always shows the full per-visit revenue incl. gear;
   // the projection tables respect the gear-rental toggle via `anc`.
   document.getElementById('eff-rev').textContent = 'THB '+fmt(dp+ancFull);
-  document.getElementById('pb-monthly').textContent = 'THB '+fmt(pbMo);
   const royMoEl = document.getElementById('royalty-mo');
   document.getElementById('phase2-rent').textContent = 'THB '+fmt(rentP2);
   document.getElementById('note-rent').textContent = 'THB '+fmt(rentP2)+'/month';
@@ -2507,7 +2469,7 @@ function recalc() {
     const mv  = vis-wi;
     const mem = Math.round(mv*30/visAmo);
     const rc  = wi*30*revWI + mem*mem_fee + mv*30*anc;
-    const rev = rc+pbMo;
+    const rev = rc;
     const royalty = rev*royPct;
     const ebitda = rev-opex-royalty;
     const ebit   = ebitda - deprMo;
@@ -2555,7 +2517,7 @@ function recalc() {
   SCENARIOS.forEach(sc=>{
     const c=calcSc(sc.visitors,opex1);
     b1+=`<tr><td>${sc.name}</td><td>${sc.visitors}</td><td>${c.wi}</td><td>${c.mem}</td>
-      <td>${fmt(c.rc)}</td><td>${fmt(pbMo)}</td><td>${fmt(c.rev)}</td>
+      <td>${fmt(c.rc)}</td><td>${fmt(c.rev)}</td>
       <td>${ebiC(c.ebitda)}</td>
       <td style="color:var(--orange);font-family:var(--mono);font-size:11px;">(${fmt(deprMo)})</td>
       <td>${ebiC(c.ebit)}</td>
@@ -2563,8 +2525,8 @@ function recalc() {
       <td class="pos col-bp">${fmt(c.bpy)}</td>
       <td>${pbC(c.pb)}</td></tr>`;
   });
-  const be1=((opex1-pbMo)/(revWI*wiPct*30*royKeep));
-  document.getElementById('pbody1').innerHTML=b1+`<tr class="be-row"><td colspan="13">Break-even (EBITDA): ${be1.toFixed(0)} visitors/day${isPR?` &nbsp;|&nbsp; incl. rent THB ${fmt(prRentMo)}/mo`:''}${royPct>0?` &nbsp;|&nbsp; incl. brand royalty ${(royPct*100).toFixed(1)}% of revenue`:''} &nbsp;|&nbsp; EBIT break-even: ${((opex1+deprMo-pbMo)/(revWI*wiPct*30*royKeep)).toFixed(0)} visitors/day</td></tr>`;
+  const be1=(opex1/(revWI*wiPct*30*royKeep));
+  document.getElementById('pbody1').innerHTML=b1+`<tr class="be-row"><td colspan="12">Break-even (EBITDA): ${be1.toFixed(0)} visitors/day${isPR?` &nbsp;|&nbsp; incl. rent THB ${fmt(prRentMo)}/mo`:''}${royPct>0?` &nbsp;|&nbsp; incl. brand royalty ${(royPct*100).toFixed(1)}% of revenue`:''} &nbsp;|&nbsp; EBIT break-even: ${((opex1+deprMo)/(revWI*wiPct*30*royKeep)).toFixed(0)} visitors/day</td></tr>`;
   document.getElementById('be1-label').textContent=`EBITDA BE: ${be1.toFixed(0)}/day`;
 
   // ── Project Rock mode: three-seat payback table + base-case cash flow ──
@@ -2617,15 +2579,15 @@ function recalc() {
   SCENARIOS.forEach(sc=>{
     const c=calcSc(sc.visitors,opex2);
     b2+=`<tr><td>${sc.name}</td><td>${sc.visitors}</td><td>${c.wi}</td><td>${c.mem}</td>
-      <td>${fmt(c.rc)}</td><td>${fmt(pbMo)}</td><td>${fmt(c.rev)}</td>
+      <td>${fmt(c.rc)}</td><td>${fmt(c.rev)}</td>
       <td>${ebiC(c.ebitda)}</td>
       <td style="color:var(--orange);font-family:var(--mono);font-size:11px;">(${fmt(deprMo)})</td>
       <td>${ebiC(c.ebit)}</td>
       <td>${ebiC(c.annEbit)}</td>
       <td class="pos">${fmt(c.bpy)}</td></tr>`;
   });
-  const be2=((opex2-pbMo)/(revWI*wiPct*30*royKeep));
-  document.getElementById('pbody2').innerHTML=b2+`<tr class="be-row"><td colspan="12">Break-even (EBITDA): ${be2.toFixed(0)} visitors/day &nbsp;|&nbsp; EBIT break-even: ${((opex2+deprMo-pbMo)/(revWI*wiPct*30*royKeep)).toFixed(0)} visitors/day</td></tr>`;
+  const be2=(opex2/(revWI*wiPct*30*royKeep));
+  document.getElementById('pbody2').innerHTML=b2+`<tr class="be-row"><td colspan="11">Break-even (EBITDA): ${be2.toFixed(0)} visitors/day &nbsp;|&nbsp; EBIT break-even: ${((opex2+deprMo)/(revWI*wiPct*30*royKeep)).toFixed(0)} visitors/day</td></tr>`;
   document.getElementById('be2-label').textContent=`EBITDA BE: ${be2.toFixed(0)}/day`;
 
   // ══ COMMUNITY SPACE VENTURES ══
@@ -2744,10 +2706,6 @@ function exportData() {
     chalkRate:    document.getElementById('p-chalk-rate').value,
     harness:      document.getElementById('p-harness').value,
     harnessRate:  document.getElementById('p-harness-rate').value,
-    pbRate:       document.getElementById('pb-rate').value,
-    pbHours:      document.getElementById('pb-hours').value,
-    pbCourts:     document.getElementById('pb-courts').value,
-    pbDays:       document.getElementById('pb-days').value,
     jvBp:         document.getElementById('jv-bp').value,
     jvSurf:       document.getElementById('jv-surf').value,
     jvVisits:     document.getElementById('jv-visits').value,
@@ -2816,8 +2774,6 @@ function importData(event) {
         set('p-shoe', s.shoe); set('p-shoe-rate', s.shoeRate);
         set('p-chalk', s.chalk); set('p-chalk-rate', s.chalkRate);
         set('p-harness', s.harness); set('p-harness-rate', s.harnessRate);
-        set('pb-rate', s.pbRate); set('pb-hours', s.pbHours);
-        set('pb-courts', s.pbCourts); set('pb-days', s.pbDays);
         set('jv-bp', s.jvBp); set('jv-surf', s.jvSurf);
         set('jv-visits', s.jvVisits); set('jv-walkin', s.jvWalkin);
         set('jv-rent-sqm', s.jvRentSqm); set('jv-sqm', s.jvSqm);
