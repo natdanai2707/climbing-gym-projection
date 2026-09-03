@@ -1868,7 +1868,7 @@ const VENTURES = [
     revHint:'Landlord income = area × (rent + CAM fee) + service charges · tenant runs the business and pays its own utilities/staff · build THB 12,000/sqm incl. AC + basic architecture',
   },
   {
-    key:'icebath', icon:'🧊', title:'Ice Bath & Sauna — Outdoor Recovery Zone',
+    key:'icebath', icon:'🧊', title:'Ice Bath & Sauna — Outdoor Recovery Zone', optional:true,
     sub:'Outdoor zone: barrel sauna + cold-plunge tubs under a partial rain/sun canopy, no air-conditioning, with its own toilet + shower block (not shared with the main building).',
     hint:'',
     pricing:{ pass:280, addon:100, addonLabel:'Ice bath add-on', attach:50, visitors:6, days:30 },
@@ -1938,6 +1938,19 @@ Object.assign(DATA_PR,   JSON.parse(JSON.stringify(VENTURE_DATA_DEFAULTS)));
 <div id="sec-venture-${v.key}" class="section">
   <div class="page-title">${v.icon} ${v.title}</div>
   <div class="page-sub">${v.sub}</div>
+  ${v.optional ? `
+  <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+    <div style="background:var(--surface);border:1.5px solid var(--accent);border-radius:var(--radius);padding:10px 18px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm);">
+      <div>
+        <div class="toggle-text">Build this zone?</div>
+        <div class="toggle-sub" id="v-on-sub-${v.key}">Included in landlord model and overall summary</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="v-on-${v.key}" checked onchange="recalc()">
+        <span class="switch-slider"></span>
+      </label>
+    </div>
+  </div>` : ''}
   <div class="grid4" id="v-kpi-${v.key}"></div>
   ${v.hint ? `<div style="padding:12px 16px;background:#fdf3ea;border:1px solid #f0d8bb;border-radius:8px;margin-bottom:20px;font-size:12px;color:var(--orange);line-height:1.6;">${v.hint}</div>` : ''}
   <div class="grid2">
@@ -2723,7 +2736,11 @@ function recalc() {
     }
     const net = rev-op;
     const vpb = net>0 ? cap/(net*12) : null;
-    ventCapex+=cap; ventOpexTot+=op; ventRevTot+=rev;
+    const onEl = document.getElementById('v-on-'+v.key);
+    const on = !v.optional || !onEl || onEl.checked;
+    const onSub = document.getElementById('v-on-sub-'+v.key);
+    if(onSub) onSub.textContent = on ? 'Included in landlord model and overall summary' : 'NOT BUILT — excluded from landlord model and overall summary';
+    if(on){ ventCapex+=cap; ventOpexTot+=op; ventRevTot+=rev; }
     const kc = document.getElementById('v-kpi-'+v.key);
     if(kc) kc.innerHTML = `
       <div class="kpi-card"><div class="kpi-label">CAPEX</div><div class="kpi-value blue">THB ${fmt(cap)}</div><div class="kpi-sub">One-time investment</div></div>
@@ -2732,7 +2749,7 @@ function recalc() {
       <div class="kpi-card"><div class="kpi-label">Payback</div><div class="kpi-value ${net>0?'accent':'orange'}">${vpb?vpb.toFixed(1)+' yrs':'—'}</div><div class="kpi-sub">${net>0?'Net THB '+fmt(net)+'/mo':'Not profitable at these numbers'}</div></div>`;
     const ne = document.getElementById('v-net-'+v.key);
     if(ne){ ne.textContent='THB '+fmt(net); ne.style.color = net>=0?'var(--green)':'var(--red)'; }
-    return {v,cap,op,rev,net,vpb,rentPart,camPart,svcPart};
+    return {v,cap,op,rev,net,vpb,rentPart,camPart,svcPart,on};
   });
 
   // ══ COMMUNITY OVERALL SUMMARY ══
@@ -2752,10 +2769,13 @@ function recalc() {
       <td>${fmt(gymCapex)}</td><td>${fmt(opex1)}</td><td>${fmt(bc.rev)}</td>
       <td>${ebiC(gymNet)}</td><td>${ebiC(gymNet*12)}</td><td>${pbC(gymPb)}</td></tr>`;
     ventRows.forEach(r=>{
-      rows += `<tr>
+      rows += r.on ? `<tr>
         <td>${r.v.icon} ${r.v.title}</td>
         <td>${fmt(r.cap)}</td><td>${fmt(r.op)}</td><td>${fmt(r.rev)}</td>
-        <td>${ebiC(r.net)}</td><td>${ebiC(r.net*12)}</td><td>${pbC(r.vpb)}</td></tr>`;
+        <td>${ebiC(r.net)}</td><td>${ebiC(r.net*12)}</td><td>${pbC(r.vpb)}</td></tr>`
+      : `<tr style="opacity:.5;">
+        <td>${r.v.icon} ${r.v.title} <span class="neutral" style="font-family:var(--mono);font-size:10px;">(NOT BUILT — excluded)</span></td>
+        <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>`;
     });
     rows += `<tr>
       <td>🏢 Landlord — common area (CAM from gym ${isPR?'':'n/a · '}− shared upkeep)</td>
@@ -2788,7 +2808,7 @@ function recalc() {
          <div class="summary-item highlight-green"><span class="s-label">Total incl. leasehold</span><span class="s-val green">THB ${fmt(totCap+LEASEHOLD)}</span></div>`;
     csum.innerHTML = `
       <div class="summary-item"><span class="s-label">Climbing Gym CAPEX</span><span class="s-val">THB ${fmt(gymCapex)}</span></div>
-      <div class="summary-item"><span class="s-label">Ventures CAPEX (${VENTURES.length} businesses)</span><span class="s-val">THB ${fmt(ventCapex)}</span></div>
+      <div class="summary-item"><span class="s-label">Ventures CAPEX (${ventRows.filter(r=>r.on).length} of ${VENTURES.length} zones built)</span><span class="s-val">THB ${fmt(ventCapex)}</span></div>
       <div class="summary-item highlight"><span class="s-label">Total Community CAPEX</span><span class="s-val accent">THB ${fmt(totCap)}</span></div>
       ${landRow}
       <div class="summary-item"><span class="s-label">Combined OPEX / month (incl. common-area upkeep THB ${fmt(commonExp)})</span><span class="s-val">THB ${fmt(totOp)}</span></div>
@@ -2801,8 +2821,9 @@ function recalc() {
 
   // ══ LANDLORD / COMMON AREA (hat 1) + TWO HATS ══
   {
-    const tenants = ventRows.filter(r=>r.v.rental);
-    const ops     = ventRows.filter(r=>!r.v.rental);                 // ventures we operate ourselves (ice bath)
+    const tenants = ventRows.filter(r=>r.v.rental && r.on);
+    const ops     = ventRows.filter(r=>!r.v.rental && r.on);          // ventures we operate ourselves (ice bath), if built
+    const offOnes = ventRows.filter(r=>!r.on);
     const tenantMo = tenants.reduce((s,r)=>s+r.rev,0);
     const opsNetMo = ops.reduce((s,r)=>s+r.net,0);
     const gymRentRow = (y)=> (isPR && bc.pm) ? bc.pm.rows[y-1].rY : 0;
@@ -2816,6 +2837,7 @@ function recalc() {
       h+=`<tr><td>🧗 Gym — CAM fee (from month 1)</td><td>—</td><td>${isPR?fmt(camGym):'<span class="neutral">owner-occupied</span>'}</td><td>—</td><td class="${isPR?'pos':'neutral'}">${isPR?fmt(camGym):'—'}</td></tr>`;
       h+=`<tr><td>🧗 Gym — rent (after co-investors recoup)</td><td>${isPR?fmt(prRentMo)+' <span class="neutral">from yr '+(bc.pm&&bc.pm.pI?bc.pm.pI.toFixed(1):'—')+'</span>':'<span class="neutral">n/a</span>'}</td><td>—</td><td>—</td><td class="neutral">${isPR?'not in year 1':'—'}</td></tr>`;
       ops.forEach(r=>{ h+=`<tr><td>${r.v.icon} ${r.v.title} — net (we operate)</td><td>—</td><td>—</td><td>${fmt(r.rev)} − ${fmt(r.op)}</td><td class="${r.net>=0?'pos':'neg'}">${fmt(r.net)}</td></tr>`; });
+      offOnes.forEach(r=>{ h+=`<tr style="opacity:.5;"><td>${r.v.icon} ${r.v.title} <span class="neutral" style="font-family:var(--mono);font-size:10px;">(NOT BUILT — toggle on its page)</span></td><td>—</td><td>—</td><td>—</td><td>—</td></tr>`; });
       h+=`<tr><td style="color:var(--red);">🧹 Common-area expenses</td><td>—</td><td>—</td><td>—</td><td class="neg">(${fmt(commonExp)})</td></tr>`;
       h+=`<tr class="total-row"><td style="font-weight:700;">Landlord net / month — before gym rent</td><td></td><td></td><td></td><td style="font-weight:700;">${ebiC(netMo0)}</td></tr>`;
       li.innerHTML=h;
@@ -2843,10 +2865,10 @@ function recalc() {
     const lcf=document.getElementById('landlord-cf'); if(lcf) lcf.innerHTML=cf;
     const lcl=document.getElementById('landlord-cf-label'); if(lcl) lcl.textContent='CAPEX THB '+fmt(landlordCapex)+' · payback '+(pbL?pbL.toFixed(1)+' yrs':'> 15 yrs');
     const ln=document.getElementById('landlord-note');
-    if(ln) ln.innerHTML = `Landlord CAPEX = gym building shell THB ${fmt(bucketA)} + every zone we build (tennis, hyrox, ice bath) THB ${fmt(ventCapex)}. Land is excluded from payback. Tenant and CAM income are assumed flat; only the gym rent escalates.`;
+    if(ln) ln.innerHTML = `Landlord CAPEX = gym building shell THB ${fmt(bucketA)} + every zone actually built THB ${fmt(ventCapex)}${offOnes.length?' (excluded: '+offOnes.map(r=>r.v.title).join(', ')+')':''}. Land is excluded from payback. Tenant and CAM income are assumed flat; only the gym rent escalates.`;
     const kl=document.getElementById('kpi-landlord');
     if(kl) kl.innerHTML = `
-      <div class="kpi-card"><div class="kpi-label">Landlord CAPEX</div><div class="kpi-value blue">THB ${fmt(landlordCapex)}</div><div class="kpi-sub">Gym shell + tennis + hyrox + ice bath (excl. land)</div></div>
+      <div class="kpi-card"><div class="kpi-label">Landlord CAPEX</div><div class="kpi-value blue">THB ${fmt(landlordCapex)}</div><div class="kpi-sub">Gym shell + ${ventRows.filter(r=>r.on).map(r=>r.v.key).join(' + ')} (excl. land${offOnes.length?' · '+offOnes.map(r=>r.v.key).join(', ')+' not built':''})</div></div>
       <div class="kpi-card"><div class="kpi-label">Income / month (before gym rent)</div><div class="kpi-value green">THB ${fmt(tenantMo+camGym+opsNetMo)}</div><div class="kpi-sub">Tenants ${fmt(tenantMo)} · gym CAM ${fmt(camGym)} · ice bath net ${fmt(opsNetMo)}</div></div>
       <div class="kpi-card"><div class="kpi-label">Common-area expenses / month</div><div class="kpi-value orange">THB ${fmt(commonExp)}</div><div class="kpi-sub">Net ${fmt(netMo0)}/mo before gym rent</div></div>
       <div class="kpi-card"><div class="kpi-label">Landlord payback (Base)</div><div class="kpi-value accent">${pbL?pbL.toFixed(1)+' yrs':'> 15 yrs'}</div><div class="kpi-sub">${isPR?'incl. gym rent from investor payback':'no gym rent in this mode'}</div></div>`;
@@ -2930,6 +2952,7 @@ function exportData() {
                     rate: document.getElementById('v-rate-'+v.key).value,
                     cam: document.getElementById('v-cam-'+v.key).value,
                     svc: document.getElementById('v-svc-'+v.key).value }])),
+    ventureOn:    Object.fromEntries(VENTURES.filter(v=>v.optional).map(v=>[v.key, document.getElementById('v-on-'+v.key).checked])),
     venturePricing:Object.fromEntries(VENTURES.filter(v=>v.pricing).map(v=>[v.key,{
                     pass: document.getElementById('v-pass-'+v.key).value,
                     addon: document.getElementById('v-addon-'+v.key).value,
@@ -2991,6 +3014,9 @@ function importData(event) {
         }
         if (s.ventureRental) {
           Object.entries(s.ventureRental).forEach(([k,o]) => { set('v-sqm-'+k, o.sqm); set('v-rate-'+k, o.rate); set('v-cam-'+k, o.cam); set('v-svc-'+k, o.svc); });
+        }
+        if (s.ventureOn) {
+          Object.entries(s.ventureOn).forEach(([k,on]) => { const el=document.getElementById('v-on-'+k); if(el) el.checked = !!on; });
         }
         if (s.venturePricing) {
           Object.entries(s.venturePricing).forEach(([k,o]) => { set('v-pass-'+k,o.pass); set('v-addon-'+k,o.addon); set('v-attach-'+k,o.attach); set('v-vis-'+k,o.visitors); set('v-days-'+k,o.days); });
