@@ -554,8 +554,8 @@ body.deck-mode .deck-nav { display: flex; }
         </div>
         <div class="field">
           <span class="field-label">ราคาหุ้น (THB / หุ้น)</span>
-          <input class="field-input" id="in-share-price" type="number" step="1000" value="120000" oninput="recalcAll()">
-          <span class="field-hint">จำนวนหุ้นคำนวณให้ทุกฝ่ายเป็นหุ้นเต็มพอดี</span>
+          <input class="field-input" id="in-share-price" type="number" step="1000" value="126000" oninput="recalcAll()">
+          <span class="field-hint" id="h-price">จำนวนหุ้นคำนวณให้ทุกฝ่ายเป็นหุ้นเต็มพอดี</span>
         </div>
         <div class="field">
           <span class="field-label">ค่าส่วนกลาง (CAM) — พื้นที่ยิม (sqm)</span>
@@ -672,7 +672,7 @@ const RAISE = {
     ]},
     { key: 'fitout', icon: '🏠', label: 'Fit-out — ตกแต่งภายใน', items: [
       { name: 'ระบบแอร์ VRV + พัดลม',                          amt: 1600000 },
-      { name: 'ห้องน้ำ–ห้องอาบน้ำ ชาย/หญิง + ห้องล้าง holds',    amt: 600000 },
+      { name: 'ห้องน้ำ–ห้องอาบน้ำ ชาย/หญิง + ห้องล้าง holds + ชั้นลอย co-working ด้านบน', amt: 1000000 },
       { name: 'งานรีโนเวท (เพิ่มเติม)',                         amt: 300000 },
       { name: 'Reception + counter + office',                 amt: 50000 },
       { name: 'เฟอร์นิเจอร์ fixed',                            amt: 100000 },
@@ -922,6 +922,8 @@ function renderProjection(m){
   document.getElementById('h-kaevin').innerHTML =
     `<strong>Cap table</strong> — นักลงทุน ${pc(m.investorPct)} (${m.investorShares} หุ้น เงินสด THB ${fmt(m.raise)}) · Founder ${pc(m.founderPct)} = sweat ${pc(m.sweatPct)} + in-kind ${pc(m.inkindPct)} (งาน THB ${fmt(m.inkindValue)}${m.founderTopUp>0?' + เงินสด '+fmt(m.founderTopUp):''}) · Project Rock ${pc(m.kaeVinPct)}<br>` +
     `<strong>Founder + Project Rock = ${pc(m.controlPct)}</strong>${m.controlPct>0.5?' ✓':' ⚠ ต่ำกว่า 51%'} · หุ้นละ THB ${fmt(m.sharePrice)} · ${m.totalShares} หุ้น`;
+  const hp=document.getElementById('h-price');
+  if(hp) hp.textContent = `${m.totalShares} หุ้น · ราคาต่ำสุดที่ ${m.investorShares+m.inkindShares} หุ้นในกลุ่มทุนครอบคลุม fit-out สุทธิ = THB ${fmt(Math.ceil(m.bucketTotal/(m.investorShares+m.inkindShares)/1000)*1000)} · สำรองตอนนี้ THB ${fmt(m.contingency)}`;
   document.getElementById('t-brand').textContent = 'THB '+fmt(base.royalty+m.consultingAnn)+' /ปี (Base)';
   document.getElementById('tbl-brand').innerHTML =
     `<thead><tr><th>รายการ</th><th>ฐานคิด</th><th>ปี 1 — Base (${base.visitors} คน/วัน)</th></tr></thead><tbody>
