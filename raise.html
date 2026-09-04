@@ -1307,31 +1307,26 @@ window.onload = () => { renderEditableTables(); recalcAll(); };
 
 <!-- ══ Language toggle (TH/EN) + MYR⇄THB converter — shared across pages ══ -->
 <style>
-#fx-panel{position:fixed;left:16px;bottom:16px;z-index:9999;width:230px;background:#fff;border:1px solid #d8dde3;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.14);font-family:inherit;font-size:12px;color:#222;user-select:none;touch-action:none}
-#fx-panel .fx-head{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:#f3f5f7;border-bottom:1px solid #e3e7eb;border-radius:10px 10px 0 0;cursor:grab;font-weight:600;letter-spacing:.2px}
+#fx-panel{position:fixed;left:16px;bottom:16px;z-index:9999;display:flex;align-items:center;gap:5px;padding:4px 8px 4px 6px;background:#fff;border:1px solid #d8dde3;border-radius:999px;box-shadow:0 4px 16px rgba(0,0,0,.14);font-family:inherit;font-size:12px;color:#222;user-select:none;touch-action:none;white-space:nowrap}
+#fx-panel .fx-head{cursor:grab;padding:0 4px;font-size:13px;line-height:1}
 #fx-panel.dragging .fx-head{cursor:grabbing}
-#fx-panel .fx-min{cursor:pointer;padding:0 4px;color:#666;font-weight:700}
-#fx-panel .fx-body{padding:9px 10px 10px;display:grid;gap:7px}
-#fx-panel.min .fx-body{display:none}
-#fx-panel.min{width:auto}
-#fx-panel.min .fx-head{border-bottom:none;border-radius:10px}
-#fx-panel .fx-row{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:6px}
-#fx-panel .fx-row span{font-weight:700;color:#555;font-size:11px}
-#fx-panel input{width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #cfd5dc;border-radius:6px;font-size:13px;font-family:inherit;text-align:right;background:#fff;color:#111}
+#fx-panel .fx-lbl{font-weight:700;color:#555;font-size:11px}
+#fx-panel input{box-sizing:border-box;padding:3px 6px;border:1px solid #cfd5dc;border-radius:6px;font-size:12px;font-family:inherit;text-align:right;background:#fff;color:#111}
 #fx-panel input:focus{outline:2px solid #4a7cff33;border-color:#4a7cff}
-#fx-panel .fx-rate{display:flex;align-items:center;gap:6px;font-size:11px;color:#666}
-#fx-panel .fx-rate input{width:64px;padding:3px 6px;font-size:12px}
-#fx-panel .fx-hint{font-size:10px;color:#888;line-height:1.3}
+#fx-panel #fx-myr,#fx-panel #fx-thb{width:84px}
+#fx-panel #fx-rate{width:44px;font-size:11px;padding:2px 4px}
+#fx-panel .fx-at{color:#888;font-size:11px}
+#fx-panel .fx-min{cursor:pointer;padding:0 2px;color:#888;font-weight:700;font-size:12px}
+#fx-panel.min #fx-myr,#fx-panel.min #fx-thb,#fx-panel.min #fx-rate,#fx-panel.min .fx-lbl,#fx-panel.min .fx-at{display:none}
+@media (max-width:480px){#fx-panel #fx-myr,#fx-panel #fx-thb{width:70px}}
 @media print{#fx-panel,#lang-btn{display:none!important}}
 </style>
 <div id="fx-panel" data-no-i18n>
-  <div class="fx-head" id="fx-head"><span>💱 MYR ⇄ THB</span><span class="fx-min" id="fx-min" title="minimise">–</span></div>
-  <div class="fx-body">
-    <div class="fx-row"><span>RM</span><input id="fx-myr" type="text" inputmode="decimal" placeholder="0"></div>
-    <div class="fx-row"><span>THB</span><input id="fx-thb" type="text" inputmode="decimal" placeholder="0"></div>
-    <div class="fx-rate">1 RM = <input id="fx-rate" type="text" inputmode="decimal"> THB <span id="fx-inv"></span></div>
-    <div class="fx-hint">Type in either box · rate is editable and remembered · drag the title bar to move</div>
-  </div>
+  <span class="fx-head" id="fx-head" title="drag to move">💱</span>
+  <span class="fx-lbl">RM</span><input id="fx-myr" type="text" inputmode="decimal" placeholder="0">
+  <span class="fx-lbl">= THB</span><input id="fx-thb" type="text" inputmode="decimal" placeholder="0">
+  <span class="fx-at">@</span><input id="fx-rate" type="text" inputmode="decimal" title="THB per 1 RM (editable)">
+  <span class="fx-min" id="fx-min" title="minimise">–</span>
 </div>
 <script>
 (function(){
@@ -1443,7 +1438,7 @@ const I18N_PAIRS = [
   let rate=7.7, last='myr';
   try{ const r=parseFloat(localStorage.getItem('gym-fx-rate')); if(r>0) rate=r; }catch(e){}
   iR.value=rate;
-  function paintInv(){ inv.textContent='· 1 THB = RM '+(1/rate).toFixed(4); }
+  function paintInv(){ if(inv) inv.textContent='· 1 THB = RM '+(1/rate).toFixed(4); iR.title='1 RM = '+rate+' THB · 1 THB = RM '+(1/rate).toFixed(4); }
   function conv(){ if(last==='myr'){ const m=num(iM.value); iT.value=m===null?'':fmtN(m*rate); } else { const t=num(iT.value); iM.value=t===null?'':fmtN(t/rate); } }
   iM.addEventListener('input',()=>{ last='myr'; conv(); });
   iT.addEventListener('input',()=>{ last='thb'; conv(); });
@@ -1460,7 +1455,7 @@ const I18N_PAIRS = [
   function place(x,y){ const w=P.offsetWidth,h=P.offsetHeight; x=Math.max(0,Math.min(window.innerWidth-w,x)); y=Math.max(0,Math.min(window.innerHeight-h,y)); P.style.left=x+'px'; P.style.top=y+'px'; P.style.bottom='auto'; P.style.right='auto'; }
   try{ const pos=JSON.parse(localStorage.getItem('gym-fx-pos')||'null'); if(pos&&typeof pos.x==='number') place(pos.x,pos.y); }catch(e){}
   let drag=null;
-  H.addEventListener('pointerdown',e=>{ if(e.target===mn) return; drag={dx:e.clientX-P.getBoundingClientRect().left,dy:e.clientY-P.getBoundingClientRect().top}; P.classList.add('dragging'); H.setPointerCapture(e.pointerId); e.preventDefault(); });
+  H.addEventListener('pointerdown',e=>{ if(e.target===mn||e.target.tagName==='INPUT') return; drag={dx:e.clientX-P.getBoundingClientRect().left,dy:e.clientY-P.getBoundingClientRect().top}; P.classList.add('dragging'); H.setPointerCapture(e.pointerId); e.preventDefault(); });
   H.addEventListener('pointermove',e=>{ if(!drag) return; place(e.clientX-drag.dx,e.clientY-drag.dy); });
   const end=e=>{ if(!drag) return; drag=null; P.classList.remove('dragging'); try{ const r=P.getBoundingClientRect(); localStorage.setItem('gym-fx-pos',JSON.stringify({x:r.left,y:r.top})); }catch(e){} };
   H.addEventListener('pointerup',end); H.addEventListener('pointercancel',end);
