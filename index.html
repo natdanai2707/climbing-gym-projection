@@ -1219,6 +1219,20 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
   <div class="page-title">🏢 Landlord &amp; Common Area — หมวกที่ 1: เจ้าของ/ผู้พัฒนาพื้นที่</div>
   <div class="page-sub">You own the land and every building, lease space to the gym company and to the tenants, collect common-area (CAM) fees and service charges, and pay for shared upkeep. Hat 2 — gym founder — is in Projections; both hats are combined at the bottom.</div>
   <div class="grid4" id="kpi-landlord"></div>
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+      <span class="card-title"><span class="card-title-icon">🏗</span> Site &amp; Common-Area Construction — Landlord CAPEX (one-time)</span>
+      <span class="card-total" id="total-siteCapex">THB 0</span>
+    </div>
+    <table class="etbl"><colgroup><col class="col-name"><col class="col-amt"><col class="col-note"><col class="col-del"></colgroup>
+      <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
+      <tbody id="tbody-siteCapex"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRow('siteCapex')">＋ Add item</button>
+    <div style="padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.6;">
+      Built and owned by you (hat 1), outside the gym raise. Recovered through tenant rents, the gym's rent and the developed land value — counted in landlord and two-hat payback.
+    </div>
+  </div>
   <div class="grid2">
     <div class="card">
       <div class="card-header">
@@ -1770,7 +1784,7 @@ const DATA_SOLO = {
   ],
   fitout:[
     {name:'Air Cond — VRV system + Fan',amt:1600000,note:'for 600 sqm'},
-    {name:'Toilet / wet area 1 toilet + 1 shower room for each gender, (+1 urinal for men) + 1 hold washing room',amt:600000,note:'Men + Women'},
+    {name:'Toilet / shower block (M/F) + hold washing + co-working mezzanine above',amt:1000000,note:'Men + Women · mezzanine'},
     {name:'Renovation (extra)',amt:300000,note:''},
     {name:'Reception + Counter + Office',amt:50000,note:''},
     {name:'Fixed furniture',amt:100000,note:''},
@@ -1874,7 +1888,7 @@ const VENTURES = [
     revHint:'Landlord income = area × (rent + CAM fee) + service charges · tenant runs the business and pays its own utilities/staff · build THB 12,000/sqm incl. AC + basic architecture',
   },
   {
-    key:'icebath', icon:'🧊', title:'Ice Bath & Sauna — Outdoor Recovery Zone', optional:true,
+    key:'icebath', icon:'🧊', title:'Ice Bath & Sauna — Outdoor Recovery Zone', optional:true, defaultOn:false,
     sub:'Outdoor zone: barrel sauna + cold-plunge tubs under a partial rain/sun canopy, no air-conditioning, with its own toilet + shower block (not shared with the main building).',
     hint:'',
     pricing:{ pass:280, addon:100, addonLabel:'Ice bath add-on', attach:50, visitors:6, days:30 },
@@ -1916,6 +1930,16 @@ const VENTURE_DATA_DEFAULTS = {
     {name:'Cleaning & hygiene supplies',amt:3000,note:''},
     {name:'Attendant (part-time) — safety & turnover',amt:8000,note:''},
   ],
+  // Site & common-area construction (landlord hat) — parking, fence, landscaping, lights, drainage
+  siteCapex:[
+    {name:'Parking + internal road — concrete (~800 sqm × 1,200)',amt:960000,note:''},
+    {name:'Perimeter fence + entrance gate (~200 m × 2,500)',amt:500000,note:''},
+    {name:'Site drainage — pipes, catch basins, soakaway',amt:250000,note:''},
+    {name:'Street / parking lighting + common-area electrical run',amt:150000,note:''},
+    {name:'Landscaping — trees, lawn, planters',amt:200000,note:''},
+    {name:'Project signage + entrance feature',amt:80000,note:''},
+    {name:'Common-area CCTV',amt:60000,note:''},
+  ],
   // Shared-property upkeep (landlord hat) — mode-independent
   commonOpex:[
     {name:'Housekeeper — common areas & toilets',amt:10000,note:'1 FT'},
@@ -1952,7 +1976,7 @@ Object.assign(DATA_PR,   JSON.parse(JSON.stringify(VENTURE_DATA_DEFAULTS)));
         <div class="toggle-sub" id="v-on-sub-${v.key}">Included in landlord model and overall summary</div>
       </div>
       <label class="switch">
-        <input type="checkbox" id="v-on-${v.key}" checked onchange="recalc()">
+        <input type="checkbox" id="v-on-${v.key}" ${v.defaultOn===false?'':'checked'} onchange="recalc()">
         <span class="switch-slider"></span>
       </label>
     </div>
@@ -2768,7 +2792,8 @@ function recalc() {
   const gymCapex = MODE==='solo' ? soloCapex : bucketA+bucketB;
   const gymNet   = bc.ebitda;                       // base case, Phase 1 OPEX, cash basis
   const gymPb    = gymNet>0 ? gymCapex/(gymNet*12) : null;
-  const totCap = gymCapex+ventCapex;
+  const siteCapexTot = getTotal('siteCapex');
+  const totCap = gymCapex+ventCapex+siteCapexTot;
   const totOp  = opex1+ventOpexTot+commonExp;         // gym OPEX (incl. CAM paid) + venture OPEX + shared upkeep
   const totRev = bc.rev+ventRevTot+camGym;            // gym CAM is landlord income (offsets the gym's cost)
   const totNet = totRev-totOp;
@@ -2790,8 +2815,8 @@ function recalc() {
         <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>`;
     });
     rows += `<tr>
-      <td>🏢 Landlord — common area (CAM from gym ${isPR?'':'n/a · '}− shared upkeep)</td>
-      <td>—</td><td>${fmt(commonExp)}</td><td>${fmt(camGym)}</td>
+      <td>🏢 Landlord — site & common-area works · CAM from gym ${isPR?'':'(n/a) '}− shared upkeep</td>
+      <td>${fmt(siteCapexTot)}</td><td>${fmt(commonExp)}</td><td>${fmt(camGym)}</td>
       <td>${ebiC(camGym-commonExp)}</td><td>${ebiC((camGym-commonExp)*12)}</td><td class="neutral">—</td></tr>`;
     rows += `<tr style="background:var(--bg2);border-top:2px solid var(--border);">
       <td style="font-weight:700;">🏘 TOTAL COMMUNITY</td>
@@ -2821,6 +2846,7 @@ function recalc() {
     csum.innerHTML = `
       <div class="summary-item"><span class="s-label">Climbing Gym CAPEX</span><span class="s-val">THB ${fmt(gymCapex)}</span></div>
       <div class="summary-item"><span class="s-label">Ventures CAPEX (${ventRows.filter(r=>r.on).length} of ${VENTURES.length} zones built)</span><span class="s-val">THB ${fmt(ventCapex)}</span></div>
+      <div class="summary-item"><span class="s-label">Site & common-area works (parking, fence, landscaping, lights, drainage)</span><span class="s-val">THB ${fmt(siteCapexTot)}</span></div>
       <div class="summary-item highlight"><span class="s-label">Total Community CAPEX</span><span class="s-val accent">THB ${fmt(totCap)}</span></div>
       ${landRow}
       <div class="summary-item"><span class="s-label">Combined OPEX / month (incl. common-area upkeep THB ${fmt(commonExp)})</span><span class="s-val">THB ${fmt(totOp)}</span></div>
@@ -2839,7 +2865,8 @@ function recalc() {
     const tenantMo = tenants.reduce((s,r)=>s+r.rev,0);
     const opsNetMo = ops.reduce((s,r)=>s+r.net,0);
     const gymRentRow = (y)=> (isPR && bc.pm) ? bc.pm.rows[y-1].rY : 0;
-    const landlordCapex = bucketA + ventCapex;                        // gym shell + every zone we build
+    const siteCapex = getTotal('siteCapex');
+    const landlordCapex = bucketA + siteCapex + ventCapex;            // gym shell + site works + every zone we build
     const netMo0 = tenantMo + camGym + opsNetMo - commonExp;          // before gym rent
     // income table
     const li = document.getElementById('landlord-income');
@@ -2877,10 +2904,10 @@ function recalc() {
     const lcf=document.getElementById('landlord-cf'); if(lcf) lcf.innerHTML=cf;
     const lcl=document.getElementById('landlord-cf-label'); if(lcl) lcl.textContent='CAPEX THB '+fmt(landlordCapex)+' · payback '+(pbL?pbL.toFixed(1)+' yrs':'> 15 yrs');
     const ln=document.getElementById('landlord-note');
-    if(ln) ln.innerHTML = `Landlord CAPEX = gym building shell THB ${fmt(bucketA)} + every zone actually built THB ${fmt(ventCapex)}${offOnes.length?' (excluded: '+offOnes.map(r=>r.v.title).join(', ')+')':''}. Land is excluded from payback. Tenant and CAM income are assumed flat; only the gym rent escalates.`;
+    if(ln) ln.innerHTML = `Landlord CAPEX = gym building shell THB ${fmt(bucketA)} + site & common-area works THB ${fmt(siteCapex)} + every zone actually built THB ${fmt(ventCapex)}${offOnes.length?' (excluded: '+offOnes.map(r=>r.v.title).join(', ')+')':''}. Land is excluded from payback. Tenant and CAM income are assumed flat; only the gym rent escalates.`;
     const kl=document.getElementById('kpi-landlord');
     if(kl) kl.innerHTML = `
-      <div class="kpi-card"><div class="kpi-label">Landlord CAPEX</div><div class="kpi-value blue">THB ${fmt(landlordCapex)}</div><div class="kpi-sub">Gym shell + ${ventRows.filter(r=>r.on).map(r=>r.v.key).join(' + ')} (excl. land${offOnes.length?' · '+offOnes.map(r=>r.v.key).join(', ')+' not built':''})</div></div>
+      <div class="kpi-card"><div class="kpi-label">Landlord CAPEX</div><div class="kpi-value blue">THB ${fmt(landlordCapex)}</div><div class="kpi-sub">Gym shell ${fmt(bucketA)} + site works ${fmt(siteCapex)} + zones ${fmt(ventCapex)} (excl. land${offOnes.length?' · '+offOnes.map(r=>r.v.key).join(', ')+' not built':''})</div></div>
       <div class="kpi-card"><div class="kpi-label">Income / month (before gym rent)</div><div class="kpi-value green">THB ${fmt(tenantMo+camGym+opsNetMo)}</div><div class="kpi-sub">Tenants ${fmt(tenantMo)} · gym CAM ${fmt(camGym)} · ice bath net ${fmt(opsNetMo)}</div></div>
       <div class="kpi-card"><div class="kpi-label">Common-area expenses / month</div><div class="kpi-value orange">THB ${fmt(commonExp)}</div><div class="kpi-sub">Net ${fmt(netMo0)}/mo before gym rent</div></div>
       <div class="kpi-card"><div class="kpi-label">Landlord payback (Base)</div><div class="kpi-value accent">${pbL?pbL.toFixed(1)+' yrs':'> 15 yrs'}</div><div class="kpi-sub">${isPR?'incl. gym rent from investor payback':'no gym rent in this mode'}</div></div>`;
@@ -2890,7 +2917,7 @@ function recalc() {
       const y1cash = 12*netMo0 + gymRentRow(1);
       const y1div  = (isPR && bc.pm) ? bc.pm.rows[0].dF : 0;
       th.innerHTML = isPR ? `
-        <div class="summary-item"><span class="s-label">🎩 Hat 1 — Landlord: cash out (shell + zones, excl. land)</span><span class="s-val">THB ${fmt(landlordCapex)}</span></div>
+        <div class="summary-item"><span class="s-label">🎩 Hat 1 — Landlord: cash out (shell ${fmt(bucketA)} + site works ${fmt(siteCapex)} + zones ${fmt(ventCapex)}, excl. land)</span><span class="s-val">THB ${fmt(landlordCapex)}</span></div>
         <div class="summary-item"><span class="s-label">Hat 1 — cash in, year 1 (tenants + gym CAM + ice bath − upkeep)</span><span class="s-val green">THB ${fmt(y1cash)}</span></div>
         <div class="summary-item"><span class="s-label">🎩 Hat 2 — Gym founder: works built in kind for ${(prFcash*100).toFixed(0)}% (AC, toilets, renovation, water)${founderTopUp>0?' + cash '+fmt(founderTopUp):''}</span><span class="s-val">THB ${fmt(founderCash)}</span></div>
         <div class="summary-item"><span class="s-label">Hat 2 — dividends, year 1 (${(prFEq*100).toFixed(0)}% incl. ${(prSweat*100).toFixed(0)}% sweat)</span><span class="s-val green">THB ${fmt(y1div)}</span></div>
