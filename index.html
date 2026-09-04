@@ -603,6 +603,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
     </div>
   </div>
   <div class="header-right">
+    <button class="hdr-btn" id="lang-btn" data-no-i18n onclick="toggleLang()" title="ไทย / English">🌐 ไทย</button>
     <button class="hdr-btn" id="mode-switch-btn" onclick="openModePicker()" title="เปลี่ยนรูปแบบ projection">⇄ <span id="mode-switch-label">Mode</span></button>
     <a class="hdr-btn" href="raise.html" style="text-decoration:none;" title="หน้าสำหรับนักลงทุน (shareable)">Investor view →</a>
     <button class="hdr-btn" onclick="exportData()">⬇ Export</button>
@@ -3215,5 +3216,273 @@ window.onload = () => {
   // the overlay has no close button, so a mode is always selected first.
 };
 </script>
+
+<!-- ══ Language toggle (TH/EN) + MYR⇄THB converter — shared across pages ══ -->
+<style>
+#fx-panel{position:fixed;left:16px;bottom:16px;z-index:9999;width:230px;background:#fff;border:1px solid #d8dde3;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.14);font-family:inherit;font-size:12px;color:#222;user-select:none;touch-action:none}
+#fx-panel .fx-head{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:#f3f5f7;border-bottom:1px solid #e3e7eb;border-radius:10px 10px 0 0;cursor:grab;font-weight:600;letter-spacing:.2px}
+#fx-panel.dragging .fx-head{cursor:grabbing}
+#fx-panel .fx-min{cursor:pointer;padding:0 4px;color:#666;font-weight:700}
+#fx-panel .fx-body{padding:9px 10px 10px;display:grid;gap:7px}
+#fx-panel.min .fx-body{display:none}
+#fx-panel.min{width:auto}
+#fx-panel.min .fx-head{border-bottom:none;border-radius:10px}
+#fx-panel .fx-row{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:6px}
+#fx-panel .fx-row span{font-weight:700;color:#555;font-size:11px}
+#fx-panel input{width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #cfd5dc;border-radius:6px;font-size:13px;font-family:inherit;text-align:right;background:#fff;color:#111}
+#fx-panel input:focus{outline:2px solid #4a7cff33;border-color:#4a7cff}
+#fx-panel .fx-rate{display:flex;align-items:center;gap:6px;font-size:11px;color:#666}
+#fx-panel .fx-rate input{width:64px;padding:3px 6px;font-size:12px}
+#fx-panel .fx-hint{font-size:10px;color:#888;line-height:1.3}
+@media print{#fx-panel,#lang-btn{display:none!important}}
+</style>
+<div id="fx-panel" data-no-i18n>
+  <div class="fx-head" id="fx-head"><span>💱 MYR ⇄ THB</span><span class="fx-min" id="fx-min" title="minimise">–</span></div>
+  <div class="fx-body">
+    <div class="fx-row"><span>RM</span><input id="fx-myr" type="text" inputmode="decimal" placeholder="0"></div>
+    <div class="fx-row"><span>THB</span><input id="fx-thb" type="text" inputmode="decimal" placeholder="0"></div>
+    <div class="fx-rate">1 RM = <input id="fx-rate" type="text" inputmode="decimal"> THB <span id="fx-inv"></span></div>
+    <div class="fx-hint">Type in either box · rate is editable and remembered · drag the title bar to move</div>
+  </div>
+</div>
+<script>
+(function(){
+  // ── i18n ──
+  const SRC='en';
+  // [English, Thai] pairs. Numbers are replaced by {#} on both sides (same order).
+const I18N_PAIRS = [
+// ── picker (Thai source) ──
+["Choose how to build the Financial Projection","เลือกรูปแบบการทำ Financial Projection"],
+["Find co-investors (JV)","หาคนร่วมลงทุน (JV)"],
+["Joint-venture model — investment split into Bucket A / B, a business partner (BP), and rent after the partner recoups (Phase {#} → Phase {#})","โมเดลร่วมทุน — แบ่งการลงทุนเป็น Bucket A / B, มีผู้ร่วมทุน (BP), และมีค่าเช่าหลังผู้ร่วมทุนคืนทุน (Phase {#} → Phase {#})"],
+["Choose this mode →","เลือกโหมดนี้ →"],
+["Self-invest {#}%","ลงทุนเอง {#}%"],
+["Fully self-funded — no rent, no partner; land value is counted as an asset and payback comes from {#}% of profit","ลงทุนเองทั้งหมด — ไม่มีค่าเช่า ไม่มีผู้ร่วมทุน คิดรวมมูลค่าที่ดินเข้าไปในสินทรัพย์ และคืนทุนจากกำไรเต็ม {#}%"],
+["Project Rock shareholder + co-investors","Project Rock ถือหุ้น + ผู้ร่วมลงทุน"],
+["Built on the self-invest mode — you {#}% sweat (incl. rent waived until payback) + Project Rock {#}% (for the {#}% wall-scope discount + brand), then {#}% sold at one price — you take {#}% with the works you build yourself (AC, renovation, water filter), no cash. Toilets + mezzanine are your asset as the landlord. You + PR hold {#}%, co-investors {#}% in cash · royalty {#}%, monthly consulting · building rent starts after co-investors recoup · payback shown both as landlord and as shareholder","ต่อยอดจากโหมดลงทุนเอง — คุณ {#}% sweat (รวมค่าเช่าที่เว้นจนคืนทุน) + Project Rock {#}% (แลกส่วนลดงานผนัง {#}% + แบรนด์) แล้วขายหุ้น {#}% ราคาเดียวกัน — คุณรับ {#}% ด้วยงานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ) ไม่ต้องควักเงินสด ห้องน้ำ + ชั้นลอยเป็นทรัพย์สินของคุณในฐานะเจ้าของพื้นที่ ให้คุณ+PR ถือ {#}%, ผู้ร่วมลงทุน {#}% เงินสด · royalty {#}%, ค่าที่ปรึกษารายเดือน · ค่าเช่าอาคารเริ่มจ่ายหลังผู้ร่วมลงทุนคืนทุน · ดูคืนทุนทั้งฐานะเจ้าของอาคารและผู้ถือหุ้น"],
+["Rent after payback","ค่าเช่าหลังคืนทุน"],
+["Fundraise — Investor view","ระดมทุน — Investor view"],
+["Investor-facing page: raising the fit-out — investors {#}% / Founder {#}% / Kae Vin {#}% with a pitch deck (opens as a separate, shareable page · the split is adjustable there)","หน้าสำหรับนักลงทุน: ระดมทุนค่า fit-out — นักลงทุน {#}% / Founder {#}% / Kae Vin {#}% พร้อม Pitch Deck (เปิดเป็นหน้าแยก แชร์ให้นักลงทุนได้ · สัดส่วนปรับได้ในหน้านั้น)"],
+["Open Investor view →","เปิด Investor view →"],
+["Switch projection mode","เปลี่ยนรูปแบบ projection"],
+["Investor page (shareable)","หน้าสำหรับนักลงทุน (shareable)"],
+["🌳 Land value","🌳 มูลค่าที่ดิน (Land)"],
+["Land size (rai)","ขนาดที่ดิน (ไร่)"],
+["Price per rai (THB)","ราคาต่อไร่ (THB)"],
+["Total land value","มูลค่าที่ดินรวม"],
+["Land is an asset that holds its value — included in total investment but","ที่ดินเป็นสินทรัพย์ที่มูลค่าคงอยู่ — รวมในมูลค่าการลงทุนทั้งหมด แต่"],
+["not counted","ไม่นับ"],
+["in the payback calculation (payback uses CAPEX only)","ในการคำนวณจุดคืนทุน (payback คิดจาก CAPEX เท่านั้น)"],
+["Payback from {#} seats — co-investors · you as co-investor · you as landlord","คืนทุน {#} มุม — ผู้ร่วมลงทุน · คุณในฐานะผู้ร่วมลงทุน · คุณในฐานะเจ้าของอาคาร"],
+["🏢 Landlord & Common Area — hat {#}: land owner / developer","🏢 Landlord & Common Area — หมวกที่ {#}: เจ้าของ/ผู้พัฒนาพื้นที่"],
+// ── header / nav ──
+["Mode","โหมด"],["Investor view →","หน้านักลงทุน →"],["⬇ Export","⬇ ส่งออก"],["⬆ Import","⬆ นำเข้า"],
+["💾 Numbers reset on refresh — use","💾 ตัวเลขจะรีเซ็ตเมื่อรีเฟรช — ใช้"],["Export","ส่งออก"],["to save your data as a file, and","เพื่อบันทึกข้อมูลเป็นไฟล์ และ"],["Import","นำเข้า"],["to restore it next time.","เพื่อเรียกคืนครั้งหน้า"],
+["Investment","การลงทุน"],["Warehouse","อาคาร"],["Summary","สรุป"],["Operations","การดำเนินงาน"],["Monthly OPEX","ค่าใช้จ่ายรายเดือน"],["Model","โมเดล"],["Pricing","ราคา"],["Settings","ตั้งค่า"],["Depreciation","ค่าเสื่อม"],["Output","ผลลัพธ์"],["Projections","ประมาณการ"],
+["Community Space","พื้นที่ชุมชน"],["Tennis Simulator","เทนนิสซิมูเลเตอร์"],["Hyrox Zone","โซน Hyrox"],["Ice Bath / Sauna","ไอซ์บาธ / ซาวน่า"],["Landlord / Common Area","เจ้าของพื้นที่ / ส่วนกลาง"],["Overall Summary","สรุปภาพรวม"],["Reference","อ้างอิง"],["Global Pricing","ราคาทั่วโลก"],["Gear Rental","เช่าอุปกรณ์"],["Hat Yai Market","ตลาดหาดใหญ่"],
+["Building","อาคาร"],["Gym Fit-out","Fit-out ยิม"],["Gym Fit-out (net)","Fit-out ยิม (สุทธิ)"],["JV mode","โหมด JV"],["Project Rock + Investors","Project Rock + ผู้ร่วมลงทุน"],["NO HVAC","ไม่มีแอร์"],["WITH HVAC","มีแอร์"],["HVAC ON","เปิดแอร์"],["HVAC on","เปิดแอร์"],
+// ── warehouse / bucket B ──
+["Warehouse Structure","โครงสร้างอาคาร"],["Bucket A — funded entirely by Surf / View. Not counted in JV equity.","Bucket A — Surf / View ลงทุนทั้งหมด ไม่นับในสัดส่วนหุ้น JV"],["Bucket A — Bare Warehouse","Bucket A — โกดังเปล่า"],
+["Item","รายการ"],["Amount (THB)","จำนวนเงิน (THB)"],["Note","หมายเหตุ"],["＋ Add item","＋ เพิ่มรายการ"],["Total","รวม"],
+["Bucket B — Gym Fit-out","Bucket B — Fit-out ยิม"],["Co-invested by all JV parties. Equity calculated from this bucket only.","ทุกฝ่ายใน JV ร่วมลงทุน คำนวณสัดส่วนหุ้นจาก bucket นี้เท่านั้น"],["Bucket B Total","รวม Bucket B"],
+["Wall & Structure","ผนังและโครงสร้าง"],["Equipment & Mats","อุปกรณ์และเบาะ"],["Interior Fit-out","ตกแต่งภายใน"],
+["In-kind Works — built by the founder, contributed for equity","งาน In-kind — ผู้ก่อตั้งสร้างเอง แลกหุ้น"],
+["Part of the gym fit-out and owned by the company, but the founder builds these instead of paying cash for the in-kind equity %. Valued at cost, at the same price per {#}% as the investors. The toilet/shower block + co-working mezzanine is","เป็นส่วนหนึ่งของ fit-out ยิมและเป็นทรัพย์สินของบริษัท แต่ผู้ก่อตั้งสร้างเองแทนการจ่ายเงินสดซื้อหุ้น in-kind คิดที่ราคาต้นทุน ราคาต่อ {#}% เท่ากับนักลงทุน ห้องน้ำ/ห้องอาบน้ำ + ชั้นลอย co-working"],
+["not","ไม่"],["here — it is a landlord asset (see Landlord → Site & Common-Area Construction) that the gym uses rent-free until investor payback.","อยู่ในการ์ดนี้ — เป็นทรัพย์สินของเจ้าของพื้นที่ (ดู เจ้าของพื้นที่ → งานก่อสร้างส่วนกลาง) ที่ยิมใช้ฟรีจนนักลงทุนคืนทุน"],
+["Building & Structure","อาคารและโครงสร้าง"],["Bare building shell — part of the total owner investment.","โครงอาคารเปล่า — ส่วนหนึ่งของเงินลงทุนรวมของเจ้าของ"],["Walls, equipment and interior — part of the total owner investment.","ผนัง อุปกรณ์ และตกแต่งภายใน — ส่วนหนึ่งของเงินลงทุนรวมของเจ้าของ"],["Gym Fit-out Total","รวม Fit-out ยิม"],
+["Bare building shell — funded and owned by the founder, leased to the gym company from month {#}.","โครงอาคารเปล่า — ผู้ก่อตั้งลงทุนและเป็นเจ้าของ ให้บริษัทยิมเช่าตั้งแต่เดือนที่ {#}"],
+["Gym Fit-out — with Project Rock discount","Fit-out ยิม — รวมส่วนลด Project Rock"],
+["Items tagged PR (wall-contract scope) are discounted. The net fit-out (wall + equipment + interior + the In-kind Works card) is funded by co-investors in cash and by the founder in kind, at one price per {#}%.","รายการที่ติดป้าย PR (ขอบเขตสัญญาผา) ได้ส่วนลด fit-out สุทธิ (ผนัง + อุปกรณ์ + ตกแต่ง + การ์ดงาน In-kind) มาจากเงินสดของผู้ร่วมลงทุนและงานของผู้ก่อตั้ง ที่ราคาต่อ {#}% เดียวกัน"],
+["Gym Fit-out Total — net of PR discount (−THB {#})","รวม Fit-out ยิม — หลังส่วนลด PR (−THB {#})"],["Total (net of PR discount)","รวม (หลังส่วนลด PR)"],
+["Project Rock wall-contract scope — discounted","ขอบเขตสัญญาผาของ Project Rock — ได้ส่วนลด"],
+// ── capex summary ──
+["CAPEX Summary","สรุป CAPEX"],["Full investment picture including leasehold valuation.","ภาพรวมการลงทุนทั้งหมดรวมมูลค่าสิทธิการเช่า"],["📊 Full Breakdown","📊 รายละเอียดทั้งหมด"],
+["Full owner investment picture including land value.","ภาพรวมเงินลงทุนของเจ้าของรวมมูลค่าที่ดิน"],["Owner + co-investor picture: building, discounted fit-out, cash split, land.","ภาพรวมเจ้าของ + ผู้ร่วมลงทุน: อาคาร fit-out หลังส่วนลด การแบ่งเงินสด ที่ดิน"],
+["Bucket B Total (no HVAC, excl. AC)","รวม Bucket B (ไม่มีแอร์)"],["Bucket B Total (with HVAC, excl. HVLS)","รวม Bucket B (มีแอร์ ไม่รวมพัดลม HVLS)"],
+["Bucket A (Warehouse)","Bucket A (อาคาร)"],["Surf / View only","Surf / View เท่านั้น"],["Bucket B (Gym Fit-out)","Bucket B (Fit-out ยิม)"],["Co-invested","ร่วมลงทุน"],["BP Cash Required ({#}%)","เงินสดที่ BP ต้องใส่ ({#}%)"],["{#}% of Bucket B","{#}% ของ Bucket B"],["Total JV Value","มูลค่า JV รวม"],["incl. leasehold THB {#}","รวมสิทธิการเช่า THB {#}"],
+["Bucket A — Warehouse","Bucket A — อาคาร"],["Total CAPEX (A+B)","CAPEX รวม (A+B)"],["Leasehold ({#}-yr NPV @ {#}%)","สิทธิการเช่า (NPV {#} ปี @ {#}%)"],["BP Cash ({#}% of Bucket B)","เงินสด BP ({#}% ของ Bucket B)"],["Surf Cash ({#}% of Bucket B)","เงินสด Surf ({#}% ของ Bucket B)"],["Monthly OPEX (active)","OPEX รายเดือน (ที่ใช้)"],["THB {#}/month","THB {#}/เดือน"],
+["Total CAPEX","CAPEX รวม"],["Building + fit-out","อาคาร + fit-out"],["Land Value","มูลค่าที่ดิน"],["{#} rai × THB {#}","{#} ไร่ × THB {#}"],["Total Investment","เงินลงทุนรวม"],["CAPEX + land","CAPEX + ที่ดิน"],
+["Gym Fit-out (wall + equipment + interior)","Fit-out ยิม (ผนัง + อุปกรณ์ + ตกแต่ง)"],["Land ({#} rai × THB {#})","ที่ดิน ({#} ไร่ × THB {#})"],["Total Investment (CAPEX + Land)","เงินลงทุนรวม (CAPEX + ที่ดิน)"],
+["Total CAPEX (net)","CAPEX รวม (สุทธิ)"],["Building + fit-out after PR −{#}% (saves THB {#})","อาคาร + fit-out หลังส่วนลด PR −{#}% (ประหยัด THB {#})"],
+["Your outlay — building + in-kind works","เงินที่คุณออก — อาคาร + งาน in-kind"],["Building {#} + works {#} · you hold {#}% incl. {#}% sweat — no cash for shares","อาคาร {#} + งาน {#} · คุณถือ {#}% รวม sweat {#}% — ไม่ใช้เงินสดซื้อหุ้น"],
+["Building {#} + works {#} + cash {#} · you hold {#}% incl. {#}% sweat — no cash for shares","อาคาร {#} + งาน {#} + เงินสด {#} · คุณถือ {#}% รวม sweat {#}% — ไม่ใช้เงินสดซื้อหุ้น"],
+["Co-investors cash ({#}%)","เงินสดผู้ร่วมลงทุน ({#}%)"],["THB {#} per {#}% — same price as you","THB {#} ต่อ {#}% — ราคาเดียวกับคุณ"],["Control block","กลุ่มควบคุม"],["You {#}% + Project Rock {#}% · total investment THB {#} incl. land","คุณ {#}% + Project Rock {#}% · เงินลงทุนรวม THB {#} รวมที่ดิน"],
+["Building & Structure (founder-owned, leased to company)","อาคารและโครงสร้าง (ผู้ก่อตั้งเป็นเจ้าของ ให้บริษัทเช่า)"],["Gym Fit-out — gross (before PR discount)","Fit-out ยิม — ราคาเต็ม (ก่อนส่วนลด PR)"],["Project Rock discount (−{#}% on PR-tagged wall-scope items)","ส่วนลด Project Rock (−{#}% บนรายการที่ติดป้าย PR)"],["Gym Fit-out — net","Fit-out ยิม — สุทธิ"],["Total CAPEX (building + net fit-out)","CAPEX รวม (อาคาร + fit-out สุทธิ)"],["Land ({#} rai × THB {#}) — not in payback","ที่ดิน ({#} ไร่ × THB {#}) — ไม่นับในคืนทุน"],
+["Price per {#}% of equity (fixed · post-money THB {#})","ราคาต่อ {#}% ของหุ้น (ตรึง · post-money THB {#})"],["Price per {#}% of equity (auto = net fit-out ÷ cash pool {#}%)","ราคาต่อ {#}% ของหุ้น (อัตโนมัติ = fit-out สุทธิ ÷ cash pool {#}%)"],
+["Founder {#}% (on top of {#}% sweat) — price THB {#} paid in kind with works THB {#} (excess {#})","ผู้ก่อตั้ง {#}% (เพิ่มจาก sweat {#}%) — ราคา THB {#} จ่ายด้วยงาน THB {#} (เกิน {#})"],
+["Founder {#}% (on top of {#}% sweat) — price THB {#} paid in kind with works THB {#} + cash {#}","ผู้ก่อตั้ง {#}% (เพิ่มจาก sweat {#}%) — ราคา THB {#} จ่ายด้วยงาน THB {#} + เงินสด {#}"],
+["Founder {#}% (on top of {#}% sweat) — price THB {#} paid in kind with works THB {#}","ผู้ก่อตั้ง {#}% (เพิ่มจาก sweat {#}%) — ราคา THB {#} จ่ายด้วยงาน THB {#}"],
+["Co-investors buy {#}%","ผู้ร่วมลงทุนซื้อ {#}%"],["Cash in THB {#} − cash-bought items THB {#} (net fit-out − in-kind works) → reserve","เงินสดเข้า THB {#} − รายการที่ซื้อด้วยเงินสด THB {#} (fit-out สุทธิ − งาน in-kind) → เงินสำรอง"],["Cash in THB {#} − cash-bought items THB {#} (net fit-out − in-kind works) → SHORTFALL","เงินสดเข้า THB {#} − รายการที่ซื้อด้วยเงินสด THB {#} (fit-out สุทธิ − งาน in-kind) → ขาด"],
+["Equity: Founder {#}% · Investors {#}% · Project Rock {#}% — control {#}%","หุ้น: ผู้ก่อตั้ง {#}% · นักลงทุน {#}% · Project Rock {#}% — กลุ่มควบคุม {#}%"],["Monthly OPEX (active) · rent THB {#} starts after investor payback","OPEX รายเดือน (ที่ใช้) · ค่าเช่า THB {#} เริ่มหลังนักลงทุนคืนทุน"],
+["Land value (not in payback)","มูลค่าที่ดิน (ไม่นับในคืนทุน)"],["Total incl. land","รวมที่ดิน"],
+// ── opex ──
+["Operating expenses per month. Electricity auto-adjusts with HVAC toggle.","ค่าใช้จ่ายดำเนินงานต่อเดือน ค่าไฟปรับอัตโนมัติตามสวิตช์แอร์"],["💰 Monthly Expenses","💰 ค่าใช้จ่ายรายเดือน"],["THB / month","THB / เดือน"],["📝 Notes","📝 หมายเหตุ"],
+["• Rent =","• ค่าเช่า ="],["during Phase {#}","ช่วง Phase {#}"],["• Phase {#} rent:","• ค่าเช่า Phase {#}:"],["• No rent — owner-occupied building","• ไม่มีค่าเช่า — เจ้าของใช้อาคารเอง"],["• Rent paid to founder from month {#} — not in this table","• ค่าเช่าจ่ายให้ผู้ก่อตั้งตั้งแต่เดือน {#} — ไม่อยู่ในตารางนี้"],["• Electricity switches with HVAC toggle","• ค่าไฟเปลี่ยนตามสวิตช์แอร์"],["• Staff THB {#} budget — individual breakdown TBD","• งบพนักงาน THB {#} — รายละเอียดรายคนยังไม่กำหนด"],["⚡ Effective OPEX","⚡ OPEX ที่ใช้จริง"],
+["• Rent to founder","• ค่าเช่าให้ผู้ก่อตั้ง"],["starts","เริ่ม"],["after co-investors recoup","หลังผู้ร่วมลงทุนคืนทุน"],["(+{#}% every {#} yrs from then) — modelled in the multi-year projection, not in this table","(+{#}% ทุก {#} ปีนับจากนั้น) — คิดในประมาณการหลายปี ไม่อยู่ในตารางนี้"],
+["• Common-area fee","• ค่าส่วนกลาง"],["({#} sqm × {#}) paid to the landlord","({#} ตร.ม. × {#}) จ่ายให้เจ้าของพื้นที่"],["— included in projections, not in this table","— รวมในประมาณการแล้ว ไม่อยู่ในตารางนี้"],
+["THB · incl. CAM fee {#} · rent {#} starts after investor payback · royalty {#}% on top","THB · รวมค่าส่วนกลาง {#} · ค่าเช่า {#} เริ่มหลังนักลงทุนคืนทุน · บวก royalty {#}%"],
+// ── pricing ──
+["Entry fees and ancillary rental rates per visit.","ค่าเข้าและค่าเช่าอุปกรณ์ต่อครั้ง"],["🏷 Climbing Pricing","🏷 ราคาปีน"],["Day Pass (THB)","Day Pass (THB)"],["Membership / month (THB)","สมาชิก / เดือน (THB)"],["Shoe Rental (THB)","เช่ารองเท้า (THB)"],["Shoe Uptake (%)","สัดส่วนเช่ารองเท้า (%)"],["Chalk Bag (THB)","ถุงชอล์ก (THB)"],["Chalk Uptake (%)","สัดส่วนเช่าชอล์ก (%)"],["Harness Rental (THB)","เช่าฮาร์เนส (THB)"],["Harness Uptake (%)","สัดส่วนเช่าฮาร์เนส (%)"],["Effective revenue / walk-in visit","รายได้จริง / ลูกค้า walk-in ต่อครั้ง"],["📋 Scenario Visitors / Day","📋 จำนวนผู้ใช้/วัน แต่ละสถานการณ์"],
+// ── settings ──
+["JV & Model Settings","ตั้งค่า JV และโมเดล"],["Equity split, rent structure, HVAC toggle, visitor assumptions.","สัดส่วนหุ้น โครงสร้างค่าเช่า สวิตช์แอร์ สมมติฐานผู้ใช้"],["🤝 JV Structure","🤝 โครงสร้าง JV"],["BP Equity (%)","หุ้น BP (%)"],["Surf / View Equity (%)","หุ้น Surf / View (%)"],["Walk-in split (%)","สัดส่วน walk-in (%)"],["% walk-in (rest = member visits)","% walk-in (ที่เหลือ = สมาชิก)"],["Member visits / month","สมาชิกมากี่ครั้ง / เดือน"],
+["Model Settings","ตั้งค่าโมเดล"],["Pricing split, HVAC toggle, land value, visitor assumptions.","สัดส่วนราคา สวิตช์แอร์ มูลค่าที่ดิน สมมติฐานผู้ใช้"],["⚙️ Operating Assumptions","⚙️ สมมติฐานการดำเนินงาน"],
+["Project Rock Mode Settings","ตั้งค่าโหมด Project Rock"],["Equity split (PR / Founder / Investors), PR discount, rent, brand royalty, HVAC, land.","สัดส่วนหุ้น (PR / ผู้ก่อตั้ง / นักลงทุน) ส่วนลด PR ค่าเช่า royalty แอร์ ที่ดิน"],["🪨 Project Rock Structure","🪨 โครงสร้าง Project Rock"],
+["Founder sweat equity (%) — free","หุ้น sweat ของผู้ก่อตั้ง (%) — ฟรี"],["For building, sourcing, operating + rent waived until investor payback — no cash","แลกการก่อสร้าง จัดหา บริหาร + ค่าเช่าที่เว้นจนนักลงทุนคืนทุน — ไม่ใช้เงินสด"],
+["Project Rock equity (%) — free","หุ้น Project Rock (%) — ฟรี"],["For the wall-scope discount + brand — no cash","แลกส่วนลดงานผา + แบรนด์ — ไม่ใช้เงินสด"],
+["Founder in-kind equity (%) — bought at investor price, paid with works","หุ้น in-kind ของผู้ก่อตั้ง (%) — ซื้อที่ราคานักลงทุน จ่ายด้วยงาน"],["Out of the cash pool ({#} − sweat − PR); paid with the In-kind Works card (AC, renovation, water filter)","จาก cash pool ({#} − sweat − PR) จ่ายด้วยการ์ดงาน In-kind (แอร์ รีโนเวท เครื่องกรองน้ำ)"],
+["Price per {#}% of equity (THB) — {#} = auto","ราคาต่อ {#}% ของหุ้น (THB) — {#} = อัตโนมัติ"],["One price for investors and founder. Auto = net fit-out ÷ cash pool; a fixed price keeps investors' cash unchanged when fit-out items move","ราคาเดียวสำหรับนักลงทุนและผู้ก่อตั้ง อัตโนมัติ = fit-out สุทธิ ÷ cash pool; ราคาตรึงทำให้เงินนักลงทุนไม่เปลี่ยนเมื่อย้ายรายการ fit-out"],
+["Co-investors equity (%) — cash","หุ้นผู้ร่วมลงทุน (%) — เงินสด"],["= cash pool − your cash equity","= cash pool − หุ้นที่คุณซื้อ"],
+["PR discount on wall-contract scope (%)","ส่วนลด PR บนขอบเขตสัญญาผา (%)"],["Applied to items tagged","ใช้กับรายการที่ติดป้าย"],["(wall, steel, design, holds, mats, volumes)","(ผนัง เหล็ก ออกแบบ โฮลด์ เบาะ volumes)"],
+["Rent to founder (THB / month)","ค่าเช่าให้ผู้ก่อตั้ง (THB / เดือน)"],["Bare-warehouse rate — starts only after co-investors recoup (JV-style Phase {#}); escalation counts from then","เรตโกดังเปล่า — เริ่มหลังผู้ร่วมลงทุนคืนทุน (Phase {#} แบบ JV) นับปรับขึ้นจากตอนนั้น"],["Rent escalation every {#} yrs (%)","ค่าเช่าปรับขึ้นทุก {#} ปี (%)"],
+["Gym area for CAM fee (sqm)","พื้นที่ยิมสำหรับค่าส่วนกลาง (ตร.ม.)"],["Same basis as the rent ({#} sqm)","ฐานเดียวกับค่าเช่า ({#} ตร.ม.)"],["Common-area fee (THB / sqm / month)","ค่าส่วนกลาง (THB / ตร.ม. / เดือน)"],["Paid by the gym to the landlord","ยิมจ่ายให้เจ้าของพื้นที่"],["from month {#}","ตั้งแต่เดือนที่ {#}"],["— separate from rent","— แยกจากค่าเช่า"],
+["Brand royalty (% of revenue)","Royalty แบรนด์ (% ของรายได้)"],["Project Rock brand licence — charged on gross revenue","สิทธิ์ใช้แบรนด์ Project Rock — คิดจากรายได้รวม"],["Royalty / month (Base Case)","Royalty / เดือน (Base Case)"],
+["Post-payback Rent (THB/sqm)","ค่าเช่าหลังคืนทุน (THB/ตร.ม.)"],["Building area (sqm)","พื้นที่อาคาร (ตร.ม.)"],["Phase {#} rent / month","ค่าเช่า Phase {#} / เดือน"],
+["❄️ HVAC Settings","❄️ ตั้งค่าแอร์"],["HVAC installed","ติดตั้งแอร์"],["Affects electricity OPEX and Bucket B total","มีผลต่อค่าไฟและยอด Bucket B"],["Electricity with HVAC (THB/mo)","ค่าไฟเมื่อมีแอร์ (THB/เดือน)"],["Electricity without HVAC (THB/mo)","ค่าไฟเมื่อไม่มีแอร์ (THB/เดือน)"],["Active electricity cost","ค่าไฟที่ใช้"],
+// ── depreciation ──
+["Straight-line depreciation on Bucket B (gym fit-out) only. Bucket A stays with Surf/View and is not charged to the gym P&L.","ค่าเสื่อมแบบเส้นตรงเฉพาะ Bucket B (fit-out ยิม) Bucket A เป็นของ Surf/View ไม่คิดใน P&L ยิม"],["📉 Asset Useful Life — Bucket B","📉 อายุการใช้งานสินทรัพย์ — Bucket B"],
+["Straight-line depreciation on all gym capital assets (land is not depreciated).","ค่าเสื่อมแบบเส้นตรงบนสินทรัพย์ยิมทั้งหมด (ที่ดินไม่คิดค่าเสื่อม)"],["Straight-line depreciation on all gym capital assets at net (discounted) cost. Land is not depreciated.","ค่าเสื่อมแบบเส้นตรงบนสินทรัพย์ยิมทั้งหมดที่ราคาสุทธิ (หลังส่วนลด) ที่ดินไม่คิดค่าเสื่อม"],["📉 Asset Useful Life","📉 อายุการใช้งานสินทรัพย์"],["📊 Depreciation Schedule","📊 ตารางค่าเสื่อม"],
+["Wall & Structure (years)","ผนังและโครงสร้าง (ปี)"],["Steel skeleton, plywood panels, paint","โครงเหล็ก แผ่นไม้อัด สี"],["Equipment & Mats (years)","อุปกรณ์และเบาะ (ปี)"],["Holds, mats, auto belay, tools","โฮลด์ เบาะ auto belay เครื่องมือ"],["Rental Stock — Shoes / Harness (years)","อุปกรณ์ให้เช่า — รองเท้า / ฮาร์เนส (ปี)"],["High-wear items","ของสึกหรอเร็ว"],["HVAC System (years)","ระบบแอร์ (ปี)"],["Long-life MEP asset","งานระบบอายุยาว"],["Interior Fit-out (years)","ตกแต่งภายใน (ปี)"],["Toilets, furniture, security, lockers","ห้องน้ำ เฟอร์นิเจอร์ กล้อง ล็อกเกอร์"],["Office Equipment (years)","อุปกรณ์สำนักงาน (ปี)"],["Computers, POS, admin","คอมพิวเตอร์ POS งานธุรการ"],["Note:","หมายเหตุ:"],
+["OPEX runway and admin/marketing costs (one-time launch costs) are expensed in Year {#} and not depreciated. Depreciation is applied to capital assets only.","เงินสำรอง OPEX และค่าธุรการ/การตลาด (ค่าเปิดตัวครั้งเดียว) ตัดเป็นค่าใช้จ่ายปีที่ {#} ไม่คิดค่าเสื่อม ค่าเสื่อมคิดเฉพาะสินทรัพย์ถาวร"],
+["📊 Depreciation Schedule — Bucket B","📊 ตารางค่าเสื่อม — Bucket B"],["Asset Group","กลุ่มสินทรัพย์"],["Cost (THB)","ต้นทุน (THB)"],["Life (yr)","อายุ (ปี)"],["Depr / yr","ค่าเสื่อม / ปี"],["Depr / mo","ค่าเสื่อม / เดือน"],
+["Rental Stock (shoes/harness)","อุปกรณ์ให้เช่า (รองเท้า/ฮาร์เนส)"],["HVAC System","ระบบแอร์"],["HVLS Fans","พัดลม HVLS"],["Office Equipment","อุปกรณ์สำนักงาน"],["Launch Costs (expensed Yr {#})","ค่าเปิดตัว (ตัดจ่ายปีที่ {#})"],["expensed","ตัดจ่าย"],["TOTAL (depreciable)","รวม (คิดค่าเสื่อม)"],["Total Depreciable Assets","สินทรัพย์ที่คิดค่าเสื่อมรวม"],["Total Depreciation / month","ค่าเสื่อมรวม / เดือน"],["In-kind Works (founder-built, AC/renovation/water)","งาน In-kind (ผู้ก่อตั้งสร้าง แอร์/รีโนเวท/น้ำ)"],
+// ── projections ──
+["Financial Projections","ประมาณการทางการเงิน"],["Auto-calculated from all inputs. Updates live.","คำนวณอัตโนมัติจากข้อมูลทั้งหมด อัปเดตทันที"],["Include gear rental revenue","รวมรายได้เช่าอุปกรณ์"],["Shoes, chalk & harness revenue included","รวมรายได้รองเท้า ชอล์ก ฮาร์เนส"],
+["OPEX / month","OPEX / เดือน"],["Depreciation / month","ค่าเสื่อม / เดือน"],["Bucket B straight-line","Bucket B เส้นตรง"],["Straight-line, gym assets","เส้นตรง สินทรัพย์ยิม"],["Base Case EBIT / mo","EBIT Base Case / เดือน"],["{#} visitors/day","{#} คน/วัน"],["Base Case BP Payback","คืนทุน BP Base Case"],["Base Case Owner Payback","คืนทุนเจ้าของ Base Case"],["Base Case Investor Payback","คืนทุนนักลงทุน Base Case"],["{#} yrs","{#} ปี"],["EBITDA basis (cash)","ฐาน EBITDA (เงินสด)"],["CAPEX basis (excl. land)","ฐาน CAPEX (ไม่รวมที่ดิน)"],["cumulative, rent escalating","สะสม ค่าเช่าปรับขึ้น"],["EBITDA BE: {#}/day","คุ้มทุน EBITDA: {#}/วัน"],
+["Phase {#} — Before BP Recoups  ·  No Rent","Phase {#} — ก่อน BP คืนทุน  ·  ไม่มีค่าเช่า"],["Phase {#} — After BP Recoups  ·  Rent applies","Phase {#} — หลัง BP คืนทุน  ·  มีค่าเช่า"],["Projections  ·  No Rent (Self-Invest {#}%)","ประมาณการ  ·  ไม่มีค่าเช่า (ลงทุนเอง {#}%)"],["Phase {#} — Before co-investors recoup  ·  No rent  ·  Brand royalty on revenue (Project Rock mode)","Phase {#} — ก่อนผู้ร่วมลงทุนคืนทุน  ·  ไม่มีค่าเช่า  ·  Royalty แบรนด์จากรายได้ (โหมด Project Rock)"],
+["Scenario","สถานการณ์"],["Total/day","รวม/วัน"],["WI/day","walk-in/วัน"],["Members","สมาชิก"],["Climb Rev","รายได้ปีน"],["Total Rev","รายได้รวม"],["EBITDA/mo","EBITDA/เดือน"],["Depr/mo","ค่าเสื่อม/เดือน"],["EBIT/mo","EBIT/เดือน"],["Ann EBIT","EBIT/ปี"],["BP / yr","BP / ปี"],["Payback","คืนทุน"],["Owner payback","คืนทุนเจ้าของ"],["Investor payback","คืนทุนนักลงทุน"],["Investors / yr","นักลงทุน / ปี"],["Loss","ขาดทุน"],
+["/day","/วัน"],["Rev / yr","รายได้ / ปี"],["Royalty / yr","Royalty / ปี"],["EBITDA / yr (Y{#})","EBITDA / ปี (ปี {#})"],["Investors","นักลงทุน"],["Founder div.","ปันผลผู้ก่อตั้ง"],["Rent → Founder (Y{#})","ค่าเช่า → ผู้ก่อตั้ง (ปี {#})"],["You — equity seat","คุณ — ในฐานะผู้ถือหุ้น"],["You — landlord (gym bldg)","คุณ — เจ้าของอาคาร (ตัวยิม)"],["You — combined (gym only)","คุณ — รวม (เฉพาะยิม)"],
+["📅 {#}-Year Cash Flow — Base Case (rent escalates every {#} yrs)","📅 กระแสเงินสด {#} ปี — Base Case (ค่าเช่าปรับทุก {#} ปี)"],["Year","ปี"],["Rent / mo (from)","ค่าเช่า / เดือน (ตั้งแต่)"],["EBITDA / yr","EBITDA / ปี"],["Rent → Founder","ค่าเช่า → ผู้ก่อตั้ง"],["Cum. investors","สะสมนักลงทุน"],["Cum. you (div + rent)","สะสมคุณ (ปันผล + ค่าเช่า)"],
+["Conservative","ระมัดระวัง"],["Base Case","กรณีฐาน"],["Good","ดี"],["Strong","ดีมาก"],["Exceptional","ดีเยี่ยม"],["visitors/day","คน/วัน"],
+["Break-even (EBITDA): {#} visitors/day  |  EBIT break-even: {#} visitors/day","คุ้มทุน (EBITDA): {#} คน/วัน  |  คุ้มทุน EBIT: {#} คน/วัน"],
+["Break-even (EBITDA): {#} visitors/day  |  incl. brand royalty {#}% of revenue  |  EBIT break-even: {#} visitors/day","คุ้มทุน (EBITDA): {#} คน/วัน  |  รวม royalty แบรนด์ {#}% ของรายได้  |  คุ้มทุน EBIT: {#} คน/วัน"],
+["Break-even (EBITDA): {#} visitors/day  |  before rent (rent starts after investor payback)  |  incl. brand royalty {#}% of revenue  |  EBIT break-even: {#} visitors/day","คุ้มทุน (EBITDA): {#} คน/วัน  |  ก่อนค่าเช่า (ค่าเช่าเริ่มหลังนักลงทุนคืนทุน)  |  รวม royalty แบรนด์ {#}% ของรายได้  |  คุ้มทุน EBIT: {#} คน/วัน"],
+["CAPEX THB {#} · payback {#} yrs","CAPEX THB {#} · คืนทุน {#} ปี"],["CAPEX THB {#} · payback > {#} yrs","CAPEX THB {#} · คืนทุน > {#} ปี"],
+["Investor payback (Base)","คืนทุนนักลงทุน (Base)"],["THB {#} · {#}% of EBITDA","THB {#} · {#}% ของ EBITDA"],["You — equity seat (Base)","คุณ — ในฐานะผู้ถือหุ้น (Base)"],["works THB {#} in kind for {#}% · earns {#}% incl. sweat","งาน THB {#} แลกหุ้น {#}% · ได้ปันผล {#}% รวม sweat"],["You — landlord (Base)","คุณ — เจ้าของอาคาร (Base)"],["Building THB {#} · rent {#}/mo from investor payback","อาคาร THB {#} · ค่าเช่า {#}/เดือน ตั้งแต่นักลงทุนคืนทุน"],["You — combined, gym only (Base)","คุณ — รวม เฉพาะยิม (Base)"],["THB {#} · rent + dividends","THB {#} · ค่าเช่า + ปันผล"],
+["PR {#}%","PR {#}%"],["Founder div. {#}%","ปันผลผู้ก่อตั้ง {#}%"],["Investors {#}%","นักลงทุน {#}%"],
+["Year-{#} figures. EBITDA = revenue − OPEX − CAM fee {#}/mo − royalty {#}% − rent, split by equity.","ตัวเลขปีที่ {#} EBITDA = รายได้ − OPEX − ค่าส่วนกลาง {#}/เดือน − royalty {#}% − ค่าเช่า แบ่งตามสัดส่วนหุ้น"],
+["Rent to you starts only after the co-investors recoup","ค่าเช่าให้คุณเริ่มหลังผู้ร่วมลงทุนคืนทุนเท่านั้น"],["(pro-rated in that year, +{#}% every {#} yrs from then), so early years carry no rent.","(คิดตามสัดส่วนในปีนั้น +{#}% ทุก {#} ปีนับจากนั้น) ปีแรก ๆ จึงไม่มีค่าเช่า"],
+[": their fit-out cash THB {#} vs cumulative {#}% of EBITDA.",": เงินสด fit-out ของนักลงทุน THB {#} เทียบ {#}% ของ EBITDA สะสม"],
+["Rent waived until then","ค่าเช่าที่เว้นให้จนถึงตอนนั้น"],["≈ THB {#} ({#} yrs × {#}/mo) =","≈ THB {#} ({#} ปี × {#}/เดือน) ="],["{#}% of equity","{#}% ของหุ้น"],["at THB {#} per {#}% — the basis for the founder's {#}% sweat; without the waiver investors would recoup ≈ {#} yrs.","ที่ THB {#} ต่อ {#}% — ที่มาของ sweat {#}% ของผู้ก่อตั้ง หากไม่เว้นค่าเช่า นักลงทุนจะคืนทุน ≈ {#} ปี"],
+[": the THB {#} of works you build in kind for {#}% vs cumulative dividends on your full {#}% (sweat + in-kind) — the in-kind {#}% alone pays back like the investors' seat, since the price per {#}% is identical.",": งาน THB {#} ที่คุณสร้างแลกหุ้น {#}% เทียบปันผลสะสมจากหุ้นทั้งหมด {#}% (sweat + in-kind) — หุ้น in-kind {#}% อย่างเดียวคืนทุนเท่านักลงทุน เพราะราคาต่อ {#}% เท่ากัน"],
+["You — landlord","คุณ — เจ้าของอาคาร"],[": building THB {#} vs cumulative rent, which only begins at investor payback.",": อาคาร THB {#} เทียบค่าเช่าสะสม ซึ่งเริ่มเมื่อนักลงทุนคืนทุน"],["You — combined","คุณ — รวม"],[": building + fit-out cash THB {#} vs rent + dividends. Land excluded. Cumulative with interpolation; \"Loss\" = not recovered within {#} yrs.",": อาคาร + เงิน fit-out THB {#} เทียบค่าเช่า + ปันผล ไม่รวมที่ดิน สะสมแบบเทียบสัดส่วน; \"ขาดทุน\" = ไม่คืนทุนภายใน {#} ปี"],
+["— no rent","— ไม่มีค่าเช่า"],["Year {#}","ปีที่ {#}"],["Year {#} ✓","ปีที่ {#} ✓"],["Year {#} ✓ inv.","ปีที่ {#} ✓ นักลงทุน"],["Year {#} ✓ you","ปีที่ {#} ✓ คุณ"],["Year {#} ✓ inv. ✓ you","ปีที่ {#} ✓ นักลงทุน ✓ คุณ"],
+["Cap table","ตารางผู้ถือหุ้น"],["— Founder {#}% (sweat {#}% + in-kind {#}%) · Project Rock {#}% · Investors {#}%","— ผู้ก่อตั้ง {#}% (sweat {#}% + in-kind {#}%) · Project Rock {#}% · นักลงทุน {#}%"],["Control block (you + Project Rock): {#}%","กลุ่มควบคุม (คุณ + Project Rock): {#}%"],["✓ majority","✓ เสียงข้างมาก"],["⚠ below {#}%","⚠ ต่ำกว่า {#}%"],["THB {#} per {#}%","THB {#} ต่อ {#}%"],
+["(auto = net fit-out THB {#} ÷ cash pool {#}%) · investors pay THB {#} cash","(อัตโนมัติ = fit-out สุทธิ THB {#} ÷ cash pool {#}%) · นักลงทุนจ่ายเงินสด THB {#}"],["(fixed · post-money THB {#} · auto would be {#}) · investors pay THB {#} cash","(ตรึง · post-money THB {#} · อัตโนมัติจะเป็น {#}) · นักลงทุนจ่ายเงินสด THB {#}"],
+["Your {#}% = THB {#} paid in kind","หุ้น {#}% ของคุณ = THB {#} จ่ายด้วยงาน"],["with the works in the In-kind card (AC, renovation, water filter) worth THB {#} → exact","จากการ์ดงาน In-kind (แอร์ รีโนเวท เครื่องกรองน้ำ) มูลค่า THB {#} → พอดี"],["with the works in the In-kind card (AC, renovation, water filter) worth THB {#} → THB {#} more than needed (extra contribution)","จากการ์ดงาน In-kind (แอร์ รีโนเวท เครื่องกรองน้ำ) มูลค่า THB {#} → เกินราคาหุ้น THB {#} (ส่วนเกินให้ฟรี)"],["with the works in the In-kind card (AC, renovation, water filter) worth THB {#} → cash top-up THB {#}","จากการ์ดงาน In-kind (แอร์ รีโนเวท เครื่องกรองน้ำ) มูลค่า THB {#} → ต้องเติมเงินสด THB {#}"],
+["Cash in (investors) THB {#} vs cash items THB {#} →","เงินสดเข้า (นักลงทุน) THB {#} เทียบรายการที่ต้องซื้อ THB {#} →"],["Cash in (investors + your top-up) THB {#} vs cash items THB {#} →","เงินสดเข้า (นักลงทุน + เงินเติมของคุณ) THB {#} เทียบรายการที่ต้องซื้อ THB {#} →"],["reserve THB {#}","เงินสำรอง THB {#}"],["shortfall THB {#} — raise the price or the cash pool","ขาด THB {#} — ต้องขึ้นราคาหรือขยาย cash pool"],
+["You {#}% ({#}% sweat + {#}% cash) · Investors {#}% · PR {#}% · control {#}% · your cash {#} · investors {#}","คุณ {#}% (sweat {#}% + ซื้อ {#}%) · นักลงทุน {#}% · PR {#}% · กลุ่มควบคุม {#}% · เงินของคุณ {#} · นักลงทุน {#}"],
+["THB {#}/month  ·  {#}/yr","THB {#}/เดือน  ·  {#}/ปี"],
+// ── landlord ──
+["You own the land and every building, lease space to the gym company and to the tenants, collect common-area (CAM) fees and service charges, and pay for shared upkeep. Hat {#} — gym founder — is in Projections; both hats are combined at the bottom.","คุณเป็นเจ้าของที่ดินและอาคารทุกหลัง ให้บริษัทยิมและผู้เช่าเช่าพื้นที่ เก็บค่าส่วนกลาง (CAM) และค่าบริการ และจ่ายค่าดูแลส่วนกลาง หมวกที่ {#} — ผู้ก่อตั้งยิม — อยู่ในหน้าประมาณการ รวมทั้งสองหมวกไว้ด้านล่าง"],
+["Site & Common-Area Construction — Landlord CAPEX (one-time)","งานก่อสร้างส่วนกลาง — CAPEX เจ้าของพื้นที่ (ครั้งเดียว)"],["Built and owned by you (hat {#}), outside the gym raise. Recovered through tenant rents, the gym's rent and the developed land value — counted in landlord and two-hat payback.","คุณสร้างและเป็นเจ้าของ (หมวกที่ {#}) นอกการระดมทุนของยิม คืนทุนผ่านค่าเช่าผู้เช่า ค่าเช่ายิม และมูลค่าที่ดินที่พัฒนาแล้ว — นับในคืนทุนเจ้าของพื้นที่และรวม 2 หมวก"],
+["Common-Area Expenses — Monthly","ค่าใช้จ่ายส่วนกลาง — รายเดือน"],["Upkeep of leased areas, common areas, parking, fence, landscaping and anything shared. Partly recovered through CAM fees (THB/sqm) charged to the gym and the tenants.","ค่าดูแลพื้นที่เช่า ส่วนกลาง ลานจอดรถ รั้ว สวน และทุกอย่างที่ใช้ร่วมกัน ได้คืนบางส่วนจากค่าส่วนกลาง (THB/ตร.ม.) ที่เก็บจากยิมและผู้เช่า"],
+["Landlord Income — Monthly (Base Case)","รายได้เจ้าของพื้นที่ — รายเดือน (Base Case)"],["Source","แหล่ง"],["Rent","ค่าเช่า"],["CAM fee","ค่าส่วนกลาง"],["Services","ค่าบริการ"],["Total / mo","รวม / เดือน"],
+["Landlord Cash Flow — {#} Years (Base Case)","กระแสเงินสดเจ้าของพื้นที่ — {#} ปี (Base Case)"],["Tenants (rent + CAM + services)","ผู้เช่า (ค่าเช่า + ส่วนกลาง + บริการ)"],["Gym CAM","ส่วนกลางยิม"],["Gym rent","ค่าเช่ายิม"],["Ice bath net","ไอซ์บาธสุทธิ"],["Common expenses","ค่าใช้จ่ายส่วนกลาง"],["Landlord net","สุทธิเจ้าของพื้นที่"],["Cumulative","สะสม"],
+["Two Hats — Your Total Position (Base Case)","สองหมวก — ฐานะรวมของคุณ (Base Case)"],
+["Landlord CAPEX","CAPEX เจ้าของพื้นที่"],["Gym shell {#} + site works {#} + zones {#} (excl. land · icebath not built)","โครงยิม {#} + งานส่วนกลาง {#} + โซน {#} (ไม่รวมที่ดิน · ไม่สร้างไอซ์บาธ)"],["Gym shell {#} + site works {#} + zones {#} (excl. land)","โครงยิม {#} + งานส่วนกลาง {#} + โซน {#} (ไม่รวมที่ดิน)"],["Income / month (before gym rent)","รายได้ / เดือน (ก่อนค่าเช่ายิม)"],["Tenants {#} · gym CAM {#} · ice bath net {#}","ผู้เช่า {#} · ส่วนกลางยิม {#} · ไอซ์บาธสุทธิ {#}"],["Common-area expenses / month","ค่าใช้จ่ายส่วนกลาง / เดือน"],["Net {#}/mo before gym rent","สุทธิ {#}/เดือน ก่อนค่าเช่ายิม"],["Landlord payback (Base)","คืนทุนเจ้าของพื้นที่ (Base)"],["> {#} yrs","> {#} ปี"],["no gym rent in this mode","โหมดนี้ไม่มีค่าเช่ายิม"],["incl. gym rent from investor payback","รวมค่าเช่ายิมตั้งแต่นักลงทุนคืนทุน"],
+["THB {#} /mo","THB {#} /เดือน"],["🧗 Gym — CAM fee (from month {#})","🧗 ยิม — ค่าส่วนกลาง (ตั้งแต่เดือนที่ {#})"],["owner-occupied","เจ้าของใช้เอง"],["🧗 Gym — rent (after co-investors recoup)","🧗 ยิม — ค่าเช่า (หลังผู้ร่วมลงทุนคืนทุน)"],["n/a","ไม่มี"],["(NOT BUILT — toggle on its page)","(ไม่สร้าง — เปิดได้ในหน้าของโซน)"],["🧹 Common-area expenses","🧹 ค่าใช้จ่ายส่วนกลาง"],["Landlord net / month — before gym rent","สุทธิเจ้าของพื้นที่ / เดือน — ก่อนค่าเช่ายิม"],
+["In this mode the gym is owner-occupied: no rent or CAM flows from the gym to the landlord (its full EBITDA is already yours).","โหมดนี้เจ้าของใช้ยิมเอง: ไม่มีค่าเช่าหรือค่าส่วนกลางจากยิมไปเจ้าของพื้นที่ (EBITDA ทั้งหมดเป็นของคุณอยู่แล้ว)"],
+["Landlord CAPEX = gym building shell THB {#} + site & common-area works THB {#} + every zone actually built THB {#} (excluded: Ice Bath & Sauna — Outdoor Recovery Zone). Land is excluded from payback. Tenant and CAM income are assumed flat; only the gym rent escalates.","CAPEX เจ้าของพื้นที่ = โครงอาคารยิม THB {#} + งานส่วนกลาง THB {#} + ทุกโซนที่สร้างจริง THB {#} (ไม่รวม: ไอซ์บาธ & ซาวน่า) ที่ดินไม่นับในคืนทุน รายได้ผู้เช่าและค่าส่วนกลางคงที่ เฉพาะค่าเช่ายิมที่ปรับขึ้น"],
+["Landlord CAPEX = gym building shell THB {#} + site & common-area works THB {#} + every zone actually built THB {#}. Land is excluded from payback. Tenant and CAM income are assumed flat; only the gym rent escalates.","CAPEX เจ้าของพื้นที่ = โครงอาคารยิม THB {#} + งานส่วนกลาง THB {#} + ทุกโซนที่สร้างจริง THB {#} ที่ดินไม่นับในคืนทุน รายได้ผู้เช่าและค่าส่วนกลางคงที่ เฉพาะค่าเช่ายิมที่ปรับขึ้น"],
+["Two-hat view applies to the Project Rock + co-investors mode (gym company pays rent and CAM to you). In this mode you own the gym outright — see Overall Summary.","มุมมองสองหมวกใช้กับโหมด Project Rock + ผู้ร่วมลงทุน (บริษัทยิมจ่ายค่าเช่าและส่วนกลางให้คุณ) โหมดนี้คุณเป็นเจ้าของยิมทั้งหมด — ดูสรุปภาพรวม"],
+["from yr {#}","ตั้งแต่ปีที่ {#}"],["not in year {#}","ยังไม่มีในปีที่ {#}"],["Gym rent THB {#}/mo begins only when the co-investors have recouped (base case ≈ yr {#}), then +{#}% every {#} yrs; the CAM fee is charged from month {#}.","ค่าเช่ายิม THB {#}/เดือน เริ่มเมื่อผู้ร่วมลงทุนคืนทุน (Base ≈ ปีที่ {#}) จากนั้น +{#}% ทุก {#} ปี ค่าส่วนกลางเก็บตั้งแต่เดือนที่ {#}"],
+["🎩 Hat {#} — Landlord: cash out (shell {#} + site works {#} + zones {#} excl. land)","🎩 หมวกที่ {#} — เจ้าของพื้นที่: เงินออก (โครง {#} + งานส่วนกลาง {#} + โซน {#} ไม่รวมที่ดิน)"],["Hat {#} — cash in, year {#} (tenants + gym CAM + ice bath − upkeep)","หมวกที่ {#} — เงินเข้า ปีที่ {#} (ผู้เช่า + ส่วนกลางยิม + ไอซ์บาธ − ค่าดูแล)"],
+["🎩 Hat {#} — Gym founder: works built in kind for {#}% (AC, renovation, water filter)","🎩 หมวกที่ {#} — ผู้ก่อตั้งยิม: งานที่สร้างแลกหุ้น {#}% (แอร์ รีโนเวท เครื่องกรองน้ำ)"],["🎩 Hat {#} — Gym founder: works built in kind for {#}% (AC, renovation, water filter) + cash {#}","🎩 หมวกที่ {#} — ผู้ก่อตั้งยิม: งานที่สร้างแลกหุ้น {#}% (แอร์ รีโนเวท เครื่องกรองน้ำ) + เงินสด {#}"],
+["Hat {#} — dividends, year {#} ({#}% incl. {#}% sweat)","หมวกที่ {#} — ปันผล ปีที่ {#} ({#}% รวม sweat {#}%)"],["Both hats — total cash out","สองหมวก — เงินออกรวม"],["Both hats — total cash in, year {#}","สองหมวก — เงินเข้ารวม ปีที่ {#}"],["Hat {#} payback · Hat {#} payback","คืนทุนหมวก {#} · คืนทุนหมวก {#}"],["{#} yrs · {#} yrs","{#} ปี · {#} ปี"],["Both hats combined payback (rent + CAM + zones + dividends)","คืนทุนรวมสองหมวก (ค่าเช่า + ส่วนกลาง + โซน + ปันผล)"],["Land (not in payback)","ที่ดิน (ไม่นับในคืนทุน)"],["Total position incl. land","ฐานะรวมรวมที่ดิน"],
+// ── overall ──
+["🏘 Community Space — Overall Projection","🏘 พื้นที่ชุมชน — ประมาณการภาพรวม"],["Combined view of the whole community space: climbing gym (base case) plus all additional ventures.","ภาพรวมพื้นที่ทั้งหมด: ยิมปีนผา (Base Case) รวมทุกธุรกิจเสริม"],["📊 Business-by-Business Breakdown","📊 แยกรายธุรกิจ"],["Business","ธุรกิจ"],["OPEX/mo","OPEX/เดือน"],["Rev/mo","รายได้/เดือน"],["Net/mo","สุทธิ/เดือน"],["Net/yr","สุทธิ/ปี"],
+["Gym row = Base Case scenario, Phase {#} OPEX (no rent), cash basis (EBITDA — before depreciation). Venture rows = landlord income (rent + CAM + services for leased zones; visitors × price for the recovery zone) minus monthly OPEX. Landlord row = gym CAM fee received minus common-area upkeep (tenant CAM already sits in the venture rows). Payback = CAPEX ÷ annual net cash flow.","แถวยิม = Base Case, OPEX Phase {#} (ไม่มีค่าเช่า) เงินสด (EBITDA — ก่อนค่าเสื่อม) แถวธุรกิจเสริม = รายได้เจ้าของพื้นที่ (ค่าเช่า + ส่วนกลาง + บริการ สำหรับโซนให้เช่า; ผู้ใช้ × ราคา สำหรับโซน recovery) หัก OPEX รายเดือน แถวเจ้าของพื้นที่ = ค่าส่วนกลางจากยิม หักค่าดูแลส่วนกลาง (ส่วนกลางผู้เช่าอยู่ในแถวธุรกิจแล้ว) คืนทุน = CAPEX ÷ กระแสเงินสดสุทธิต่อปี"],
+["🧾 Combined Investment Summary","🧾 สรุปการลงทุนรวม"],["Total Community CAPEX","CAPEX รวมทั้งพื้นที่"],["Gym + all ventures","ยิม + ทุกธุรกิจเสริม"],["Total Revenue / month","รายได้รวม / เดือน"],["Gym base case + ventures","ยิม Base Case + ธุรกิจเสริม"],["Total Net / month","สุทธิรวม / เดือน"],["Cash basis (EBITDA)","เงินสด (EBITDA)"],["Blended Payback","คืนทุนรวม"],["Total CAPEX ÷ annual net","CAPEX รวม ÷ สุทธิต่อปี"],
+["🧗 Climbing Gym (Base Case)","🧗 ยิมปีนผา (Base Case)"],["(NOT BUILT — excluded)","(ไม่สร้าง — ไม่นับ)"],["🏢 Landlord — site & common-area works · CAM from gym (n/a) − shared upkeep","🏢 เจ้าของพื้นที่ — งานส่วนกลาง · ส่วนกลางจากยิม (ไม่มี) − ค่าดูแล"],["🏢 Landlord — site & common-area works · CAM from gym − shared upkeep","🏢 เจ้าของพื้นที่ — งานส่วนกลาง · ส่วนกลางจากยิม − ค่าดูแล"],["🏘 TOTAL COMMUNITY","🏘 รวมทั้งพื้นที่"],
+["Climbing Gym CAPEX","CAPEX ยิมปีนผา"],["Ventures CAPEX ({#} of {#} zones built)","CAPEX ธุรกิจเสริม (สร้าง {#} จาก {#} โซน)"],["Site & common-area works (parking, fence, landscaping, lights, drainage)","งานส่วนกลาง (ลานจอดรถ รั้ว สวน ไฟ ระบายน้ำ)"],["Total incl. leasehold","รวมสิทธิการเช่า"],["Combined OPEX / month (incl. common-area upkeep THB {#})","OPEX รวม / เดือน (รวมค่าดูแลส่วนกลาง THB {#})"],["Combined Revenue / month","รายได้รวม / เดือน"],["Combined Net / month","สุทธิรวม / เดือน"],
+["🧊 Ice Bath & Sauna — Outdoor Recovery Zone — net (we operate)","🧊 ไอซ์บาธ & ซาวน่า — โซน recovery กลางแจ้ง — สุทธิ (เราดำเนินการเอง)"],
+// ── ventures ──
+["🎾 Tennis Simulator — Space Rental","🎾 เทนนิสซิมูเลเตอร์ — ให้เช่าพื้นที่"],["{#} sqm built and air-conditioned by us, leased to a tennis-simulator operator at a per-sqm monthly rent. Tenant runs the business.","เราสร้างและติดแอร์ {#} ตร.ม. ให้ผู้ประกอบการเทนนิสซิมูเลเตอร์เช่าเป็นรายเดือนต่อ ตร.ม. ผู้เช่าดำเนินธุรกิจเอง"],
+["🏋️ Hyrox / Functional Zone — Space Rental","🏋️ โซน Hyrox / Functional — ให้เช่าพื้นที่"],["{#} sqm built and air-conditioned by us, leased to a functional-training operator at a per-sqm monthly rent. Tenant runs the business.","เราสร้างและติดแอร์ {#} ตร.ม. ให้ผู้ประกอบการ functional training เช่าเป็นรายเดือนต่อ ตร.ม. ผู้เช่าดำเนินธุรกิจเอง"],
+["CAPEX — One-time Investment","CAPEX — ลงทุนครั้งเดียว"],["OPEX — Monthly","OPEX — รายเดือน"],["Revenue Assumption","สมมติฐานรายได้"],["Area leased (sqm)","พื้นที่ให้เช่า (ตร.ม.)"],["Build-out row in CAPEX follows this area at THB {#}/sqm","แถวค่าก่อสร้างใน CAPEX คิดตามพื้นที่นี้ที่ THB {#}/ตร.ม."],["Rent (THB / sqm / month)","ค่าเช่า (THB / ตร.ม. / เดือน)"],["Contribution to shared upkeep","ส่วนร่วมค่าดูแลส่วนกลาง"],["Cleaning service (charged to tenant) (THB / month)","ค่าบริการทำความสะอาด (เก็บจากผู้เช่า) (THB / เดือน)"],["Service charges (optional) (THB / month)","ค่าบริการ (ถ้ามี) (THB / เดือน)"],["Landlord income from this zone (THB / month) — computed","รายได้เจ้าของพื้นที่จากโซนนี้ (THB / เดือน) — คำนวณ"],
+["Landlord income = area × (rent + CAM fee) + service charges · tenant runs the business and pays its own utilities/staff · build THB {#}/sqm incl. AC + basic architecture","รายได้เจ้าของพื้นที่ = พื้นที่ × (ค่าเช่า + ส่วนกลาง) + ค่าบริการ · ผู้เช่าดำเนินธุรกิจและจ่ายค่าน้ำไฟ/พนักงานเอง · ค่าก่อสร้าง THB {#}/ตร.ม. รวมแอร์ + สถาปัตย์พื้นฐาน"],
+["· Landlord income = area × (rent + CAM fee) + service charges · tenant runs the business and pays its own utilities/staff · build THB {#}/sqm incl. AC + basic architecture","· รายได้เจ้าของพื้นที่ = พื้นที่ × (ค่าเช่า + ส่วนกลาง) + ค่าบริการ · ผู้เช่าดำเนินธุรกิจและจ่ายค่าน้ำไฟ/พนักงานเอง · ค่าก่อสร้าง THB {#}/ตร.ม. รวมแอร์ + สถาปัตย์พื้นฐาน"],
+["Net cash flow / month (revenue − OPEX)","กระแสเงินสดสุทธิ / เดือน (รายได้ − OPEX)"],["One-time investment","ลงทุนครั้งเดียว"],["Running cost","ค่าใช้จ่ายดำเนินงาน"],["Revenue / month","รายได้ / เดือน"],["Area × rent/sqm (tenant operates)","พื้นที่ × ค่าเช่า/ตร.ม. (ผู้เช่าดำเนินการ)"],["Net THB {#}/mo","สุทธิ THB {#}/เดือน"],["Rent {#} + CAM {#} + services {#} =","ค่าเช่า {#} + ส่วนกลาง {#} + บริการ {#} ="],
+["🧊 Ice Bath & Sauna — Outdoor Recovery Zone","🧊 ไอซ์บาธ & ซาวน่า — โซน recovery กลางแจ้ง"],["Outdoor zone: barrel sauna + cold-plunge tubs under a partial rain/sun canopy, no air-conditioning, with its own toilet + shower block (not shared with the main building).","โซนกลางแจ้ง: ซาวน่าถัง + อ่างแช่น้ำเย็น ใต้หลังคาบางส่วน ไม่มีแอร์ มีห้องน้ำ + ห้องอาบน้ำแยก (ไม่ใช้ร่วมกับอาคารหลัก)"],["Build this zone?","สร้างโซนนี้ไหม?"],["Included in landlord model and overall summary","รวมในโมเดลเจ้าของพื้นที่และสรุปภาพรวม"],["NOT BUILT — excluded from landlord model and overall summary","ไม่สร้าง — ไม่นับในโมเดลเจ้าของพื้นที่และสรุปภาพรวม"],
+["Sauna day pass (THB / person)","Day pass ซาวน่า (THB / คน)"],["Ice bath add-on (+THB)","เพิ่มไอซ์บาธ (+THB)"],["Add-on attach rate (%)","สัดส่วนที่ซื้อเพิ่ม (%)"],["% of visitors who add the ice bath","% ของผู้ใช้ที่เพิ่มไอซ์บาธ"],["Visitors / day","ผู้ใช้ / วัน"],["Days / month","วัน / เดือน"],["Blended revenue / visit","รายได้เฉลี่ย / ครั้ง"],["Revenue (THB / month) — computed","รายได้ (THB / เดือน) — คำนวณ"],["Revenue = visitors/day × days × (day pass + add-on × attach rate) · sauna day pass THB {#} ice bath +THB {#}","รายได้ = ผู้ใช้/วัน × วัน × (day pass + เพิ่ม × สัดส่วน) · day pass ซาวน่า THB {#} ไอซ์บาธ +THB {#}"],["Visitors × days × blended price","ผู้ใช้ × วัน × ราคาเฉลี่ย"],
+// ── reference pages (light touch) ──
+["Global Pricing Benchmark","เทียบราคาทั่วโลก"],["Day pass, {#}-pass, and monthly membership across USA, UK, Singapore, Malaysia, Thailand.","Day pass, บัตร {#} ครั้ง และสมาชิกรายเดือน ในสหรัฐฯ อังกฤษ สิงคโปร์ มาเลเซีย ไทย"],["Gym","ยิม"],["Single","ครั้งเดียว"],["{#}× (per entry)","{#} ครั้ง (ต่อครั้ง)"],["Monthly","รายเดือน"],["Monthly/Single","รายเดือน/ครั้งเดียว"],
+["Gear Rental Strategy","กลยุทธ์เช่าอุปกรณ์"],["Benchmark rental prices across SEA, USA, UK — with Hat Yai recommendation and ROI analysis.","เทียบราคาเช่าอุปกรณ์ในอาเซียน สหรัฐฯ อังกฤษ — พร้อมข้อเสนอสำหรับหาดใหญ่และ ROI"],["Region","ภูมิภาค"],["Shoes","รองเท้า"],["Chalk","ชอล์ก"],["Harness","ฮาร์เนส"],["Bundle","แพ็กเกจ"],["Notes","หมายเหตุ"],["Shoe Rental","เช่ารองเท้า"],["Chalk (per session)","ชอล์ก (ต่อครั้ง)"],["Beginner Bundle","แพ็กเกจมือใหม่"],["Shoes + chalk — reduces decision friction for first-timers.","รองเท้า + ชอล์ก — ลดความลังเลของมือใหม่"],["Hat Yai Gear Price Sheet","ตารางราคาอุปกรณ์หาดใหญ่"],["Proposed","เสนอ"],["Climbing Shoes","รองเท้าปีน"],["Per session","ต่อครั้ง"],["Chalk (session)","ชอล์ก (ต่อครั้ง)"],["Small bag","ถุงเล็ก"],["Liquid Chalk (Sell)","ชอล์กเหลว (ขาย)"],["Sell pocket size","ขายขนาดพกพา"],["Bundle (shoes+chalk)","แพ็กเกจ (รองเท้า+ชอล์ก)"],["All-in bundle","แพ็กเกจรวม"],["Socks (Sell)","ถุงเท้า (ขาย)"],["included","รวมแล้ว"],["Sell (not rent)","ขาย (ไม่ให้เช่า)"],["Add when auto-belay is installed","เพิ่มเมื่อติดตั้ง auto-belay"],["Purchase cost / pair","ต้นทุนซื้อ / คู่"],["Break-even visits","ครั้งที่คุ้มทุน"],["{#} uses","{#} ครั้ง"],["At ฿{#}/rental","ที่ ฿{#}/ครั้ง"],["Revenue at {#} rentals","รายได้ที่ {#} ครั้ง"],["Lifespan ~{#} uses/pair","อายุ ~{#} ครั้ง/คู่"],["Net profit / pair","กำไรสุทธิ / คู่"],["Fleet Sizing & Revenue","จำนวนรองเท้าและรายได้"],["Pairs","คู่"],["Fleet cost","ต้นทุนรวม"],["Rentals/day","เช่า/วัน"],["Revenue/month","รายได้/เดือน"],["Opening (conservative)","เปิดตัว (ระมัดระวัง)"],["~{#} months","~{#} เดือน"],["~{#} month","~{#} เดือน"],["Year {#} (moderate)","ปีที่ {#} (ปานกลาง)"],["Peak (established)","ช่วงเติบโตเต็มที่"],
+["Hat Yai Market Comparison","เทียบตลาดหาดใหญ่"],["Fitness market positioning — government, local, chain, and climbing gym benchmarks.","ตำแหน่งในตลาดฟิตเนส — ภาครัฐ ท้องถิ่น เชน และยิมปีนผา"],["Positioning:","ตำแหน่ง:"],["General gyms in Hat Yai are ฿{#}–{#}/month — not direct competition. Bouldering gym is an","ยิมทั่วไปในหาดใหญ่อยู่ที่ ฿{#}–{#}/เดือน — ไม่ใช่คู่แข่งโดยตรง ยิมบูลเดอริ่งเป็น"],["experience product","สินค้าประสบการณ์"],[", not a fitness commodity. Ceiling = Stonegoat S{#} (฿{#}/฿{#}). Floor = Project Rock Penang (~฿{#}/฿{#}).",", ไม่ใช่ฟิตเนสทั่วไป เพดาน = Stonegoat S{#} (฿{#}/฿{#}) พื้น = Project Rock Penang (~฿{#}/฿{#})"],
+["Single Entry","เข้าครั้งเดียว"],["Range ฿{#}–{#}","ช่วง ฿{#}–{#}"],["Monthly Unlimited","รายเดือนไม่จำกัด"],["= {#}× single","= {#} เท่าของครั้งเดียว"],["Student / PSU","นักศึกษา / ม.อ."],["Early adopter segment","กลุ่มลูกค้ากลุ่มแรก"],["Full Price Sheet","ตารางราคาเต็ม"],["click any price to edit","คลิกราคาเพื่อแก้ไข"],["Product","สินค้า"],["Per Entry","ต่อครั้ง"],["vs Single","เทียบครั้งเดียว"],["Target","กลุ่มเป้าหมาย"],["First-timers, tourists","มือใหม่ นักท่องเที่ยว"],["{#}-Entry Pass","บัตร {#} ครั้ง"],["Curious / testing","อยากลอง"],["Regular ({#}–{#}×/week)","ประจำ ({#}–{#} ครั้ง/สัปดาห์)"],["Weekly Pass","บัตรรายสัปดาห์"],["Unlimited","ไม่จำกัด"],["Hardcore / visitors","สายฮาร์ดคอร์ / นักท่องเที่ยว"],["Monthly (General)","รายเดือน (ทั่วไป)"],["Working adults","วัยทำงาน"],["Monthly (Student/PSU)","รายเดือน (นักศึกษา/ม.อ.)"],["University students","นักศึกษา"],["Annual ({#}M)","รายปี ({#} เดือน)"],["฿{#}/mo","฿{#}/เดือน"],["-{#}% vs monthly","-{#}% เทียบรายเดือน"],["Core community","คอมมูนิตี้หลัก"],
+["Venue","สถานที่"],["Type","ประเภท"],["Day Pass","Day Pass"],["Budget / Government","ราคาประหยัด / ภาครัฐ"],["Local / Independent","ท้องถิ่น / อิสระ"],["Chain / National","เชน / ระดับประเทศ"],["Climbing Gym Benchmarks (SEA)","ยิมปีนผาในอาเซียน"],["Climbing","ปีนผา"],["Weekday ฿{#} / Weekend ฿{#}","วันธรรมดา ฿{#} / สุดสัปดาห์ ฿{#}"],["Premium location","ทำเลพรีเมียม"],["HAT YAI GYM (Proposed)","ยิมหาดใหญ่ (เสนอ)"],["Day Pass Positioning","ตำแหน่งราคา Day Pass"],["Monthly Membership Positioning","ตำแหน่งราคาสมาชิกรายเดือน"],["Pricing Recommendation","ข้อเสนอราคา"],["Positioning Chart","แผนภูมิตำแหน่ง"],["Hat Yai Recommendation","ข้อเสนอสำหรับหาดใหญ่"],["Benchmark","เทียบ"],["Thailand","ไทย"],["Malaysia","มาเลเซีย"],["Singapore","สิงคโปร์"],["Bouldering only","บูลเดอริ่งอย่างเดียว"],["Budget community gym","ยิมชุมชนราคาประหยัด"],["US Gyms (avg)","ยิมสหรัฐฯ (เฉลี่ย)"],["UK Gyms (avg)","ยิมอังกฤษ (เฉลี่ย)"],["Entry fee ฿{#}/year","ค่าแรกเข้า ฿{#}/ปี"],["Student ฿{#}","นักศึกษา ฿{#}"],["{#} branches, {#}/{#}","{#} สาขา, {#}/{#}"],["{#}-month contract","สัญญา {#} เดือน"],["Mid-tier premium","พรีเมียมระดับกลาง"],["GX Studio {#}+ classes","GX Studio {#}+ คลาส"],
+];
+  const NUM=/\d[\d,]*(?:\.\d+)?/g;
+  const key=s=>s.replace(NUM,'{#}');
+  const EN2TH={},TH2EN={};
+  I18N_PAIRS.forEach(([en,th])=>{ if(en&&th&&en!==th){ EN2TH[key(en)]=th; TH2EN[key(th)]=en; } });
+  let LANG=SRC; try{ LANG=localStorage.getItem('gym-lang')||SRC; }catch(e){}
+  if(LANG!=='th'&&LANG!=='en') LANG=SRC;
+  function tr(src){
+    const m=src.match(/^(\s*)([\s\S]*?)(\s*)$/); const core=m[2]; if(!core) return src;
+    const tpl=(LANG==='th'?EN2TH:TH2EN)[key(core)]; if(!tpl) return src;
+    const nums=core.match(NUM)||[]; let i=0;
+    return m[1]+tpl.replace(/\{#\}/g,()=> i<nums.length?nums[i++]:'')+m[3];
+  }
+  const SKIP={SCRIPT:1,STYLE:1,INPUT:1,TEXTAREA:1,NOSCRIPT:1};
+  // Thai source text often has no spaces between inline fragments; add one when English lands next to English.
+  const AL=/[A-Za-z0-9%)\]]$/, AS=/^[A-Za-z0-9(]/;
+  const INL={STRONG:1,B:1,EM:1,I:1,SPAN:1,A:1,SMALL:1,U:1,SUP:1,SUB:1,CODE:1};
+  const sib=(n,dir)=>{ let x=n; while(x && !x[dir] && x.parentNode && INL[x.parentNode.nodeName]) x=x.parentNode; return x?x[dir]:null; };
+  function glue(n,v){ if(LANG===SRC||!v) return v; const p=sib(n,'previousSibling'), q=sib(n,'nextSibling');
+    if(p&&p.textContent&&AL.test(p.textContent)&&AS.test(v)) v=' '+v;
+    if(q&&q.textContent&&/[A-Za-z0-9%)\]]$/.test(v)&&/^[A-Za-z0-9(]/.test(q.textContent)) v=v+' ';
+    return v; }
+  function fix(n){ if(n.__src===undefined) n.__src=n.nodeValue; const v=glue(n,tr(n.__src)); if(n.nodeValue!==v) n.nodeValue=v; }
+  function fixAttr(el,a){ if(!el.hasAttribute(a)) return; const k='__i18n_'+a; if(el[k]===undefined) el[k]=el.getAttribute(a); const v=tr(el[k]); if(el.getAttribute(a)!==v) el.setAttribute(a,v); }
+  function walk(root){
+    if(root.nodeType===3){ const p=root.parentNode; if(p&&!SKIP[p.nodeName]&&!(p.closest&&p.closest('[data-no-i18n]'))&&root.nodeValue.trim()) fix(root); return; }
+    if(root.nodeType!==1||SKIP[root.nodeName]||root.closest('[data-no-i18n]')) return;
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode; if(!p||SKIP[p.nodeName]||(p.closest&&p.closest('[data-no-i18n]'))) return NodeFilter.FILTER_REJECT; return n.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
+    const list=[]; while(w.nextNode()) list.push(w.currentNode); list.forEach(fix);
+    if(root.matches&&root.matches('[placeholder],[title]')){ fixAttr(root,'placeholder'); fixAttr(root,'title'); }
+    root.querySelectorAll('[placeholder],[title]').forEach(el=>{ if(el.closest('[data-no-i18n]')) return; fixAttr(el,'placeholder'); fixAttr(el,'title'); });
+  }
+  function paintBtn(){ const b=document.getElementById('lang-btn'); if(b) b.textContent = LANG==='th' ? '🌐 EN' : '🌐 ไทย'; document.documentElement.lang=LANG; }
+  window.setLang=function(l){ LANG=l; try{localStorage.setItem('gym-lang',l)}catch(e){} walk(document.body); paintBtn(); };
+  window.toggleLang=function(){ setLang(LANG==='th'?'en':'th'); };
+  const mo=new MutationObserver(recs=>{ for(const r of recs) r.addedNodes.forEach(walk); });
+  function startI18n(){ walk(document.body); paintBtn(); mo.observe(document.body,{childList:true,subtree:true}); }
+
+  // ── MYR ⇄ THB converter ──
+  const P=document.getElementById('fx-panel'), H=document.getElementById('fx-head');
+  const iM=document.getElementById('fx-myr'), iT=document.getElementById('fx-thb'), iR=document.getElementById('fx-rate'), inv=document.getElementById('fx-inv');
+  const num=v=>{ const x=parseFloat(String(v).replace(/[^\d.\-]/g,'')); return isNaN(x)?null:x; };
+  const fmtN=x=>x===null?'':(Math.abs(x)>=100?Math.round(x):Math.round(x*100)/100).toLocaleString('en-US');
+  let rate=7.7, last='myr';
+  try{ const r=parseFloat(localStorage.getItem('gym-fx-rate')); if(r>0) rate=r; }catch(e){}
+  iR.value=rate;
+  function paintInv(){ inv.textContent='· 1 THB = RM '+(1/rate).toFixed(4); }
+  function conv(){ if(last==='myr'){ const m=num(iM.value); iT.value=m===null?'':fmtN(m*rate); } else { const t=num(iT.value); iM.value=t===null?'':fmtN(t/rate); } }
+  iM.addEventListener('input',()=>{ last='myr'; conv(); });
+  iT.addEventListener('input',()=>{ last='thb'; conv(); });
+  iM.addEventListener('blur',()=>{ const m=num(iM.value); if(m!==null) iM.value=fmtN(m); });
+  iT.addEventListener('blur',()=>{ const t=num(iT.value); if(t!==null) iT.value=fmtN(t); });
+  iR.addEventListener('input',()=>{ const r=num(iR.value); if(r>0){ rate=r; try{localStorage.setItem('gym-fx-rate',r)}catch(e){} paintInv(); conv(); } });
+  paintInv();
+  // minimise
+  const mn=document.getElementById('fx-min');
+  function setMin(v){ P.classList.toggle('min',v); mn.textContent=v?'+':'–'; try{localStorage.setItem('gym-fx-min',v?'1':'0')}catch(e){} }
+  mn.addEventListener('click',e=>{ e.stopPropagation(); setMin(!P.classList.contains('min')); });
+  try{ if(localStorage.getItem('gym-fx-min')==='1') setMin(true); }catch(e){}
+  // drag
+  function place(x,y){ const w=P.offsetWidth,h=P.offsetHeight; x=Math.max(0,Math.min(window.innerWidth-w,x)); y=Math.max(0,Math.min(window.innerHeight-h,y)); P.style.left=x+'px'; P.style.top=y+'px'; P.style.bottom='auto'; P.style.right='auto'; }
+  try{ const pos=JSON.parse(localStorage.getItem('gym-fx-pos')||'null'); if(pos&&typeof pos.x==='number') place(pos.x,pos.y); }catch(e){}
+  let drag=null;
+  H.addEventListener('pointerdown',e=>{ if(e.target===mn) return; drag={dx:e.clientX-P.getBoundingClientRect().left,dy:e.clientY-P.getBoundingClientRect().top}; P.classList.add('dragging'); H.setPointerCapture(e.pointerId); e.preventDefault(); });
+  H.addEventListener('pointermove',e=>{ if(!drag) return; place(e.clientX-drag.dx,e.clientY-drag.dy); });
+  const end=e=>{ if(!drag) return; drag=null; P.classList.remove('dragging'); try{ const r=P.getBoundingClientRect(); localStorage.setItem('gym-fx-pos',JSON.stringify({x:r.left,y:r.top})); }catch(e){} };
+  H.addEventListener('pointerup',end); H.addEventListener('pointercancel',end);
+  window.addEventListener('resize',()=>{ const r=P.getBoundingClientRect(); if(P.style.top) place(r.left,r.top); });
+
+  if(document.readyState==='complete') startI18n(); else window.addEventListener('load',startI18n);
+})();
+</script>
+
 </body>
 </html>
