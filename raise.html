@@ -414,6 +414,18 @@ body.deck-mode .deck-nav { display: flex; }
     </table>
     <button class="add-btn" onclick="addRowR('fitout')">＋ เพิ่มรายการ</button>
   </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">🔨 In-kind — งานที่ Founder สร้างและโอนเข้าบริษัท</span>
+      <span class="card-total" id="t-inkind">—</span>
+    </div>
+    <div style="padding:0 0 10px;font-size:12px;color:var(--text3);line-height:1.7;">เป็นส่วนหนึ่งของ fit-out และเป็นทรัพย์สินของบริษัท แต่ Founder เป็นผู้สร้างแล้วโอนเข้าบริษัทในราคาต้นทุน แลกหุ้น in-kind ในราคาหุ้นเดียวกับนักลงทุน · ห้องน้ำ/ห้องอาบน้ำ + ชั้นลอย co-working <strong>ไม่อยู่ในการระดมทุน</strong> — เจ้าของอาคารสร้างและเป็นเจ้าของ ยิมใช้โดยไม่มีค่าเช่าจนกว่านักลงทุนจะคืนทุน</div>
+    <table class="etbl"><colgroup><col class="c-nm"><col class="c-am"><col class="c-dl"></colgroup>
+      <thead><tr><th>รายการ</th><th class="r">THB</th><th></th></tr></thead>
+      <tbody id="tb-inkind"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRowR('inkind')">＋ เพิ่มรายการ</button>
+  </div>
 
   <!-- REVENUE -->
   <div class="sec-label">Revenue Model — รายได้ต่อการเข้าใช้ 1 ครั้ง (แก้ไขได้)</div>
@@ -539,13 +551,13 @@ body.deck-mode .deck-nav { display: flex; }
         </div>
         <div class="field">
           <span class="field-label">Founder — sweat equity (%) ฟรี</span>
-          <input class="field-input" id="in-sweat-pct" type="number" step="0.5" value="20" oninput="recalcAll()">
-          <span class="field-hint">อาคาร sourcing บริหาร</span>
+          <input class="field-input" id="in-sweat-pct" type="number" step="0.5" value="26" oninput="recalcAll()">
+          <span class="field-hint">อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนนักลงทุนคืนทุน</span>
         </div>
         <div class="field">
           <span class="field-label">Founder — หุ้นที่จ่ายด้วยงาน in-kind (%)</span>
-          <input class="field-input" id="in-inkind-pct" type="number" step="0.5" value="21" oninput="recalcAll()">
-          <span class="field-hint">จ่ายด้วยงานที่ Founder สร้าง (รายการติดป้าย In-kind) ราคาหุ้นเดียวกับนักลงทุน</span>
+          <input class="field-input" id="in-inkind-pct" type="number" step="0.5" value="15" oninput="recalcAll()">
+          <span class="field-hint">จ่ายด้วยงานในการ์ด In-kind (แอร์ รีโนเวท เครื่องกรองน้ำ) ราคาหุ้นเดียวกับนักลงทุน</span>
         </div>
         <div class="field">
           <span class="field-label">Project Rock equity (%) ฟรี</span>
@@ -671,20 +683,24 @@ const RAISE = {
       { name: 'Volumes',                                      amt: 308625 },
     ]},
     { key: 'fitout', icon: '🏠', label: 'Fit-out — ตกแต่งภายใน', items: [
-      { name: 'ระบบแอร์ VRV + พัดลม',                          amt: 1600000 },
-      { name: 'ห้องน้ำ–ห้องอาบน้ำ ชาย/หญิง + ห้องล้าง holds + ชั้นลอย co-working ด้านบน', amt: 1000000 },
-      { name: 'งานรีโนเวท (เพิ่มเติม)',                         amt: 300000 },
       { name: 'Reception + counter + office',                 amt: 50000 },
       { name: 'เฟอร์นิเจอร์ fixed',                            amt: 100000 },
       { name: 'เฟอร์นิเจอร์ loose',                            amt: 100000 },
       { name: 'กล้องวงจรปิด',                                  amt: 100000 },
       { name: 'ระบบเสียง / PA',                                amt: 50000 },
       { name: 'Lockers (12 ช่อง × 4 ชุด)',                     amt: 30000 },
-      { name: 'เครื่องกรองน้ำ + ตู้กดน้ำ',                       amt: 15000 },
       { name: 'อุปกรณ์สำนักงาน',                               amt: 50000 },
       { name: 'การตลาดเปิดตัว',                                amt: 50000 },
       { name: 'เงินทุนหมุนเวียน 1 เดือน',                       amt: 200000 },
       { name: 'ค่าเช่าเครื่องมือติดตั้ง',                        amt: 50000 },
+    ]},
+    // Founder builds these and transfers them to the company at cost for the in-kind shares.
+    // (Toilet/shower block + co-working mezzanine are NOT in the raise — landlord-owned,
+    //  used by the gym rent-free until investor payback.)
+    { key: 'inkind', icon: '🔨', label: 'In-kind — งานที่ Founder สร้างและโอนเข้าบริษัท', items: [
+      { name: 'ระบบแอร์ VRV + พัดลม',                          amt: 1600000 },
+      { name: 'งานรีโนเวท (เพิ่มเติม)',                         amt: 300000 },
+      { name: 'เครื่องกรองน้ำ + ตู้กดน้ำ',                       amt: 15000 },
     ]},
   ],
 
@@ -708,10 +724,9 @@ const RAISE = {
   rent: { baseMo: 48000, escalatePct: 10, everyYears: 3 },
 };
 
-// Project Rock scope (discounted) and founder in-kind items (contributed for equity)
+// Project Rock scope (discounted); the founder's in-kind items live in their own bucket
 RAISE.buckets[0].items.forEach(r => { r.pr = true; });
 RAISE.buckets[1].items.forEach(r => { const n=r.name.toLowerCase(); if (n.includes('เบาะ')||n.includes('holds')||n.includes('volumes')) r.pr = true; });
-RAISE.buckets[2].items.forEach(r => { const n=r.name.toLowerCase(); if (n.includes('แอร์')||n.includes('ห้องน้ำ')||n.includes('รีโนเวท')||n.includes('กรองน้ำ')) r.ik = true; });
 function prDisc(){ const el=document.getElementById('in-pr-disc'); return el?(parseFloat(el.value)||0):0; }
 function effAmt(r){ const a=parseFloat(r.amt)||0; return r.pr ? a*(1-prDisc()/100) : a; }
 
@@ -721,6 +736,7 @@ const EDIT_SECTIONS = {
   wall:      () => RAISE.buckets[0].items,
   equipment: () => RAISE.buckets[1].items,
   fitout:    () => RAISE.buckets[2].items,
+  inkind:    () => RAISE.buckets[3].items,
   opex:      () => RAISE.opexMonthly,
 };
 
@@ -730,7 +746,7 @@ function renderEditableTables(){
     const tb = document.getElementById('tb-'+key);
     if (!tb) return;
     tb.innerHTML = arr.map((r,i) => `<tr>
-      <td class="cell-name"><div style="display:flex;align-items:center;gap:6px;">${r.pr?`<span class="sc-pill" style="padding:1px 7px;font-size:9px;font-family:var(--mono);cursor:default;background:#fdf0eb;border-color:#f2cfc0;color:var(--accent);">PR −${prDisc()}%</span>`:''}${r.ik?`<span class="sc-pill" style="padding:1px 7px;font-size:9px;font-family:var(--mono);cursor:default;background:#eef5f0;border-color:#c8ddd0;color:var(--green);">In-kind</span>`:''}<input type="text" value="${(r.name||'').replace(/"/g,'&quot;')}"
+      <td class="cell-name"><div style="display:flex;align-items:center;gap:6px;">${r.pr?`<span class="sc-pill" style="padding:1px 7px;font-size:9px;font-family:var(--mono);cursor:default;background:#fdf0eb;border-color:#f2cfc0;color:var(--accent);">PR −${prDisc()}%</span>`:''}<input type="text" value="${(r.name||'').replace(/"/g,'&quot;')}"
         onchange="EDIT_SECTIONS['${key}']()[${i}].name=this.value;recalcAll()"></div></td>
       <td class="cell-amt"><input type="number" value="${r.amt}"
         oninput="EDIT_SECTIONS['${key}']()[${i}].amt=parseFloat(this.value)||0;recalcAll()"></td>
@@ -775,7 +791,7 @@ function computeModel(){
   const bucketGross = buckets.reduce((s,b)=>s+b.gross,0);
   const bucketTotal = buckets.reduce((s,b)=>s+b.total,0);             // net of Project Rock discount
   const prDiscount  = bucketGross - bucketTotal;
-  const inkindValue = RAISE.buckets[2].items.reduce((s,r)=>s+(r.ik?effAmt(r):0),0);   // works the founder builds
+  const inkindValue = buckets[3].total;                                // works the founder builds (In-kind bucket)
 
   // Equity: sweat (free) + Project Rock (free) come off the top. The remaining
   // "capital pool" is priced at ONE price per share: investors pay cash, the
@@ -876,7 +892,7 @@ function renderProjection(m){
     <div class="kpi-card"><div class="kpi-label">Break-even</div><div class="kpi-value blue">≈ ${Math.ceil(m.breakEven)} คน/วัน</div><div class="kpi-sub">rev/visit THB ${fmt(m.rpv)} · ${m.days} วัน/ปี · ก่อนค่าเช่า</div></div>`;
 
   const sums = { warehouse: m.shellTotal, wall: m.buckets[0].total,
-                 equipment: m.buckets[1].total, fitout: m.buckets[2].total, opex: m.opexMo };
+                 equipment: m.buckets[1].total, fitout: m.buckets[2].total, inkind: m.buckets[3].total, opex: m.opexMo };
   Object.entries(sums).forEach(([k,v]) => {
     const s = document.getElementById('sum-'+k); if (s) s.textContent = fmt(v);
     const c = document.getElementById('t-'+k);   if (c) c.textContent = 'THB '+fmt(v);
@@ -894,7 +910,7 @@ function renderProjection(m){
      <tr><td>· นักลงทุน — เงินสด (${m.investorShares} หุ้น)</td><td></td><td class="pos">${fmt(m.raise)}</td></tr>
      <tr><td>· Founder — งาน in-kind (${m.inkindShares} หุ้น)</td><td></td><td class="pos">${fmt(m.founderPrice)}</td></tr></tbody>`;
   document.getElementById('n-raise-round').innerHTML =
-    `หุ้นละ <strong>THB ${fmt(m.sharePrice)}</strong> · ${m.totalShares} หุ้น = post-money THB ${fmt(m.postMoney)} · นักลงทุนใส่เงินสด <strong>THB ${fmt(m.raise)}</strong> ได้ ${pc(m.investorPct)} · Founder ใส่งานที่สร้างเอง (แอร์ ห้องน้ำ รีโนเวท เครื่องกรองน้ำ) มูลค่า THB ${fmt(m.inkindValue)} ได้ ${pc(m.inkindPct)}` +
+    `หุ้นละ <strong>THB ${fmt(m.sharePrice)}</strong> · ${m.totalShares} หุ้น = post-money THB ${fmt(m.postMoney)} · นักลงทุนใส่เงินสด <strong>THB ${fmt(m.raise)}</strong> ได้ ${pc(m.investorPct)} · Founder ใส่งานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ) มูลค่า THB ${fmt(m.inkindValue)} ได้ ${pc(m.inkindPct)}` +
     (m.founderTopUp>0 ? ` + เงินสด ${fmt(m.founderTopUp)}` : m.inkindExcess>0 ? ` (เกินราคาหุ้น ${fmt(m.inkindExcess)})` : '') +
     ` · Founder รวม ${pc(m.founderPct)} (sweat ${pc(m.sweatPct)}) · Project Rock ${pc(m.kaeVinPct)} · <strong>Founder + Project Rock = ${pc(m.controlPct)}</strong>`;
 
@@ -908,7 +924,8 @@ function renderProjection(m){
     `<thead><tr><th>ปีที่ (นับจากเริ่มเช่า)</th><th>ค่าเช่า / เดือน</th><th>ค่าเช่า / ปี</th></tr></thead><tbody>` +
     bands.map(([a,b])=>`<tr><td>ปีที่ ${a}–${b}</td><td>${fmt(m.rentMoY(a))}</td><td>${fmt(m.rentMoY(a)*12)}</td></tr>`).join('') + `</tbody>`;
   document.getElementById('n-rent-note').innerHTML =
-    `ค่าเช่า<strong>เริ่มเมื่อนักลงทุนคืนทุนครบ</strong> (Base ≈ ปีที่ ${base.payback?base.payback.toFixed(1):'—'}) · <strong>+${m.rentEsc}% ทุก ${RAISE.rent.everyYears} ปี</strong>นับจากวันเริ่มเช่า · ค่าส่วนกลาง THB ${fmt(m.camMo)}/เดือน จ่ายตั้งแต่เดือน 1`;
+    `ค่าเช่า<strong>เริ่มเมื่อนักลงทุนคืนทุนครบ</strong> (Base ≈ ปีที่ ${base.payback?base.payback.toFixed(1):'—'}) · <strong>+${m.rentEsc}% ทุก ${RAISE.rent.everyYears} ปี</strong>นับจากวันเริ่มเช่า · ค่าส่วนกลาง THB ${fmt(m.camMo)}/เดือน จ่ายตั้งแต่เดือน 1` +
+    (base.payback ? ` · <strong>ค่าเช่าที่เว้นให้จนคืนทุน ≈ THB ${fmt(m.rentBase*12*base.payback)}</strong> (${base.payback.toFixed(1)} ปี × ${fmt(m.rentBase)}) ≈ ${(m.rentBase*12*base.payback/m.postMoney*100).toFixed(1)}% ของ post-money — ที่มาของ sweat equity ${(m.sweatPct*100).toFixed(0)}%` : '');
 
   document.getElementById('tbl-opex-y1').innerHTML = `<tbody>
     <tr><td>Operating OPEX (ปี 1)</td><td>${fmt(m.opexAnn)}</td></tr>
@@ -989,7 +1006,7 @@ function renderProjection(m){
     `<thead><tr><th>ผู้ถือหุ้น</th><th>หุ้น</th><th>%</th><th>มูลค่า (THB)</th><th style="text-align:left;">ที่มา</th></tr></thead><tbody>
     <tr><td>นักลงทุน (Investors)</td><td>${m.investorShares}</td><td>${pc(m.investorPct)}</td><td>${fmt(m.investorShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">เงินสด THB ${fmt(m.raise)}</td></tr>
     <tr><td>Founder — sweat</td><td>${m.sweatShares}</td><td>${pc(m.sweatPct)}</td><td>${fmt(m.sweatShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">อาคาร sourcing บริหาร</td></tr>
-    <tr><td>Founder — in-kind</td><td>${m.inkindShares}</td><td>${pc(m.inkindPct)}</td><td>${fmt(m.inkindShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">งานที่สร้างเอง THB ${fmt(m.inkindValue)} (แอร์ ห้องน้ำ รีโนเวท เครื่องกรองน้ำ)</td></tr>
+    <tr><td>Founder — in-kind</td><td>${m.inkindShares}</td><td>${pc(m.inkindPct)}</td><td>${fmt(m.inkindShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">งานที่สร้างเอง THB ${fmt(m.inkindValue)} (แอร์ รีโนเวท เครื่องกรองน้ำ)</td></tr>
     <tr><td>Project Rock</td><td>${m.kaeVinShares}</td><td>${pc(m.kaeVinPct)}</td><td>${fmt(m.kaeVinShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">ส่วนลดงานผนัง ${prDisc()}% + แบรนด์</td></tr>
     <tr class="total-row"><td>รวม (post-money)</td><td>${m.totalShares}</td><td>100%</td><td class="pos">${fmt(m.postMoney)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นละ THB ${fmt(m.sharePrice)} · Founder + PR ${pc(m.controlPct)}</td></tr></tbody>`;
   document.getElementById('investor-share-note').innerHTML =
@@ -1157,7 +1174,7 @@ function renderDeck(m){
        <div class="num-item"><div class="n accent">THB ${fmt(m.raise)}</div><div class="l">นักลงทุน — เงินสด (${m.investorShares} หุ้น)</div></div>
        <div class="num-item"><div class="n">THB ${fmt(m.founderPrice)}</div><div class="l">Founder — งานก่อสร้าง in-kind (${m.inkindShares} หุ้น)</div></div>
      </div>
-     <p>ทุนทั้งหมดกลายเป็นทรัพย์สินของบริษัท — รวมแอร์ ห้องน้ำ และงานรีโนเวทที่ Founder สร้างและโอนเข้าบริษัทในราคาต้นทุน (มีเอกสารตรวจสอบได้)</p>
+     <p>ทุนทั้งหมดกลายเป็นทรัพย์สินของบริษัท — รวมแอร์ งานรีโนเวท และเครื่องกรองน้ำที่ Founder สร้างและโอนเข้าบริษัทในราคาต้นทุน (มีเอกสารตรวจสอบได้) · ห้องน้ำ/ห้องอาบน้ำ + ชั้นลอย co-working เป็นทรัพย์สินของเจ้าของอาคาร ยิมใช้โดยไม่มีค่าเช่าจนกว่านักลงทุนจะคืนทุน</p>
    </div>`,
 
   // 11 — Cap table
@@ -1168,8 +1185,8 @@ function renderDeck(m){
        <thead><tr><th>ผู้ถือหุ้น</th><th>หุ้น</th><th>%</th><th>มูลค่า (THB)</th></tr></thead>
        <tbody>
          <tr><td>นักลงทุน (เงินสด)</td><td>${m.investorShares}</td><td>${(m.investorPct*100).toFixed(1)}%</td><td>${fmt(m.investorShares*m.sharePrice)}</td></tr>
-         <tr><td>Founder — sweat (อาคาร sourcing บริหาร)</td><td>${m.sweatShares}</td><td>${(m.sweatPct*100).toFixed(1)}%</td><td>${fmt(m.sweatShares*m.sharePrice)}</td></tr>
-         <tr><td>Founder — in-kind (แอร์ ห้องน้ำ รีโนเวท)</td><td>${m.inkindShares}</td><td>${(m.inkindPct*100).toFixed(1)}%</td><td>${fmt(m.inkindShares*m.sharePrice)}</td></tr>
+         <tr><td>Founder — sweat (อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนคืนทุน)</td><td>${m.sweatShares}</td><td>${(m.sweatPct*100).toFixed(1)}%</td><td>${fmt(m.sweatShares*m.sharePrice)}</td></tr>
+         <tr><td>Founder — in-kind (แอร์ รีโนเวท เครื่องกรองน้ำ)</td><td>${m.inkindShares}</td><td>${(m.inkindPct*100).toFixed(1)}%</td><td>${fmt(m.inkindShares*m.sharePrice)}</td></tr>
          <tr><td>Project Rock (ส่วนลดงานผนัง + แบรนด์)</td><td>${m.kaeVinShares}</td><td>${(m.kaeVinPct*100).toFixed(1)}%</td><td>${fmt(m.kaeVinShares*m.sharePrice)}</td></tr>
          <tr class="total-row"><td>รวม</td><td>${m.totalShares}</td><td>100%</td><td style="color:var(--accent);font-weight:700;">${fmt(m.postMoney)}</td></tr>
        </tbody>
@@ -1204,7 +1221,8 @@ function renderDeck(m){
          <tr><td>โครงสร้าง</td><td style="text-align:left;font-family:var(--sans);">บริษัทจำกัด (SPV) ดำเนินธุรกิจยิม</td></tr>
          <tr><td>ขนาดการระดมทุน</td><td style="text-align:left;font-family:var(--sans);">เงินสด THB ${fmt(m.raise)} — ${m.investorShares} หุ้น × THB ${fmt(m.sharePrice)} (post-money THB ${fmt(m.postMoney)})</td></tr>
          <tr><td>สัดส่วนหุ้น</td><td style="text-align:left;font-family:var(--sans);">นักลงทุน ${(m.investorPct*100).toFixed(1)}% · Founder ${(m.founderPct*100).toFixed(1)}% (sweat ${(m.sweatPct*100).toFixed(0)}% + in-kind ${(m.inkindPct*100).toFixed(0)}%) · Project Rock ${(m.kaeVinPct*100).toFixed(1)}% — Founder + PR ${(m.controlPct*100).toFixed(0)}%</td></tr>
-         <tr><td>In-kind</td><td style="text-align:left;font-family:var(--sans);">Founder สร้างแอร์ ห้องน้ำ งานรีโนเวท เครื่องกรองน้ำ มูลค่า THB ${fmt(m.inkindValue)} โอนเข้าบริษัทในราคาต้นทุน แลกหุ้น ${m.inkindShares} หุ้น (ราคาหุ้นเดียวกับนักลงทุน)</td></tr>
+         <tr><td>In-kind</td><td style="text-align:left;font-family:var(--sans);">Founder สร้างแอร์ งานรีโนเวท เครื่องกรองน้ำ มูลค่า THB ${fmt(m.inkindValue)} โอนเข้าบริษัทในราคาต้นทุน แลกหุ้น ${m.inkindShares} หุ้น (ราคาหุ้นเดียวกับนักลงทุน)</td></tr>
+         <tr><td>พื้นที่ส่วนกลาง</td><td style="text-align:left;font-family:var(--sans);">ห้องน้ำ/ห้องอาบน้ำ + ห้องล้าง holds + ชั้นลอย co-working — เจ้าของอาคารสร้างและเป็นเจ้าของ (ไม่อยู่ในการระดมทุน) ยิมใช้โดยไม่มีค่าเช่าจนกว่านักลงทุนจะคืนทุน · ค่าเช่าที่เว้น ≈ THB ${fmt(m.rentBase*12*(m.scenarios.find(s=>s.name==='Base')?.payback||0))} (Base) ≈ ${m.scenarios.find(s=>s.name==='Base')?.payback?(m.rentBase*12*m.scenarios.find(s=>s.name==='Base').payback/m.postMoney*100).toFixed(1):'—'}% ของมูลค่าบริษัท — ที่มาของ sweat equity</td></tr>
          <tr><td>ส่วนลด Project Rock</td><td style="text-align:left;font-family:var(--sans);">−${prDisc()}% บนงานผนัง โครงเหล็ก มือจับ เบาะ volumes = ประหยัด THB ${fmt(m.prDiscount)}</td></tr>
          <tr><td>สัญญาเช่า</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(m.rentBase)}/เดือน เรตโกดังเปล่า · <strong>เริ่มเมื่อนักลงทุนคืนทุน</strong> · +${m.rentEsc}% ทุก 3 ปี · ค่าส่วนกลาง THB ${fmt(m.camMo)}/เดือน จ่ายตั้งแต่เดือน 1</td></tr>
          <tr><td>Brand licence</td><td style="text-align:left;font-family:var(--sans);">ใช้ชื่อแบรนด์ Project Rock · royalty ${m.royaltyPct}% ของรายได้รวม</td></tr>
