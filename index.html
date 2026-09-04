@@ -567,7 +567,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
       <div class="mode-card" onclick="selectMode('pr')">
         <div class="mode-card-icon">🪨</div>
         <div class="mode-card-title">Project Rock ถือหุ้น + ผู้ร่วมลงทุน</div>
-        <div class="mode-card-desc">ต่อยอดจากโหมดลงทุนเอง — คุณ 20% sweat + Project Rock 10% (แลกส่วนลดงานผนัง 15% + แบรนด์) แล้วขายหุ้น 70% ราคาเดียวกัน — คุณรับ 21% ด้วยงานที่สร้างเอง (แอร์ ห้องน้ำ รีโนเวท) ไม่ต้องควักเงินสด ให้คุณ+PR ถือ 51%, ผู้ร่วมลงทุน 49% เงินสด · royalty 2%, ค่าที่ปรึกษารายเดือน · ค่าเช่าอาคารเริ่มจ่ายหลังผู้ร่วมลงทุนคืนทุน · ดูคืนทุนทั้งฐานะเจ้าของอาคารและผู้ถือหุ้น</div>
+        <div class="mode-card-desc">ต่อยอดจากโหมดลงทุนเอง — คุณ 26% sweat (รวมค่าเช่าที่เว้นจนคืนทุน) + Project Rock 10% (แลกส่วนลดงานผนัง 15% + แบรนด์) แล้วขายหุ้น 64% ราคาเดียวกัน — คุณรับ 15% ด้วยงานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ) ไม่ต้องควักเงินสด ห้องน้ำ + ชั้นลอยเป็นทรัพย์สินของคุณในฐานะเจ้าของพื้นที่ ให้คุณ+PR ถือ 51%, ผู้ร่วมลงทุน 49% เงินสด · royalty 2%, ค่าที่ปรึกษารายเดือน · ค่าเช่าอาคารเริ่มจ่ายหลังผู้ร่วมลงทุนคืนทุน · ดูคืนทุนทั้งฐานะเจ้าของอาคารและผู้ถือหุ้น</div>
         <div class="mode-card-tags">
           <span class="mode-tag">You 41% + PR 10% = 51%</span>
           <span class="mode-tag">Investors 49%</span>
@@ -756,6 +756,19 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
     </table>
     <button class="add-btn" onclick="addRow('fitout')">＋ Add item</button>
   </div>
+
+  <div class="card pr-only">
+    <div class="card-header">
+      <span class="card-title"><span class="card-title-icon">🔨</span> In-kind Works — built by the founder, contributed for equity</span>
+      <span class="card-total" id="total-inkind">THB 0</span>
+    </div>
+    <div style="padding:0 0 10px;font-size:12px;color:var(--text3);line-height:1.6;">Part of the gym fit-out and owned by the company, but the founder builds these instead of paying cash for the in-kind equity %. Valued at cost, at the same price per 1% as the investors. The toilet/shower block + co-working mezzanine is <strong>not</strong> here — it is a landlord asset (see Landlord → Site &amp; Common-Area Construction) that the gym uses rent-free until investor payback.</div>
+    <table class="etbl"><colgroup><col class="col-name"><col class="col-amt"><col class="col-note"><col class="col-del"></colgroup>
+      <thead><tr><th>Item</th><th class="r" style="width:150px">Amount (THB)</th><th style="width:140px">Note</th><th style="width:32px"></th></tr></thead>
+      <tbody id="tbody-inkind"></tbody>
+    </table>
+    <button class="add-btn" onclick="addRow('inkind')">＋ Add item</button>
+  </div>
 </div>
 
 <!-- ── CAPEX SUMMARY ── -->
@@ -905,8 +918,8 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
           <div class="divider pr-only"></div>
           <div class="field pr-only">
             <span class="field-label">Founder sweat equity (%) — free</span>
-            <input class="field-input" id="pr-sweat" type="number" step="0.5" value="20" oninput="recalc()">
-            <span class="field-hint">For building, sourcing and operating — no cash</span>
+            <input class="field-input" id="pr-sweat" type="number" step="0.5" value="26" oninput="recalc()">
+            <span class="field-hint">For building, sourcing, operating + rent waived until investor payback — no cash</span>
           </div>
           <div class="field pr-only">
             <span class="field-label">Project Rock equity (%) — free</span>
@@ -914,9 +927,14 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
             <span class="field-hint">For the wall-scope discount + brand — no cash</span>
           </div>
           <div class="field pr-only">
-            <span class="field-label">Founder cash equity (%) — bought at investor price</span>
-            <input class="field-input" id="pr-fcash" type="number" step="0.5" value="21" oninput="recalc()">
-            <span class="field-hint">Out of the cash pool (100 − sweat − PR); same price per 1% as investors</span>
+            <span class="field-label">Founder in-kind equity (%) — bought at investor price, paid with works</span>
+            <input class="field-input" id="pr-fcash" type="number" step="0.5" value="15" oninput="recalc()">
+            <span class="field-hint">Out of the cash pool (100 − sweat − PR); paid with the In-kind Works card (AC, renovation, water filter)</span>
+          </div>
+          <div class="field pr-only">
+            <span class="field-label">Price per 1% of equity (THB) — 0 = auto</span>
+            <input class="field-input" id="pr-price" type="number" step="1000" value="125000" oninput="recalc()">
+            <span class="field-hint">One price for investors and founder. Auto = net fit-out ÷ cash pool; a fixed price keeps investors' cash unchanged when fit-out items move</span>
           </div>
           <div class="field pr-only">
             <span class="field-label">Co-investors equity (%) — cash</span>
@@ -1823,11 +1841,17 @@ DATA_PR.equipment.forEach(r => {
   const n = r.name.toLowerCase();
   if (n.includes('mats') || n.includes('holds') || n.includes('volumes')) r.pr = true;
 });
-// Building-type items the founder builds and contributes IN KIND for the bought equity
-// (the company owns them; they count toward the founder's 21% at the investor price).
-DATA_PR.fitout.forEach(r => {
+// In-kind works: building-type items the founder builds and contributes IN KIND for the
+// bought equity (the company owns them; they count toward the founder's in-kind % at the
+// investor price). Kept in their own card so the contribution is visible in one place.
+// The toilet/shower block + co-working mezzanine is NOT gym fit-out in this deal — the
+// landlord (founder) builds and owns it as a common-area asset (see landlord site works).
+DATA_PR.inkind = [];
+DATA_PR.fitout = DATA_PR.fitout.filter(r => {
   const n = r.name.toLowerCase();
-  if (n.includes('air cond') || n.includes('toilet') || n.includes('renovation') || n.includes('water filter')) r.ik = true;
+  if (n.includes('toilet')) return false;
+  if (n.includes('air cond') || n.includes('renovation') || n.includes('water filter')) { DATA_PR.inkind.push(r); return false; }
+  return true;
 });
 
 const SCENARIOS_JV = [
@@ -1864,7 +1888,7 @@ const SETTINGS_SOLO = {
 };
 
 const SETTINGS_PR = Object.assign({}, SETTINGS_SOLO, {
-  prEq:'10', prSweat:'20', prFcash:'21', prDisc:'15', prRent:'48000', prRentEsc:'10', prCamSqm:'400', prCamRate:'15', royaltyPct:'2',
+  prEq:'10', prSweat:'26', prFcash:'15', prPrice:'125000', prDisc:'15', prRent:'48000', prRentEsc:'10', prCamSqm:'400', prCamRate:'15', royaltyPct:'2',
 });
 
 const LEASEHOLD = 9650000;
@@ -1959,6 +1983,9 @@ const VENTURE_DATA_DEFAULTS = {
 Object.assign(DATA_JV,   JSON.parse(JSON.stringify(VENTURE_DATA_DEFAULTS)));
 Object.assign(DATA_SOLO, JSON.parse(JSON.stringify(VENTURE_DATA_DEFAULTS)));
 Object.assign(DATA_PR,   JSON.parse(JSON.stringify(VENTURE_DATA_DEFAULTS)));
+// Project Rock deal: the toilet/shower block + co-working mezzanine is landlord-built and
+// landlord-owned (common-area asset); the gym uses it rent-free until investor payback.
+DATA_PR.siteCapex.push({name:'Toilet / shower block (M/F) + hold washing + co-working mezzanine above — landlord asset, gym uses rent-free',amt:1000000,note:'Men + Women · mezzanine'});
 
 // Build one page per venture (KPIs + CAPEX table + OPEX table + revenue input)
 (function buildVentureSections(){
@@ -2113,7 +2140,7 @@ function applySettings(s){
   set('jv-rent-sqm',s.jvRentSqm); set('jv-sqm',s.jvSqm);
   set('elec-hvac',s.elecHvac); set('elec-no-hvac',s.elecNoHvac);
   set('royalty-pct', s.royaltyPct);
-  set('pr-eq',s.prEq); set('pr-sweat',s.prSweat); set('pr-fcash',s.prFcash); set('pr-disc',s.prDisc);
+  set('pr-eq',s.prEq); set('pr-sweat',s.prSweat); set('pr-fcash',s.prFcash); set('pr-price',s.prPrice); set('pr-disc',s.prDisc);
   set('pr-rent',s.prRent); set('pr-rent-esc',s.prRentEsc);
   set('pr-cam-sqm',s.prCamSqm); set('pr-cam-rate',s.prCamRate);
   set('depr-wall',s.deprWall); set('depr-equipment',s.deprEquipment);
@@ -2166,7 +2193,7 @@ const MODE_TEXT = {
     whSub:'Bare building shell — funded and owned by the founder, leased to the gym company from month 1.',
     whCard:'Building & Structure',
     bbTitle:'Gym Fit-out — with Project Rock discount',
-    bbSub:'Items tagged PR (wall-contract scope) are discounted; the net fit-out is funded by Founder + co-investors in proportion to equity.',
+    bbSub:'Items tagged PR (wall-contract scope) are discounted. The net fit-out (wall + equipment + interior + the In-kind Works card) is funded by co-investors in cash and by the founder in kind, at one price per 1%.',
     settingsTitle:'Project Rock Mode Settings',
     settingsSub:'Equity split (PR / Founder / Investors), PR discount, rent, brand royalty, HVAC, land.',
     settingsCard:'🪨 Project Rock Structure',
@@ -2258,6 +2285,7 @@ function getDeprGroups() {
 
   const activeHvacCost = hvac ? hvacCost : hvlsCost;
   const officeTotalCost = officeFitout; // office equipment in fitout
+  const inkindCost = DATA.inkind ? getTotal('inkind') : 0;   // founder-built, company-owned (PR mode)
 
   return [
     { label: 'Wall & Structure',           cost: wallCost,         life: lifeWall   },
@@ -2265,6 +2293,7 @@ function getDeprGroups() {
     { label: 'Rental Stock (shoes/harness)',cost: rentalCost,       life: lifeRental },
     { label: hvac ? 'HVAC System' : 'HVLS Fans', cost: activeHvacCost, life: lifeHvac },
     { label: 'Interior Fit-out',           cost: fitoutRest,       life: lifeFitout },
+    ...(inkindCost>0 ? [{ label: 'In-kind Works (founder-built, AC/renovation/water)', cost: inkindCost, life: lifeFitout }] : []),
     { label: 'Office Equipment',           cost: officeTotalCost,  life: lifeOffice },
     // Launch costs shown as note only
     { label: 'Launch Costs (expensed Yr 1)', cost: launchCost,     life: null       },
@@ -2338,7 +2367,7 @@ function renderTable(sec) {
     tr.innerHTML = `
       <td class="c-name"><input type="text" value="${r.name}" onchange="DATA['${sec}'][${i}].name=this.value"/></td>
       <td class="c-amt"><input type="number" value="${r.amt}" oninput="DATA['${sec}'][${i}].amt=parseFloat(this.value)||0;updateTotal('${sec}');recalc()"/></td>
-      <td class="c-note"><div style="display:flex;align-items:center;gap:6px;">${(MODE==='pr'&&r.pr)?`<span class="pr-badge" title="Project Rock wall-contract scope — discounted">PR −${prDiscPct()}%</span>`:''}${(MODE==='pr'&&r.ik)?`<span class="pr-badge" style="background:#eef5f0;border-color:#c8ddd0;color:var(--green);" title="Built by the founder and contributed in kind for the bought equity">In-kind</span>`:''}<input type="text" value="${r.note}" onchange="DATA['${sec}'][${i}].note=this.value"/></div></td>
+      <td class="c-note"><div style="display:flex;align-items:center;gap:6px;">${(MODE==='pr'&&r.pr)?`<span class="pr-badge" title="Project Rock wall-contract scope — discounted">PR −${prDiscPct()}%</span>`:''}<input type="text" value="${r.note}" onchange="DATA['${sec}'][${i}].note=this.value"/></div></td>
       <td class="c-del" onclick="delRow('${sec}',${i})">×</td>`;
     tbody.appendChild(tr);
   });
@@ -2447,7 +2476,8 @@ function recalc() {
     else if (n.includes('hvls')) hvlsItemCost += (parseFloat(r.amt)||0);
   });
   const bucketA = getTotal('warehouse');
-  const bucketBRaw = getTotal('wall')+getTotal('equipment')+getTotal('fitout');
+  const inkindTot  = DATA.inkind ? getTotal('inkind') : 0;                  // PR mode: founder-built works, part of fit-out
+  const bucketBRaw = getTotal('wall')+getTotal('equipment')+getTotal('fitout')+inkindTot;
   const bucketB = hvac ? (bucketBRaw - hvlsItemCost) : (bucketBRaw - hvacItemCost);
   const bpCash  = bucketB*bpEq;
 
@@ -2467,23 +2497,28 @@ function recalc() {
   const prRentEsc = isPR ? gv('pr-rent-esc')/100 : 0;
   const camGym    = isPR ? gv('pr-cam-sqm')*gv('pr-cam-rate') : 0;      // common-area fee paid by the gym from month 1
   const commonExp = getTotal('commonOpex');                                 // landlord's shared-upkeep cost
-  const bucketBGross = getGross('wall')+getGross('equipment')+getGross('fitout') - (hvac ? hvlsItemCost : hvacItemCost);
+  const bucketBGross = getGross('wall')+getGross('equipment')+getGross('fitout')+(DATA.inkind?getGross('inkind'):0) - (hvac ? hvlsItemCost : hvacItemCost);
   const prDiscount   = bucketBGross - bucketB;                               // THB saved by the PR discount
-  const pricePerPct  = (isPR && cashPool>0) ? bucketB/(cashPool*100) : 0;    // THB per 1% of equity
+  const autoPrice    = (isPR && cashPool>0) ? bucketB/(cashPool*100) : 0;    // price if the cash pool exactly covers the net fit-out
+  const priceFixed   = isPR ? gv('pr-price') : 0;                            // 0 = auto
+  const pricePerPct  = isPR ? (priceFixed>0 ? priceFixed : autoPrice) : 0;   // THB per 1% of equity — one price for everyone
   const founderPrice = isPR ? pricePerPct*prFcash*100 : 0;                   // what the founder's bought % costs
-  const inkindValue  = isPR ? DATA.fitout.reduce((s,r)=>s+(r.ik?effAmt(r):0),0) : 0;   // works the founder builds & contributes
+  const inkindValue  = isPR ? inkindTot : 0;                                 // works the founder builds & contributes (In-kind card)
   const founderTopUp = isPR ? Math.max(0, founderPrice - inkindValue) : 0;   // cash still owed if works < price
   const inkindExcess = isPR ? Math.max(0, inkindValue - founderPrice) : 0;   // works worth more than the bought %
   const founderCash  = isPR ? inkindValue + founderTopUp : 0;                // founder's real outlay for the seat (works + any cash)
-  const investorCash = isPR ? bucketB - founderPrice : 0;                    // investors' cash, at the same price per 1%
+  const investorCash = isPR ? pricePerPct*prIEq*100 : 0;                     // investors' cash, at the same price per 1%
+  const cashNeed     = isPR ? bucketB - inkindValue : 0;                     // fit-out items that must be bought with cash
+  const cashReserve  = isPR ? investorCash + founderTopUp - cashNeed : 0;    // + = contingency held by the company, − = shortfall
   const prIEl = document.getElementById('pr-investor'); if(prIEl) prIEl.textContent = (prIEq*100).toFixed(1)+'%';
   const prCap = document.getElementById('pr-cap-note');
   if(prCap) prCap.innerHTML =
     `<strong>Cap table</strong> — Founder ${(prFEq*100).toFixed(1)}% (sweat ${(prSweat*100).toFixed(1)}% + in-kind ${(prFcash*100).toFixed(1)}%) · Project Rock ${(prEq*100).toFixed(1)}% · Investors ${(prIEq*100).toFixed(1)}%<br>` +
     `<strong>Control block (you + Project Rock): ${(prControl*100).toFixed(1)}%</strong>${prControl>0.5?' ✓ majority':' ⚠ below 51%'}<br>` +
-    `Cash pool ${(cashPool*100).toFixed(1)}% raises the net fit-out THB ${fmt(bucketB)} → <strong>THB ${fmt(pricePerPct)} per 1%</strong> · investors pay THB ${fmt(investorCash)} cash<br>` +
-    `<strong>Your ${(prFcash*100).toFixed(0)}% = THB ${fmt(founderPrice)}, paid in kind</strong> with the building works you construct (items tagged In-kind: AC, toilets, renovation, water) worth THB ${fmt(inkindValue)}` +
-    (founderTopUp>0 ? ` → cash top-up THB ${fmt(founderTopUp)}` : inkindExcess>0 ? ` → THB ${fmt(inkindExcess)} more than needed (extra contribution)` : ' → exact');
+    `<strong>THB ${fmt(pricePerPct)} per 1%</strong> ${priceFixed>0?`(fixed · post-money THB ${fmt(pricePerPct*100)} · auto would be ${fmt(autoPrice)})`:`(auto = net fit-out THB ${fmt(bucketB)} ÷ cash pool ${(cashPool*100).toFixed(1)}%)`} · investors pay THB ${fmt(investorCash)} cash<br>` +
+    `<strong>Your ${(prFcash*100).toFixed(0)}% = THB ${fmt(founderPrice)}, paid in kind</strong> with the works in the In-kind card (AC, renovation, water filter) worth THB ${fmt(inkindValue)}` +
+    (founderTopUp>0 ? ` → cash top-up THB ${fmt(founderTopUp)}` : inkindExcess>0 ? ` → THB ${fmt(inkindExcess)} more than needed (extra contribution)` : ' → exact') +
+    `<br>Cash in (investors${founderTopUp>0?' + your top-up':''}) THB ${fmt(investorCash+founderTopUp)} vs cash items THB ${fmt(cashNeed)} → ${cashReserve>=0?`<strong style="color:var(--green)">reserve THB ${fmt(cashReserve)}</strong>`:`<strong style="color:var(--accent)">shortfall THB ${fmt(-cashReserve)} — raise the price or the cash pool</strong>`}`;
 
   // Land value (solo mode) — asset value, added to total investment but not to payback
   const landRai    = parseFloat(document.getElementById('land-rai').value)||0;
@@ -2544,9 +2579,10 @@ function recalc() {
       <div class="summary-item"><span class="s-label">Gym Fit-out — net</span><span class="s-val">THB ${fmt(bucketB)}</span></div>
       <div class="summary-item highlight"><span class="s-label">Total CAPEX (building + net fit-out)</span><span class="s-val accent">THB ${fmt(soloCapex)}</span></div>
       <div class="summary-item"><span class="s-label">Land (${landRai} rai × THB ${fmt(landPerRai)}) — not in payback</span><span class="s-val">THB ${fmt(landValue)}</span></div>
-      <div class="summary-item"><span class="s-label">Cash pool ${(cashPool*100).toFixed(0)}% = net fit-out → price per 1% of equity</span><span class="s-val">THB ${fmt(pricePerPct)}</span></div>
+      <div class="summary-item"><span class="s-label">Price per 1% of equity ${priceFixed>0?'(fixed · post-money THB '+fmt(pricePerPct*100)+')':'(auto = net fit-out ÷ cash pool '+(cashPool*100).toFixed(0)+'%)'}</span><span class="s-val">THB ${fmt(pricePerPct)}</span></div>
       <div class="summary-item highlight-green"><span class="s-label">Founder ${(prFcash*100).toFixed(0)}% (on top of ${(prSweat*100).toFixed(0)}% sweat) — price THB ${fmt(founderPrice)}, paid in kind with works THB ${fmt(inkindValue)}${founderTopUp>0?' + cash '+fmt(founderTopUp):inkindExcess>0?' (excess '+fmt(inkindExcess)+')':''}</span><span class="s-val green">THB ${fmt(founderCash)}</span></div>
       <div class="summary-item highlight-green"><span class="s-label">Co-investors buy ${(prIEq*100).toFixed(0)}%</span><span class="s-val blue">THB ${fmt(investorCash)}</span></div>
+      <div class="summary-item"><span class="s-label">Cash in THB ${fmt(investorCash+founderTopUp)} − cash-bought items THB ${fmt(cashNeed)} (net fit-out − in-kind works) → ${cashReserve>=0?'reserve':'SHORTFALL'}</span><span class="s-val ${cashReserve>=0?'green':'accent'}">THB ${fmt(Math.abs(cashReserve))}</span></div>
       <div class="summary-item"><span class="s-label">Equity: Founder ${(prFEq*100).toFixed(0)}% · Investors ${(prIEq*100).toFixed(0)}% · Project Rock ${(prEq*100).toFixed(0)}% — control ${(prControl*100).toFixed(0)}%</span><span class="s-val">100%</span></div>
       <div class="summary-item"><span class="s-label">Monthly OPEX (active) · rent THB ${fmt(prRentMo)} starts after investor payback</span><span class="s-val">THB ${fmt(baseOpex)}</span></div>`;
   } else if(MODE==='solo'){
@@ -2709,6 +2745,7 @@ function recalc() {
     document.getElementById('pr-note').innerHTML =
       `Year-1 figures. EBITDA = revenue − OPEX − CAM fee ${fmt(camGym)}/mo − royalty ${(royPct*100).toFixed(1)}% − rent, split by equity. <strong>Rent to you starts only after the co-investors recoup</strong> (pro-rated in that year, +${(prRentEsc*100).toFixed(0)}% every 3 yrs from then), so early years carry no rent. ` +
       `<strong>Investor payback</strong>: their fit-out cash THB ${fmt(investorCash)} vs cumulative ${pct(prIEq)} of EBITDA. ` +
+      (bc.pm.pI ? `<strong>Rent waived until then</strong> ≈ THB ${fmt(prRentMo*12*bc.pm.pI)} (${bc.pm.pI.toFixed(1)} yrs × ${fmt(prRentMo)}/mo) = <strong>${pricePerPct>0?(prRentMo*12*bc.pm.pI/pricePerPct).toFixed(1):'—'}% of equity</strong> at THB ${fmt(pricePerPct)} per 1% — the basis for the founder's ${pct(prSweat)} sweat; without the waiver investors would recoup ≈ ${(investorCash/((bc.pm.rows[0].e-prRentMo*12)*prIEq)).toFixed(1)} yrs. ` : '') +
       `<strong>You — equity seat</strong>: the THB ${fmt(founderCash)} of works you build in kind for ${pct(prFcash)} vs cumulative dividends on your full ${pct(prFEq)} (sweat + in-kind) — the in-kind ${pct(prFcash)} alone pays back like the investors' seat, since the price per 1% is identical. ` +
       `<strong>You — landlord</strong>: building THB ${fmt(bucketA)} vs cumulative rent, which only begins at investor payback. ` +
       `<strong>You — combined</strong>: building + fit-out cash THB ${fmt(bucketA+founderCash)} vs rent + dividends. Land excluded. Cumulative with interpolation; "Loss" = not recovered within 15 yrs.`;
@@ -2919,7 +2956,7 @@ function recalc() {
       th.innerHTML = isPR ? `
         <div class="summary-item"><span class="s-label">🎩 Hat 1 — Landlord: cash out (shell ${fmt(bucketA)} + site works ${fmt(siteCapex)} + zones ${fmt(ventCapex)}, excl. land)</span><span class="s-val">THB ${fmt(landlordCapex)}</span></div>
         <div class="summary-item"><span class="s-label">Hat 1 — cash in, year 1 (tenants + gym CAM + ice bath − upkeep)</span><span class="s-val green">THB ${fmt(y1cash)}</span></div>
-        <div class="summary-item"><span class="s-label">🎩 Hat 2 — Gym founder: works built in kind for ${(prFcash*100).toFixed(0)}% (AC, toilets, renovation, water)${founderTopUp>0?' + cash '+fmt(founderTopUp):''}</span><span class="s-val">THB ${fmt(founderCash)}</span></div>
+        <div class="summary-item"><span class="s-label">🎩 Hat 2 — Gym founder: works built in kind for ${(prFcash*100).toFixed(0)}% (AC, renovation, water filter)${founderTopUp>0?' + cash '+fmt(founderTopUp):''}</span><span class="s-val">THB ${fmt(founderCash)}</span></div>
         <div class="summary-item"><span class="s-label">Hat 2 — dividends, year 1 (${(prFEq*100).toFixed(0)}% incl. ${(prSweat*100).toFixed(0)}% sweat)</span><span class="s-val green">THB ${fmt(y1div)}</span></div>
         <div class="summary-item highlight"><span class="s-label">Both hats — total cash out</span><span class="s-val accent">THB ${fmt(landlordCapex+founderCash)}</span></div>
         <div class="summary-item highlight"><span class="s-label">Both hats — total cash in, year 1</span><span class="s-val accent">THB ${fmt(y1cash+y1div)}</span></div>
