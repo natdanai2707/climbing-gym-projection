@@ -439,7 +439,7 @@ body.deck-mode .deck-nav { display: flex; }
       <div class="settings-grid">
         <div class="field">
           <span class="field-label">Day Pass (THB)</span>
-          <input class="field-input" id="in-daypass" type="number" value="290" oninput="recalcAll()">
+          <input class="field-input" id="in-daypass" type="number" value="330" oninput="recalcAll()">
         </div>
         <div class="field">
           <span class="field-label">Operating days / year</span>
@@ -769,7 +769,7 @@ function delRowR(key,i){ EDIT_SECTIONS[key]().splice(i,1); renderEditableTables(
 
 const DEFAULT_SCENARIOS = [
   { name: 'Conservative', visitors: 25 },
-  { name: 'Base',         visitors: 40 },
+  { name: 'Base',         visitors: 35 },
   { name: 'Good',         visitors: 55 },
   { name: 'Strong',       visitors: 70 },
 ];
