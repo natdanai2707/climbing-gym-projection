@@ -567,12 +567,12 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
       <div class="mode-card" onclick="selectMode('pr')">
         <div class="mode-card-icon">🪨</div>
         <div class="mode-card-title">Project Rock ถือหุ้น + ผู้ร่วมลงทุน</div>
-        <div class="mode-card-desc">ต่อยอดจากโหมดลงทุนเอง — คุณ 26% sweat (รวมค่าเช่าที่เว้นจนคืนทุน) + Project Rock 10% (แลกส่วนลดงานผนัง 15% + แบรนด์) แล้วขายหุ้น 64% ราคาเดียวกัน — คุณรับ 15% ด้วยงานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ) ไม่ต้องควักเงินสด ห้องน้ำ + ชั้นลอยเป็นทรัพย์สินของคุณในฐานะเจ้าของพื้นที่ ให้คุณ+PR ถือ 51%, ผู้ร่วมลงทุน 49% เงินสด · royalty 2%, ค่าที่ปรึกษารายเดือน · ค่าเช่าอาคารเริ่มจ่ายหลังผู้ร่วมลงทุนคืนทุน · ดูคืนทุนทั้งฐานะเจ้าของอาคารและผู้ถือหุ้น</div>
+        <div class="mode-card-desc">ต่อยอดจากโหมดลงทุนเอง — คุณ 25% sweat (รวมค่าเช่าที่เว้นจนคืนทุน) + Project Rock ได้หุ้นตามมูลค่าส่วนลดที่ให้ (ที่ปรึกษา/ออกแบบฟรี 100% + ลด 15% ผนัง เบาะ โฮลด์ ≈ 1.36 ล้าน ≈ 11%) + 5% แทน royalty — คุณรับ 15% ด้วยงานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ) ไม่ต้องควักเงินสด ห้องน้ำ + ชั้นลอยเป็นทรัพย์สินของคุณในฐานะเจ้าของพื้นที่ ผู้ร่วมลงทุน 44% เงินสด หุ้นละ 125,000 · ไม่มี royalty, ค่าที่ปรึกษารายเดือน · ค่าเช่าอาคารเริ่มจ่ายหลังผู้ร่วมลงทุนคืนทุน · ดูคืนทุนทั้งฐานะเจ้าของอาคารและผู้ถือหุ้น</div>
         <div class="mode-card-tags">
-          <span class="mode-tag">You 41% + PR 10% = 51%</span>
-          <span class="mode-tag">Investors 49%</span>
+          <span class="mode-tag">You 40% + PR 16% = 56%</span>
+          <span class="mode-tag">Investors 44%</span>
           <span class="mode-tag">Wall scope −15%</span>
-          <span class="mode-tag">Royalty 2%</span>
+          <span class="mode-tag">Royalty → 5% shares</span>
           <span class="mode-tag">Rent after payback</span>
         </div>
         <div class="mode-card-go">เลือกโหมดนี้ →</div>
@@ -919,13 +919,23 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
           <div class="divider pr-only"></div>
           <div class="field pr-only">
             <span class="field-label">Founder sweat equity (%) — free</span>
-            <input class="field-input" id="pr-sweat" type="number" step="0.5" value="26" oninput="recalc()">
+            <input class="field-input" id="pr-sweat" type="number" step="0.5" value="25" oninput="recalc()">
             <span class="field-hint">For building, sourcing, operating + rent waived until investor payback — no cash</span>
           </div>
           <div class="field pr-only">
-            <span class="field-label">Project Rock equity (%) — free</span>
-            <input class="field-input" id="pr-eq" type="number" step="0.5" value="10" oninput="recalc()">
-            <span class="field-hint">For the wall-scope discount + brand — no cash</span>
+            <span class="field-label">Project Rock equity for the discount (%) — 0 = auto</span>
+            <input class="field-input" id="pr-eq" type="number" step="0.5" value="0" oninput="recalc()">
+            <span class="field-hint">Auto = value of the discount ÷ price per 1% (same price as investors)</span>
+          </div>
+          <div class="field pr-only">
+            <span class="field-label">Project Rock equity in lieu of royalty (%) — free</span>
+            <input class="field-input" id="pr-eq-roy" type="number" step="0.5" value="5" oninput="recalc()">
+            <span class="field-hint">Brand licence paid in shares instead of a % of revenue (set royalty below to 0)</span>
+          </div>
+          <div class="field pr-only">
+            <span class="field-label">Project Rock equity — total</span>
+            <div class="field-computed" id="pr-eq-total">—</div>
+            <span class="field-hint">= discount equity + royalty-swap equity</span>
           </div>
           <div class="field pr-only">
             <span class="field-label">Founder in-kind equity (%) — bought at investor price, paid with works</span>
@@ -946,10 +956,10 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
             <div style="padding:14px; background:var(--bg3); border-radius:7px; font-size:12px; color:var(--text2); line-height:1.9;" id="pr-cap-note">—</div>
           </div>
           <div class="field pr-only">
-            <span class="field-label">PR discount on wall-contract scope (%)</span>
+            <span class="field-label">PR discount on wall-contract scope (%) — items not waived 100%</span>
             <input class="field-input" id="pr-disc" type="number" step="1" value="15"
               oninput="updateTotal('wall');updateTotal('equipment');recalc()" onchange="renderTable('wall');renderTable('equipment')">
-            <span class="field-hint">Applied to items tagged <strong>PR</strong> (wall, steel, design, holds, mats, volumes)</span>
+            <span class="field-hint">Applied to items tagged <strong>PR</strong> (plywood, steel, mats, holds, volumes, auto belay, shoes/harness) · consultation, design and hold selection are waived 100%</span>
           </div>
           <div class="field pr-only">
             <span class="field-label">Rent to founder (THB / month)</span>
@@ -1837,10 +1847,18 @@ const DATA_SOLO = {
 // Project Rock mode dataset — the Solo build with wall-contract scope items
 // tagged pr:true so a partner discount can be applied to them.
 const DATA_PR = JSON.parse(JSON.stringify(DATA_SOLO));
-DATA_PR.wall.forEach(r => { r.pr = true; });
+// Project Rock scope: consultation / design / hold selection are waived (prd:100 = 100% off);
+// plywood, steel, mats, holds, volumes, auto belay, shoes/harness get the standard PR discount.
+// Wall laborers, setting tools and fitness gear are outside the scope.
+DATA_PR.wall.forEach(r => {
+  const n = r.name.toLowerCase();
+  if (n.includes('laborer')) return;
+  r.pr = true;
+  if (n.includes('consultation') || n.includes('design') || n.includes('hold selection')) r.prd = 100;
+});
 DATA_PR.equipment.forEach(r => {
   const n = r.name.toLowerCase();
-  if (n.includes('mats') || n.includes('holds') || n.includes('volumes')) r.pr = true;
+  if (n.includes('mats') || n.includes('holds') || n.includes('volumes') || n.includes('auto belay') || n.includes('shoes')) r.pr = true;
 });
 // In-kind works: building-type items the founder builds and contributes IN KIND for the
 // bought equity (the company owns them; they count toward the founder's in-kind % at the
@@ -1889,7 +1907,7 @@ const SETTINGS_SOLO = {
 };
 
 const SETTINGS_PR = Object.assign({}, SETTINGS_SOLO, {
-  prEq:'10', prSweat:'26', prFcash:'15', prPrice:'125000', prDisc:'15', prRent:'48000', prRentEsc:'10', prCamSqm:'400', prCamRate:'15', royaltyPct:'2',
+  prEq:'0', prEqRoy:'5', prSweat:'25', prFcash:'15', prPrice:'125000', prDisc:'15', prRent:'48000', prRentEsc:'10', prCamSqm:'400', prCamRate:'15', royaltyPct:'0',
 });
 
 const LEASEHOLD = 9650000;
@@ -2141,7 +2159,7 @@ function applySettings(s){
   set('jv-rent-sqm',s.jvRentSqm); set('jv-sqm',s.jvSqm);
   set('elec-hvac',s.elecHvac); set('elec-no-hvac',s.elecNoHvac);
   set('royalty-pct', s.royaltyPct);
-  set('pr-eq',s.prEq); set('pr-sweat',s.prSweat); set('pr-fcash',s.prFcash); set('pr-price',s.prPrice); set('pr-disc',s.prDisc);
+  set('pr-eq',s.prEq); set('pr-eq-roy',s.prEqRoy); set('pr-sweat',s.prSweat); set('pr-fcash',s.prFcash); set('pr-price',s.prPrice); set('pr-disc',s.prDisc);
   set('pr-rent',s.prRent); set('pr-rent-esc',s.prRentEsc);
   set('pr-cam-sqm',s.prCamSqm); set('pr-cam-rate',s.prCamRate);
   set('depr-wall',s.deprWall); set('depr-equipment',s.deprEquipment);
@@ -2194,7 +2212,7 @@ const MODE_TEXT = {
     whSub:'Bare building shell — funded and owned by the founder, leased to the gym company from month 1.',
     whCard:'Building & Structure',
     bbTitle:'Gym Fit-out — with Project Rock discount',
-    bbSub:'Items tagged PR (wall-contract scope) are discounted. The net fit-out (wall + equipment + interior + the In-kind Works card) is funded by co-investors in cash and by the founder in kind, at one price per 1%.',
+    bbSub:'Project Rock waives consultation, design and hold selection (100%) and discounts the rest of its scope; the discount value buys its equity at the investors\' price. The net fit-out (wall + equipment + interior + the In-kind Works card) is funded by co-investors in cash and by the founder in kind, at one price per 1%.',
     settingsTitle:'Project Rock Mode Settings',
     settingsSub:'Equity split (PR / Founder / Investors), PR discount, rent, brand royalty, HVAC, land.',
     settingsCard:'🪨 Project Rock Structure',
@@ -2368,7 +2386,7 @@ function renderTable(sec) {
     tr.innerHTML = `
       <td class="c-name"><input type="text" value="${r.name}" onchange="DATA['${sec}'][${i}].name=this.value"/></td>
       <td class="c-amt"><input type="number" value="${r.amt}" oninput="DATA['${sec}'][${i}].amt=parseFloat(this.value)||0;updateTotal('${sec}');recalc()"/></td>
-      <td class="c-note"><div style="display:flex;align-items:center;gap:6px;">${(MODE==='pr'&&r.pr)?`<span class="pr-badge" title="Project Rock wall-contract scope — discounted">PR −${prDiscPct()}%</span>`:''}<input type="text" value="${r.note}" onchange="DATA['${sec}'][${i}].note=this.value"/></div></td>
+      <td class="c-note"><div style="display:flex;align-items:center;gap:6px;">${(MODE==='pr'&&r.pr)?`<span class="pr-badge" title="Project Rock wall-contract scope — discounted">PR −${itemDisc(r)}%</span>`:''}<input type="text" value="${r.note}" onchange="DATA['${sec}'][${i}].note=this.value"/></div></td>
       <td class="c-del" onclick="delRow('${sec}',${i})">×</td>`;
     tbody.appendChild(tr);
   });
@@ -2382,7 +2400,8 @@ function renderTable(sec) {
 
 // Project Rock mode: items tagged pr:true are discounted by the PR discount %.
 function prDiscPct(){ if(MODE!=='pr') return 0; const el=document.getElementById('pr-disc'); return el?(parseFloat(el.value)||0):0; }
-function effAmt(r){ const a=parseFloat(r.amt)||0; return (r.pr && MODE==='pr') ? a*(1-prDiscPct()/100) : a; }
+function itemDisc(r){ return r.prd!==undefined ? (parseFloat(r.prd)||0) : prDiscPct(); }   // per-item override (e.g. 100) else the standard PR %
+function effAmt(r){ const a=parseFloat(r.amt)||0; return (r.pr && MODE==='pr') ? a*(1-itemDisc(r)/100) : a; }
 function getTotal(sec) { return DATA[sec].reduce((s,r)=>s+effAmt(r),0); }
 function getGross(sec){ return DATA[sec].reduce((s,r)=>s+(parseFloat(r.amt)||0),0); }
 
@@ -2487,22 +2506,29 @@ function recalc() {
   const gv = id => { const el=document.getElementById(id); return el ? (parseFloat(el.value)||0) : 0; };
   // Free equity (sweat + Project Rock) comes off the top; the remaining "cash pool"
   // is sold at one price per 1% to whoever puts cash in — founder and investors alike.
-  const prEq     = isPR ? gv('pr-eq')/100 : 0;                               // Project Rock, free
   const prSweat  = isPR ? gv('pr-sweat')/100 : 0;                            // founder sweat, free
-  const cashPool = isPR ? Math.max(0, 1 - prEq - prSweat) : 0;               // e.g. 70%
-  const prFcash  = isPR ? Math.min(cashPool, Math.max(0, gv('pr-fcash')/100)) : 0;   // founder buys e.g. 21%
-  const prIEq    = isPR ? cashPool - prFcash : 0;                            // investors e.g. 49%
-  const prFEq    = prSweat + prFcash;                                        // founder total e.g. 41%
-  const prControl= prFEq + prEq;                                             // founder + PR e.g. 51%
+  const prRoySwap= isPR ? gv('pr-eq-roy')/100 : 0;                           // Project Rock shares in lieu of royalty, free
+  const prEqIn   = isPR ? gv('pr-eq')/100 : 0;                               // Project Rock discount equity override (0 = auto)
   const prRentMo  = isPR ? gv('pr-rent') : 0;
   const prRentEsc = isPR ? gv('pr-rent-esc')/100 : 0;
   const camGym    = isPR ? gv('pr-cam-sqm')*gv('pr-cam-rate') : 0;      // common-area fee paid by the gym from month 1
   const commonExp = getTotal('commonOpex');                                 // landlord's shared-upkeep cost
   const bucketBGross = getGross('wall')+getGross('equipment')+getGross('fitout')+(DATA.inkind?getGross('inkind'):0) - (hvac ? hvlsItemCost : hvacItemCost);
   const prDiscount   = bucketBGross - bucketB;                               // THB saved by the PR discount
-  const autoPrice    = (isPR && cashPool>0) ? bucketB/(cashPool*100) : 0;    // price if the cash pool exactly covers the net fit-out
+  // Price per 1%: fixed input, or auto so that the cash pool exactly covers the net fit-out.
+  // With PR's discount equity priced at the same rate, auto price = gross fit-out ÷ (100% − free equity).
+  const freeFixed    = prSweat + prRoySwap;
+  const autoPrice    = isPR ? (prEqIn>0 ? bucketB/Math.max(0.01,1-freeFixed-prEqIn)/100 : (bucketB+prDiscount)/Math.max(0.01,1-freeFixed)/100) : 0;
   const priceFixed   = isPR ? gv('pr-price') : 0;                            // 0 = auto
   const pricePerPct  = isPR ? (priceFixed>0 ? priceFixed : autoPrice) : 0;   // THB per 1% of equity — one price for everyone
+  const prEqDisc = isPR ? (prEqIn>0 ? prEqIn : (pricePerPct>0 ? prDiscount/(pricePerPct*100) : 0)) : 0;   // PR equity earned by the discount
+  const prEq     = prEqDisc + prRoySwap;                                    // Project Rock total, free
+  const cashPool = isPR ? Math.max(0, 1 - prEq - prSweat) : 0;               // what is left to sell at the common price
+  const prFcash  = isPR ? Math.min(cashPool, Math.max(0, gv('pr-fcash')/100)) : 0;   // founder's in-kind %
+  const prIEq    = isPR ? cashPool - prFcash : 0;                            // investors
+  const prFEq    = prSweat + prFcash;                                        // founder total
+  const prControl= prFEq + prEq;                                             // founder + PR
+  const prEqTot = document.getElementById('pr-eq-total'); if(prEqTot) prEqTot.textContent = isPR ? `${(prEq*100).toFixed(1)}% = discount ${(prEqDisc*100).toFixed(1)}% (THB ${fmt(prDiscount)} ÷ ${fmt(pricePerPct)}) + royalty-swap ${(prRoySwap*100).toFixed(1)}%` : '—';
   const founderPrice = isPR ? pricePerPct*prFcash*100 : 0;                   // what the founder's bought % costs
   const inkindValue  = isPR ? inkindTot : 0;                                 // works the founder builds & contributes (In-kind card)
   const founderTopUp = isPR ? Math.max(0, founderPrice - inkindValue) : 0;   // cash still owed if works < price
@@ -2514,7 +2540,7 @@ function recalc() {
   const prIEl = document.getElementById('pr-investor'); if(prIEl) prIEl.textContent = (prIEq*100).toFixed(1)+'%';
   const prCap = document.getElementById('pr-cap-note');
   if(prCap) prCap.innerHTML =
-    `<strong>Cap table</strong> — Founder ${(prFEq*100).toFixed(1)}% (sweat ${(prSweat*100).toFixed(1)}% + in-kind ${(prFcash*100).toFixed(1)}%) · Project Rock ${(prEq*100).toFixed(1)}% · Investors ${(prIEq*100).toFixed(1)}%<br>` +
+    `<strong>Cap table</strong> — Founder ${(prFEq*100).toFixed(1)}% (sweat ${(prSweat*100).toFixed(1)}% + in-kind ${(prFcash*100).toFixed(1)}%) · Project Rock ${(prEq*100).toFixed(1)}% (discount THB ${fmt(prDiscount)} = ${(prEqDisc*100).toFixed(1)}% + royalty-swap ${(prRoySwap*100).toFixed(1)}%) · Investors ${(prIEq*100).toFixed(1)}%<br>` +
     `<strong>Control block (you + Project Rock): ${(prControl*100).toFixed(1)}%</strong>${prControl>0.5?' ✓ majority':' ⚠ below 51%'}<br>` +
     `<strong>THB ${fmt(pricePerPct)} per 1%</strong> ${priceFixed>0?`(fixed · post-money THB ${fmt(pricePerPct*100)} · auto would be ${fmt(autoPrice)})`:`(auto = net fit-out THB ${fmt(bucketB)} ÷ cash pool ${(cashPool*100).toFixed(1)}%)`} · investors pay THB ${fmt(investorCash)} cash<br>` +
     `<strong>Your ${(prFcash*100).toFixed(0)}% = THB ${fmt(founderPrice)}, paid in kind</strong> with the works in the In-kind card (AC, renovation, water filter) worth THB ${fmt(inkindValue)}` +
@@ -2571,12 +2597,12 @@ function recalc() {
       <div class="kpi-card"><div class="kpi-label">Total CAPEX (net)</div><div class="kpi-value blue">THB ${fmt(soloCapex)}</div><div class="kpi-sub">Building + fit-out after PR −${prDiscPct()}% (saves THB ${fmt(prDiscount)})</div></div>
       <div class="kpi-card"><div class="kpi-label">Your outlay — building + in-kind works</div><div class="kpi-value accent">THB ${fmt(bucketA+founderCash)}</div><div class="kpi-sub">Building ${fmt(bucketA)} + works ${fmt(inkindValue)}${founderTopUp>0?' + cash '+fmt(founderTopUp):''} · you hold ${(prFEq*100).toFixed(0)}% incl. ${(prSweat*100).toFixed(0)}% sweat — no cash for shares</div></div>
       <div class="kpi-card"><div class="kpi-label">Co-investors cash (${(prIEq*100).toFixed(0)}%)</div><div class="kpi-value green">THB ${fmt(investorCash)}</div><div class="kpi-sub">THB ${fmt(pricePerPct)} per 1% — same price as you</div></div>
-      <div class="kpi-card"><div class="kpi-label">Control block</div><div class="kpi-value ${prControl>0.5?'blue':'orange'}">${(prControl*100).toFixed(0)}%</div><div class="kpi-sub">You ${(prFEq*100).toFixed(0)}% + Project Rock ${(prEq*100).toFixed(0)}% · total investment THB ${fmt(soloInvest)} incl. land</div></div>`;
+      <div class="kpi-card"><div class="kpi-label">Control block</div><div class="kpi-value ${prControl>0.5?'blue':'orange'}">${(prControl*100).toFixed(0)}%</div><div class="kpi-sub">You ${(prFEq*100).toFixed(0)}% + Project Rock ${(prEq*100).toFixed(1)}% (discount ${(prEqDisc*100).toFixed(1)}% + royalty-swap ${(prRoySwap*100).toFixed(0)}%) · total investment THB ${fmt(soloInvest)} incl. land</div></div>`;
 
     document.getElementById('capex-summary').innerHTML = `
       <div class="summary-item"><span class="s-label">Building & Structure (founder-owned, leased to company)</span><span class="s-val">THB ${fmt(bucketA)}</span></div>
       <div class="summary-item"><span class="s-label">Gym Fit-out — gross (before PR discount)</span><span class="s-val">THB ${fmt(bucketBGross)}</span></div>
-      <div class="summary-item"><span class="s-label">Project Rock discount (−${prDiscPct()}% on PR-tagged wall-scope items)</span><span class="s-val green">− THB ${fmt(prDiscount)}</span></div>
+      <div class="summary-item"><span class="s-label">Project Rock discount (consultation/design/hold selection waived 100% · −${prDiscPct()}% on the rest of the PR scope) → ${(prEqDisc*100).toFixed(1)}% equity</span><span class="s-val green">− THB ${fmt(prDiscount)}</span></div>
       <div class="summary-item"><span class="s-label">Gym Fit-out — net</span><span class="s-val">THB ${fmt(bucketB)}</span></div>
       <div class="summary-item highlight"><span class="s-label">Total CAPEX (building + net fit-out)</span><span class="s-val accent">THB ${fmt(soloCapex)}</span></div>
       <div class="summary-item"><span class="s-label">Land (${landRai} rai × THB ${fmt(landPerRai)}) — not in payback</span><span class="s-val">THB ${fmt(landValue)}</span></div>
@@ -2999,6 +3025,7 @@ function exportData() {
     jvRentSqm:    document.getElementById('jv-rent-sqm').value,
     royaltyPct:   document.getElementById('royalty-pct').value,
     prEq:         document.getElementById('pr-eq').value,
+    prEqRoy:      document.getElementById('pr-eq-roy').value,
     prSweat:      document.getElementById('pr-sweat').value,
     prFcash:      document.getElementById('pr-fcash').value,
     prDisc:       document.getElementById('pr-disc').value,
@@ -3069,7 +3096,7 @@ function importData(event) {
         set('jv-visits', s.jvVisits); set('jv-walkin', s.jvWalkin);
         set('jv-rent-sqm', s.jvRentSqm); set('jv-sqm', s.jvSqm);
         set('royalty-pct', s.royaltyPct);
-        set('pr-eq', s.prEq); set('pr-sweat', s.prSweat); set('pr-fcash', s.prFcash); set('pr-disc', s.prDisc);
+        set('pr-eq', s.prEq); set('pr-eq-roy', s.prEqRoy); set('pr-sweat', s.prSweat); set('pr-fcash', s.prFcash); set('pr-disc', s.prDisc);
         set('pr-rent', s.prRent); set('pr-rent-esc', s.prRentEsc);
         set('pr-cam-sqm', s.prCamSqm); set('pr-cam-rate', s.prCamRate);
         set('elec-hvac', s.elecHvac); set('elec-no-hvac', s.elecNoHvac);
@@ -3256,6 +3283,18 @@ const I18N_PAIRS = [
 ["Project Rock shareholder + co-investors","Project Rock ถือหุ้น + ผู้ร่วมลงทุน"],
 ["Built on the self-invest mode — you {#}% sweat (incl. rent waived until payback) + Project Rock {#}% (for the {#}% wall-scope discount + brand), then {#}% sold at one price — you take {#}% with the works you build yourself (AC, renovation, water filter), no cash. Toilets + mezzanine are your asset as the landlord. You + PR hold {#}%, co-investors {#}% in cash · royalty {#}%, monthly consulting · building rent starts after co-investors recoup · payback shown both as landlord and as shareholder","ต่อยอดจากโหมดลงทุนเอง — คุณ {#}% sweat (รวมค่าเช่าที่เว้นจนคืนทุน) + Project Rock {#}% (แลกส่วนลดงานผนัง {#}% + แบรนด์) แล้วขายหุ้น {#}% ราคาเดียวกัน — คุณรับ {#}% ด้วยงานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ) ไม่ต้องควักเงินสด ห้องน้ำ + ชั้นลอยเป็นทรัพย์สินของคุณในฐานะเจ้าของพื้นที่ ให้คุณ+PR ถือ {#}%, ผู้ร่วมลงทุน {#}% เงินสด · royalty {#}%, ค่าที่ปรึกษารายเดือน · ค่าเช่าอาคารเริ่มจ่ายหลังผู้ร่วมลงทุนคืนทุน · ดูคืนทุนทั้งฐานะเจ้าของอาคารและผู้ถือหุ้น"],
 ["Rent after payback","ค่าเช่าหลังคืนทุน"],
+["Built on the self-invest mode — you {#}% sweat (incl. rent waived until payback) + Project Rock earns equity from the value of its discount (consultation/design waived 100% + 15% off walls, mats, holds ≈ 1.36M ≈ 11%) + 5% in lieu of royalty — you take {#}% with the works you build yourself (AC, renovation, water filter), no cash. Toilets + mezzanine are your asset as the landlord. Co-investors {#}% in cash at 125,000 per 1% · no royalty, monthly consulting · building rent starts after co-investors recoup · payback shown both as landlord and as shareholder","ต่อยอดจากโหมดลงทุนเอง — คุณ {#}% sweat (รวมค่าเช่าที่เว้นจนคืนทุน) + Project Rock ได้หุ้นตามมูลค่าส่วนลดที่ให้ (ที่ปรึกษา/ออกแบบฟรี 100% + ลด 15% ผนัง เบาะ โฮลด์ ≈ 1.36 ล้าน ≈ 11%) + 5% แทน royalty — คุณรับ {#}% ด้วยงานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ) ไม่ต้องควักเงินสด ห้องน้ำ + ชั้นลอยเป็นทรัพย์สินของคุณในฐานะเจ้าของพื้นที่ ผู้ร่วมลงทุน {#}% เงินสด หุ้นละ 125,000 · ไม่มี royalty, ค่าที่ปรึกษารายเดือน · ค่าเช่าอาคารเริ่มจ่ายหลังผู้ร่วมลงทุนคืนทุน · ดูคืนทุนทั้งฐานะเจ้าของอาคารและผู้ถือหุ้น"],
+["Royalty → {#}% shares","Royalty → หุ้น {#}%"],
+["Project Rock equity for the discount (%) — {#} = auto","หุ้น Project Rock จากส่วนลด (%) — {#} = อัตโนมัติ"],["Auto = value of the discount ÷ price per {#}% (same price as investors)","อัตโนมัติ = มูลค่าส่วนลด ÷ ราคาต่อ {#}% (ราคาเดียวกับนักลงทุน)"],
+["Project Rock equity in lieu of royalty (%) — free","หุ้น Project Rock แทน royalty (%) — ฟรี"],["Brand licence paid in shares instead of a % of revenue (set royalty below to {#})","สิทธิ์ใช้แบรนด์จ่ายเป็นหุ้นแทน % ของรายได้ (ตั้ง royalty ด้านล่างเป็น {#})"],
+["Project Rock equity — total","หุ้น Project Rock — รวม"],["= discount equity + royalty-swap equity","= หุ้นจากส่วนลด + หุ้นแทน royalty"],
+["{#}% = discount {#}% (THB {#} ÷ {#}) + royalty-swap {#}%","{#}% = ส่วนลด {#}% (THB {#} ÷ {#}) + แทน royalty {#}%"],
+["PR discount on wall-contract scope (%) — items not waived {#}%","ส่วนลด PR บนขอบเขตสัญญาผา (%) — รายการที่ไม่ได้ฟรี {#}%"],
+["(plywood, steel, mats, holds, volumes, auto belay, shoes/harness) · consultation, design and hold selection are waived {#}%","(ไม้อัด เหล็ก เบาะ โฮลด์ volumes auto belay รองเท้า/ฮาร์เนส) · ที่ปรึกษา ออกแบบ และ hold selection ฟรี {#}%"],
+["— Founder {#}% (sweat {#}% + in-kind {#}%) · Project Rock {#}% (discount THB {#} = {#}% + royalty-swap {#}%) · Investors {#}%","— ผู้ก่อตั้ง {#}% (sweat {#}% + in-kind {#}%) · Project Rock {#}% (ส่วนลด THB {#} = {#}% + แทน royalty {#}%) · นักลงทุน {#}%"],
+["Project Rock discount (consultation/design/hold selection waived {#}% · −{#}% on the rest of the PR scope) → {#}% equity","ส่วนลด Project Rock (ที่ปรึกษา/ออกแบบ/hold selection ฟรี {#}% · −{#}% บนส่วนที่เหลือ) → หุ้น {#}%"],
+["You {#}% + Project Rock {#}% (discount {#}% + royalty-swap {#}%) · total investment THB {#} incl. land","คุณ {#}% + Project Rock {#}% (ส่วนลด {#}% + แทน royalty {#}%) · เงินลงทุนรวม THB {#} รวมที่ดิน"],
+["Project Rock waives consultation, design and hold selection ({#}%) and discounts the rest of its scope; the discount value buys its equity at the investors' price. The net fit-out (wall + equipment + interior + the In-kind Works card) is funded by co-investors in cash and by the founder in kind, at one price per {#}%.","Project Rock ยกเว้นค่าที่ปรึกษา ออกแบบ และ hold selection ({#}%) และลดราคาส่วนที่เหลือ มูลค่าส่วนลดซื้อหุ้นที่ราคาเดียวกับนักลงทุน fit-out สุทธิ (ผนัง + อุปกรณ์ + ตกแต่ง + การ์ดงาน In-kind) มาจากเงินสดของผู้ร่วมลงทุนและงานของผู้ก่อตั้ง ที่ราคาต่อ {#}% เดียวกัน"],
 ["Fundraise — Investor view","ระดมทุน — Investor view"],
 ["Investor-facing page: raising the fit-out — investors {#}% / Founder {#}% / Kae Vin {#}% with a pitch deck (opens as a separate, shareable page · the split is adjustable there)","หน้าสำหรับนักลงทุน: ระดมทุนค่า fit-out — นักลงทุน {#}% / Founder {#}% / Kae Vin {#}% พร้อม Pitch Deck (เปิดเป็นหน้าแยก แชร์ให้นักลงทุนได้ · สัดส่วนปรับได้ในหน้านั้น)"],
 ["Open Investor view →","เปิด Investor view →"],
