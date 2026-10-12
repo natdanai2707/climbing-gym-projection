@@ -375,7 +375,7 @@ body.deck-mode .deck-nav { display: flex; }
       <div class="ptbl-wrap"><table class="ptbl" id="tbl-buckets"></table></div>
       <div style="padding:12px 16px;border-top:1px solid var(--border);">
         <div class="note-box" id="n-raise-round">—</div>
-        <div class="note-box" style="margin-top:8px;background:var(--bg2);">ยอดระดมทุนคำนวณอัตโนมัติจากรายการด้านล่าง: งาน in-kind ของ Founder และส่วนลดจาก Project Rock ซื้อหุ้นเต็มที่ราคาหุ้นเดียวกับนักลงทุน · sweat และหุ้นแทน royalty เป็นหุ้นฟรี · นักลงทุนรับส่วนที่เหลือ — แก้รายการใดยอดจะอัปเดตทั้งหน้าและ Pitch Deck ทันที</div>
+        <div class="note-box" style="margin-top:8px;background:var(--bg2);">ยอดระดมทุนคำนวณอัตโนมัติจากรายการด้านล่าง: งาน in-kind ของ Founder ซื้อหุ้นเต็มที่ราคาหุ้นเดียวกับนักลงทุน · sweat และหุ้นแทน royalty เป็นหุ้นฟรี · นักลงทุนรับส่วนที่เหลือ — แก้รายการใดยอดจะอัปเดตทั้งหน้าและ Pitch Deck ทันที</div>
       </div>
     </div>
   </div>
@@ -555,11 +555,6 @@ body.deck-mode .deck-nav { display: flex; }
           <span class="field-hint">Retainer รายเดือน = RM 2,500 (@ MYR 7.7) — คงที่ ไม่ผูกกับรายได้</span>
         </div>
         <div class="field">
-          <span class="field-label">ส่วนลดงานผนังจาก Project Rock (%)</span>
-          <input class="field-input" id="in-pr-disc" type="number" step="1" value="15" oninput="renderEditableTables();recalcAll()">
-          <span class="field-hint">ส่วนลด 15% ของสัญญาผนังหักไว้ในใบเสนอราคา Tecton แล้ว · ช่องนี้ใช้กับรายการที่ติดป้าย PR เท่านั้น (consultation ออกแบบ hold selection ฟรี 100%)</span>
-        </div>
-        <div class="field">
           <span class="field-label">Founder — sweat equity (%) ฟรี</span>
           <input class="field-input" id="in-sweat-pct" type="number" step="0.5" value="30" oninput="recalcAll()">
           <span class="field-hint">อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนนักลงทุนคืนทุน</span>
@@ -568,11 +563,6 @@ body.deck-mode .deck-nav { display: flex; }
           <span class="field-label">Founder — หุ้นที่จ่ายด้วยงาน in-kind (คำนวณ)</span>
           <div class="field-computed" id="in-inkind-view">—</div>
           <span class="field-hint">= มูลค่างานในการ์ด In-kind ÷ ราคาหุ้น ปัดเป็นหุ้นเต็ม (ราคาหุ้นเดียวกับนักลงทุน)</span>
-        </div>
-        <div class="field">
-          <span class="field-label">Project Rock — หุ้นจากส่วนลด (คำนวณ)</span>
-          <div class="field-computed" id="in-prdisc-view">—</div>
-          <span class="field-hint">= มูลค่าส่วนลดที่ให้ ÷ ราคาหุ้น ปัดเป็นหุ้นเต็ม</span>
         </div>
         <div class="field">
           <span class="field-label">Project Rock — หุ้นแทน royalty (%) ฟรี</span>
@@ -678,21 +668,19 @@ const RAISE = {
 
   // Investor-funded fit-out — itemized; bucket totals and the raise are computed live
   buckets: [
-    // Wall package = Tecton (Rock Climb Asia) quote QT-00051, 9 Oct 2026, RM converted @ 7.7.
-    // Tecton's 15% contract discount is already netted in cash; Project Rock is compensated in shares (royalty swap).
-    // The last cost line is the rest of Surf's 4.8M wall budget: rental shoes/harness, auto-belays, tools, other items.
+    // Wall package = Tecton (Rock Climb Asia) quote QT-00051, 9 Oct 2026, RM @ 7.7, shown at NET prices
+    // (investor view does not show the contract discount). The rental gear line is the rest of the 4.8M budget.
     { key: 'wall', icon: '🧗', label: 'Wall, mats & holds — Tecton quote', items: [
-      { name: 'Baltic birch wall panels 18mm (315.88 m² × RM 520)',  amt: 1264784 },
-      { name: 'Impact landing mats 30cm (167.2 m² × RM 480)',        amt: 617971 },
-      { name: 'PU climbing holds (1,500 × RM 70)',                   amt: 808500 },
-      { name: 'Macro volumes (150 × RM 620)',                        amt: 716100 },
-      { name: 'Steel truss framing + anchors (315.88 m² × RM 320)', amt: 778328 },
-      { name: 'Freight & logistics (RM 22,000)',                     amt: 169400 },
-      { name: 'Tecton contract discount (−RM 81,591)',               amt: -628251 },
+      { name: 'Baltic birch wall panels 18mm (315.88 m²)', amt: 1074945 },
+      { name: 'Impact landing mats 30cm (167.2 m²)', amt: 525217 },
+      { name: 'PU climbing holds (1,500 pcs)', amt: 687148 },
+      { name: 'Macro volumes (150 pcs)', amt: 608617 },
+      { name: 'Steel truss framing + anchors (315.88 m²)', amt: 661505 },
+      { name: 'Freight & logistics',                                 amt: 169400 },
       { name: 'รองเท้าเช่า + harness, auto-belay, เครื่องมือ routesetting และรายการอื่น', amt: 1073168 },
-      { name: 'Wall design',                                         amt: 0, pr: true, prd: 100 },
-      { name: 'Wall consultation (1 สัปดาห์)',                        amt: 0, pr: true, prd: 100 },
-      { name: 'Hold selection',                                      amt: 0, pr: true, prd: 100 },
+      { name: 'Wall design — รวมในแพ็กเกจ',                           amt: 0 },
+      { name: 'Wall consultation (1 สัปดาห์) — รวมในแพ็กเกจ',          amt: 0 },
+      { name: 'Hold selection — รวมในแพ็กเกจ',                        amt: 0 },
     ]},
     { key: 'equipment', icon: '🎯', label: 'Equipment — อุปกรณ์', items: [
       { name: 'อุปกรณ์ฟิตเนสเสริม',                            amt: 25000 },
@@ -932,10 +920,9 @@ function renderProjection(m){
   // Raise summary
   document.getElementById('t-raise').textContent = 'THB '+fmt(m.raise)+' เงินสด';
   document.getElementById('tbl-buckets').innerHTML =
-    `<thead><tr><th>Bucket</th><th>ราคาเต็ม</th><th>สุทธิ (หลังส่วนลด PR)</th></tr></thead><tbody>` +
-    m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td class="neutral">${fmt(b.gross)}</td><td>${fmt(b.total)}</td></tr>`).join('') +
-    `<tr><td style="color:var(--text3);font-weight:400;">ส่วนลดจาก Project Rock (−${prDisc()}% รายการ PR)</td><td></td><td class="pos">− ${fmt(m.prDiscount)}</td></tr>
-     <tr><td style="color:var(--text3);font-weight:400;">สำรอง (contingency)</td><td></td><td class="neutral">${fmt(m.contingency)}</td></tr>
+    `<thead><tr><th>Bucket</th><th></th><th>THB</th></tr></thead><tbody>` +
+    m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td></td><td>${fmt(b.total)}</td></tr>`).join('') +
+    `<tr><td style="color:var(--text3);font-weight:400;">สำรอง (contingency)</td><td></td><td class="neutral">${fmt(m.contingency)}</td></tr>
      <tr class="total-row"><td>ทุนที่ต้องใส่ (capital pool ${pc(m.investorPct+m.inkindPct)})</td><td></td><td class="pos">${fmt(m.capitalPool)}</td></tr>
      <tr><td>· นักลงทุน — เงินสด (${m.investorShares} หุ้น)</td><td></td><td class="pos">${fmt(m.raise)}</td></tr>
      <tr><td>· Founder — งาน in-kind (${m.inkindShares} หุ้น)</td><td></td><td class="pos">${fmt(m.founderPrice)}</td></tr></tbody>`;
@@ -972,16 +959,14 @@ function renderProjection(m){
   const hp=document.getElementById('h-price');
   if(hp) hp.textContent = `${m.totalShares} หุ้น · นักลงทุน ${m.investorShares} หุ้น ครอบคลุมรายการที่ซื้อด้วยเงินสด THB ${fmt(m.cashNeed)} · เงินสดสำรอง THB ${fmt(m.raise-m.cashNeed)}`;
   const iv=document.getElementById('in-inkind-view'); if(iv) iv.textContent = `${m.inkindShares} หุ้น = ${pc(m.inkindPct)} · งาน THB ${fmt(m.inkindValue)} ÷ ${fmt(m.sharePrice)}${m.founderTopUp>0?' → เติมเงินสด '+fmt(m.founderTopUp):m.inkindExcess>0?' (เกิน '+fmt(m.inkindExcess)+')':''}`;
-  const pv=document.getElementById('in-prdisc-view'); if(pv) pv.textContent = `${m.prDiscShares} หุ้น = ${pc(m.prDiscPct)} · ส่วนลด THB ${fmt(m.prDiscount)} ÷ ${fmt(m.sharePrice)}`;
   document.getElementById('t-brand').textContent = 'THB '+fmt(base.royalty+m.consultingAnn)+' /ปี (Base)';
   document.getElementById('tbl-brand').innerHTML =
     `<thead><tr><th>รายการ</th><th>ฐานคิด</th><th>ปี 1 — Base (${base.visitors} คน/วัน)</th></tr></thead><tbody>
      <tr><td>Royalty — ค่าสิทธิ์แบรนด์</td><td class="neutral">${m.royaltyPct}% ของรายได้รวม</td><td>${fmt(base.royalty)}</td></tr>
      <tr><td>ค่าที่ปรึกษา</td><td class="neutral">${fmt(m.consultingMo)} / เดือน (RM 2,500)</td><td>${fmt(m.consultingAnn)}</td></tr>
-     <tr><td>ส่วนลดจาก Project Rock</td><td class="neutral">ที่ปรึกษา/ออกแบบ ฟรี 100% · −${prDisc()}% รายการ PR อื่น (ครั้งเดียว) → ${m.prDiscShares} หุ้น</td><td class="pos">− ${fmt(m.prDiscount)}</td></tr>
      <tr class="total-row"><td>รวมค่าใช้จ่ายรายปี</td><td></td><td class="warn">${fmt(base.royalty+m.consultingAnn)}</td></tr>
      <tr class="be-row"><td colspan="3" style="text-align:left;font-family:var(--sans);font-weight:400;color:var(--text3);font-style:italic;">
-       Royalty และค่าที่ปรึกษาหักก่อน EBITDA — กระทบผู้ถือหุ้นทุกฝ่ายตามสัดส่วน · Project Rock ถือ ${pc(m.kaeVinPct)} = ส่วนลด ${m.prDiscShares} หุ้น + แทน royalty ${m.royShares} หุ้น · นักลงทุนถือ ${pc(m.investorPct)}</td></tr></tbody>`;
+       Royalty และค่าที่ปรึกษาหักก่อน EBITDA — กระทบผู้ถือหุ้นทุกฝ่ายตามสัดส่วน · Project Rock ถือ ${pc(m.kaeVinPct)} = ${m.royShares} หุ้นแทน royalty · นักลงทุนถือ ${pc(m.investorPct)}</td></tr></tbody>`;
 
   document.getElementById('kpi-scen').innerHTML = m.scenarios.map(s=>`
     <div class="kpi-card">
@@ -1039,7 +1024,6 @@ function renderProjection(m){
     <tr><td>นักลงทุน (Investors)</td><td>${m.investorShares}</td><td>${pc(m.investorPct)}</td><td>${fmt(m.investorShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">เงินสด THB ${fmt(m.raise)}</td></tr>
     <tr><td>Founder — sweat</td><td>${m.sweatShares}</td><td>${pc(m.sweatPct)}</td><td>${fmt(m.sweatShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">อาคาร sourcing บริหาร</td></tr>
     <tr><td>Founder — in-kind</td><td>${m.inkindShares}</td><td>${pc(m.inkindPct)}</td><td>${fmt(m.inkindShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">งานที่สร้างเอง THB ${fmt(m.inkindValue)} (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม)</td></tr>
-    <tr><td>Project Rock — ส่วนลด</td><td>${m.prDiscShares}</td><td>${pc(m.prDiscPct)}</td><td>${fmt(m.prDiscShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">ส่วนลดที่ให้ THB ${fmt(m.prDiscount)} (ที่ปรึกษา/ออกแบบฟรี + −${prDisc()}% ผนัง เบาะ มือจับ)</td></tr>
     <tr><td>Project Rock — แทน royalty</td><td>${m.royShares}</td><td>${pc(m.royPct)}</td><td>${fmt(m.royShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">สิทธิ์ใช้แบรนด์ จ่ายเป็นหุ้นแทน royalty</td></tr>
     <tr class="total-row"><td>รวม (post-money)</td><td>${m.totalShares}</td><td>100%</td><td class="pos">${fmt(m.postMoney)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นละ THB ${fmt(m.sharePrice)} · Founder + PR ${pc(m.controlPct)}</td></tr></tbody>`;
   document.getElementById('investor-share-note').innerHTML =
@@ -1076,7 +1060,7 @@ function renderDeck(m){
    <div class="slide-title">ข้อเสนอการลงทุน</div>
    <div class="slide-body">
      <p>ระดมทุนเงินสด <strong>THB ${fmt(m.raise)}</strong> (${m.investorShares} หุ้น × THB ${fmt(m.sharePrice)}) สำหรับ <strong>fit-out ยิม</strong> — ผนังปีน อุปกรณ์ และการตกแต่งภายใน นักลงทุนถือหุ้น <strong>${(m.investorPct*100).toFixed(1)}%</strong> ของบริษัท</p>
-     <p>Founder ถือ ${(m.founderPct*100).toFixed(0)}% (sweat ${(m.sweatPct*100).toFixed(0)}% + ${(m.inkindPct*100).toFixed(0)}% ที่จ่ายด้วยงานก่อสร้างมูลค่า THB ${fmt(m.inkindValue)} ในราคาหุ้นเดียวกับนักลงทุน) · Project Rock ${(m.kaeVinPct*100).toFixed(0)}% = ส่วนลดที่ให้ THB ${fmt(m.prDiscount)} (${m.prDiscShares} หุ้น ราคาเดียวกับนักลงทุน) + ${m.royShares} หุ้นแทน royalty แบรนด์ · อาคารไม่อยู่ในการระดมทุน — บริษัทเช่าเรตโกดังเปล่า <strong>หลังนักลงทุนคืนทุน</strong></p>
+     <p>Founder ถือ ${(m.founderPct*100).toFixed(0)}% (sweat ${(m.sweatPct*100).toFixed(0)}% + ${(m.inkindPct*100).toFixed(0)}% ที่จ่ายด้วยงานก่อสร้างมูลค่า THB ${fmt(m.inkindValue)} ในราคาหุ้นเดียวกับนักลงทุน) · Project Rock ${(m.kaeVinPct*100).toFixed(0)}% = ${m.royShares} หุ้นแทน royalty แบรนด์ + ที่ปรึกษา ออกแบบผนัง และ hold selection · อาคารไม่อยู่ในการระดมทุน — บริษัทเช่าเรตโกดังเปล่า <strong>หลังนักลงทุนคืนทุน</strong></p>
      <div class="num-row">
        <div class="num-item"><div class="n accent">${base.payback?'≈ '+base.payback.toFixed(1)+' ปี':'—'}</div><div class="l">Investor payback (Base ${base.visitors} คน/วัน)</div></div>
        <div class="num-item"><div class="n">${fmtPct(base.yield1)}</div><div class="l">Yield / หุ้น ปีแรก (Base)</div></div>
@@ -1196,11 +1180,11 @@ function renderDeck(m){
    <div class="slide-title">ทุนไปไหน — 3 Buckets และใครใส่อะไร</div>
    <div class="slide-body">
      <table class="deck-tbl">
-       <thead><tr><th>Bucket</th><th>ราคาเต็ม</th><th>สุทธิหลังส่วนลด PR</th><th>% ของทุน</th></tr></thead>
+       <thead><tr><th>Bucket</th><th>THB</th><th>% ของทุน</th></tr></thead>
        <tbody>
-         ${m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td style="color:var(--text3);">${fmt(b.gross)}</td><td>${fmt(b.total)}</td><td>${(b.total/m.capitalPool*100).toFixed(1)}%</td></tr>`).join('')}
-         <tr><td style="color:var(--text3);">สำรอง (contingency)</td><td></td><td style="color:var(--text3);">${fmt(m.contingency)}</td><td style="color:var(--text3);">${(m.contingency/m.capitalPool*100).toFixed(1)}%</td></tr>
-         <tr class="total-row"><td><strong>ทุนที่ใส่รวม</strong></td><td style="color:var(--text3);">ส่วนลด PR −${fmt(m.prDiscount)}</td><td style="color:var(--accent);font-weight:700;">${fmt(m.capitalPool)}</td><td>100%</td></tr>
+         ${m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.total)}</td><td>${(b.total/m.capitalPool*100).toFixed(1)}%</td></tr>`).join('')}
+         <tr><td style="color:var(--text3);">สำรอง (contingency)</td><td style="color:var(--text3);">${fmt(m.contingency)}</td><td style="color:var(--text3);">${(m.contingency/m.capitalPool*100).toFixed(1)}%</td></tr>
+         <tr class="total-row"><td><strong>ทุนที่ใส่รวม</strong></td><td style="color:var(--accent);font-weight:700;">${fmt(m.capitalPool)}</td><td>100%</td></tr>
        </tbody>
      </table>
      <div class="num-row">
@@ -1220,7 +1204,6 @@ function renderDeck(m){
          <tr><td>นักลงทุน (เงินสด)</td><td>${m.investorShares}</td><td>${(m.investorPct*100).toFixed(1)}%</td><td>${fmt(m.investorShares*m.sharePrice)}</td></tr>
          <tr><td>Founder — sweat (อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนคืนทุน)</td><td>${m.sweatShares}</td><td>${(m.sweatPct*100).toFixed(1)}%</td><td>${fmt(m.sweatShares*m.sharePrice)}</td></tr>
          <tr><td>Founder — in-kind (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม)</td><td>${m.inkindShares}</td><td>${(m.inkindPct*100).toFixed(1)}%</td><td>${fmt(m.inkindShares*m.sharePrice)}</td></tr>
-         <tr><td>Project Rock — ส่วนลดงานผาและอุปกรณ์ (THB ${fmt(m.prDiscount)})</td><td>${m.prDiscShares}</td><td>${(m.prDiscPct*100).toFixed(1)}%</td><td>${fmt(m.prDiscShares*m.sharePrice)}</td></tr>
          <tr><td>Project Rock — หุ้นแทน royalty แบรนด์</td><td>${m.royShares}</td><td>${(m.royPct*100).toFixed(1)}%</td><td>${fmt(m.royShares*m.sharePrice)}</td></tr>
          <tr class="total-row"><td>รวม</td><td>${m.totalShares}</td><td>100%</td><td style="color:var(--accent);font-weight:700;">${fmt(m.postMoney)}</td></tr>
        </tbody>
@@ -1257,7 +1240,7 @@ function renderDeck(m){
          <tr><td>สัดส่วนหุ้น</td><td style="text-align:left;font-family:var(--sans);">นักลงทุน ${(m.investorPct*100).toFixed(1)}% · Founder ${(m.founderPct*100).toFixed(1)}% (sweat ${(m.sweatPct*100).toFixed(0)}% + in-kind ${(m.inkindPct*100).toFixed(0)}%) · Project Rock ${(m.kaeVinPct*100).toFixed(1)}% — Founder + PR ${(m.controlPct*100).toFixed(0)}%</td></tr>
          <tr><td>In-kind</td><td style="text-align:left;font-family:var(--sans);">Founder สร้างแอร์ งานรีโนเวท เครื่องกรองน้ำ มูลค่า THB ${fmt(m.inkindValue)} โอนเข้าบริษัทในราคาต้นทุน แลกหุ้น ${m.inkindShares} หุ้น (ราคาหุ้นเดียวกับนักลงทุน)</td></tr>
          <tr><td>พื้นที่ส่วนกลาง</td><td style="text-align:left;font-family:var(--sans);">ห้องน้ำ/ห้องอาบน้ำ + ห้องล้าง holds + ชั้นลอย co-working — เจ้าของอาคารสร้างและเป็นเจ้าของ (ไม่อยู่ในการระดมทุน) ยิมใช้โดยไม่มีค่าเช่าจนกว่านักลงทุนจะคืนทุน · ค่าเช่าที่เว้น ≈ THB ${fmt(m.rentBase*12*(m.scenarios.find(s=>s.name==='Base')?.payback||0))} (Base) ≈ ${m.scenarios.find(s=>s.name==='Base')?.payback?(m.rentBase*12*m.scenarios.find(s=>s.name==='Base').payback/m.postMoney*100).toFixed(1):'—'}% ของมูลค่าบริษัท — ที่มาของ sweat equity</td></tr>
-         <tr><td>ส่วนลด Project Rock</td><td style="text-align:left;font-family:var(--sans);">ค่าที่ปรึกษา ออกแบบ และ hold selection ฟรี 100% · ส่วนลด 15% ของสัญญาผนังหักเป็นเงินสดในใบเสนอราคา Tecton แล้ว · Project Rock ได้หุ้นแทน royalty ${(m.royPct*100).toFixed(0)}%</td></tr>
+         <tr><td>Project Rock</td><td style="text-align:left;font-family:var(--sans);">ค่าที่ปรึกษา ออกแบบผนัง และ hold selection รวมในแพ็กเกจ · ได้หุ้นแทน royalty ${(m.royPct*100).toFixed(0)}%</td></tr>
          <tr><td>สัญญาเช่า</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(m.rentBase)}/เดือน เรตโกดังเปล่า · <strong>เริ่มเมื่อนักลงทุนคืนทุน</strong> · +${m.rentEsc}% ทุก 3 ปี · ค่าส่วนกลาง THB ${fmt(m.camMo)}/เดือน จ่ายตั้งแต่เดือน 1</td></tr>
          <tr><td>Brand licence</td><td style="text-align:left;font-family:var(--sans);">ใช้ชื่อแบรนด์ Project Rock · จ่ายเป็นหุ้น ${m.royShares} หุ้น (${(m.royPct*100).toFixed(0)}%) แทน royalty · royalty เงินสด ${m.royaltyPct}% ของรายได้</td></tr>
          <tr><td>ค่าที่ปรึกษา</td><td style="text-align:left;font-family:var(--sans);">THB ${fmt(m.consultingMo)}/เดือน (RM 2,500 retainer) — ที่ปรึกษาด้านการออกแบบผนัง อุปกรณ์ และระบบปฏิบัติการ</td></tr>
@@ -1274,7 +1257,7 @@ function renderDeck(m){
      <ul class="deck-list">
        <li>Revenue / visit <strong>THB ${fmt(m.rpv)}</strong> = day pass ${fmt(m.daypass)} + gear rental ตาม attach rate · walk-in ${(m.wiPct*100).toFixed(0)}% · สมาชิก ${fmt(m.memFee)}/เดือน · เปิด ${m.days} วัน/ปี</li>
        <li>Operating OPEX <strong>THB ${fmt(m.opexAnn)}/ปี</strong> + ค่าที่ปรึกษา ${fmt(m.consultingMo)}/เดือน + ค่าส่วนกลาง ${fmt(m.camMo)}/เดือน → OPEX ปีแรก <strong>THB ${fmt(m.opexPreRent)}</strong> · ค่าเช่า ${fmt(m.rentBase)}/เดือน เริ่มหลังนักลงทุนคืนทุน (+${m.rentEsc}% ทุก 3 ปี)</li>
-       <li>Royalty ค่าแบรนด์ <strong>${m.royaltyPct}% ของรายได้รวม</strong> — แลกเป็นหุ้น ${m.royShares} หุ้นแทน · ส่วนลด PR THB ${fmt(m.prDiscount)} = ${m.prDiscShares} หุ้น · Cap table: นักลงทุน ${(m.investorPct*100).toFixed(1)}% · Founder ${(m.founderPct*100).toFixed(1)}% · Project Rock ${(m.kaeVinPct*100).toFixed(1)}%</li>
+       <li>Royalty ค่าแบรนด์ <strong>${m.royaltyPct}% ของรายได้รวม</strong> — แลกเป็นหุ้น ${m.royShares} หุ้นแทน · Cap table: นักลงทุน ${(m.investorPct*100).toFixed(1)}% · Founder ${(m.founderPct*100).toFixed(1)}% · Project Rock ${(m.kaeVinPct*100).toFixed(1)}%</li>
        <li>Scenarios: ${m.scenarios.map(s=>s.name+' '+s.visitors).join(' · ')} คน/วัน · Break-even ≈ ${Math.ceil(m.breakEven)} คน/วัน</li>
        <li>Payback นักลงทุนคิดจาก ${(m.investorPct*100).toFixed(1)}% ของ EBITDA สะสม เทียบกับ THB ${fmt(m.raise)} (interpolate ในปีที่ข้ามเส้น)</li>
        <li>รายได้คงที่ทุกปีในโมเดล (ไม่ assume การเติบโต) — upside จากสมาชิกรายเดือน กิจกรรม และการเติบโตของตลาดไม่ได้ถูกนับ</li>
@@ -1367,6 +1350,11 @@ window.onload = () => { renderEditableTables(); recalcAll(); };
   const SRC='th';
   // [English, Thai] pairs for raise.html (Thai is the source language). Numbers → {#}.
 const I18N_PAIRS = [
+["Royalty and consulting are deducted before EBITDA — borne by all shareholders pro rata · Project Rock holds {#}% = {#} shares in lieu of royalty · investors hold {#}%","Royalty และค่าที่ปรึกษาหักก่อน EBITDA — กระทบผู้ถือหุ้นทุกฝ่ายตามสัดส่วน · Project Rock ถือ {#}% = {#} หุ้นแทน royalty · นักลงทุนถือ {#}%"],
+["· Project Rock {#}% = {#} shares in lieu of brand royalty + wall consultation, design and hold selection ·","· Project Rock {#}% = {#} หุ้นแทน royalty แบรนด์ + ที่ปรึกษา ออกแบบผนัง และ hold selection ·"],
+["% of capital","% ของทุน"],["Total capital in","ทุนที่ใส่รวม"],
+["Wall consultation, design and hold selection included in the package · receives {#}% in shares in lieu of royalty","ค่าที่ปรึกษา ออกแบบผนัง และ hold selection รวมในแพ็กเกจ · ได้หุ้นแทน royalty {#}%"],
+["— swapped for {#} shares instead · Cap table: Investors {#}% · Founder {#}% · Project Rock {#}%","— แลกเป็นหุ้น {#} หุ้นแทน · Cap table: นักลงทุน {#}% · Founder {#}% · Project Rock {#}%"],
 ["Visits / member / month","Visits / member / month"],["Walk-in share of visits (%)","Walk-in share of visits (%)"],
 ["The rest are members: monthly fee + gear rental","ที่เหลือเป็นสมาชิก จ่ายค่าสมาชิกรายเดือน + ค่าเช่าอุปกรณ์"],["Membership (THB / month)","Membership (THB / เดือน)"],
 ["Rental shoes + harnesses, auto-belays, routesetting tools and other items","รองเท้าเช่า + harness, auto-belay, เครื่องมือ routesetting และรายการอื่น"],["Wall consultation (1 week)","Wall consultation (1 สัปดาห์)"],
@@ -1385,7 +1373,7 @@ const I18N_PAIRS = [
 ["Royalty and consulting are deducted before EBITDA — borne by all shareholders pro rata · Project Rock holds {#}% = {#} discount shares + {#} shares in lieu of royalty · investors hold {#}%","Royalty และค่าที่ปรึกษาหักก่อน EBITDA — กระทบผู้ถือหุ้นทุกฝ่ายตามสัดส่วน · Project Rock ถือ {#}% = ส่วนลด {#} หุ้น + แทน royalty {#} หุ้น · นักลงทุนถือ {#}%"],
 ["Project Rock — discount","Project Rock — ส่วนลด"],["Discount given THB {#} (consultation/design waived + −{#}% walls, mats, holds)","ส่วนลดที่ให้ THB {#} (ที่ปรึกษา/ออกแบบฟรี + −{#}% ผนัง เบาะ มือจับ)"],
 ["Project Rock — in lieu of royalty","Project Rock — แทน royalty"],["Brand licence, paid in shares instead of a royalty","สิทธิ์ใช้แบรนด์ จ่ายเป็นหุ้นแทน royalty"],
-["The raise is computed live from the items below: the Founder's in-kind works and Project Rock's discount buy whole shares at the same share price as investors · sweat and the royalty-swap shares are free · investors take the rest — edit any item and the whole page and the Pitch Deck update instantly","ยอดระดมทุนคำนวณอัตโนมัติจากรายการด้านล่าง: งาน in-kind ของ Founder และส่วนลดจาก Project Rock ซื้อหุ้นเต็มที่ราคาหุ้นเดียวกับนักลงทุน · sweat และหุ้นแทน royalty เป็นหุ้นฟรี · นักลงทุนรับส่วนที่เหลือ — แก้รายการใดยอดจะอัปเดตทั้งหน้าและ Pitch Deck ทันที"],
+["The raise is computed live from the items below: the Founder's in-kind works buy whole shares at the same share price as investors · sweat and the royalty-swap shares are free · investors take the rest — edit any item and the whole page and the Pitch Deck update instantly","ยอดระดมทุนคำนวณอัตโนมัติจากรายการด้านล่าง: งาน in-kind ของ Founder ซื้อหุ้นเต็มที่ราคาหุ้นเดียวกับนักลงทุน · sweat และหุ้นแทน royalty เป็นหุ้นฟรี · นักลงทุนรับส่วนที่เหลือ — แก้รายการใดยอดจะอัปเดตทั้งหน้าและ Pitch Deck ทันที"],
 ["· Project Rock {#}% = discount given THB {#} ({#} shares at the same price as investors) + {#} shares in lieu of brand royalty ·","· Project Rock {#}% = ส่วนลดที่ให้ THB {#} ({#} หุ้น ราคาเดียวกับนักลงทุน) + {#} หุ้นแทน royalty แบรนด์ ·"],
 ["Project Rock — wall & equipment discount (THB {#})","Project Rock — ส่วนลดงานผาและอุปกรณ์ (THB {#})"],["Project Rock — shares in lieu of brand royalty","Project Rock — หุ้นแทน royalty แบรนด์"],
 ["Consultation, design and hold selection waived {#}% · the {#}% wall-contract discount is already netted in cash in the Tecton quote · Project Rock receives {#}% in shares in lieu of royalty","ค่าที่ปรึกษา ออกแบบ และ hold selection ฟรี {#}% · ส่วนลด {#}% ของสัญญาผนังหักเป็นเงินสดในใบเสนอราคา Tecton แล้ว · Project Rock ได้หุ้นแทน royalty {#}%"],
