@@ -556,7 +556,7 @@ body.deck-mode .deck-nav { display: flex; }
         </div>
         <div class="field">
           <span class="field-label">Founder — sweat equity (%) ฟรี</span>
-          <input class="field-input" id="in-sweat-pct" type="number" step="0.5" value="30" oninput="recalcAll()">
+          <input class="field-input" id="in-sweat-pct" type="number" step="0.5" value="20" oninput="recalcAll()">
           <span class="field-hint">อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนนักลงทุนคืนทุน</span>
         </div>
         <div class="field">
@@ -571,7 +571,7 @@ body.deck-mode .deck-nav { display: flex; }
         </div>
         <div class="field">
           <span class="field-label">ราคาหุ้น (THB / หุ้น)</span>
-          <input class="field-input" id="in-share-price" type="number" step="1000" value="141000" oninput="recalcAll()">
+          <input class="field-input" id="in-share-price" type="number" step="1000" value="140000" oninput="recalcAll()">
           <span class="field-hint" id="h-price">จำนวนหุ้นคำนวณให้ทุกฝ่ายเป็นหุ้นเต็ม</span>
         </div>
         <div class="field">
@@ -660,10 +660,9 @@ const RAISE = {
 
   // Founder-funded building shell — context only, NOT part of the raise
   warehouse: [
-    { name: 'งานก่อสร้างอาคาร (400 sqm × 6,000)', amt: 2400000 },
-    { name: 'ระบบไฟฟ้า (15% ของงานอาคาร)',        amt: 540000 },
+    { name: 'งานก่อสร้างอาคาร (500 sqm × 6,000)', amt: 3000000 },
     { name: 'งานประปา (rough-in)',                amt: 100000 },
-    { name: 'ชั้นลอย + บันได (175 × 3,000)',       amt: 525000 },
+    { name: 'ชั้นลอย + บันได (200 × 3,000)',       amt: 600000 },
   ],
 
   // Investor-funded fit-out — itemized; bucket totals and the raise are computed live
@@ -686,16 +685,17 @@ const RAISE = {
       { name: 'อุปกรณ์ฟิตเนสเสริม',                            amt: 25000 },
     ]},
     { key: 'fitout', icon: '🏠', label: 'Fit-out — ตกแต่งภายใน', items: [
-      { name: 'Reception + counter + office',                 amt: 50000 },
+      { name: 'Reception + counter + office',                 amt: 100000 },
       { name: 'เฟอร์นิเจอร์ fixed',                            amt: 100000 },
       { name: 'เฟอร์นิเจอร์ loose',                            amt: 100000 },
       { name: 'กล้องวงจรปิด',                                  amt: 100000 },
-      { name: 'ระบบเสียง / PA',                                amt: 50000 },
-      { name: 'Lockers (12 ช่อง × 4 ชุด)',                     amt: 30000 },
-      { name: 'อุปกรณ์สำนักงาน',                               amt: 50000 },
+      { name: 'ระบบเสียง / PA',                                amt: 100000 },
+      { name: 'Lockers (12 ช่อง × 4 ชุด)',                     amt: 50000 },
+      { name: 'อุปกรณ์สำนักงาน',                               amt: 70000 },
       { name: 'การตลาดเปิดตัว',                                amt: 50000 },
       { name: 'เงินทุนหมุนเวียน 1 เดือน',                       amt: 200000 },
       { name: 'ค่าเช่าเครื่องมือติดตั้ง',                        amt: 50000 },
+      { name: 'ไฟส่องสว่างเพิ่มเติม (Extra lighting)',           amt: 300000 },
     ]},
     // Founder builds these and transfers them to the company at cost for the in-kind shares.
     // (Toilet/shower block + co-working mezzanine are NOT in the raise — landlord-owned,
@@ -705,6 +705,7 @@ const RAISE = {
       { name: 'งานรีโนเวท (เพิ่มเติม)',                         amt: 300000 },
       { name: 'เครื่องกรองน้ำ + ตู้กดน้ำ',                       amt: 15000 },
       { name: 'ออกแบบยิม (Gym design)',                          amt: 200000 },
+      { name: 'ระบบไฟฟ้า (Electrical)',                          amt: 540000 },
     ]},
   ],
 
@@ -922,12 +923,12 @@ function renderProjection(m){
   document.getElementById('tbl-buckets').innerHTML =
     `<thead><tr><th>Bucket</th><th></th><th>THB</th></tr></thead><tbody>` +
     m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td></td><td>${fmt(b.total)}</td></tr>`).join('') +
-    `<tr><td style="color:var(--text3);font-weight:400;">สำรอง (contingency)</td><td></td><td class="neutral">${fmt(m.contingency)}</td></tr>
+    `<tr><td style="color:var(--text3);font-weight:400;">สำรองค่าก่อสร้างส่วนเกิน (ถ้าเหลือใช้เป็น OPEX runway)</td><td></td><td class="neutral">${fmt(m.contingency)}</td></tr>
      <tr class="total-row"><td>ทุนที่ต้องใส่ (capital pool ${pc(m.investorPct+m.inkindPct)})</td><td></td><td class="pos">${fmt(m.capitalPool)}</td></tr>
      <tr><td>· นักลงทุน — เงินสด (${m.investorShares} หุ้น)</td><td></td><td class="pos">${fmt(m.raise)}</td></tr>
      <tr><td>· Founder — งาน in-kind (${m.inkindShares} หุ้น)</td><td></td><td class="pos">${fmt(m.founderPrice)}</td></tr></tbody>`;
   document.getElementById('n-raise-round').innerHTML =
-    `หุ้นละ <strong>THB ${fmt(m.sharePrice)}</strong> · ${m.totalShares} หุ้น = post-money THB ${fmt(m.postMoney)} · นักลงทุนใส่เงินสด <strong>THB ${fmt(m.raise)}</strong> ได้ ${pc(m.investorPct)} · Founder ใส่งานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม) มูลค่า THB ${fmt(m.inkindValue)} ได้ ${pc(m.inkindPct)}` +
+    `หุ้นละ <strong>THB ${fmt(m.sharePrice)}</strong> · ${m.totalShares} หุ้น = post-money THB ${fmt(m.postMoney)} · นักลงทุนใส่เงินสด <strong>THB ${fmt(m.raise)}</strong> ได้ ${pc(m.investorPct)} · Founder ใส่งานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม ระบบไฟฟ้า) มูลค่า THB ${fmt(m.inkindValue)} ได้ ${pc(m.inkindPct)}` +
     (m.founderTopUp>0 ? ` + เงินสด ${fmt(m.founderTopUp)}` : m.inkindExcess>0 ? ` (เกินราคาหุ้น ${fmt(m.inkindExcess)})` : '') +
     ` · Founder รวม ${pc(m.founderPct)} (sweat ${pc(m.sweatPct)}) · Project Rock ${pc(m.kaeVinPct)} · <strong>Founder + Project Rock = ${pc(m.controlPct)}</strong>`;
 
@@ -1023,7 +1024,7 @@ function renderProjection(m){
     `<thead><tr><th>ผู้ถือหุ้น</th><th>หุ้น</th><th>%</th><th>มูลค่า (THB)</th><th style="text-align:left;">ที่มา</th></tr></thead><tbody>
     <tr><td>นักลงทุน (Investors)</td><td>${m.investorShares}</td><td>${pc(m.investorPct)}</td><td>${fmt(m.investorShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">เงินสด THB ${fmt(m.raise)}</td></tr>
     <tr><td>Founder — sweat</td><td>${m.sweatShares}</td><td>${pc(m.sweatPct)}</td><td>${fmt(m.sweatShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">อาคาร sourcing บริหาร</td></tr>
-    <tr><td>Founder — in-kind</td><td>${m.inkindShares}</td><td>${pc(m.inkindPct)}</td><td>${fmt(m.inkindShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">งานที่สร้างเอง THB ${fmt(m.inkindValue)} (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม)</td></tr>
+    <tr><td>Founder — in-kind</td><td>${m.inkindShares}</td><td>${pc(m.inkindPct)}</td><td>${fmt(m.inkindShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">งานที่สร้างเอง THB ${fmt(m.inkindValue)} (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม ระบบไฟฟ้า)</td></tr>
     <tr><td>Project Rock — แทน royalty</td><td>${m.royShares}</td><td>${pc(m.royPct)}</td><td>${fmt(m.royShares*m.sharePrice)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">สิทธิ์ใช้แบรนด์ จ่ายเป็นหุ้นแทน royalty</td></tr>
     <tr class="total-row"><td>รวม (post-money)</td><td>${m.totalShares}</td><td>100%</td><td class="pos">${fmt(m.postMoney)}</td><td style="text-align:left;font-family:var(--sans);color:var(--text3);">หุ้นละ THB ${fmt(m.sharePrice)} · Founder + PR ${pc(m.controlPct)}</td></tr></tbody>`;
   document.getElementById('investor-share-note').innerHTML =
@@ -1183,7 +1184,7 @@ function renderDeck(m){
        <thead><tr><th>Bucket</th><th>THB</th><th>% ของทุน</th></tr></thead>
        <tbody>
          ${m.buckets.map(b=>`<tr><td>${b.icon} ${b.label}</td><td>${fmt(b.total)}</td><td>${(b.total/m.capitalPool*100).toFixed(1)}%</td></tr>`).join('')}
-         <tr><td style="color:var(--text3);">สำรอง (contingency)</td><td style="color:var(--text3);">${fmt(m.contingency)}</td><td style="color:var(--text3);">${(m.contingency/m.capitalPool*100).toFixed(1)}%</td></tr>
+         <tr><td style="color:var(--text3);">สำรองค่าก่อสร้างส่วนเกิน (ถ้าเหลือใช้เป็น OPEX runway)</td><td style="color:var(--text3);">${fmt(m.contingency)}</td><td style="color:var(--text3);">${(m.contingency/m.capitalPool*100).toFixed(1)}%</td></tr>
          <tr class="total-row"><td><strong>ทุนที่ใส่รวม</strong></td><td style="color:var(--accent);font-weight:700;">${fmt(m.capitalPool)}</td><td>100%</td></tr>
        </tbody>
      </table>
@@ -1203,7 +1204,7 @@ function renderDeck(m){
        <tbody>
          <tr><td>นักลงทุน (เงินสด)</td><td>${m.investorShares}</td><td>${(m.investorPct*100).toFixed(1)}%</td><td>${fmt(m.investorShares*m.sharePrice)}</td></tr>
          <tr><td>Founder — sweat (อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนคืนทุน)</td><td>${m.sweatShares}</td><td>${(m.sweatPct*100).toFixed(1)}%</td><td>${fmt(m.sweatShares*m.sharePrice)}</td></tr>
-         <tr><td>Founder — in-kind (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม)</td><td>${m.inkindShares}</td><td>${(m.inkindPct*100).toFixed(1)}%</td><td>${fmt(m.inkindShares*m.sharePrice)}</td></tr>
+         <tr><td>Founder — in-kind (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม ระบบไฟฟ้า)</td><td>${m.inkindShares}</td><td>${(m.inkindPct*100).toFixed(1)}%</td><td>${fmt(m.inkindShares*m.sharePrice)}</td></tr>
          <tr><td>Project Rock — หุ้นแทน royalty แบรนด์</td><td>${m.royShares}</td><td>${(m.royPct*100).toFixed(1)}%</td><td>${fmt(m.royShares*m.sharePrice)}</td></tr>
          <tr class="total-row"><td>รวม</td><td>${m.totalShares}</td><td>100%</td><td style="color:var(--accent);font-weight:700;">${fmt(m.postMoney)}</td></tr>
        </tbody>
@@ -1358,7 +1359,7 @@ const I18N_PAIRS = [
 ["Visits / member / month","Visits / member / month"],["Walk-in share of visits (%)","Walk-in share of visits (%)"],
 ["The rest are members: monthly fee + gear rental","ที่เหลือเป็นสมาชิก จ่ายค่าสมาชิกรายเดือน + ค่าเช่าอุปกรณ์"],["Membership (THB / month)","Membership (THB / เดือน)"],
 ["Rental shoes + harnesses, auto-belays, routesetting tools and other items","รองเท้าเช่า + harness, auto-belay, เครื่องมือ routesetting และรายการอื่น"],["Wall consultation (1 week)","Wall consultation (1 สัปดาห์)"],
-["Gym design","ออกแบบยิม (Gym design)"],
+["Gym design","ออกแบบยิม (Gym design)"],["Extra lighting","ไฟส่องสว่างเพิ่มเติม (Extra lighting)"],["Electrical","ระบบไฟฟ้า (Electrical)"],
 ["Investor View — Fit-out Raise","Investor View — ระดมทุน Fit-out"],
 ["{#} = paid in shares instead (see \"shares in lieu of royalty\") · if set as a %, it is charged on gross revenue","{#} = แลกเป็นหุ้นแทน (ดูช่อง \"หุ้นแทน royalty\") · ถ้าคิดเป็น % จะหักจากรายได้รวม"],
 ["The {#}% wall-contract discount is already netted in the Tecton quote · this field applies only to rows tagged PR (consultation, design, hold selection waived {#}%)","ส่วนลด {#}% ของสัญญาผนังหักไว้ในใบเสนอราคา Tecton แล้ว · ช่องนี้ใช้กับรายการที่ติดป้าย PR เท่านั้น (consultation ออกแบบ hold selection ฟรี {#}%)"],
@@ -1385,11 +1386,11 @@ const I18N_PAIRS = [
 ["Structure — the deal","Structure — โครงสร้างดีล"],["🏗 Building (not part of the raise)","🏗 อาคาร (ไม่อยู่ในการระดมทุน)"],["Item","รายการ"],["Total","รวม"],["＋ Add item","＋ เพิ่มรายการ"],
 ["The building is a bare warehouse and is not part of the raise — the company leases it at a bare-warehouse rate","อาคารเป็นโกดังเปล่า ไม่อยู่ในการระดมทุน — บริษัทเช่าในเรตโกดังเปล่า"],["THB {#}/month (starts after investors recoup)","THB {#}/เดือน (เริ่มหลังนักลงทุนคืนทุน)"],["which is below the rate for an air-conditioned building (the AC system is part of the fit-out the company owns)","ซึ่งต่ำกว่าเรตอาคารติดแอร์ (ระบบแอร์เป็นส่วนหนึ่งของ fit-out ที่บริษัทเป็นเจ้าของ)"],
 ["💼 The Raise — investors fund the fit-out","💼 การระดมทุน — นักลงทุนลงทุนค่า Fit-out"],["THB {#} cash","THB {#} เงินสด"],["Gross","ราคาเต็ม"],["Net (after PR discount)","สุทธิ (หลังส่วนลด PR)"],["🧗 Wall","🧗 Wall — ผนังปีน"],["🎯 Equipment","🎯 Equipment — อุปกรณ์"],["🏠 Fit-out — interior","🏠 Fit-out — ตกแต่งภายใน"],["🔨 In-kind — works built by the Founder and transferred to the company","🔨 In-kind — งานที่ Founder สร้างและโอนเข้าบริษัท"],
-["Project Rock discount (−{#}% on PR items)","ส่วนลดจาก Project Rock (−{#}% รายการ PR)"],["Contingency","สำรอง (contingency)"],["Capital required (capital pool {#}%)","ทุนที่ต้องใส่ (capital pool {#}%)"],["· Investors — cash ({#} shares)","· นักลงทุน — เงินสด ({#} หุ้น)"],["· Founder — in-kind works ({#} shares)","· Founder — งาน in-kind ({#} หุ้น)"],
+["Project Rock discount (−{#}% on PR items)","ส่วนลดจาก Project Rock (−{#}% รายการ PR)"],["Contingency — construction overruns (any surplus becomes OPEX runway)","สำรองค่าก่อสร้างส่วนเกิน (ถ้าเหลือใช้เป็น OPEX runway)"],["Capital required (capital pool {#}%)","ทุนที่ต้องใส่ (capital pool {#}%)"],["· Investors — cash ({#} shares)","· นักลงทุน — เงินสด ({#} หุ้น)"],["· Founder — in-kind works ({#} shares)","· Founder — งาน in-kind ({#} หุ้น)"],
 ["Share price","หุ้นละ"],["· {#} shares = post-money THB {#} · investors put in cash","· {#} หุ้น = post-money THB {#} · นักลงทุนใส่เงินสด"],
-["for {#}% · the Founder contributes self-built works (AC, renovation, water filter, gym design) worth THB {#} for {#}% (THB {#} above the share price) · Founder total {#}% (sweat {#}%) · Project Rock {#}% ·","ได้ {#}% · Founder ใส่งานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม) มูลค่า THB {#} ได้ {#}% (เกินราคาหุ้น {#}) · Founder รวม {#}% (sweat {#}%) · Project Rock {#}% ·"],
-["for {#}% · the Founder contributes self-built works (AC, renovation, water filter, gym design) worth THB {#} for {#}% + cash {#} · Founder total {#}% (sweat {#}%) · Project Rock {#}% ·","ได้ {#}% · Founder ใส่งานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม) มูลค่า THB {#} ได้ {#}% + เงินสด {#} · Founder รวม {#}% (sweat {#}%) · Project Rock {#}% ·"],
-["for {#}% · the Founder contributes self-built works (AC, renovation, water filter, gym design) worth THB {#} for {#}% · Founder total {#}% (sweat {#}%) · Project Rock {#}% ·","ได้ {#}% · Founder ใส่งานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม) มูลค่า THB {#} ได้ {#}% · Founder รวม {#}% (sweat {#}%) · Project Rock {#}% ·"],
+["for {#}% · the Founder contributes self-built works (AC, renovation, water filter, gym design, electrical) worth THB {#} for {#}% (THB {#} above the share price) · Founder total {#}% (sweat {#}%) · Project Rock {#}% ·","ได้ {#}% · Founder ใส่งานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม ระบบไฟฟ้า) มูลค่า THB {#} ได้ {#}% (เกินราคาหุ้น {#}) · Founder รวม {#}% (sweat {#}%) · Project Rock {#}% ·"],
+["for {#}% · the Founder contributes self-built works (AC, renovation, water filter, gym design, electrical) worth THB {#} for {#}% + cash {#} · Founder total {#}% (sweat {#}%) · Project Rock {#}% ·","ได้ {#}% · Founder ใส่งานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม ระบบไฟฟ้า) มูลค่า THB {#} ได้ {#}% + เงินสด {#} · Founder รวม {#}% (sweat {#}%) · Project Rock {#}% ·"],
+["for {#}% · the Founder contributes self-built works (AC, renovation, water filter, gym design, electrical) worth THB {#} for {#}% · Founder total {#}% (sweat {#}%) · Project Rock {#}% ·","ได้ {#}% · Founder ใส่งานที่สร้างเอง (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม ระบบไฟฟ้า) มูลค่า THB {#} ได้ {#}% · Founder รวม {#}% (sweat {#}%) · Project Rock {#}% ·"],
 ["The raise is computed live from the items below: rounded up to whole shares (THB {#} each) that divide evenly by the {#}/{#} split — edit any item and the whole page and the Pitch Deck update instantly","ยอดระดมทุนคำนวณอัตโนมัติจากรายการด้านล่าง: ปัดขึ้นเป็นจำนวนหุ้นเต็ม (หุ้นละ THB {#}) ที่หารลงตัวกับสัดส่วน {#}/{#} — แก้รายการใดยอดจะอัปเดตทั้งหน้าและ Pitch Deck ทันที"],
 ["Use of Funds — every item (editable)","Use of Funds — รายละเอียดทุกรายการ (แก้ไขได้)"],
 ["Part of the fit-out and owned by the company, but built by the Founder and transferred at cost in exchange for in-kind shares at the same share price as investors · toilets/showers + co-working mezzanine","เป็นส่วนหนึ่งของ fit-out และเป็นทรัพย์สินของบริษัท แต่ Founder เป็นผู้สร้างแล้วโอนเข้าบริษัทในราคาต้นทุน แลกหุ้น in-kind ในราคาหุ้นเดียวกับนักลงทุน · ห้องน้ำ/ห้องอาบน้ำ + ชั้นลอย co-working"],["are not part of the raise","ไม่อยู่ในการระดมทุน"],["— built and owned by the building owner; the gym uses them rent-free until investors recoup","— เจ้าของอาคารสร้างและเป็นเจ้าของ ยิมใช้โดยไม่มีค่าเช่าจนกว่านักลงทุนจะคืนทุน"],
@@ -1399,7 +1400,7 @@ const I18N_PAIRS = [
 ["Rent","ค่าเช่า"],["starts once investors have fully recouped","เริ่มเมื่อนักลงทุนคืนทุนครบ"],["(Base ≈ year {#}) ·","(Base ≈ ปีที่ {#}) ·"],["+{#}% every {#} yrs","+{#}% ทุก {#} ปี"],["from lease start · CAM fee THB {#}/month paid from month {#} ·","นับจากวันเริ่มเช่า · ค่าส่วนกลาง THB {#}/เดือน จ่ายตั้งแต่เดือน {#} ·"],["Rent waived until payback ≈ THB {#}","ค่าเช่าที่เว้นให้จนคืนทุน ≈ THB {#}"],["({#} yrs × {#}) ≈ {#}% of post-money — the basis for the {#}% sweat equity","({#} ปี × {#}) ≈ {#}% ของ post-money — ที่มาของ sweat equity {#}%"],
 ["Operating OPEX (year {#})","Operating OPEX (ปี {#})"],["Consulting fee (year {#})","ค่าที่ปรึกษา (ปี {#})"],["CAM fee, year {#}","ค่าส่วนกลาง (CAM) ปี {#}"],["Rent (year {#})","ค่าเช่า (ปี {#})"],["{#} — starts after payback","{#} — เริ่มหลังคืนทุน"],["Total OPEX year {#} (before royalty)","Total OPEX ปีที่ {#} (ก่อน royalty)"],["+ Royalty {#}% (Base {#} visitors/day)","+ Royalty {#}% (Base {#} คน/วัน)"],["Grand total (Base)","รวมทั้งหมด (Base)"],
 ["Brand License & Advisory — brand fee, consulting and partner equity","Brand License & Advisory — ค่าแบรนด์ ค่าที่ปรึกษา และหุ้นพันธมิตร"],["THB {#} /yr (Base)","THB {#} /ปี (Base)"],["Royalty — % of gross revenue","Royalty — % ของรายได้รวม"],["Brand-name licence only · charged on gross revenue","ค่าสิทธิ์ใช้ชื่อแบรนด์อย่างเดียว · คิดจากรายได้รวม (gross revenue)"],["Consulting fee (THB / month)","ค่าที่ปรึกษา (THB / เดือน)"],["Monthly retainer = RM {#} (@ MYR {#}) — fixed, not tied to revenue","Retainer รายเดือน = RM {#} (@ MYR {#}) — คงที่ ไม่ผูกกับรายได้"],["Wall-scope discount from Project Rock (%)","ส่วนลดงานผนังจาก Project Rock (%)"],["Applied to items tagged PR (wall, steel, holds, mats, volumes)","ใช้กับรายการที่ติดป้าย PR (ผนัง โครงเหล็ก มือจับ เบาะ volumes)"],
-["Founder — sweat equity (%) free","Founder — sweat equity (%) ฟรี"],["Building, sourcing, management + rent waived until investors recoup","อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนนักลงทุนคืนทุน"],["Founder — shares paid with in-kind works (%)","Founder — หุ้นที่จ่ายด้วยงาน in-kind (%)"],["Paid with the In-kind card (AC, renovation, water filter, gym design) at the same share price as investors","จ่ายด้วยงานในการ์ด In-kind (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม) ราคาหุ้นเดียวกับนักลงทุน"],["Project Rock equity (%) free","Project Rock equity (%) ฟรี"],["For the wall-scope discount + brand","แลกส่วนลดงานผนัง + แบรนด์"],["Share price (THB / share)","ราคาหุ้น (THB / หุ้น)"],
+["Founder — sweat equity (%) free","Founder — sweat equity (%) ฟรี"],["Building, sourcing, management + rent waived until investors recoup","อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนนักลงทุนคืนทุน"],["Founder — shares paid with in-kind works (%)","Founder — หุ้นที่จ่ายด้วยงาน in-kind (%)"],["Paid with the In-kind card (AC, renovation, water filter, gym design, electrical) at the same share price as investors","จ่ายด้วยงานในการ์ด In-kind (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม ระบบไฟฟ้า) ราคาหุ้นเดียวกับนักลงทุน"],["Project Rock equity (%) free","Project Rock equity (%) ฟรี"],["For the wall-scope discount + brand","แลกส่วนลดงานผนัง + แบรนด์"],["Share price (THB / share)","ราคาหุ้น (THB / หุ้น)"],
 ["{#} shares · lowest price at which the {#} capital-pool shares cover the net fit-out = THB {#} · current contingency THB {#}","{#} หุ้น · ราคาต่ำสุดที่ {#} หุ้นในกลุ่มทุนครอบคลุม fit-out สุทธิ = THB {#} · สำรองตอนนี้ THB {#}"],["Share count is solved so every party holds whole shares","จำนวนหุ้นคำนวณให้ทุกฝ่ายเป็นหุ้นเต็มพอดี"],
 ["CAM fee — gym area (sqm)","ค่าส่วนกลาง (CAM) — พื้นที่ยิม (sqm)"],["CAM fee (THB / sqm / month) — paid from month {#}","ค่าส่วนกลาง (THB / sqm / เดือน) — จ่ายตั้งแต่เดือน {#}"],["Separate from rent, which starts after investors recoup","แยกจากค่าเช่า ซึ่งเริ่มหลังนักลงทุนคืนทุน"],
 ["— Investors {#}% ({#} shares, cash THB {#}) · Founder {#}% = sweat {#}% + in-kind {#}% (works THB {#}) · Project Rock {#}%","— นักลงทุน {#}% ({#} หุ้น เงินสด THB {#}) · Founder {#}% = sweat {#}% + in-kind {#}% (งาน THB {#}) · Project Rock {#}%"],["— Investors {#}% ({#} shares, cash THB {#}) · Founder {#}% = sweat {#}% + in-kind {#}% (works THB {#} + cash {#}) · Project Rock {#}%","— นักลงทุน {#}% ({#} หุ้น เงินสด THB {#}) · Founder {#}% = sweat {#}% + in-kind {#}% (งาน THB {#} + เงินสด {#}) · Project Rock {#}%"],["✓ · THB {#} per share · {#} shares","✓ · หุ้นละ THB {#} · {#} หุ้น"],["⚠ below {#}% · THB {#} per share · {#} shares","⚠ ต่ำกว่า {#}% · หุ้นละ THB {#} · {#} หุ้น"],
@@ -1410,7 +1411,7 @@ const I18N_PAIRS = [
 ["Annual revenue = walk-in {#}% × rev/visit (THB {#}) + members × {#}/month ({#} visits/month) + members' gear rental · {#} days/yr · EBITDA year {#} = revenue − OPEX (incl. consulting and CAM) − royalty {#}% — no rent yet · Yield/share = EBITDA ÷ {#} shares ÷ THB {#}, identical for every share · Break-even ≈ {#} visitors/day","Annual revenue = walk-in {#}% × rev/visit (THB {#}) + สมาชิก × {#}/เดือน ({#} ครั้ง/เดือน) + ค่าเช่าอุปกรณ์ของสมาชิก · {#} วัน/ปี · EBITDA ปี {#} = revenue − OPEX (รวมค่าที่ปรึกษาและค่าส่วนกลาง) − royalty {#}% — ยังไม่มีค่าเช่า · Yield/หุ้น = EBITDA ÷ {#} หุ้น ÷ THB {#} เท่ากันทุกหุ้นทุกฝ่าย · Break-even ≈ {#} คน/วัน"],
 ["{#}-Year Cash Flow — investor cash flow and payback","{#}-Year Cash Flow — กระแสเงินสดและการคืนทุนของนักลงทุน"],["📅 Yearly — with rent escalation and cumulative investor cash","📅 รายปี — รวมค่าเช่าที่ปรับขึ้น และเงินสดสะสมฝั่งนักลงทุน"],["Year","ปี"],["Rent/month","ค่าเช่า/เดือน"],["Total OPEX","OPEX รวม"],["Revenue","รายได้"],["Investors {#}%","นักลงทุน {#}%"],["Cum. investors","สะสมนักลงทุน"],["% of investment","% ของเงินลงทุน"],["Year {#}","ปีที่ {#}"],["— none yet","— ยังไม่มี"],["Year {#} ✓ payback","ปีที่ {#} ✓ คืนทุน"],["(from M{#})","(จาก M{#})"],
 ["Base ({#} visitors/day) — Investor payback:","Base ({#} คน/วัน) — Investor payback:"],["· rent starts after that point (interpolated)","· ค่าเช่าเริ่มหลังจุดนั้น (interpolated)"],["Investor payback = the point where","Investor payback = จุดที่"],["cumulative investor cash ({#}% of EBITDA)","เงินสดสะสมฝั่งนักลงทุน ({#}% ของ EBITDA)"],["covers the investors' cash of THB {#} — before that point the company pays no rent (only the CAM fee); afterwards rent starts and escalates every {#} yrs (interpolated within the crossing year)","ครอบคลุมเงินสดที่นักลงทุนใส่ THB {#} — ก่อนจุดนั้นบริษัทไม่จ่ายค่าเช่า (จ่ายเฉพาะค่าส่วนกลาง) หลังจากนั้นค่าเช่าเริ่มและปรับขึ้นทุก {#} ปี (interpolate ภายในปีที่ข้ามเส้น)"],
-["Cap Table — shareholding structure","Cap Table — โครงสร้างผู้ถือหุ้น"],["Shareholder","ผู้ถือหุ้น"],["Shares","หุ้น"],["Value (THB)","มูลค่า (THB)"],["Contribution","ที่มา"],["Investors","นักลงทุน (Investors)"],["Cash THB {#}","เงินสด THB {#}"],["Building, sourcing, management","อาคาร sourcing บริหาร"],["Self-built works THB {#} (AC, renovation, water filter, gym design)","งานที่สร้างเอง THB {#} (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม)"],["Wall-scope discount {#}% + brand","ส่วนลดงานผนัง {#}% + แบรนด์"],["Total (post-money)","รวม (post-money)"],["THB {#} per share · Founder + PR {#}%","หุ้นละ THB {#} · Founder + PR {#}%"],
+["Cap Table — shareholding structure","Cap Table — โครงสร้างผู้ถือหุ้น"],["Shareholder","ผู้ถือหุ้น"],["Shares","หุ้น"],["Value (THB)","มูลค่า (THB)"],["Contribution","ที่มา"],["Investors","นักลงทุน (Investors)"],["Cash THB {#}","เงินสด THB {#}"],["Building, sourcing, management","อาคาร sourcing บริหาร"],["Self-built works THB {#} (AC, renovation, water filter, gym design, electrical)","งานที่สร้างเอง THB {#} (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม ระบบไฟฟ้า)"],["Wall-scope discount {#}% + brand","ส่วนลดงานผนัง {#}% + แบรนด์"],["Total (post-money)","รวม (post-money)"],["THB {#} per share · Founder + PR {#}%","หุ้นละ THB {#} · Founder + PR {#}%"],
 ["💼 From the investor's side","💼 มองจากฝั่งนักลงทุน"],["Investors:","นักลงทุน:"],["THB {#} per share = {#}% of the company · buy as many shares as you like · investors hold {#}% in total · every share earns the same return · the Founder pays for the shares he buys with construction works at the same price","หุ้นละ THB {#} = {#}% ของบริษัท · ลงกี่หุ้นได้สัดส่วนตามนั้น · นักลงทุนถือรวม {#}% · ผลตอบแทนต่อหุ้นเท่ากันทุกหุ้น · Founder จ่ายหุ้นที่ซื้อด้วยงานก่อสร้างในราคาหุ้นเดียวกัน"],
 ["⚠️ This document is a financial projection built on the assumptions stated on this page. It is not a promise of returns; actual results depend on performance.","⚠️ เอกสารนี้เป็นประมาณการทางการเงิน (financial projection) จัดทำจากสมมติฐานที่ระบุไว้ในหน้านี้ ไม่ใช่คำมั่นเรื่องผลตอบแทน ตัวเลขจริงขึ้นกับผลประกอบการ"],
 // ── deck ──
@@ -1429,7 +1430,7 @@ const I18N_PAIRS = [
 ["Team & execution","ทีม & การลงมือทำ"],["In a market that is just starting, the team is the answer to risk:","ในตลาดที่เพิ่งเริ่ม ทีมคือคำตอบของความเสี่ยง:"],["— a Hat Yai entrepreneur with business-management experience, on the project full-time","— ผู้ประกอบการในหาดใหญ่ มีประสบการณ์บริหารธุรกิจ ดูแลโครงการเต็มเวลา"],["Gym advisor","ที่ปรึกษาด้านยิม"],["— wall design, equipment selection and routesetting draw on people who have actually opened and run commercial climbing gyms in the region","— การออกแบบผนัง การเลือกอุปกรณ์ และ routesetting อิงจากผู้มีประสบการณ์เปิดและดำเนินยิมปีนหน้าผาเชิงพาณิชย์จริงในภูมิภาค"],["Operations team","ทีมปฏิบัติการ"],["— full-time staff + routesetters per the OPEX budget shown in the model","— พนักงานประจำ + routesetter ตามงบ OPEX ที่แสดงในโมเดล"],
 ["Where the money goes — {#} buckets and who contributes what","ทุนไปไหน — {#} Buckets และใครใส่อะไร"],["Net after PR discount","สุทธิหลังส่วนลด PR"],["% of capital","% ของทุน"],["Total capital","ทุนที่ใส่รวม"],["PR discount −{#}","ส่วนลด PR −{#}"],["Investors — cash ({#} shares)","นักลงทุน — เงินสด ({#} หุ้น)"],["Founder — in-kind construction works ({#} shares)","Founder — งานก่อสร้าง in-kind ({#} หุ้น)"],
 ["All capital becomes company assets — including the AC, renovation works and water filter the Founder builds and transfers at cost (with auditable documentation) · toilets/showers + co-working mezzanine belong to the building owner; the gym uses them rent-free until investors recoup","ทุนทั้งหมดกลายเป็นทรัพย์สินของบริษัท — รวมแอร์ งานรีโนเวท และเครื่องกรองน้ำที่ Founder สร้างและโอนเข้าบริษัทในราคาต้นทุน (มีเอกสารตรวจสอบได้) · ห้องน้ำ/ห้องอาบน้ำ + ชั้นลอย co-working เป็นทรัพย์สินของเจ้าของอาคาร ยิมใช้โดยไม่มีค่าเช่าจนกว่านักลงทุนจะคืนทุน"],
-["Shareholding structure","โครงสร้างผู้ถือหุ้น"],["Investors (cash)","นักลงทุน (เงินสด)"],["Founder — sweat (building, sourcing, management + rent waived until payback)","Founder — sweat (อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนคืนทุน)"],["Founder — in-kind (AC, renovation, water filter, gym design)","Founder — in-kind (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม)"],["Project Rock (wall-scope discount + brand)","Project Rock (ส่วนลดงานผนัง + แบรนด์)"],["Price per share (same for everyone)","ราคาต่อหุ้น (ทุกฝ่ายเท่ากัน)"],
+["Shareholding structure","โครงสร้างผู้ถือหุ้น"],["Investors (cash)","นักลงทุน (เงินสด)"],["Founder — sweat (building, sourcing, management + rent waived until payback)","Founder — sweat (อาคาร sourcing บริหาร + ค่าเช่าที่เว้นจนคืนทุน)"],["Founder — in-kind (AC, renovation, water filter, gym design, electrical)","Founder — in-kind (แอร์ รีโนเวท เครื่องกรองน้ำ ออกแบบยิม ระบบไฟฟ้า)"],["Project Rock (wall-scope discount + brand)","Project Rock (ส่วนลดงานผนัง + แบรนด์)"],["Price per share (same for everyone)","ราคาต่อหุ้น (ทุกฝ่ายเท่ากัน)"],
 ["Returns & exit (liquidity)","ผลตอบแทน & ทางออก (Exit / Liquidity)"],["Dividends are the main route","เงินปันผลคือทางหลัก"],["— most of the investment is returned through dividends (base case payback ≈ {#} yrs), after which shares keep yielding","— เงินลงทุนส่วนใหญ่คืนผ่านปันผล (base case คืนทุน ≈ {#} ปี) หลังจากนั้นถือหุ้นรับ yield ต่อเนื่อง"],["Share sale","การขายหุ้น"],["— shares are transferable; existing shareholders / the company hold a right of first refusal at a pre-agreed price formula such as an EBITDA multiple or an independent valuation","— โอนหุ้นได้ โดยผู้ถือหุ้นเดิม/บริษัทมีสิทธิ์ซื้อก่อน (right of first refusal) ที่สูตรราคาตกลงล่วงหน้า เช่น EBITDA multiple หรือการประเมินมูลค่าโดยอิสระ"],["Lock-up {#}–{#} yrs","Lock-up {#}–{#} ปี"],["— through the ramp-up period for company stability","— ช่วง ramp-up เพื่อความมั่นคงของบริษัท"],["— if a buyer takes the whole business, every share gets the same terms","— หากมีผู้ซื้อทั้งกิจการ ทุกหุ้นได้เงื่อนไขเดียวกัน"],["No forced buy-back","ไม่มี forced buy-back"],["— the Founder has no obligation to repurchase shares (no put option)","— Founder ไม่มีภาระผูกพันต้องซื้อหุ้นคืน (ไม่มี put option)"],["All terms will be set out in a shareholders' agreement prepared by legal counsel","เงื่อนไขทั้งหมดจะระบุใน shareholders' agreement ที่จัดทำโดยที่ปรึกษากฎหมาย"],
 ["Terms & timeline","เงื่อนไขและไทม์ไลน์"],["Structure","โครงสร้าง"],["A limited company (SPV) operating the gym","บริษัทจำกัด (SPV) ดำเนินธุรกิจยิม"],["Raise size","ขนาดการระดมทุน"],["Cash THB {#} — {#} shares × THB {#} (post-money THB {#})","เงินสด THB {#} — {#} หุ้น × THB {#} (post-money THB {#})"],["Shareholding","สัดส่วนหุ้น"],["Investors {#}% · Founder {#}% (sweat {#}% + in-kind {#}%) · Project Rock {#}% — Founder + PR {#}%","นักลงทุน {#}% · Founder {#}% (sweat {#}% + in-kind {#}%) · Project Rock {#}% — Founder + PR {#}%"],
 ["The Founder builds the AC, renovation works and water filter worth THB {#} and transfers them to the company at cost for {#} shares (same share price as investors)","Founder สร้างแอร์ งานรีโนเวท เครื่องกรองน้ำ มูลค่า THB {#} โอนเข้าบริษัทในราคาต้นทุน แลกหุ้น {#} หุ้น (ราคาหุ้นเดียวกับนักลงทุน)"],["Common areas","พื้นที่ส่วนกลาง"],["Toilets/showers + hold-washing room + co-working mezzanine — built and owned by the building owner (not part of the raise); the gym uses them rent-free until investors recoup · rent waived ≈ THB {#} (Base) ≈ {#}% of company value — the basis for the sweat equity","ห้องน้ำ/ห้องอาบน้ำ + ห้องล้าง holds + ชั้นลอย co-working — เจ้าของอาคารสร้างและเป็นเจ้าของ (ไม่อยู่ในการระดมทุน) ยิมใช้โดยไม่มีค่าเช่าจนกว่านักลงทุนจะคืนทุน · ค่าเช่าที่เว้น ≈ THB {#} (Base) ≈ {#}% ของมูลค่าบริษัท — ที่มาของ sweat equity"],
