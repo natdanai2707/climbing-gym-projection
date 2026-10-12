@@ -2385,7 +2385,7 @@ function renderTable(sec) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="c-name"><input type="text" value="${r.name}" onchange="DATA['${sec}'][${i}].name=this.value"/></td>
-      <td class="c-amt"><input type="number" value="${r.amt}" oninput="DATA['${sec}'][${i}].amt=parseFloat(this.value)||0;updateTotal('${sec}');recalc()"/></td>
+      <td class="c-amt"><input type="number" value="${r.amt}" oninput="setAmt('${sec}',${i},this.value)"/></td>
       <td class="c-note"><div style="display:flex;align-items:center;gap:6px;">${(MODE==='pr'&&r.pr)?`<span class="pr-badge" title="Project Rock wall-contract scope — discounted">PR −${itemDisc(r)}%</span>`:''}<input type="text" value="${r.note}" onchange="DATA['${sec}'][${i}].note=this.value"/></div></td>
       <td class="c-del" onclick="delRow('${sec}',${i})">×</td>`;
     tbody.appendChild(tr);
@@ -2413,6 +2413,18 @@ function updateTotal(sec) {
   if(el2) el2.textContent = fmt(t);
 }
 
+// Edit an amount. The OPEX electricity row mirrors the active Electricity field
+// (HVAC on / off) in Settings, so write the edit there too or recalc() reverts it.
+function setAmt(sec,i,val){
+  const v = parseFloat(val)||0;
+  DATA[sec][i].amt = v;
+  if(sec==='opex' && DATA.opex[i].name.toLowerCase().includes('electric')){
+    const hv = document.getElementById('hvac-toggle');
+    const el = document.getElementById(hv && hv.checked ? 'elec-hvac' : 'elec-no-hvac');
+    if(el) el.value = v;
+  }
+  updateTotal(sec); recalc();
+}
 function delRow(sec,i) { DATA[sec].splice(i,1); renderTable(sec); recalc(); }
 function addRow(sec) { DATA[sec].push({name:'New item',amt:0,note:''}); renderTable(sec); }
 
