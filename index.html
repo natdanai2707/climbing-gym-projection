@@ -944,7 +944,7 @@ body.mode-solo .ptbl .col-bp { display: none !important; }
           </div>
           <div class="field pr-only">
             <span class="field-label">Price per 1% of equity (THB) — 0 = auto</span>
-            <input class="field-input" id="pr-price" type="number" step="1000" value="125000" oninput="recalc()">
+            <input class="field-input" id="pr-price" type="number" step="1000" value="0" oninput="recalc()">
             <span class="field-hint">One price for investors and founder. Auto = net fit-out ÷ cash pool; a fixed price keeps investors' cash unchanged when fit-out items move</span>
           </div>
           <div class="field pr-only">
@@ -1907,7 +1907,7 @@ const SETTINGS_SOLO = {
 };
 
 const SETTINGS_PR = Object.assign({}, SETTINGS_SOLO, {
-  prEq:'0', prEqRoy:'5', prSweat:'25', prFcash:'15', prPrice:'125000', prDisc:'15', prRent:'48000', prRentEsc:'10', prCamSqm:'400', prCamRate:'15', royaltyPct:'0',
+  prEq:'0', prEqRoy:'5', prSweat:'25', prFcash:'15', prPrice:'0', prDisc:'15', prRent:'48000', prRentEsc:'10', prCamSqm:'400', prCamRate:'15', royaltyPct:'0',
 });
 
 const LEASEHOLD = 9650000;
@@ -3028,6 +3028,7 @@ function exportData() {
     prEqRoy:      document.getElementById('pr-eq-roy').value,
     prSweat:      document.getElementById('pr-sweat').value,
     prFcash:      document.getElementById('pr-fcash').value,
+    prPrice:      document.getElementById('pr-price').value,
     prDisc:       document.getElementById('pr-disc').value,
     prRent:       document.getElementById('pr-rent').value,
     prRentEsc:    document.getElementById('pr-rent-esc').value,
@@ -3079,6 +3080,7 @@ function importData(event) {
   reader.onload = e => {
     try {
       const payload = JSON.parse(e.target.result);
+      if (payload.mode && payload.mode !== MODE && ['jv','solo','pr'].includes(payload.mode)) selectMode(payload.mode);   // switch first so mode-only sections (e.g. In-kind) load
       if (payload.data) {
         Object.keys(payload.data).forEach(sec => {
           if (DATA[sec]) DATA[sec] = payload.data[sec];
@@ -3096,7 +3098,7 @@ function importData(event) {
         set('jv-visits', s.jvVisits); set('jv-walkin', s.jvWalkin);
         set('jv-rent-sqm', s.jvRentSqm); set('jv-sqm', s.jvSqm);
         set('royalty-pct', s.royaltyPct);
-        set('pr-eq', s.prEq); set('pr-eq-roy', s.prEqRoy); set('pr-sweat', s.prSweat); set('pr-fcash', s.prFcash); set('pr-disc', s.prDisc);
+        set('pr-eq', s.prEq); set('pr-eq-roy', s.prEqRoy); set('pr-sweat', s.prSweat); set('pr-fcash', s.prFcash); set('pr-price', s.prPrice!==undefined ? s.prPrice : '0'); set('pr-disc', s.prDisc);
         set('pr-rent', s.prRent); set('pr-rent-esc', s.prRentEsc);
         set('pr-cam-sqm', s.prCamSqm); set('pr-cam-rate', s.prCamRate);
         set('elec-hvac', s.elecHvac); set('elec-no-hvac', s.elecNoHvac);
