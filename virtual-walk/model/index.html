@@ -1,0 +1,23 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Active Space Hat Yai · 3D Model</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#111214;overflow:hidden;font-family:"IBM Plex Sans Thai",system-ui,sans-serif;color:#f2f0ea}
+#app{position:fixed;inset:0;touch-action:none}
+.panel{position:fixed;display:flex;flex-wrap:wrap;gap:4px;z-index:2}
+#title{top:10px;left:10px;font-weight:600;font-size:14px;letter-spacing:.02em;background:rgba(17,18,20,.7);padding:6px 10px}
+#views{top:44px;left:10px}
+#layers{left:10px;right:10px;bottom:52px}
+#cutbox{left:10px;right:10px;bottom:10px;align-items:center;background:rgba(17,18,20,.75);padding:6px 10px;font-size:13px}
+#cutbox input{flex:1}
+button{font:inherit;font-size:13px;color:#f2f0ea;background:rgba(30,31,34,.85);border:1px solid #3a3b40;padding:7px 11px;cursor:pointer}
+button.on{background:#f2f0ea;color:#111214;border-color:#f2f0ea}
+#status{position:fixed;inset:0;display:grid;place-items:center;font-size:14px;color:#aaa;pointer-events:none}
+</style></head><body>
+<div id="app"></div>
+<div id="title" class="panel">ACTIVE SPACE HAT YAI · โมเดล 3D</div>
+<div id="views" class="panel"></div>
+<div id="layers" class="panel"></div>
+<div id="cutbox" class="panel">ตัดระดับ <input id="cut" type="range" min="1" max="15" step=".1" value="15"> <span id="cutv">ไม่ตัด</span></div>
+<div id="status">กำลังโหลดโมเดล…</div>
+<script src="app.js"></script></body></html>
