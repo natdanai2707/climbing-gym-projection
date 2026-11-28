@@ -1,0 +1,1586 @@
+[
+ {
+  "member": "B071",
+  "sec": "H400x200x8x13",
+  "role": "mezz 9.0 m beam x6.66",
+  "hits": 2779,
+  "category": "interior",
+  "at": [
+   6.68,
+   90.76,
+   3.76
+  ],
+  "min": [
+   6.67,
+   90.0,
+   3.67
+  ],
+  "max": [
+   6.71,
+   96.2,
+   4.03
+  ]
+ },
+ {
+  "member": "C014",
+  "sec": "H400x200x8x13",
+  "role": "portal column B/7",
+  "hits": 1735,
+  "category": "interior",
+  "at": [
+   16.68,
+   110.67,
+   1.89
+  ],
+  "min": [
+   16.61,
+   110.56,
+   1.13
+  ],
+  "max": [
+   16.81,
+   110.74,
+   2.27
+  ]
+ },
+ {
+  "member": "J022",
+  "sec": "H300x150x6.5x9",
+  "role": "bouldering deck joist x9.86",
+  "hits": 204,
+  "category": "interior",
+  "at": [
+   9.86,
+   71.87,
+   5.98
+  ],
+  "min": [
+   9.79,
+   70.19,
+   5.97
+  ],
+  "max": [
+   9.93,
+   73.51,
+   6.0
+  ]
+ },
+ {
+  "member": "GF014",
+  "sec": "RHS100x50x3.2",
+  "role": "partition head beam +6.3 (gypsum above to rafter 5)",
+  "hits": 103,
+  "category": "interior",
+  "at": [
+   4.87,
+   97.6,
+   6.29
+  ],
+  "min": [
+   -3.93,
+   97.59,
+   6.26
+  ],
+  "max": [
+   15.46,
+   97.61,
+   6.3
+  ]
+ },
+ {
+  "member": "J004",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y76.40",
+  "hits": 96,
+  "category": "interior",
+  "at": [
+   -3.6,
+   76.4,
+   3.39
+  ],
+  "min": [
+   -4.51,
+   76.36,
+   3.38
+  ],
+  "max": [
+   -2.69,
+   76.44,
+   3.42
+  ]
+ },
+ {
+  "member": "J005",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y79.40",
+  "hits": 96,
+  "category": "interior",
+  "at": [
+   -3.32,
+   79.4,
+   3.59
+  ],
+  "min": [
+   -4.32,
+   79.36,
+   3.58
+  ],
+  "max": [
+   -2.32,
+   79.44,
+   3.62
+  ]
+ },
+ {
+  "member": "J006",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y83.90",
+  "hits": 96,
+  "category": "interior",
+  "at": [
+   -2.96,
+   83.9,
+   3.79
+  ],
+  "min": [
+   -4.08,
+   83.86,
+   3.78
+  ],
+  "max": [
+   -1.84,
+   83.94,
+   3.82
+  ]
+ },
+ {
+  "member": "J007",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y86.90",
+  "hits": 96,
+  "category": "interior",
+  "at": [
+   -2.53,
+   86.9,
+   3.99
+  ],
+  "min": [
+   -3.79,
+   86.86,
+   3.98
+  ],
+  "max": [
+   -1.27,
+   86.94,
+   4.02
+  ]
+ },
+ {
+  "member": "J011",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y99.12",
+  "hits": 96,
+  "category": "interior",
+  "at": [
+   -2.53,
+   99.12,
+   3.99
+  ],
+  "min": [
+   -3.79,
+   99.08,
+   3.98
+  ],
+  "max": [
+   -1.27,
+   99.16,
+   4.02
+  ]
+ },
+ {
+  "member": "J012",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y102.12",
+  "hits": 96,
+  "category": "interior",
+  "at": [
+   -2.96,
+   102.12,
+   3.79
+  ],
+  "min": [
+   -4.08,
+   102.08,
+   3.78
+  ],
+  "max": [
+   -1.84,
+   102.16,
+   3.82
+  ]
+ },
+ {
+  "member": "J013",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y106.62",
+  "hits": 96,
+  "category": "interior",
+  "at": [
+   -3.32,
+   106.62,
+   3.59
+  ],
+  "min": [
+   -4.32,
+   106.58,
+   3.58
+  ],
+  "max": [
+   -2.32,
+   106.66,
+   3.62
+  ]
+ },
+ {
+  "member": "J001",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y69.47",
+  "hits": 56,
+  "category": "interior",
+  "at": [
+   -3.74,
+   69.49,
+   3.2
+  ],
+  "min": [
+   -4.6,
+   69.44,
+   3.18
+  ],
+  "max": [
+   -2.88,
+   69.51,
+   3.22
+  ]
+ },
+ {
+  "member": "J016",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y115.21",
+  "hits": 48,
+  "category": "interior",
+  "at": [
+   -3.74,
+   115.21,
+   3.19
+  ],
+  "min": [
+   -4.6,
+   115.19,
+   3.18
+  ],
+  "max": [
+   -2.88,
+   115.22,
+   3.22
+  ]
+ },
+ {
+  "member": "B015",
+  "sec": "H250x125x6x9",
+  "role": "front L2 inner edge beam y74.90-77.90",
+  "hits": 26,
+  "category": "glass",
+  "at": [
+   -1.97,
+   75.79,
+   3.28
+  ],
+  "min": [
+   -1.99,
+   75.07,
+   3.22
+  ],
+  "max": [
+   -1.95,
+   76.15,
+   3.33
+  ]
+ },
+ {
+  "member": "GF014",
+  "sec": "RHS100x50x3.2",
+  "role": "partition head beam +6.3 (gypsum above to rafter 5)",
+  "hits": 26,
+  "category": "wall/cladding",
+  "at": [
+   5.36,
+   97.6,
+   6.3
+  ],
+  "min": [
+   -4.17,
+   97.59,
+   6.3
+  ],
+  "max": [
+   16.65,
+   97.6,
+   6.3
+  ]
+ },
+ {
+  "member": "GF013",
+  "sec": "RHS100x50x3.2",
+  "role": "Edge partition post",
+  "hits": 25,
+  "category": "interior",
+  "at": [
+   -0.09,
+   97.57,
+   5.57
+  ],
+  "min": [
+   -0.1,
+   97.56,
+   4.23
+  ],
+  "max": [
+   -0.08,
+   97.59,
+   6.27
+  ]
+ },
+ {
+  "member": "C003",
+  "sec": "H588x300x12x20",
+  "role": "portal column A/2",
+  "hits": 24,
+  "category": "interior",
+  "at": [
+   -4.85,
+   74.6,
+   4.17
+  ],
+  "min": [
+   -4.97,
+   74.6,
+   3.4
+  ],
+  "max": [
+   -4.52,
+   74.6,
+   4.45
+  ]
+ },
+ {
+  "member": "C015",
+  "sec": "H400x200x8x13",
+  "role": "portal column A/8",
+  "hits": 22,
+  "category": "interior",
+  "at": [
+   -4.88,
+   117.2,
+   4.15
+  ],
+  "min": [
+   -4.97,
+   117.2,
+   3.4
+  ],
+  "max": [
+   -4.67,
+   117.2,
+   4.45
+  ]
+ },
+ {
+  "member": "B005",
+  "sec": "H300x150x6.5x9",
+  "role": "front L2 cross beam 5 (column A flange -> inner edge)",
+  "hits": 22,
+  "category": "glass",
+  "at": [
+   -1.97,
+   97.43,
+   3.88
+  ],
+  "min": [
+   -1.99,
+   97.4,
+   3.79
+  ],
+  "max": [
+   -1.95,
+   97.51,
+   3.98
+  ]
+ },
+ {
+  "member": "C008",
+  "sec": "H588x300x12x20",
+  "role": "portal column B/4",
+  "hits": 18,
+  "category": "interior",
+  "at": [
+   16.49,
+   88.55,
+   2.04
+  ],
+  "min": [
+   16.43,
+   88.4,
+   1.62
+  ],
+  "max": [
+   16.81,
+   88.59,
+   4.15
+  ]
+ },
+ {
+  "member": "B004",
+  "sec": "H300x150x6.5x9",
+  "role": "front L2 cross beam 4 (column A flange -> inner edge)",
+  "hits": 18,
+  "category": "glass",
+  "at": [
+   -1.97,
+   88.41,
+   3.87
+  ],
+  "min": [
+   -1.99,
+   88.4,
+   3.79
+  ],
+  "max": [
+   -1.95,
+   88.48,
+   3.98
+  ]
+ },
+ {
+  "member": "J018",
+  "sec": "H300x150x6.5x9",
+  "role": "bouldering deck joist x0.89",
+  "hits": 18,
+  "category": "climbing wall",
+  "at": [
+   0.89,
+   70.33,
+   6.06
+  ],
+  "min": [
+   0.85,
+   70.2,
+   6.01
+  ],
+  "max": [
+   0.95,
+   70.45,
+   6.14
+  ]
+ },
+ {
+  "member": "B006",
+  "sec": "H300x150x6.5x9",
+  "role": "front L2 cross beam 6 (column A flange -> inner edge)",
+  "hits": 17,
+  "category": "glass",
+  "at": [
+   -1.97,
+   104.07,
+   3.6
+  ],
+  "min": [
+   -1.99,
+   104.0,
+   3.6
+  ],
+  "max": [
+   -1.95,
+   104.12,
+   3.6
+  ]
+ },
+ {
+  "member": "J006",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y83.90",
+  "hits": 16,
+  "category": "glass",
+  "at": [
+   -1.97,
+   83.9,
+   3.78
+  ],
+  "min": [
+   -1.99,
+   83.9,
+   3.72
+  ],
+  "max": [
+   -1.95,
+   83.9,
+   3.85
+  ]
+ },
+ {
+  "member": "J012",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y102.12",
+  "hits": 16,
+  "category": "glass",
+  "at": [
+   -1.97,
+   102.12,
+   3.78
+  ],
+  "min": [
+   -1.99,
+   102.12,
+   3.72
+  ],
+  "max": [
+   -1.95,
+   102.12,
+   3.85
+  ]
+ },
+ {
+  "member": "C034",
+  "sec": "H200x200x8x12",
+  "role": "platform post (confirm)",
+  "hits": 16,
+  "category": "interior",
+  "at": [
+   12.88,
+   84.42,
+   2.6
+  ],
+  "min": [
+   12.86,
+   84.4,
+   2.07
+  ],
+  "max": [
+   12.96,
+   84.5,
+   3.13
+  ]
+ },
+ {
+  "member": "J007",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y86.90",
+  "hits": 14,
+  "category": "glass",
+  "at": [
+   -1.97,
+   86.9,
+   3.9
+  ],
+  "min": [
+   -1.99,
+   86.9,
+   3.88
+  ],
+  "max": [
+   -1.95,
+   86.9,
+   3.98
+  ]
+ },
+ {
+  "member": "J011",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y99.12",
+  "hits": 14,
+  "category": "glass",
+  "at": [
+   -1.97,
+   99.12,
+   3.9
+  ],
+  "min": [
+   -1.99,
+   99.12,
+   3.88
+  ],
+  "max": [
+   -1.95,
+   99.12,
+   3.98
+  ]
+ },
+ {
+  "member": "B052",
+  "sec": "H250x125x6x9",
+  "role": "front L2 step beam y77.90 (+3.6/+3.8)",
+  "hits": 14,
+  "category": "glass",
+  "at": [
+   -1.97,
+   77.9,
+   3.33
+  ],
+  "min": [
+   -1.99,
+   77.9,
+   3.26
+  ],
+  "max": [
+   -1.95,
+   77.9,
+   3.38
+  ]
+ },
+ {
+  "member": "C007",
+  "sec": "H588x300x12x20",
+  "role": "portal column A/4",
+  "hits": 11,
+  "category": "wall/cladding",
+  "at": [
+   -4.89,
+   88.5,
+   4.61
+  ],
+  "min": [
+   -4.89,
+   88.49,
+   4.2
+  ],
+  "max": [
+   -4.89,
+   88.53,
+   5.47
+  ]
+ },
+ {
+  "member": "C009",
+  "sec": "H400x200x8x13",
+  "role": "portal column A/5",
+  "hits": 10,
+  "category": "interior",
+  "at": [
+   -4.96,
+   97.53,
+   5.25
+  ],
+  "min": [
+   -4.97,
+   97.52,
+   4.2
+  ],
+  "max": [
+   -4.95,
+   97.54,
+   6.3
+  ]
+ },
+ {
+  "member": "J020",
+  "sec": "H300x150x6.5x9",
+  "role": "bouldering deck joist x5.38",
+  "hits": 10,
+  "category": "climbing wall",
+  "at": [
+   5.4,
+   68.82,
+   6.0
+  ],
+  "min": [
+   5.38,
+   68.18,
+   6.0
+  ],
+  "max": [
+   5.42,
+   70.18,
+   6.0
+  ]
+ },
+ {
+  "member": "WP009",
+  "sec": "H300x150x6.5x9",
+  "role": "gable wind post 8",
+  "hits": 9,
+  "category": "wall/cladding",
+  "at": [
+   6.01,
+   117.33,
+   2.51
+  ],
+  "min": [
+   6.01,
+   117.25,
+   1.0
+  ],
+  "max": [
+   6.01,
+   117.34,
+   3.4
+  ]
+ },
+ {
+  "member": "B054",
+  "sec": "H250x125x6x9",
+  "role": "front L2 step beam y85.40 (+4.0/+4.2)",
+  "hits": 9,
+  "category": "glass",
+  "at": [
+   -1.97,
+   85.4,
+   3.78
+  ],
+  "min": [
+   -1.99,
+   85.4,
+   3.72
+  ],
+  "max": [
+   -1.95,
+   85.4,
+   3.85
+  ]
+ },
+ {
+  "member": "B055",
+  "sec": "H250x125x6x9",
+  "role": "front L2 step beam y100.62 (+4.0/+4.2)",
+  "hits": 9,
+  "category": "glass",
+  "at": [
+   -1.97,
+   100.62,
+   3.78
+  ],
+  "min": [
+   -1.99,
+   100.62,
+   3.72
+  ],
+  "max": [
+   -1.95,
+   100.62,
+   3.85
+  ]
+ },
+ {
+  "member": "GF012",
+  "sec": "RHS100x50x3.2",
+  "role": "Edge partition post",
+  "hits": 9,
+  "category": "glass",
+  "at": [
+   -1.26,
+   97.56,
+   5.27
+  ],
+  "min": [
+   -1.26,
+   97.56,
+   4.24
+  ],
+  "max": [
+   -1.26,
+   97.56,
+   6.22
+  ]
+ },
+ {
+  "member": "B003",
+  "sec": "H300x150x6.5x9",
+  "role": "front L2 cross beam 3 (column A flange -> inner edge)",
+  "hits": 8,
+  "category": "glass",
+  "at": [
+   -1.97,
+   81.53,
+   3.6
+  ],
+  "min": [
+   -1.99,
+   81.48,
+   3.6
+  ],
+  "max": [
+   -1.95,
+   81.57,
+   3.6
+  ]
+ },
+ {
+  "member": "GF003",
+  "sec": "RHS100x50x3.2",
+  "role": "courtyard glass mullion",
+  "hits": 8,
+  "category": "glass",
+  "at": [
+   -1.99,
+   90.37,
+   6.3
+  ],
+  "min": [
+   -1.99,
+   90.36,
+   5.6
+  ],
+  "max": [
+   -1.99,
+   90.38,
+   7.0
+  ]
+ },
+ {
+  "member": "GF007",
+  "sec": "RHS100x50x3.2",
+  "role": "courtyard glass mullion",
+  "hits": 8,
+  "category": "glass",
+  "at": [
+   -1.99,
+   95.53,
+   6.3
+  ],
+  "min": [
+   -1.99,
+   95.52,
+   5.6
+  ],
+  "max": [
+   -1.99,
+   95.53,
+   7.0
+  ]
+ },
+ {
+  "member": "C012",
+  "sec": "H400x200x8x13",
+  "role": "portal column B/6",
+  "hits": 6,
+  "category": "interior",
+  "at": [
+   16.81,
+   104.0,
+   2.3
+  ],
+  "min": [
+   16.81,
+   104.0,
+   1.0
+  ],
+  "max": [
+   16.81,
+   104.0,
+   3.6
+  ]
+ },
+ {
+  "member": "WP006",
+  "sec": "H300x150x6.5x9",
+  "role": "gable wind post 1",
+  "hits": 6,
+  "category": "wall/cladding",
+  "at": [
+   6.0,
+   67.83,
+   14.82
+  ],
+  "min": [
+   6.0,
+   67.8,
+   14.47
+  ],
+  "max": [
+   6.01,
+   67.85,
+   15.0
+  ]
+ },
+ {
+  "member": "GF013",
+  "sec": "RHS100x50x3.2",
+  "role": "Edge partition post",
+  "hits": 5,
+  "category": "glass",
+  "at": [
+   -0.09,
+   97.56,
+   5.32
+  ],
+  "min": [
+   -0.09,
+   97.56,
+   5.25
+  ],
+  "max": [
+   -0.09,
+   97.56,
+   5.6
+  ]
+ },
+ {
+  "member": "C005",
+  "sec": "H588x300x12x20",
+  "role": "portal column A/3",
+  "hits": 4,
+  "category": "wall/cladding",
+  "at": [
+   -4.89,
+   81.54,
+   4.25
+  ],
+  "min": [
+   -4.89,
+   81.45,
+   3.8
+  ],
+  "max": [
+   -4.89,
+   81.63,
+   4.75
+  ]
+ },
+ {
+  "member": "C014",
+  "sec": "H400x200x8x13",
+  "role": "portal column B/7",
+  "hits": 4,
+  "category": "wall/cladding",
+  "at": [
+   16.88,
+   110.66,
+   3.82
+  ],
+  "min": [
+   16.85,
+   110.64,
+   1.0
+  ],
+  "max": [
+   16.94,
+   110.67,
+   5.67
+  ]
+ },
+ {
+  "member": "G112",
+  "sec": "C150x65x20x3.2",
+  "role": "gable girt 8",
+  "hits": 4,
+  "category": "glass",
+  "at": [
+   -1.97,
+   117.5,
+   2.18
+  ],
+  "min": [
+   -1.99,
+   117.5,
+   2.18
+  ],
+  "max": [
+   -1.95,
+   117.5,
+   2.18
+  ]
+ },
+ {
+  "member": "J013",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y106.62",
+  "hits": 4,
+  "category": "glass",
+  "at": [
+   -1.97,
+   106.62,
+   3.6
+  ],
+  "min": [
+   -1.97,
+   106.62,
+   3.6
+  ],
+  "max": [
+   -1.97,
+   106.62,
+   3.6
+  ]
+ },
+ {
+  "member": "B053",
+  "sec": "H250x125x6x9",
+  "role": "front L2 step beam y82.40 (+3.8/+4.0)",
+  "hits": 4,
+  "category": "glass",
+  "at": [
+   -1.97,
+   82.4,
+   3.6
+  ],
+  "min": [
+   -1.97,
+   82.4,
+   3.6
+  ],
+  "max": [
+   -1.97,
+   82.4,
+   3.6
+  ]
+ },
+ {
+  "member": "B056",
+  "sec": "H250x125x6x9",
+  "role": "front L2 step beam y103.62 (+3.8/+4.0)",
+  "hits": 4,
+  "category": "glass",
+  "at": [
+   -1.97,
+   103.62,
+   3.6
+  ],
+  "min": [
+   -1.97,
+   103.62,
+   3.6
+  ],
+  "max": [
+   -1.97,
+   103.62,
+   3.6
+  ]
+ },
+ {
+  "member": "B079",
+  "sec": "H250x125x6x9",
+  "role": "platform edge beam (confirm)",
+  "hits": 4,
+  "category": "interior",
+  "at": [
+   15.76,
+   84.45,
+   3.93
+  ],
+  "min": [
+   15.31,
+   84.4,
+   3.93
+  ],
+  "max": [
+   16.21,
+   84.5,
+   3.93
+  ]
+ },
+ {
+  "member": "HN009",
+  "sec": "H400x200x8x13",
+  "role": "haunch A/5",
+  "hits": 3,
+  "category": "interior",
+  "at": [
+   -3.93,
+   97.53,
+   6.3
+  ],
+  "min": [
+   -3.94,
+   97.52,
+   6.3
+  ],
+  "max": [
+   -3.93,
+   97.54,
+   6.3
+  ]
+ },
+ {
+  "member": "C012",
+  "sec": "H400x200x8x13",
+  "role": "portal column B/6",
+  "hits": 3,
+  "category": "wall/cladding",
+  "at": [
+   16.86,
+   104.07,
+   4.76
+  ],
+  "min": [
+   16.85,
+   104.07,
+   2.93
+  ],
+  "max": [
+   16.86,
+   104.07,
+   5.67
+  ]
+ },
+ {
+  "member": "WP011",
+  "sec": "H300x150x6.5x9",
+  "role": "wind post B lobby bay",
+  "hits": 3,
+  "category": "wall/cladding",
+  "at": [
+   16.91,
+   92.95,
+   3.47
+  ],
+  "min": [
+   16.91,
+   92.95,
+   1.0
+  ],
+  "max": [
+   16.91,
+   92.95,
+   4.7
+  ]
+ },
+ {
+  "member": "J023",
+  "sec": "H300x150x6.5x9",
+  "role": "bouldering deck joist x12.10",
+  "hits": 3,
+  "category": "climbing wall",
+  "at": [
+   12.12,
+   70.28,
+   6.13
+  ],
+  "min": [
+   12.1,
+   70.27,
+   6.1
+  ],
+  "max": [
+   12.15,
+   70.29,
+   6.15
+  ]
+ },
+ {
+  "member": "C004",
+  "sec": "H588x300x12x20",
+  "role": "portal column B/2",
+  "hits": 2,
+  "category": "climbing wall",
+  "at": [
+   16.91,
+   74.64,
+   6.83
+  ],
+  "min": [
+   16.91,
+   74.64,
+   3.31
+  ],
+  "max": [
+   16.91,
+   74.64,
+   10.36
+  ]
+ },
+ {
+  "member": "C016",
+  "sec": "H400x200x8x13",
+  "role": "portal column B/8",
+  "hits": 2,
+  "category": "wall/cladding",
+  "at": [
+   16.86,
+   117.27,
+   4.3
+  ],
+  "min": [
+   16.85,
+   117.27,
+   2.93
+  ],
+  "max": [
+   16.86,
+   117.27,
+   5.67
+  ]
+ },
+ {
+  "member": "WP007",
+  "sec": "H300x150x6.5x9",
+  "role": "gable wind post 1",
+  "hits": 2,
+  "category": "wall/cladding",
+  "at": [
+   9.67,
+   67.81,
+   14.99
+  ],
+  "min": [
+   9.67,
+   67.75,
+   14.98
+  ],
+  "max": [
+   9.67,
+   67.87,
+   15.0
+  ]
+ },
+ {
+  "member": "ES007",
+  "sec": "C150x65x20x3.2",
+  "role": "eave strut A 4-5",
+  "hits": 2,
+  "category": "wall/cladding",
+  "at": [
+   -4.89,
+   88.6,
+   6.9
+  ],
+  "min": [
+   -4.89,
+   88.6,
+   6.9
+  ],
+  "max": [
+   -4.89,
+   88.6,
+   6.9
+  ]
+ },
+ {
+  "member": "RB017",
+  "sec": "RB20",
+  "role": "roof X-brace 4-5",
+  "hits": 2,
+  "category": "wall/cladding",
+  "at": [
+   -3.65,
+   90.42,
+   7.0
+  ],
+  "min": [
+   -3.65,
+   90.42,
+   7.0
+  ],
+  "max": [
+   -3.65,
+   90.42,
+   7.0
+  ]
+ },
+ {
+  "member": "J004",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y76.40",
+  "hits": 2,
+  "category": "glass",
+  "at": [
+   -1.96,
+   76.4,
+   3.34
+  ],
+  "min": [
+   -1.96,
+   76.4,
+   3.34
+  ],
+  "max": [
+   -1.96,
+   76.4,
+   3.35
+  ]
+ },
+ {
+  "member": "J005",
+  "sec": "H200x100x5.5x8",
+  "role": "front L2 joist y79.40",
+  "hits": 2,
+  "category": "glass",
+  "at": [
+   -1.96,
+   79.4,
+   3.54
+  ],
+  "min": [
+   -1.96,
+   79.4,
+   3.54
+  ],
+  "max": [
+   -1.96,
+   79.4,
+   3.54
+  ]
+ },
+ {
+  "member": "J021",
+  "sec": "H300x150x6.5x9",
+  "role": "bouldering deck joist x7.62",
+  "hits": 2,
+  "category": "climbing wall",
+  "at": [
+   7.67,
+   68.55,
+   6.0
+  ],
+  "min": [
+   7.67,
+   68.29,
+   6.0
+  ],
+  "max": [
+   7.67,
+   68.8,
+   6.0
+  ]
+ },
+ {
+  "member": "B073",
+  "sec": "H400x200x8x13",
+  "role": "mezz 9.0 m beam x10.68",
+  "hits": 2,
+  "category": "interior",
+  "at": [
+   10.71,
+   94.85,
+   4.0
+  ],
+  "min": [
+   10.71,
+   94.85,
+   4.0
+  ],
+  "max": [
+   10.71,
+   94.85,
+   4.0
+  ]
+ },
+ {
+  "member": "C035",
+  "sec": "H200x200x8x12",
+  "role": "platform post (confirm)",
+  "hits": 2,
+  "category": "interior",
+  "at": [
+   16.61,
+   84.45,
+   2.6
+  ],
+  "min": [
+   16.61,
+   84.4,
+   2.07
+  ],
+  "max": [
+   16.61,
+   84.5,
+   3.13
+  ]
+ },
+ {
+  "member": "R003",
+  "sec": "H500x200x10x16",
+  "role": "rafter A-ridge 2",
+  "hits": 1,
+  "category": "wall/cladding",
+  "at": [
+   -4.67,
+   74.59,
+   14.98
+  ],
+  "min": [
+   -4.67,
+   74.59,
+   14.98
+  ],
+  "max": [
+   -4.67,
+   74.59,
+   14.98
+  ]
+ },
+ {
+  "member": "R006",
+  "sec": "H500x200x10x16",
+  "role": "rafter B-ridge 3",
+  "hits": 1,
+  "category": "wall/cladding",
+  "at": [
+   16.68,
+   81.59,
+   14.98
+  ],
+  "min": [
+   16.68,
+   81.59,
+   14.98
+  ],
+  "max": [
+   16.68,
+   81.59,
+   14.98
+  ]
+ },
+ {
+  "member": "WP005",
+  "sec": "H300x150x6.5x9",
+  "role": "gable wind post 1",
+  "hits": 1,
+  "category": "wall/cladding",
+  "at": [
+   2.34,
+   67.74,
+   15.0
+  ],
+  "min": [
+   2.34,
+   67.74,
+   15.0
+  ],
+  "max": [
+   2.34,
+   67.74,
+   15.0
+  ]
+ },
+ {
+  "member": "RB018",
+  "sec": "RB20",
+  "role": "roof X-brace 4-5",
+  "hits": 1,
+  "category": "wall/cladding",
+  "at": [
+   -3.67,
+   95.5,
+   7.0
+  ],
+  "min": [
+   -3.67,
+   95.5,
+   7.0
+  ],
+  "max": [
+   -3.67,
+   95.5,
+   7.0
+  ]
+ },
+ {
+  "member": "B043",
+  "sec": "H250x125x6x9",
+  "role": "front L2 inner edge beam y108.12-110.65",
+  "hits": 1,
+  "category": "glass",
+  "at": [
+   -1.96,
+   110.62,
+   3.31
+  ],
+  "min": [
+   -1.96,
+   110.62,
+   3.31
+  ],
+  "max": [
+   -1.96,
+   110.62,
+   3.31
+  ]
+ },
+ {
+  "member": "B045",
+  "sec": "H250x125x6x9",
+  "role": "front L2 inner edge beam y110.65-111.12",
+  "hits": 1,
+  "category": "glass",
+  "at": [
+   -1.99,
+   110.79,
+   3.31
+  ],
+  "min": [
+   -1.99,
+   110.79,
+   3.31
+  ],
+  "max": [
+   -1.99,
+   110.79,
+   3.31
+  ]
+ },
+ {
+  "member": "J019",
+  "sec": "H300x150x6.5x9",
+  "role": "bouldering deck joist x3.13",
+  "hits": 1,
+  "category": "climbing wall",
+  "at": [
+   3.13,
+   69.55,
+   6.0
+  ],
+  "min": [
+   3.13,
+   69.55,
+   6.0
+  ],
+  "max": [
+   3.13,
+   69.55,
+   6.0
+  ]
+ },
+ {
+  "member": "B074",
+  "sec": "H400x200x8x13",
+  "role": "mezz 9.0 m beam x12.68",
+  "hits": 1,
+  "category": "interior",
+  "at": [
+   12.74,
+   94.87,
+   4.0
+  ],
+  "min": [
+   12.74,
+   94.87,
+   4.0
+  ],
+  "max": [
+   12.74,
+   94.87,
+   4.0
+  ]
+ },
+ {
+  "member": "B075",
+  "sec": "H400x200x8x13",
+  "role": "mezz 9.0 m beam x14.69",
+  "hits": 1,
+  "category": "interior",
+  "at": [
+   14.77,
+   94.84,
+   4.0
+  ],
+  "min": [
+   14.77,
+   94.84,
+   4.0
+  ],
+  "max": [
+   14.77,
+   94.84,
+   4.0
+  ]
+ }
+]

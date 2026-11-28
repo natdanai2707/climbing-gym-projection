@@ -1,0 +1,300 @@
+<meta charset="utf-8">
+<title>Active Space Steel P2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* layout: viewer band on top (3D + filter rail + member card), review document below in one 72ch column, drawings as a wide strip */
+:root{
+  --bg:#f3f4f2; --panel:#ffffff; --ink:#1d2326; --mute:#5d686d; --line:#d5d9d7;
+  --oxide:#a8432b;          /* red-oxide primer: accent */
+  --steel:#3d5a6c; --ok:#2f7d4f; --warn:#b07a12; --bad:#b3362b;
+  --vbg:#e9ecea;
+  --f-body:"IBM Plex Sans Thai",system-ui,sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151a1c; --panel:#1d2427; --ink:#e7ebe9; --mute:#9aa6aa; --line:#2f393d; --oxide:#e0775b; --steel:#8fb0c4;
+  --ok:#6cc08f; --warn:#e2b04f; --bad:#ef7b6e; --vbg:#11161a; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#151a1c; --panel:#1d2427; --ink:#e7ebe9; --mute:#9aa6aa; --line:#2f393d; --oxide:#e0775b; --steel:#8fb0c4;
+  --ok:#6cc08f; --warn:#e2b04f; --bad:#ef7b6e; --vbg:#11161a; color-scheme:dark}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px;max-width:1280px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-bottom:14px}
+h1{font-size:1.45rem;font-weight:600;margin:0;text-wrap:balance}
+.tag{font-family:var(--f-mono);font-size:.78rem;color:var(--mute);letter-spacing:.04em}
+.viewer{display:grid;grid-template-columns:230px minmax(0,1fr);gap:12px}
+@media (max-width:820px){.viewer{grid-template-columns:1fr}}
+.rail{background:var(--panel);border:1px solid var(--line);padding:12px;font-size:.84rem;display:flex;flex-direction:column;gap:12px;min-width:0}
+.rail h3{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 4px}
+.rail label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.sw{width:11px;height:11px;display:inline-block;flex:none}
+.rail .row{display:flex;flex-wrap:wrap;gap:4px}
+.rail button,.btn{font:inherit;font-size:.8rem;color:var(--ink);background:transparent;border:1px solid var(--line);padding:4px 8px;cursor:pointer}
+.rail button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--oxide);outline-offset:1px}
+.stage{position:relative;min-width:0;height:min(72vh,680px);min-height:420px;background:var(--vbg);border:1px solid var(--line)}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#status{position:absolute;left:12px;top:10px;font-family:var(--f-mono);font-size:.75rem;color:var(--mute);pointer-events:none}
+#card{position:absolute;right:10px;top:10px;width:min(300px,calc(100% - 20px));background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--oxide);padding:10px 12px;font-size:.8rem}
+#card .id{font-family:var(--f-mono);font-size:1rem;font-weight:500}
+#card dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:6px 0 0}
+#card dt{color:var(--mute)} #card dd{margin:0;font-family:var(--f-mono);overflow-wrap:anywhere}
+.hint{position:absolute;left:12px;bottom:10px;font-size:.72rem;color:var(--mute);pointer-events:none}
+.stats{font-family:var(--f-mono);font-size:.78rem;color:var(--mute);font-variant-numeric:tabular-nums}
+main.doc{max-width:76ch;margin:34px auto 0}
+main.doc h2{font-size:1.15rem;margin:34px 0 8px;padding-top:10px;border-top:1px solid var(--line)}
+main.doc h2 .n{font-family:var(--f-mono);color:var(--oxide);margin-right:8px;font-size:.9rem}
+.tw{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;font-size:.83rem;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);font-weight:500}
+td.m{font-family:var(--f-mono);white-space:nowrap}
+.pill{font-family:var(--f-mono);font-size:.7rem;padding:1px 6px;border:1px solid currentColor;white-space:nowrap}
+.pill.rec{color:var(--ok)} .pill.ask{color:var(--warn)} .pill.bad{color:var(--bad)}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:12px}
+.gal figure{margin:0;background:#fff;border:1px solid var(--line)}
+.gal img{display:block;width:100%;height:auto;cursor:zoom-in}
+.gal figcaption{font-size:.75rem;padding:4px 8px;color:#333;font-family:var(--f-mono)}
+#zoom{position:fixed;inset:0;background:rgba(0,0,0,.85);display:grid;place-items:center;z-index:20;overflow:auto;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+#zoom img{max-width:none;width:min(2400px,220vw);background:#fff}
+.note{font-size:.85rem;color:var(--mute)}
+code{font-family:var(--f-mono);font-size:.85em}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Active Space Hat Yai · โครงสร้างเหล็ก Phase 2 Layout</h1>
+  <span class="tag">LAYOUT r1 · 28 NOV 2026 · ขนาดหน้าตัดยังเป็นค่าเบื้องต้น (PRELIM)</span>
+</header>
+
+<section class="viewer">
+  <aside class="rail" aria-label="ตัวกรอง">
+    <div><h3>ระบบ</h3><div id="sys"></div></div>
+    <div><h3>Phase งาน</h3><div class="row" id="ph"></div></div>
+    <div><h3>สถาปัตย์ mz19</h3>
+      <label><input type="checkbox" id="arch" checked> แสดงโมเดลสถาปัตย์</label>
+      <label>ความทึบ <input type="range" id="op" min="0.05" max="1" step="0.05" value="0.25"></label>
+      <div class="row" id="alay"></div>
+    </div>
+    <div><h3>Clash</h3><label><input type="checkbox" id="clash" checked> จุด clash (pre-check)</label></div>
+    <div><h3>มุมมอง</h3><div class="row" id="views"></div></div>
+    <div class="stats" id="stats"></div>
+  </aside>
+  <div class="stage">
+    <canvas id="cv"></canvas>
+    <div id="status">กำลังโหลด…</div>
+    <div id="card" hidden></div>
+    <div class="hint">ลากหมุน · คลิกขวาเลื่อน · ล้อซูม · คลิกชิ้นเหล็กดูข้อมูล</div>
+  </div>
+</section>
+
+<main class="doc">
+<h2><span class="n">1</span>ตรวจข้อมูล (Phase 1) ผ่าน</h2>
+<ul>
+<li><code>SRC=../base OUT=… python3 build_model.py</code> ได้ <code>geo.bin</code> และ <code>geo.json</code> ตรงกับ <code>model/</code> ทุก byte (sha256 <code>b2231fa9…a8158</code>)</li>
+<li>กริดเสาจาก geometry: y = 67.75, 74.65, 81.55, 88.45, 97.45, 104.05, 110.65, 117.25 · x = −4.84 / 16.86 ตรงทั้งหมด</li>
+<li>เสาเดิมในโมเดล H300×300 (placeholder) web อยู่ในระนาบ frame, ฐาน +0.20, หัวเสา +15.00 (กริด 1–4) / +7.00 (กริด 5–8)</li>
+</ul>
+
+<h2><span class="n">2</span>ระบบโครงสร้างที่เสนอ</h2>
+<div class="tw"><table>
+<thead><tr><th>ส่วน</th><th>ระบบ</th><th>หน้าตัดเบื้องต้น</th></tr></thead>
+<tbody>
+<tr><td>Portal กริด 1–4 (ยิมปีน, eave +15.0)</td><td>Portal H ตัน + haunch 2.2 ม. ฐานยึดแน่น (fixed) คุม drift เพราะผนังปีนยึดเสาแนว B ถึง +13.0</td><td class="m">C H588×300 · R H500×200</td></tr>
+<tr><td>Portal กริด 5–8 (eave +7.0)</td><td>Portal ฐาน pin</td><td class="m">C/R H400×200</td></tr>
+<tr><td>กริด 4 (step frame)</td><td>เสาสูงถึง +15 รับหลังคาสูง + rafter หลังคาต่ำ +7 ฝากด้านเหนือ · เสา clerestory x 0.6 / 6.0 / 11.4</td><td class="m">WP H300×150</td></tr>
+<tr><td>Gable กริด 1 / 8</td><td>Portal เต็ม + เสารับลม กริด 1: x −1.40, 2.30, 6.00, 9.62 (หลบกระจก 9.72–14.61) · กริด 8: 0.6, 6.0, 11.4</td><td class="m">H300×150</td></tr>
+<tr><td>แป / sag rod</td><td>แป C ระยะ ~1.17 ม. ตามโมเดล · sag rod 1 แนว (2 แนวที่ bay 9 ม.)</td><td class="m">C150×65×20×3.2 · C200 (bay 4–5) · RB12</td></tr>
+<tr><td>Bracing หลังคา</td><td>X rod ทั้งสองลาด bay 1–2, 3–4 (หลังคาสูง) และ 4–5, 7–8 (หลังคาต่ำ) + strut CHS ที่ node</td><td class="m">RB20 · CHS114.3×4.5</td></tr>
+<tr><td>Bracing ผนัง</td><td>แนว B: bay 3–4 (2 ชั้น), 7–8 · แนว A: bay 1–2 (2 ชั้น), 7–8 · แนว B bay 1–2 ติดผนังปีน จึงย้ายไป bay 3–4</td><td class="m">RB24 / RB20</td></tr>
+<tr><td>Eave strut / girt</td><td>Eave strut ทั้ง 2 แนวทั้ง 2 โซน · girt @1.5 ม. · แนว A ใต้ L2 เป็น arcade เปิด ไม่มี girt · bay ล็อบบี้แนว B เพิ่มเสารับลม y 92.95</td><td class="m">C150×65×20×3.2</td></tr>
+<tr><td>Front L2 (+3.4 ถึง +4.2)</td><td>Cross beam ทุกกริด (end plate ติด flange เสา A → เสาใน) · edge beam นอก/ใน · step beam ที่ทุกขั้น (upstand 200) · joist @≤2.3 ม. · wing ยื่น 1.65 ม. ทั้งสองข้าง · fascia PL6 · ราว 1.1 ม.</td><td class="m">X H300×150 · E H250×125 · J H200×100 · เสาใน SHS150×150×6</td></tr>
+<tr><td>พื้น L2 bouldering +6.3</td><td>Girder ทิศเหนือ y 74.05 ช่วง 13.45 ม. <b>ไม่มีเสาใน fall zone</b> · joist ทิศ N-S 7 ตัว พาดคานบนเสา gable กริด 1 · ค้ำ N-S ในระนาบ x −1.40 / 12.15</td><td class="m">G H700×300 · J H300×150 · C H250×250</td></tr>
+<tr><td>Co-working mezz +4.2</td><td>x 6.71–16.91 · y 88.4–97.6 · คานช่วง 9.0 ม. 6 ตัว พาดคานหลักบนกริด 4 / 5 · เสา x 6.66, 11.70 + ฝากเสา B</td><td class="m">H400×200 · เสา H200×200</td></tr>
+<tr><td>ทางเชื่อม +4.2</td><td>x −0.09 → 6.66 แนวกริด 5 · หัวเสาบันไดวนยึดคานใต้</td><td class="m">H300×150</td></tr>
+<tr><td>บันได</td><td>กรรไกร: stringer 2 คู่ + ชานพัก +3.8 บนคานขอบ L2 + เสา SHS100 · บันไดวน R1.4: เสากลาง CHS219 + แขน cantilever 18 ขั้น</td><td class="m">H250×125 · CHS219.1×8.2</td></tr>
+</tbody></table></div>
+<p class="note">น้ำหนักเหล็กเบื้องต้น (ยังไม่รวม connection): <span id="wt">–</span></p>
+
+<h2><span class="n">3</span>เกณฑ์ออกแบบที่จะใช้ใน Phase 3</h2>
+<ul>
+<li><b>วิธีออกแบบ: LRFD</b> ตาม AISC 360-16 (วสท. ยอมรับ) · combos 1.4D · 1.2D+1.6L+0.5Lr · 1.2D+1.6Lr+0.5L · 1.2D+1.0W+0.5L · 0.9D+1.0W · ตรวจ serviceability ที่ค่าใช้งาน</li>
+<li><b>วัสดุ:</b> หน้าตัดรีดร้อน SS400 (Fy 245) · girder ทางเลือก SM520 (Fy 355) · แป/girt C เย็น TIS 1228 SSC400 ชุบสังกะสี · tie rod SR24 · สลักโครงหลัก F10T / A325 · secondary 8.8 · anchor SS400</li>
+<li><b>Live load:</b> พื้นยิม/mezz/front L2 5.0 kPa · บันได 5.0 kPa · ราว 0.75 kN/m แนวนอนที่ +1.1 · หลังคา 0.30 kPa (กฎกระทรวง) + จุด 1.0 kN ที่แป</li>
+<li><b>Dead load เพิ่ม:</b> slab composite 120 มม. 2.6 kPa · finish/ฝ้า/งานระบบ 1.0 kPa · หลังคา sheet+ฉนวน 0.15 kPa · ท่อแอร์แขวน 0.25 kPa (โซนท่อ)</li>
+<li><b>ลม มยผ. 1311-50:</b> สงขลา กลุ่ม 4A V50 = 25 m/s, TF = 1.2, Iw = 1.0 (ต้องเปิดตาราง ภาคผนวก ก ยืนยันอีกครั้งตอนคำนวณ) · วิธีอย่างง่าย อาคารสูง ≤ 23 ม.</li>
+<li><b>Deflection:</b> คาน/mezz L/360 (LL) · L/240 (รวม) · แป L/180 · drift เสาโซนปีน H/200 (เข้มกว่า H/150 เพราะผนังปีน)</li>
+<li><b>Vibration:</b> พื้น bouldering + mezz ตรวจตาม AISC Design Guide 11 (rhythmic + walking), เป้า fn ≥ 9 Hz สำหรับพื้นออกกำลังกาย</li>
+</ul>
+
+<h2><span class="n">4</span>แรงผนังปีนที่เสนอ (รอยืนยัน)</h2>
+<p>อิงหลักการ EN 12572-1:2017 (ผนัง lead / top rope) และ EN 12572-2 (bouldering) ผมยังไม่ได้เปิดตาราง A.1 ฉบับเต็ม ตัวเลขด้านล่างเป็นค่าที่เสนอ ต้องเทียบกับผู้ผลิตผนังและคู่มืออุปกรณ์ auto-belay ก่อนใช้</p>
+<div class="tw"><table>
+<thead><tr><th>รายการ</th><th>ค่าเสนอ (characteristic)</th><th>วิธีใส่ในโมเดล</th></tr></thead>
+<tbody>
+<tr><td>น้ำหนักผนัง (แผ่น + holds + โครงรองของผู้ผลิต)</td><td class="m">0.50 kPa ต่อพื้นที่ผิวผนัง</td><td>ลงจุดยึดตามระยะโครงรอง</td></tr>
+<tr><td>แรงตกที่ quickdraw (protection point)</td><td class="m">8.0 kN / lane</td><td>1 จุดต่อ lane ที่ตำแหน่งเลวร้ายสุด ทิศลง+ออกจากผนัง 30°</td></tr>
+<tr><td>Top anchor / lower-off</td><td class="m">12.0 kN / lane</td><td>ที่ยอดผนัง +10.5 / +13.0</td></tr>
+<tr><td>Auto-belay (TRUBLUE หรือเทียบเท่า)</td><td class="m">12.0 kN / เครื่อง</td><td>ที่จุดแขวน ทิศดิ่ง ±15° · รอคู่มือรุ่นจริง</td></tr>
+<tr><td>น้ำหนักนักปีน</td><td class="m">1.0 kN / lane</td><td>พร้อมกันทุก lane</td></tr>
+<tr><td>การเกิดพร้อมกัน (global)</td><td class="m">ตก 1 ใน 2 lane ติดกัน</td><td>ออกแบบ portal / bracing · ชิ้นรองรับเฉพาะที่ใช้ทุก lane</td></tr>
+<tr><td>Bouldering (ใต้พื้น +6.3 และ boulder กลางห้อง)</td><td class="m">0.50 kPa + 1.0 kN / 1.5 ม.</td><td>boulder กลางห้องตั้งอิสระบนพื้น ไม่ฝากโครงอาคาร</td></tr>
+<tr><td>Crash mat บนพื้น +6.3</td><td class="m">0.15 kPa SDL</td><td>LL 5.0 kPa ครอบแรงกระแทกแบบกระจายแล้ว</td></tr>
+</tbody></table></div>
+
+<h2><span class="n">5</span>เรื่องที่ต้องตัดสินใจก่อน Phase 3</h2>
+<div class="tw"><table>
+<thead><tr><th>#</th><th>ประเด็น</th><th>ข้อเสนอ</th></tr></thead>
+<tbody>
+<tr><td class="m">D1</td><td>พื้น front L2 / bouldering / mezz: แผ่นเหล็ก 12 มม. ตามโมเดล หรือ metal deck + คอนกรีต</td><td><span class="pill rec">แนะนำ</span> composite 120 มม. แผ่นเหล็ก 12 มม. บน joist 1.2 ม. แอ่น L/255 ไม่ผ่าน L/360 และสั่นมาก</td></tr>
+<tr><td class="m">D2</td><td>ฐานเสา</td><td><span class="pill rec">แนะนำ</span> fixed กริด 1–4 · pin กริด 5–8</td></tr>
+<tr><td class="m">D3</td><td>เสาหลักลึก 588 มม. ถ้าวางกลางกริด flange นอกจะทะลุแนว facade 144 มม.</td><td><span class="pill rec">ทำแล้ว</span> เสาชิดผิวนอก flange ที่ x −4.98 / +17.00 กริดสถาปัตย์ไม่ขยับ แต่ศูนย์เสาเลื่อนเข้า 0.15 ม.</td></tr>
+<tr><td class="m">D4</td><td>X-brace แนว A bay 1–2 และ 7–8 ชั้นล่างอยู่ในแนว arcade ริมถนน</td><td><span class="pill ask">ถาม</span> รับได้ไหม ถ้าไม่ ใช้ portal bay ใต้ L2 แทน (เหล็กเพิ่ม ~1.5 ตัน)</td></tr>
+<tr><td class="m">D5</td><td>Girder พื้น +6.3 ช่วง 13.45 ม. H700 หรือเพิ่มเสา 2 ต้นที่ขอบ fall zone แล้วใช้ H400</td><td><span class="pill rec">แนะนำ</span> ไม่มีเสา (ปลอดภัยกว่า)</td></tr>
+<tr><td class="m">D6</td><td>กระจก gable กริด 1 x 9.72–14.61 สูงถึง +11.4</td><td>เสารับลมหลบ ต้องมีคาน head เหนือกระจก +11.4 และเสา SHS150 รับมุมพื้น +6.3 ด้านใน (y 67.95)</td></tr>
+<tr><td class="m">D7</td><td>ตำแหน่งเสา co-working mezz x 6.66 / 11.70 บนกริด 4, 5</td><td><span class="pill ask">ถาม</span> ตรงผนัง WC/เคาน์เตอร์ไหม</td></tr>
+<tr><td class="m">D8</td><td>แผ่น +4.2 สีเทา x 12.86–16.81 y 84.4–88.4</td><td><span class="pill ask">ถาม</span> เป็นพื้นใช้งานหรือแค่หลังคาห้อง ตอนนี้ใส่โครงไว้ก่อน</td></tr>
+<tr><td class="m">D9</td><td>หลังคาห้อง Edge/WC +3.6</td><td><span class="pill ask">ถาม</span> สมมติผนังก่อรับ ไม่อยู่ใน scope เหล็ก</td></tr>
+<tr><td class="m">D10</td><td>โครงรองผนังปีน</td><td>ผู้ผลิตผนังทำ ผมเตรียมจุดยึดบนเสา B, เสา gable และพื้น +6.3 ตามแรงข้อ 4</td></tr>
+</tbody></table></div>
+
+<h2><span class="n">6</span>Clash pre-check</h2>
+<p>เทียบกล่องหน้าตัดทุกชิ้นกับ mz19 (ตัด placeholder steel เดิมออก) พบ <span id="ncl">–</span> กลุ่ม ส่วนใหญ่เป็น interface ที่ต้องการอยู่แล้ว ตารางนี้คือจุดที่ต้องแก้จริง ไฟล์เต็มพร้อมพิกัดอยู่ใน <code>structure/out/clash_P2-layout-r1.csv</code></p>
+<div class="tw"><table>
+<thead><tr><th>ชิ้น</th><th>ชนกับ</th><th>x, y, z</th><th>แก้</th></tr></thead>
+<tbody>
+<tr><td class="m">C014 เสา B/7</td><td>อุปกรณ์ Edge สีดำชิดผนังหลัง</td><td class="m">16.68, 110.67, 1.89</td><td>เลื่อนอุปกรณ์เข้า 0.35 ม.</td></tr>
+<tr><td class="m">C008 เสา B/4</td><td>สุขภัณฑ์ WC</td><td class="m">16.49, 88.55, 2.04</td><td>ขยับ WC หรือหุ้มเสาในผนัง</td></tr>
+<tr><td class="m">C003 / C015 เสา A/2, A/8</td><td>เคาน์เตอร์ริม facade บน L2</td><td class="m">−4.85, 74.60, 4.17</td><td>เคาน์เตอร์หยุดก่อนเสา 0.20 ม.</td></tr>
+<tr><td class="m">B071 คาน mezz x 6.66</td><td>ของตกแต่งสีดำใต้ขอบ mezz</td><td class="m">6.68, 90.76, 3.76</td><td>ลดระดับของ หรือย้าย</td></tr>
+<tr><td class="m">J018–J023 joist +6.3</td><td>ยอดผนัง bouldering ล่าง (5.5–6.3)</td><td class="m">0.9–12.1, 68.8–70.3, 6.0</td><td>ผนังล่างหยุดใต้ joist +5.88</td></tr>
+<tr><td class="m">J001–J016 joist L2</td><td>downlight ใต้ L2</td><td class="m">−3.7, ทุกเทอเรซ, ~3.3</td><td>วางไฟระหว่าง joist</td></tr>
+<tr><td class="m">B003–B056 คาน L2</td><td>หัวกระจกแนว x −1.97</td><td class="m">ทั้งแนว</td><td>interface: กระจกจบใต้ท้องคาน</td></tr>
+</tbody></table></div>
+
+<h2><span class="n">7</span>แบบ layout</h2>
+<div class="gal" id="gal"></div>
+<p class="note">ขั้นต่อไป (Phase 3): หลังยืนยัน D1–D10 และแรงผนังปีน จะคำนวณทุกชิ้นหลัก (frame analysis 2D ทุกกริด + เช็คชิ้นรอง) พร้อม utilization ratio</p>
+</main>
+</div>
+<div id="zoom" hidden><img id="zimg" alt=""></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const SYS={MAIN:['โครงหลัก','#b23a26'],ROOF:['แป / sag rod','#2e7fb8'],BRACE:['Bracing / strut','#14957a'],WALL:['Girt','#7b8a90'],
+  FL2:['Front L2','#d9661c'],BD:['พื้น bouldering +6.3','#8a46ad'],CM:['Co-working mezz','#b8930b'],BR:['ทางเชื่อม','#c9a21a'],STAIR:['บันได','#2a8a4a'],MISC:['ราว / กรอบกระจก','#5d6d7e']};
+const PH={1:'1 โครงหลัก',2:'2 หลังคา/ผนัง',3:'3 Front L2',4:'4 พื้น/mezz',5:'5 บันได',6:'6 งานรอง'};
+const ALAY=['wall','climb','interior','duct','roof','services','structure'];
+const IMGS=[['P2-01_roof.png','หลังคา'],['P2-02_frontL2.png','+3.4..+4.2 Front L2 / mezz'],['P2-03_boulder.png','+6.3 พื้น bouldering / บันได'],
+ ['P2-11_grid1.png','กริด 1'],['P2-12_grid2.png','กริด 2'],['P2-14_grid4.png','กริด 4'],['P2-16_grid6.png','กริด 6'],['P2-18_grid8.png','กริด 8'],
+ ['P2-21_lineA.png','แนว A'],['P2-22_lineB.png','แนว B']];
+async function getJSON(paths){for(const p of paths){try{const r=await fetch(p);if(r.ok)return await r.json()}catch(e){}}return null}
+async function getBuf(paths){for(const p of paths){try{const r=await fetch(p);if(r.ok)return await r.arrayBuffer()}catch(e){}}return null}
+const $=id=>document.getElementById(id);
+// gallery
+const gal=$('gal');
+for(const [f,c] of IMGS){const fig=document.createElement('figure');const im=document.createElement('img');im.loading='lazy';im.alt=c;
+  im.src='img/'+f; im.onerror=()=>{if(!im.dataset.f){im.dataset.f=1;im.src='../out/p2/'+f}};
+  im.onclick=()=>{$('zimg').src=im.src;$('zoom').hidden=false};fig.append(im);const cap=document.createElement('figcaption');cap.textContent=f.replace('.png','')+' · '+c;fig.append(cap);gal.append(fig)}
+$('zoom').onclick=()=>{$('zoom').hidden=true};
+
+// three
+const cv=$('cv'),stage=cv.parentElement;
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));
+const S=new THREE.Scene();const cam=new THREE.PerspectiveCamera(40,1,0.1,800);
+const ctl=new THREE.OrbitControls(cam,cv);ctl.enableDamping=true;ctl.dampingFactor=.12;
+S.add(new THREE.HemisphereLight(0xffffff,0x667788,.95));const dl=new THREE.DirectionalLight(0xffffff,.6);dl.position.set(-40,60,30);S.add(dl);
+function bg(){S.background=new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--vbg').trim()||'#e9ecea')}
+bg();matchMedia('(prefers-color-scheme: dark)').addEventListener('change',bg);
+const T=(x,y,z)=>new THREE.Vector3(x,z,-y); // model z-up -> three y-up
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(stage);
+const C0=T(6,92.5,6);
+const VIEWS={'3D':[T(-38,52,34),C0],'แปลน':[T(6.01,92.5,110),T(6,92.5,0)],'หน้า A':[T(-70,92.5,7),T(6,92.5,7)],'กริด 1':[T(6,30,8),T(6,92,8)],'L2 ซูม':[T(-16,70,12),T(-2,80,3.5)]};
+function setView(k){const [p,t]=VIEWS[k];cam.position.copy(p);ctl.target.copy(t);ctl.update()}
+for(const k in VIEWS){const b=document.createElement('button');b.textContent=k;b.onclick=()=>setView(k);$('views').append(b)}
+setView('3D');
+
+let L=null, meshes={}, ranges=[], members=[], clashGroup=new THREE.Group(), archGroup=new THREE.Group();S.add(clashGroup);S.add(archGroup);
+const onSys=new Set(Object.keys(SYS)),onPh=new Set(Object.keys(PH).map(Number));
+function sysUI(){for(const k in SYS){const l=document.createElement('label');l.innerHTML=`<input type="checkbox" id="s_${k}" checked><span class="sw" style="background:${SYS[k][1]}"></span>${SYS[k][0]}`;
+  l.querySelector('input').onchange=e=>{e.target.checked?onSys.add(k):onSys.delete(k);rebuild()};$('sys').append(l)}
+ for(const k in PH){const b=document.createElement('button');b.textContent=PH[k];b.className='on';b.onclick=()=>{const n=+k;onPh.has(n)?onPh.delete(n):onPh.add(n);b.classList.toggle('on');rebuild()};$('ph').append(b)}}
+sysUI();
+// build prism boxes for a member
+function rects(s){const h=s.h/1000,b=(s.b||s.h)/1000,tw=(s.tw||0)/1000,tf=(s.tf||s.tw||0)/1000;
+  if(s.t==='H')return[[h/2-tf/2,0,tf,b],[-h/2+tf/2,0,tf,b],[0,0,h-2*tf,tw]];
+  if(s.t==='C'){const t=tw;return[[0,-b/2+t/2,h,t],[h/2-t/2,0,t,b],[-h/2+t/2,0,t,b],[h/2-(s.c/1000)/2,b/2-t/2,s.c/1000,t],[-h/2+(s.c/1000)/2,b/2-t/2,s.c/1000,t]]}
+  if(s.t==='PL')return[[0,0,h,b]];
+  if(s.t==='SHS')return[[h/2-tw/2,0,tw,b],[-h/2+tw/2,0,tw,b],[0,b/2-tw/2,h-2*tw,tw],[0,-b/2+tw/2,h-2*tw,tw]];
+  return null}
+function addPrism(P,Nn,I,p0,ax,w,f,L,shape){
+  if(shape.oct){const r=shape.r,n=8;const base=P.length/3;
+    for(let k=0;k<n;k++){const a=2*Math.PI*k/n,cw=Math.cos(a)*r,sf=Math.sin(a)*r;
+      for(const t of[0,L]){const v=p0.clone().addScaledVector(ax,t).addScaledVector(w,cw).addScaledVector(f,sf);P.push(v.x,v.y,v.z);const nn=w.clone().multiplyScalar(Math.cos(a)).addScaledVector(f,Math.sin(a));Nn.push(nn.x,nn.y,nn.z)}}
+    for(let k=0;k<n;k++){const a=base+2*k,b=base+2*((k+1)%n);I.push(a,b,a+1,b,b+1,a+1)}return}
+  const[cw,cf,dw,df]=shape;const base=P.length/3;
+  const cs=[[-1,-1],[1,-1],[1,1],[-1,1]];
+  const faces=[[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[0,3,2,1],[4,5,6,7]];
+  const V=[];for(const t of[0,L])for(const[a,b]of cs)V.push(p0.clone().addScaledVector(ax,t).addScaledVector(w,cw+a*dw/2).addScaledVector(f,cf+b*df/2));
+  for(const fc of faces){const b0=P.length/3;const v=fc.map(i=>V[i]);const n=new THREE.Vector3().subVectors(v[1],v[0]).cross(new THREE.Vector3().subVectors(v[2],v[0])).normalize();
+    for(const q of v){P.push(q.x,q.y,q.z);Nn.push(n.x,n.y,n.z)}I.push(b0,b0+1,b0+2,b0,b0+2,b0+3)}}
+function rebuild(){
+  for(const k in meshes){S.remove(meshes[k]);meshes[k].geometry.dispose()}meshes={};ranges=[];
+  if(!L)return;let n=0,kg=0;
+  for(const sys in SYS){if(!onSys.has(sys))continue;const P=[],Nn=[],I=[];const rg=[];
+    for(const m of members){if(m.sys!==sys||!onPh.has(m.ph))continue;const s=L.sections[m.sec];
+      const a=T(...m.p0),b=T(...m.p1);const ax=new THREE.Vector3().subVectors(b,a);const Lm=ax.length();if(Lm<1e-6)continue;ax.normalize();
+      let w=T(...m.web);w.addScaledVector(ax,-w.dot(ax));if(w.length()<1e-6)w=Math.abs(ax.y)<.9?new THREE.Vector3(0,1,0).cross(ax):new THREE.Vector3(1,0,0).cross(ax);w.normalize();
+      const f=new THREE.Vector3().crossVectors(ax,w).normalize();const i0=I.length;const rs=rects(s);
+      if(rs)for(const r of rs)addPrism(P,Nn,I,a,ax,w,f,Lm,r);else addPrism(P,Nn,I,a,ax,w,f,Lm,{oct:1,r:s.h/2000});
+      rg.push([i0/3,I.length/3,m]);n++;kg+=m.kg}
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(Nn,3));g.setIndex(I);
+    const me=new THREE.Mesh(g,new THREE.MeshLambertMaterial({color:SYS[sys][1],side:THREE.DoubleSide}));me.userData.rg=rg;S.add(me);meshes[sys]=me}
+  $('stats').textContent=`${n} ชิ้น · ${(kg/1000).toFixed(1)} t (prelim, ไม่รวม connection)`}
+// arch overlay
+async function loadArch(){
+  const meta=await getJSON(['arch/geo.json','../../model/geo.json']);const buf=await getBuf(['arch/geo.bin','../../model/geo.bin']);
+  if(!meta||!buf){$('status').textContent='โหลดโมเดลสถาปัตย์ไม่ได้ (แสดงเฉพาะเหล็ก)';return}
+  const byL={};
+  for(const ch of meta.chunks){if(ch.t!==undefined)continue;const lay=ch.k.split('#')[0];if(!ALAY.includes(lay))continue;
+    const q=new Uint16Array(buf,ch.p,ch.n*3);const pos=new Float32Array(ch.n*3);
+    for(let i=0;i<ch.n;i++){const x=ch.mn[0]+q[3*i]/65535*ch.ex[0],y=ch.mn[1]+q[3*i+1]/65535*ch.ex[1],z=ch.mn[2]+q[3*i+2]/65535*ch.ex[2];pos[3*i]=x;pos[3*i+1]=z;pos[3*i+2]=-y}
+    const idx=ch.b?new Uint32Array(buf,ch.i,ch.c):new Uint16Array(buf,ch.i,ch.c);
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setIndex(new THREE.BufferAttribute(ch.b?new Uint32Array(idx):new Uint16Array(idx),1));g.computeVertexNormals();
+    const rgb=ch.k.split('#')[1].split('|')[0].replace(/[()]/g,'').split(',').map(Number);const glass=ch.k.split('|')[3]==='1';
+    const mt=new THREE.MeshLambertMaterial({color:new THREE.Color(Math.min(1,rgb[0]*1.6+.15),Math.min(1,rgb[1]*1.6+.15),Math.min(1,rgb[2]*1.6+.15)),transparent:true,opacity:+$('op').value*(glass?.5:1),depthWrite:false,side:THREE.DoubleSide});
+    const me=new THREE.Mesh(g,mt);me.userData.glass=glass;(byL[lay]=byL[lay]||new THREE.Group()).add(me)}
+  for(const l of ALAY){if(!byL[l])continue;byL[l].name=l;archGroup.add(byL[l]);const b=document.createElement('button');b.textContent=l;
+    const def=!['roof','services','structure'].includes(l);byL[l].visible=def;if(def)b.className='on';
+    b.onclick=()=>{byL[l].visible=!byL[l].visible;b.classList.toggle('on')};$('alay').append(b)}
+  $('status').textContent='';}
+$('arch').onchange=e=>archGroup.visible=e.target.checked;
+$('op').oninput=e=>archGroup.traverse(o=>{if(o.material)o.material.opacity=+e.target.value*(o.userData.glass?.5:1)});
+$('clash').onchange=e=>clashGroup.visible=e.target.checked;
+// pick
+const ray=new THREE.Raycaster();let down=null;
+cv.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
+cv.addEventListener('pointerup',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>4)return;const r=cv.getBoundingClientRect();
+  ray.setFromCamera({x:(e.clientX-r.left)/r.width*2-1,y:-(e.clientY-r.top)/r.height*2+1},cam);
+  const hit=ray.intersectObjects(Object.values(meshes))[0];if(!hit){$('card').hidden=true;hl(null);return}
+  const t=hit.faceIndex;const m=hit.object.userData.rg.find(g=>t>=g[0]&&t<g[1]);if(m)show(m[2])});
+let hlm=null;function hl(m){if(hlm){S.remove(hlm);hlm=null}if(!m)return;const a=T(...m.p0),b=T(...m.p1);const g=new THREE.BufferGeometry().setFromPoints([a,b]);
+  hlm=new THREE.Line(g,new THREE.LineBasicMaterial({color:0xffd400,depthTest:false}));hlm.renderOrder=9;S.add(hlm)}
+function show(m){const s=L.sections[m.sec];const c=$('card');c.hidden=false;hl(m);
+  const f=v=>v.map(x=>x.toFixed(3)).join(', ');
+  c.innerHTML=`<div class="id">${m.id} <span class="tag">${m.asm}</span></div><div>${m.role}</div><dl>
+  <dt>หน้าตัด</dt><dd>${m.sec}</dd><dt>เกรด</dt><dd>${m.grade}</dd><dt>ยาว</dt><dd>${m.L.toFixed(3)} ม.</dd><dt>น้ำหนัก</dt><dd>${m.kg.toFixed(1)} กก. (${s.kgm} กก./ม.)</dd>
+  <dt>ระบบ</dt><dd>${SYS[m.sys][0]}</dd><dt>Phase</dt><dd>${PH[m.ph]}</dd><dt>จุดเริ่ม</dt><dd>${f(m.p0)}</dd><dt>จุดจบ</dt><dd>${f(m.p1)}</dd>${m.note?`<dt>หมายเหตุ</dt><dd>${m.note}</dd>`:''}</dl>`}
+(async()=>{
+  L=await getJSON(['data/layout.json','../out/layout.json']);
+  if(!L){$('status').textContent='โหลด layout.json ไม่ได้';return}
+  members=L.members;rebuild();
+  const tot=members.reduce((a,m)=>a+m.kg,0);$('wt').textContent=`${members.length} ชิ้น · ${(tot/1000).toFixed(1)} ตัน`;
+  const cl=await getJSON(['data/clash.json','../out/clash_P2-layout-r1.json'])||[];$('ncl').textContent=cl.length;
+  const sg=new THREE.SphereGeometry(.18,10,8),sm=new THREE.MeshBasicMaterial({color:0xff2a2a,depthTest:false});
+  for(const c of cl){const s=new THREE.Mesh(sg,sm);s.position.copy(T(...c.at));s.renderOrder=8;clashGroup.add(s)}
+  $('status').textContent='กำลังโหลดโมเดลสถาปัตย์ mz19…';loadArch()})();
+(function loop(){requestAnimationFrame(loop);ctl.update();R.render(S,cam)})();
+</script>
