@@ -1,0 +1,713 @@
+mark,group,section,grade,length_m,kg,role,UR,governing
+C001,MF_HI_END_COL,H400x200x8x13,SS400,14.8,951.8,portal column A/1,0.86,drift: grid 1 W1: 64 mm vs H/200 = 74
+C002,MF_HI_END_COL,H400x200x8x13,SS400,14.8,951.8,portal column B/1,0.86,drift: grid 1 W1: 64 mm vs H/200 = 74
+R001,MF_HI_END_RAF,H350x175x7x11,SS400,10.821,522.1,rafter A-ridge 1,0.458,drift: grid 1 W1: 64 mm vs H/200 = 74
+HN001,MF_HI_END_RAF,H350x175x7x11,SS400,2.208,106.6,haunch A/1,0.458,drift: grid 1 W1: 64 mm vs H/200 = 74
+R002,MF_HI_END_RAF,H350x175x7x11,SS400,10.841,523.1,rafter B-ridge 1,0.458,drift: grid 1 W1: 64 mm vs H/200 = 74
+HN002,MF_HI_END_RAF,H350x175x7x11,SS400,2.208,106.6,haunch B/1,0.458,drift: grid 1 W1: 64 mm vs H/200 = 74
+C003,MF_HI_COL,H500x200x10x16,SS400,14.8,1287.3,portal column A/2,0.874,drift: grid 2 W1: 65 mm vs H/200 = 74
+C004,MF_HI_COL,H500x200x10x16,SS400,14.8,1287.3,portal column B/2,0.874,drift: grid 2 W1: 65 mm vs H/200 = 74
+R003,MF_HI_RAF,H400x200x8x13,SS400,10.771,692.7,rafter A-ridge 2,0.529,drift: grid 2 W1: 65 mm vs H/200 = 74
+HN003,MF_HI_RAF,H400x200x8x13,SS400,2.208,142.0,haunch A/2,0.529,drift: grid 2 W1: 65 mm vs H/200 = 74
+R004,MF_HI_RAF,H400x200x8x13,SS400,10.791,694.0,rafter B-ridge 2,0.529,drift: grid 2 W1: 65 mm vs H/200 = 74
+HN004,MF_HI_RAF,H400x200x8x13,SS400,2.208,142.0,haunch B/2,0.529,drift: grid 2 W1: 65 mm vs H/200 = 74
+C005,MF_HI_COL,H500x200x10x16,SS400,14.8,1287.3,portal column A/3,0.874,drift: grid 2 W1: 65 mm vs H/200 = 74
+C006,MF_HI_COL,H500x200x10x16,SS400,14.8,1287.3,portal column B/3,0.874,drift: grid 2 W1: 65 mm vs H/200 = 74
+R005,MF_HI_RAF,H400x200x8x13,SS400,10.771,692.7,rafter A-ridge 3,0.529,drift: grid 2 W1: 65 mm vs H/200 = 74
+HN005,MF_HI_RAF,H400x200x8x13,SS400,2.208,142.0,haunch A/3,0.529,drift: grid 2 W1: 65 mm vs H/200 = 74
+R006,MF_HI_RAF,H400x200x8x13,SS400,10.791,694.0,rafter B-ridge 3,0.529,drift: grid 2 W1: 65 mm vs H/200 = 74
+HN006,MF_HI_RAF,H400x200x8x13,SS400,2.208,142.0,haunch B/3,0.529,drift: grid 2 W1: 65 mm vs H/200 = 74
+C007,MF_STEP_COL,H400x200x8x13,SS400,14.8,951.8,portal column A/4,0.865,drift: grid 4 W1: 64 mm vs H/200 = 74
+C008,MF_STEP_COL,H400x200x8x13,SS400,14.8,951.8,portal column B/4,0.865,drift: grid 4 W1: 64 mm vs H/200 = 74
+R007,MF_STEP_RAF,H350x175x7x11,SS400,10.821,522.1,rafter A-ridge 4,0.843,drift: grid 4 W1: 64 mm vs H/200 = 74
+HN007,MF_STEP_RAF,H350x175x7x11,SS400,2.208,106.6,haunch A/4,0.843,drift: grid 4 W1: 64 mm vs H/200 = 74
+R008,MF_STEP_RAF,H350x175x7x11,SS400,10.841,523.1,rafter B-ridge 4,0.843,drift: grid 4 W1: 64 mm vs H/200 = 74
+HN008,MF_STEP_RAF,H350x175x7x11,SS400,2.208,106.6,haunch B/4,0.843,drift: grid 4 W1: 64 mm vs H/200 = 74
+R009,MF_STEP_LRAF,H450x200x9x14,SS400,10.821,798.3,"low rafter A-ridge 4 (lobby roof, end plate to high column)",0.843,see MF_STEP_COL
+R010,MF_STEP_LRAF,H450x200x9x14,SS400,10.841,799.8,"low rafter B-ridge 4 (lobby roof, end plate to high column)",0.843,see MF_STEP_COL
+WP001,WP_G4,H250x125x6x9,SS400,7.65,218.7,clerestory wind post 4,0.618,"span 8.2 m wind + axial: Mu 39.2 kNm, Nu 11 kN"
+WP002,WP_G4,H250x125x6x9,SS400,7.65,218.7,clerestory wind post 4,0.618,"span 8.2 m wind + axial: Mu 39.2 kNm, Nu 11 kN"
+WP003,WP_G4,H250x125x6x9,SS400,7.65,218.7,clerestory wind post 4,0.618,"span 8.2 m wind + axial: Mu 39.2 kNm, Nu 11 kN"
+C009,MF_LO_MEZZ_COL,H450x200x9x14,SS400,6.8,501.6,portal column A/5,0.955,"haunch N+M: grid 5 1.2D+1.6Lr+0.5L: Nu 57 kN / φPn 1141, Mu 224 / φMn 236 kNm"
+C010,MF_LO_MEZZ_COL,H450x200x9x14,SS400,6.8,501.6,portal column B/5,0.955,"haunch N+M: grid 5 1.2D+1.6Lr+0.5L: Nu 57 kN / φPn 1141, Mu 224 / φMn 236 kNm"
+R011,MF_LO_MEZZ_RAF,H350x175x7x11,SS400,10.796,520.9,rafter A-ridge 5,0.974,"haunch N+M: grid 5 1.2D+1.6Lr+0.5L: Nu 57 kN / φPn 1141, Mu 224 / φMn 236 kNm"
+HN009,MF_LO_MEZZ_RAF,H350x175x7x11,SS400,2.208,106.6,haunch A/5,0.974,"haunch N+M: grid 5 1.2D+1.6Lr+0.5L: Nu 57 kN / φPn 1141, Mu 224 / φMn 236 kNm"
+R012,MF_LO_MEZZ_RAF,H350x175x7x11,SS400,10.816,521.9,rafter B-ridge 5,0.974,"haunch N+M: grid 5 1.2D+1.6Lr+0.5L: Nu 57 kN / φPn 1141, Mu 224 / φMn 236 kNm"
+HN010,MF_LO_MEZZ_RAF,H350x175x7x11,SS400,2.208,106.6,haunch B/5,0.974,"haunch N+M: grid 5 1.2D+1.6Lr+0.5L: Nu 57 kN / φPn 1141, Mu 224 / φMn 236 kNm"
+C011,MF_LO_COL,H450x200x9x14,SS400,6.8,501.6,portal column A/6,0.84,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+C012,MF_LO_COL,H450x200x9x14,SS400,6.8,501.6,portal column B/6,0.84,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+R013,MF_LO_RAF,H350x175x7x11,SS400,10.796,520.9,rafter A-ridge 6,0.87,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+HN011,MF_LO_RAF,H350x175x7x11,SS400,2.208,106.6,haunch A/6,0.87,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+R014,MF_LO_RAF,H350x175x7x11,SS400,10.816,521.9,rafter B-ridge 6,0.87,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+HN012,MF_LO_RAF,H350x175x7x11,SS400,2.208,106.6,haunch B/6,0.87,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+C013,MF_LO_COL,H450x200x9x14,SS400,6.8,501.6,portal column A/7,0.84,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+C014,MF_LO_COL,H450x200x9x14,SS400,6.8,501.6,portal column B/7,0.84,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+R015,MF_LO_RAF,H350x175x7x11,SS400,10.796,520.9,rafter A-ridge 7,0.87,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+HN013,MF_LO_RAF,H350x175x7x11,SS400,2.208,106.6,haunch A/7,0.87,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+R016,MF_LO_RAF,H350x175x7x11,SS400,10.816,521.9,rafter B-ridge 7,0.87,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+HN014,MF_LO_RAF,H350x175x7x11,SS400,2.208,106.6,haunch B/7,0.87,"haunch N+M: grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+C015,MF_LO_END_COL,H350x175x7x11,SS400,6.8,328.1,portal column A/8,0.97,"column N+M (H1-1): grid 8 1.2D+1.6Lr+0.5L: Nu 46 kN / φPn 990, Mu 160 / φMn 169 kNm"
+C016,MF_LO_END_COL,H350x175x7x11,SS400,6.8,328.1,portal column B/8,0.97,"column N+M (H1-1): grid 8 1.2D+1.6Lr+0.5L: Nu 46 kN / φPn 990, Mu 160 / φMn 169 kNm"
+R017,MF_LO_END_RAF,H300x150x6.5x9,SS400,10.846,385.9,rafter A-ridge 8,0.841,"column N+M (H1-1): grid 8 1.2D+1.6Lr+0.5L: Nu 46 kN / φPn 990, Mu 160 / φMn 169 kNm"
+HN015,MF_LO_END_RAF,H300x150x6.5x9,SS400,2.208,78.6,haunch A/8,0.841,"column N+M (H1-1): grid 8 1.2D+1.6Lr+0.5L: Nu 46 kN / φPn 990, Mu 160 / φMn 169 kNm"
+R018,MF_LO_END_RAF,H300x150x6.5x9,SS400,10.866,386.6,rafter B-ridge 8,0.841,"column N+M (H1-1): grid 8 1.2D+1.6Lr+0.5L: Nu 46 kN / φPn 990, Mu 160 / φMn 169 kNm"
+HN016,MF_LO_END_RAF,H300x150x6.5x9,SS400,2.208,78.6,haunch B/8,0.841,"column N+M (H1-1): grid 8 1.2D+1.6Lr+0.5L: Nu 46 kN / φPn 990, Mu 160 / φMn 169 kNm"
+WP004,WP_G1,H250x125x6x9,SS400,14.751,421.7,gable wind post 1,0.833,"span 9.4 m wind + axial: Mu 47.7 kNm, Nu 99 kN"
+WP005,WP_G1,H250x125x6x9,SS400,15.075,431.0,gable wind post 1,0.833,"span 9.4 m wind + axial: Mu 47.7 kNm, Nu 99 kN"
+WP006,WP_G1,H250x125x6x9,SS400,15.398,440.2,gable wind post 1,0.833,"span 9.4 m wind + axial: Mu 47.7 kNm, Nu 99 kN"
+WP007,WP_G1,H250x125x6x9,SS400,15.082,431.2,gable wind post 1,0.833,"span 9.4 m wind + axial: Mu 47.7 kNm, Nu 99 kN"
+WP008,WP_G8,H200x100x5.5x8,SS400,6.976,143.0,gable wind post 8,0.802,"span 7.2 m wind + axial: Mu 26.4 kNm, Nu 9 kN"
+WP009,WP_G8,H200x100x5.5x8,SS400,7.448,152.7,gable wind post 8,0.802,"span 7.2 m wind + axial: Mu 26.4 kNm, Nu 9 kN"
+WP010,WP_G8,H200x100x5.5x8,SS400,6.976,143.0,gable wind post 8,0.802,"span 7.2 m wind + axial: Mu 26.4 kNm, Nu 9 kN"
+WP011,WP_B,H148x100x6x9,SS400,6.8,137.7,wind post B lobby bay,0.764,deflection span 6.8: 29 mm vs L/180
+P001,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P002,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P003,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P004,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P005,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P006,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P007,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P008,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P009,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P010,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P011,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P012,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P013,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P014,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P015,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P016,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P017,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P018,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P019,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P020,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 1-2,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+SR001,SAG,RB12,SS400,10.57,9.4,sag rod 1-2,,detailing / nominal
+SR002,SAG,RB12,SS400,10.59,9.4,sag rod 1-2,,detailing / nominal
+SR003,SAG,RB12,SS400,10.57,9.4,sag rod 1-2,,detailing / nominal
+SR004,SAG,RB12,SS400,10.59,9.4,sag rod 1-2,,detailing / nominal
+P021,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P022,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P023,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P024,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P025,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P026,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P027,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P028,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P029,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P030,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P031,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P032,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P033,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P034,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P035,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P036,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P037,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P038,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P039,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P040,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 2-3,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+SR005,SAG,RB12,SS400,10.57,9.4,sag rod 2-3,,detailing / nominal
+SR006,SAG,RB12,SS400,10.59,9.4,sag rod 2-3,,detailing / nominal
+SR007,SAG,RB12,SS400,10.57,9.4,sag rod 2-3,,detailing / nominal
+SR008,SAG,RB12,SS400,10.59,9.4,sag rod 2-3,,detailing / nominal
+P041,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P042,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P043,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P044,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P045,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P046,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P047,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P048,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P049,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P050,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P051,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P052,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P053,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P054,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P055,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P056,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P057,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P058,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P059,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P060,PUR,C150x75x20x3.2,SS400,6.9,56.7,purlin bay 3-4,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+SR009,SAG,RB12,SS400,10.57,9.4,sag rod 3-4,,detailing / nominal
+SR010,SAG,RB12,SS400,10.59,9.4,sag rod 3-4,,detailing / nominal
+SR011,SAG,RB12,SS400,10.57,9.4,sag rod 3-4,,detailing / nominal
+SR012,SAG,RB12,SS400,10.59,9.4,sag rod 3-4,,detailing / nominal
+P061,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P062,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P063,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P064,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P065,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P066,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P067,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P068,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P069,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P070,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P071,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P072,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P073,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P074,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P075,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P076,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P077,PUR9,C200x75x25x4.5,SS400,9.0,121.4,purlin bay 4-5,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+SR013,SAG,RB12,SS400,10.57,9.4,sag rod 4-5,,detailing / nominal
+SR014,SAG,RB12,SS400,10.59,9.4,sag rod 4-5,,detailing / nominal
+SR015,SAG,RB12,SS400,10.57,9.4,sag rod 4-5,,detailing / nominal
+SR016,SAG,RB12,SS400,10.59,9.4,sag rod 4-5,,detailing / nominal
+P078,PUR9,C200x75x25x4.5,SS400,9.0,121.4,courtyard edge purlin,0.782,uplift 0.9D+1.6W (R-factor): Mu 10.72 / φMn 13.72 kNm
+P079,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P080,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P081,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P082,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P083,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P084,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P085,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P086,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P087,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P088,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P089,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P090,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P091,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P092,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P093,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P094,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P095,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P096,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P097,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P098,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 5-6,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+SR017,SAG,RB12,SS400,10.57,9.4,sag rod 5-6,,detailing / nominal
+SR018,SAG,RB12,SS400,10.59,9.4,sag rod 5-6,,detailing / nominal
+SR019,SAG,RB12,SS400,10.57,9.4,sag rod 5-6,,detailing / nominal
+SR020,SAG,RB12,SS400,10.59,9.4,sag rod 5-6,,detailing / nominal
+P099,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P100,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P101,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P102,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P103,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P104,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P105,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P106,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P107,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P108,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P109,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P110,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P111,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P112,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P113,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P114,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P115,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P116,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P117,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P118,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 6-7,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+SR021,SAG,RB12,SS400,10.57,9.4,sag rod 6-7,,detailing / nominal
+SR022,SAG,RB12,SS400,10.59,9.4,sag rod 6-7,,detailing / nominal
+SR023,SAG,RB12,SS400,10.57,9.4,sag rod 6-7,,detailing / nominal
+SR024,SAG,RB12,SS400,10.59,9.4,sag rod 6-7,,detailing / nominal
+P119,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P120,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P121,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P122,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P123,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P124,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P125,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P126,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P127,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P128,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P129,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P130,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P131,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P132,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P133,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P134,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P135,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P136,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P137,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+P138,PUR,C150x75x20x3.2,SS400,6.6,54.3,purlin bay 7-8,0.912,uplift 0.9D+1.6W (R-factor): Mu 6.58 / φMn 7.21 kNm
+SR025,SAG,RB12,SS400,10.57,9.4,sag rod 7-8,,detailing / nominal
+SR026,SAG,RB12,SS400,10.59,9.4,sag rod 7-8,,detailing / nominal
+SR027,SAG,RB12,SS400,10.57,9.4,sag rod 7-8,,detailing / nominal
+SR028,SAG,RB12,SS400,10.59,9.4,sag rod 7-8,,detailing / nominal
+ES001,EAVE_HI,CHS139.8x4.5,SS400,6.9,103.6,eave strut A 1-2,0.721,"compression: Nu 103 kN, L 6.9 m"
+ES002,EAVE_HI,CHS139.8x4.5,SS400,6.9,103.6,eave strut A 2-3,0.721,"compression: Nu 103 kN, L 6.9 m"
+ES003,EAVE_HI,CHS139.8x4.5,SS400,6.9,103.6,eave strut A 3-4,0.721,"compression: Nu 103 kN, L 6.9 m"
+ES004,EAVE_HI,CHS139.8x4.5,SS400,6.9,103.6,eave strut B 1-2,0.721,"compression: Nu 103 kN, L 6.9 m"
+ES005,EAVE_HI,CHS139.8x4.5,SS400,6.9,103.6,eave strut B 2-3,0.721,"compression: Nu 103 kN, L 6.9 m"
+ES006,EAVE_HI,CHS139.8x4.5,SS400,6.9,103.6,eave strut B 3-4,0.721,"compression: Nu 103 kN, L 6.9 m"
+ES007,EAVE_LO,CHS139.8x4.5,SS400,9.0,135.2,eave strut A 4-5,0.94,KL/r ≤ 200: 
+ES008,EAVE_LO,CHS139.8x4.5,SS400,6.6,99.1,eave strut A 5-6,0.94,KL/r ≤ 200: 
+ES009,EAVE_LO,CHS139.8x4.5,SS400,6.6,99.1,eave strut A 6-7,0.94,KL/r ≤ 200: 
+ES010,EAVE_LO,CHS139.8x4.5,SS400,6.6,99.1,eave strut A 7-8,0.94,KL/r ≤ 200: 
+ES011,EAVE_LO,CHS139.8x4.5,SS400,9.0,135.2,eave strut B 4-5,0.94,KL/r ≤ 200: 
+ES012,EAVE_LO,CHS139.8x4.5,SS400,6.6,99.1,eave strut B 5-6,0.94,KL/r ≤ 200: 
+ES013,EAVE_LO,CHS139.8x4.5,SS400,6.6,99.1,eave strut B 6-7,0.94,KL/r ≤ 200: 
+ES014,EAVE_LO,CHS139.8x4.5,SS400,6.6,99.1,eave strut B 7-8,0.94,KL/r ≤ 200: 
+RB001,ROD_ROOF_HI,RB30,SS400,8.787,48.8,roof X-brace 1-2,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB002,ROD_ROOF_HI,RB30,SS400,8.787,48.8,roof X-brace 1-2,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB003,ROD_ROOF_HI,RB30,SS400,8.787,48.8,roof X-brace 1-2,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB004,ROD_ROOF_HI,RB30,SS400,8.787,48.8,roof X-brace 1-2,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB005,ROD_ROOF_HI,RB30,SS400,8.793,48.8,roof X-brace 1-2,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB006,ROD_ROOF_HI,RB30,SS400,8.793,48.8,roof X-brace 1-2,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB007,ROD_ROOF_HI,RB30,SS400,8.793,48.8,roof X-brace 1-2,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB008,ROD_ROOF_HI,RB30,SS400,8.793,48.8,roof X-brace 1-2,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+ST001,STRUT_ROOF,CHS114.3x4.5,SS400,6.9,84.1,roof strut 1-2,0.888,KL/r ≤ 200: 
+ST002,STRUT_ROOF,CHS114.3x4.5,SS400,6.9,84.1,roof strut 1-2,0.888,KL/r ≤ 200: 
+ST003,STRUT_ROOF,CHS114.3x4.5,SS400,6.9,84.1,roof strut 1-2,0.888,KL/r ≤ 200: 
+RB009,ROD_ROOF_HI,RB30,SS400,8.787,48.8,roof X-brace 3-4,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB010,ROD_ROOF_HI,RB30,SS400,8.787,48.8,roof X-brace 3-4,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB011,ROD_ROOF_HI,RB30,SS400,8.787,48.8,roof X-brace 3-4,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB012,ROD_ROOF_HI,RB30,SS400,8.787,48.8,roof X-brace 3-4,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB013,ROD_ROOF_HI,RB30,SS400,8.793,48.8,roof X-brace 3-4,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB014,ROD_ROOF_HI,RB30,SS400,8.793,48.8,roof X-brace 3-4,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB015,ROD_ROOF_HI,RB30,SS400,8.793,48.8,roof X-brace 3-4,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+RB016,ROD_ROOF_HI,RB30,SS400,8.793,48.8,roof X-brace 3-4,0.87,"tension (threaded): Tu 131 kN, L 8.8 m"
+ST004,STRUT_ROOF,CHS114.3x4.5,SS400,6.9,84.1,roof strut 3-4,0.888,KL/r ≤ 200: 
+ST005,STRUT_ROOF,CHS114.3x4.5,SS400,6.9,84.1,roof strut 3-4,0.888,KL/r ≤ 200: 
+ST006,STRUT_ROOF,CHS114.3x4.5,SS400,6.9,84.1,roof strut 3-4,0.888,KL/r ≤ 200: 
+RB017,ROD_ROOF_LO,RB20,SS400,10.517,26.0,roof X-brace 4-5,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB018,ROD_ROOF_LO,RB20,SS400,10.517,26.0,roof X-brace 4-5,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB019,ROD_ROOF_LO,RB20,SS400,10.517,26.0,roof X-brace 4-5,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB020,ROD_ROOF_LO,RB20,SS400,10.517,26.0,roof X-brace 4-5,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB021,ROD_ROOF_LO,RB20,SS400,10.522,26.0,roof X-brace 4-5,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB022,ROD_ROOF_LO,RB20,SS400,10.522,26.0,roof X-brace 4-5,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB023,ROD_ROOF_LO,RB20,SS400,10.522,26.0,roof X-brace 4-5,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB024,ROD_ROOF_LO,RB20,SS400,10.522,26.0,roof X-brace 4-5,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+ST007,STRUT_ROOF,CHS114.3x4.5,SS400,9.0,109.7,roof strut 4-5,0.888,KL/r ≤ 200: 
+ST008,STRUT_ROOF,CHS114.3x4.5,SS400,9.0,109.7,roof strut 4-5,0.888,KL/r ≤ 200: 
+ST009,STRUT_ROOF,CHS114.3x4.5,SS400,9.0,109.7,roof strut 4-5,0.888,KL/r ≤ 200: 
+RB025,ROD_ROOF_LO,RB20,SS400,8.553,21.1,roof X-brace 7-8,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB026,ROD_ROOF_LO,RB20,SS400,8.553,21.1,roof X-brace 7-8,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB027,ROD_ROOF_LO,RB20,SS400,8.553,21.1,roof X-brace 7-8,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB028,ROD_ROOF_LO,RB20,SS400,8.553,21.1,roof X-brace 7-8,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB029,ROD_ROOF_LO,RB20,SS400,8.56,21.1,roof X-brace 7-8,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB030,ROD_ROOF_LO,RB20,SS400,8.56,21.1,roof X-brace 7-8,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB031,ROD_ROOF_LO,RB20,SS400,8.56,21.1,roof X-brace 7-8,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+RB032,ROD_ROOF_LO,RB20,SS400,8.56,21.1,roof X-brace 7-8,0.877,"tension (threaded): Tu 59 kN, L 8.5 m"
+ST010,STRUT_ROOF,CHS114.3x4.5,SS400,6.6,80.5,roof strut 7-8,0.888,KL/r ≤ 200: 
+ST011,STRUT_ROOF,CHS114.3x4.5,SS400,6.6,80.5,roof strut 7-8,0.888,KL/r ≤ 200: 
+ST012,STRUT_ROOF,CHS114.3x4.5,SS400,6.6,80.5,roof strut 7-8,0.888,KL/r ≤ 200: 
+VB001,ROD_WALL_HI,CHS114.3x4.5,SS400,10.118,123.3,wall X-brace B3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+VB002,ROD_WALL_HI,CHS114.3x4.5,SS400,10.118,123.3,wall X-brace B3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+VB003,ROD_WALL_HI,CHS114.3x4.5,SS400,10.118,123.3,wall X-brace B3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+VB004,ROD_WALL_HI,CHS114.3x4.5,SS400,10.118,123.3,wall X-brace B3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+ST013,STRUT_WALL,CHS165.2x5,SS400,6.9,136.3,wall strut B3-4,0.609,KL/r ≤ 200: 
+VB005,ROD_WALL_LO,RB20,SS400,9.476,23.4,wall X-brace B7-8,0.973,"tension (threaded): Tu 65 kN, L 9.5 m"
+VB006,ROD_WALL_LO,RB20,SS400,9.476,23.4,wall X-brace B7-8,0.973,"tension (threaded): Tu 65 kN, L 9.5 m"
+VB007,ROD_WALL_HI,CHS114.3x4.5,SS400,7.767,94.7,wall X-brace A3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+VB008,ROD_WALL_HI,CHS114.3x4.5,SS400,7.592,92.5,wall X-brace A3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+VB009,ROD_WALL_HI,CHS114.3x4.5,SS400,7.606,92.7,wall X-brace A3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+VB010,ROD_WALL_HI,CHS114.3x4.5,SS400,7.446,90.8,wall X-brace A3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+VB011,ROD_WALL_HI,CHS114.3x4.5,SS400,10.565,128.8,wall X-brace A3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+VB012,ROD_WALL_HI,CHS114.3x4.5,SS400,10.565,128.8,wall X-brace A3-4,0.872,"compression diagonal (Lc = L/2): Nu 114 kN, Lc 5.28 m"
+ST014,STRUT_WALL,CHS165.2x5,SS400,6.9,136.3,wall strut A3-4,0.609,KL/r ≤ 200: 
+G001,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G002,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G003,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G004,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G005,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G006,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G007,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G008,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G009,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G010,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G011,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G012,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G013,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G014,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G015,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G016,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G017,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G018,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G019,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G020,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt A 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G021,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt A 6-7,0.864,suction (R-factor): Mu 8.45 kNm
+G022,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt A 7-8,0.864,suction (R-factor): Mu 8.45 kNm
+G023,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G024,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G025,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G026,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G027,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G028,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G029,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G030,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G031,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 1-2,0.864,suction (R-factor): Mu 8.45 kNm
+G032,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G033,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G034,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G035,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G036,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G037,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G038,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G039,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G040,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 2-3,0.864,suction (R-factor): Mu 8.45 kNm
+G041,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G042,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G043,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G044,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G045,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G046,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G047,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G048,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G049,GIRT,C200x75x20x3.2,SS400,6.9,65.3,girt B 3-4,0.864,suction (R-factor): Mu 8.45 kNm
+G050,GIRT,C200x75x20x3.2,SS400,4.5,42.6,girt B 4-5,0.864,suction (R-factor): Mu 8.45 kNm
+G051,GIRT,C200x75x20x3.2,SS400,4.5,42.6,girt B 4-5,0.864,suction (R-factor): Mu 8.45 kNm
+G052,GIRT,C200x75x20x3.2,SS400,4.5,42.6,girt B 4-5,0.864,suction (R-factor): Mu 8.45 kNm
+G053,GIRT,C200x75x20x3.2,SS400,4.5,42.6,girt B 4-5,0.864,suction (R-factor): Mu 8.45 kNm
+G054,GIRT,C200x75x20x3.2,SS400,4.5,42.6,girt B 4-5,0.864,suction (R-factor): Mu 8.45 kNm
+G055,GIRT,C200x75x20x3.2,SS400,4.5,42.6,girt B 4-5,0.864,suction (R-factor): Mu 8.45 kNm
+G056,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt B 5-6,0.864,suction (R-factor): Mu 8.45 kNm
+G057,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt B 5-6,0.864,suction (R-factor): Mu 8.45 kNm
+G058,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt B 5-6,0.864,suction (R-factor): Mu 8.45 kNm
+G059,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt B 6-7,0.864,suction (R-factor): Mu 8.45 kNm
+G060,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt B 6-7,0.864,suction (R-factor): Mu 8.45 kNm
+G061,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt B 6-7,0.864,suction (R-factor): Mu 8.45 kNm
+G062,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt B 7-8,0.864,suction (R-factor): Mu 8.45 kNm
+G063,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt B 7-8,0.864,suction (R-factor): Mu 8.45 kNm
+G064,GIRT,C200x75x20x3.2,SS400,6.6,62.5,girt B 7-8,0.864,suction (R-factor): Mu 8.45 kNm
+G065,GIRT,C200x75x20x3.2,SS400,3.44,32.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G066,GIRT,C200x75x20x3.2,SS400,3.44,32.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G067,GIRT,C200x75x20x3.2,SS400,3.44,32.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G068,GIRT,C200x75x20x3.2,SS400,3.44,32.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G069,GIRT,C200x75x20x3.2,SS400,3.44,32.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G070,GIRT,C200x75x20x3.2,SS400,3.44,32.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G071,GIRT,C200x75x20x3.2,SS400,3.44,32.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G072,GIRT,C200x75x20x3.2,SS400,3.44,32.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G073,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G074,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G075,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G076,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G077,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G078,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G079,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G080,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G081,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G082,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G083,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G084,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G085,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G086,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G087,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G088,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G089,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G090,GIRT,C200x75x20x3.2,SS400,3.7,35.0,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G091,GIRT,C200x75x20x3.2,SS400,3.62,34.3,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G092,GIRT,C200x75x20x3.2,SS400,3.62,34.3,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G093,GIRT,C200x75x20x3.2,SS400,3.62,34.3,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G094,GIRT,C200x75x20x3.2,SS400,3.62,34.3,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G095,GIRT,C200x75x20x3.2,SS400,3.62,34.3,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G096,GIRT,C200x75x20x3.2,SS400,3.62,34.3,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G097,GIRT,C200x75x20x3.2,SS400,3.62,34.3,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G098,GIRT,C200x75x20x3.2,SS400,3.62,34.3,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G099,GIRT,C200x75x20x3.2,SS400,3.62,34.3,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G100,GIRT,C200x75x20x3.2,SS400,7.24,68.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G101,GIRT,C200x75x20x3.2,SS400,7.24,68.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G102,GIRT,C200x75x20x3.2,SS400,7.24,68.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G103,GIRT,C200x75x20x3.2,SS400,7.24,68.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G104,GIRT,C200x75x20x3.2,SS400,7.24,68.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G105,GIRT,C200x75x20x3.2,SS400,7.24,68.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G106,GIRT,C200x75x20x3.2,SS400,7.24,68.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G107,GIRT,C200x75x20x3.2,SS400,7.24,68.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G108,GIRT,C200x75x20x3.2,SS400,7.24,68.6,gable girt 1,0.864,suction (R-factor): Mu 8.45 kNm
+G109,GIRT,C200x75x20x3.2,SS400,5.44,51.5,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G110,GIRT,C200x75x20x3.2,SS400,5.44,51.5,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G111,GIRT,C200x75x20x3.2,SS400,5.4,51.1,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G112,GIRT,C200x75x20x3.2,SS400,5.4,51.1,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G113,GIRT,C200x75x20x3.2,SS400,5.4,51.1,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G114,GIRT,C200x75x20x3.2,SS400,5.4,51.1,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G115,GIRT,C200x75x20x3.2,SS400,5.4,51.1,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G116,GIRT,C200x75x20x3.2,SS400,5.4,51.1,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G117,GIRT,C200x75x20x3.2,SS400,5.4,51.1,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G118,GIRT,C200x75x20x3.2,SS400,5.4,51.1,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G119,GIRT,C200x75x20x3.2,SS400,5.46,51.7,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G120,GIRT,C200x75x20x3.2,SS400,5.46,51.7,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G121,GIRT,C200x75x20x3.2,SS400,5.46,51.7,gable girt 8,0.864,suction (R-factor): Mu 8.45 kNm
+G122,GIRT,C200x75x20x3.2,SS400,5.44,51.5,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G123,GIRT,C200x75x20x3.2,SS400,5.44,51.5,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G124,GIRT,C200x75x20x3.2,SS400,5.44,51.5,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G125,GIRT,C200x75x20x3.2,SS400,5.44,51.5,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G126,GIRT,C200x75x20x3.2,SS400,5.44,51.5,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G127,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G128,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G129,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G130,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G131,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G132,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G133,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G134,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G135,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G136,GIRT,C200x75x20x3.2,SS400,5.4,51.1,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G137,GIRT,C200x75x20x3.2,SS400,5.46,51.7,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G138,GIRT,C200x75x20x3.2,SS400,5.46,51.7,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G139,GIRT,C200x75x20x3.2,SS400,5.46,51.7,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G140,GIRT,C200x75x20x3.2,SS400,5.46,51.7,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+G141,GIRT,C200x75x20x3.2,SS400,5.46,51.7,clerestory girt 4,0.864,suction (R-factor): Mu 8.45 kNm
+C017,FL2_C,SHS150x150x4.5,SS400,2.76,56.7,front L2 inner column 1,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+C018,FL2_C,SHS150x150x4.5,SS400,2.76,56.7,front L2 inner column 2,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+C019,FL2_C,SHS150x150x4.5,SS400,2.36,48.5,front L2 inner column 3,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+C020,FL2_C,SHS150x150x4.5,SS400,2.66,54.7,front L2 inner column 4,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+C021,FL2_C,SHS150x150x4.5,SS400,2.76,56.7,front L2 inner column 5,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+C022,FL2_C,SHS150x150x4.5,SS400,2.36,48.5,front L2 inner column 6,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+C023,FL2_C,SHS150x150x4.5,SS400,3.16,65.0,front L2 inner column 7,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+C024,FL2_C,SHS150x150x4.5,SS400,2.96,60.9,front L2 inner column 8,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+C025,FL2_C,SHS150x150x4.5,SS400,2.766,56.9,front L2 inner column y91.00,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+C026,FL2_C,SHS150x150x4.5,SS400,2.766,56.9,front L2 inner column y95.00,0.901,"axial + bending: Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+B001,FL2_X,H300x150x6.5x9,SS400,2.44,86.8,front L2 cross beam 1 (column A flange -> inner edge),0.708,flexure 1.2D+1.6L: Mu 84.6 / φMn 119.5 kNm
+B002,FL2_X,H300x150x6.5x9,SS400,2.44,86.8,front L2 cross beam 2 (column A flange -> inner edge),0.708,flexure 1.2D+1.6L: Mu 84.6 / φMn 119.5 kNm
+B003,FL2_X,H300x150x6.5x9,SS400,3.19,113.5,front L2 cross beam 3 (column A flange -> inner edge),0.708,flexure 1.2D+1.6L: Mu 84.6 / φMn 119.5 kNm
+B004,FL2_X,H300x150x6.5x9,SS400,4.34,154.4,front L2 cross beam 4 (column A flange -> inner edge),0.708,flexure 1.2D+1.6L: Mu 84.6 / φMn 119.5 kNm
+B005,FL2_X,H300x150x6.5x9,SS400,4.39,156.2,front L2 cross beam 5 (column A flange -> inner edge),0.708,flexure 1.2D+1.6L: Mu 84.6 / φMn 119.5 kNm
+B006,FL2_X,H300x150x6.5x9,SS400,3.24,115.3,front L2 cross beam 6 (column A flange -> inner edge),0.708,flexure 1.2D+1.6L: Mu 84.6 / φMn 119.5 kNm
+B007,FL2_X,H300x150x6.5x9,SS400,2.549,90.7,front L2 cross beam 7 (column A flange -> inner edge),0.708,flexure 1.2D+1.6L: Mu 84.6 / φMn 119.5 kNm
+B008,FL2_X,H300x150x6.5x9,SS400,2.49,88.6,front L2 cross beam 8 (column A flange -> inner edge),0.708,flexure 1.2D+1.6L: Mu 84.6 / φMn 119.5 kNm
+B009,FL2_E,H294x200x8x12,SS400,1.65,90.2,front L2 inner edge beam y66.10-67.75,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B010,FL2_E,H294x200x8x12,SS400,1.65,90.2,front L2 outer edge beam y66.10-67.75,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B011,FL2_E,H294x200x8x12,SS400,6.9,377.0,front L2 inner edge beam y67.75-74.65,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B012,FL2_E,H294x200x8x12,SS400,6.9,377.0,front L2 outer edge beam y67.75-74.65,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J001,FL2_J,H244x175x7x11,SS400,2.63,111.6,front L2 joist y69.47,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+J002,FL2_J,H244x175x7x11,SS400,2.63,111.6,front L2 joist y71.20,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+J003,FL2_J,H244x175x7x11,SS400,2.63,111.6,front L2 joist y72.93,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B013,FL2_E,H294x200x8x12,SS400,0.25,13.7,front L2 inner edge beam y74.65-74.90,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B014,FL2_E,H294x200x8x12,SS400,0.25,13.7,front L2 outer edge beam y74.65-74.90,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B015,FL2_E,H294x200x8x12,SS400,3.023,165.2,front L2 inner edge beam y74.90-77.90,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B016,FL2_E,H294x200x8x12,SS400,3.0,163.9,front L2 outer edge beam y74.90-77.90,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J004,FL2_J,H244x175x7x11,SS400,2.817,119.5,front L2 joist y76.40,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B017,FL2_E,H294x200x8x12,SS400,3.023,165.2,front L2 inner edge beam y77.90-80.90,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B018,FL2_E,H294x200x8x12,SS400,3.0,163.9,front L2 outer edge beam y77.90-80.90,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J005,FL2_J,H244x175x7x11,SS400,3.192,135.4,front L2 joist y79.40,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B019,FL2_E,H294x200x8x12,SS400,0.65,35.5,front L2 inner edge beam y80.90-81.55,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B020,FL2_E,H294x200x8x12,SS400,0.65,35.5,front L2 outer edge beam y80.90-81.55,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B021,FL2_E,H294x200x8x12,SS400,0.85,46.4,front L2 inner edge beam y81.55-82.40,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B022,FL2_E,H294x200x8x12,SS400,0.85,46.4,front L2 outer edge beam y81.55-82.40,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B023,FL2_E,H294x200x8x12,SS400,3.055,166.9,front L2 inner edge beam y82.40-85.40,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B024,FL2_E,H294x200x8x12,SS400,3.0,163.9,front L2 outer edge beam y82.40-85.40,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J006,FL2_J,H244x175x7x11,SS400,3.668,155.6,front L2 joist y83.90,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B025,FL2_E,H294x200x8x12,SS400,3.055,166.9,front L2 inner edge beam y85.40-88.40,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B026,FL2_E,H294x200x8x12,SS400,3.0,163.9,front L2 outer edge beam y85.40-88.40,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J007,FL2_J,H244x175x7x11,SS400,4.243,180.0,front L2 joist y86.90,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B027,FL2_E,H294x200x8x12,SS400,0.05,2.7,front L2 inner edge beam y88.40-88.45,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B028,FL2_E,H294x200x8x12,SS400,0.05,2.7,front L2 outer edge beam y88.40-88.45,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B029,FL2_E,H294x200x8x12,SS400,9.0,491.8,front L2 inner edge beam y88.45-97.45,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B030,FL2_E,H294x200x8x12,SS400,5.1,278.7,front L2 outer edge beam y95.50-90.40,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J008,FL2_J,H244x175x7x11,SS400,1.78,75.5,front L2 joist y90.70,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+J009,FL2_J,H244x175x7x11,SS400,1.78,75.5,front L2 joist y92.95,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+J010,FL2_J,H244x175x7x11,SS400,1.78,75.5,front L2 joist y95.20,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B031,FL2_E,H294x200x8x12,SS400,0.17,9.3,front L2 inner edge beam y97.45-97.62,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B032,FL2_E,H294x200x8x12,SS400,0.17,9.3,front L2 outer edge beam y97.45-97.62,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B033,FL2_E,H294x200x8x12,SS400,3.055,166.9,front L2 inner edge beam y97.62-100.62,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B034,FL2_E,H294x200x8x12,SS400,3.0,163.9,front L2 outer edge beam y97.62-100.62,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J011,FL2_J,H244x175x7x11,SS400,4.243,180.0,front L2 joist y99.12,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B035,FL2_E,H294x200x8x12,SS400,3.055,166.9,front L2 inner edge beam y100.62-103.62,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B036,FL2_E,H294x200x8x12,SS400,3.0,163.9,front L2 outer edge beam y100.62-103.62,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J012,FL2_J,H244x175x7x11,SS400,3.668,155.6,front L2 joist y102.12,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B037,FL2_E,H294x200x8x12,SS400,0.43,23.5,front L2 inner edge beam y103.62-104.05,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B038,FL2_E,H294x200x8x12,SS400,0.43,23.5,front L2 outer edge beam y103.62-104.05,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B039,FL2_E,H294x200x8x12,SS400,1.07,58.5,front L2 inner edge beam y104.05-105.12,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B040,FL2_E,H294x200x8x12,SS400,1.07,58.5,front L2 outer edge beam y104.05-105.12,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B041,FL2_E,H294x200x8x12,SS400,3.023,165.2,front L2 inner edge beam y105.12-108.12,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B042,FL2_E,H294x200x8x12,SS400,3.0,163.9,front L2 outer edge beam y105.12-108.12,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J013,FL2_J,H244x175x7x11,SS400,3.192,135.4,front L2 joist y106.62,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B043,FL2_E,H294x200x8x12,SS400,2.55,139.3,front L2 inner edge beam y108.12-110.65,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B044,FL2_E,H294x200x8x12,SS400,2.53,138.2,front L2 outer edge beam y108.12-110.65,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J014,FL2_J,H244x175x7x11,SS400,2.847,120.8,front L2 joist y109.39,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B045,FL2_E,H294x200x8x12,SS400,0.474,25.9,front L2 inner edge beam y110.65-111.12,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B046,FL2_E,H294x200x8x12,SS400,0.47,25.7,front L2 outer edge beam y110.65-111.12,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B047,FL2_E,H294x200x8x12,SS400,6.13,334.9,front L2 inner edge beam y111.12-117.25,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B048,FL2_E,H294x200x8x12,SS400,6.13,334.9,front L2 outer edge beam y111.12-117.25,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+J015,FL2_J,H244x175x7x11,SS400,2.63,111.6,front L2 joist y113.16,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+J016,FL2_J,H244x175x7x11,SS400,2.63,111.6,front L2 joist y115.21,0.689,flexure 1.2D+1.6L: Mu 84.8 / φMn 123.1 kNm
+B049,FL2_E,H294x200x8x12,SS400,1.85,101.1,front L2 inner edge beam y117.25-119.10,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B050,FL2_E,H294x200x8x12,SS400,1.85,101.1,front L2 outer edge beam y117.25-119.10,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B051,FL2_S,H300x150x6.5x9,SS400,2.68,95.4,front L2 step beam y74.90 (+3.4/+3.6),0.722,flexure 1.2D+1.6L: Mu 86.4 / φMn 119.5 kNm
+B052,FL2_S,H300x150x6.5x9,SS400,3.055,108.7,front L2 step beam y77.90 (+3.6/+3.8),0.722,flexure 1.2D+1.6L: Mu 86.4 / φMn 119.5 kNm
+B053,FL2_S,H300x150x6.5x9,SS400,3.43,122.0,front L2 step beam y82.40 (+3.8/+4.0),0.722,flexure 1.2D+1.6L: Mu 86.4 / φMn 119.5 kNm
+B054,FL2_S,H300x150x6.5x9,SS400,4.005,142.5,front L2 step beam y85.40 (+4.0/+4.2),0.722,flexure 1.2D+1.6L: Mu 86.4 / φMn 119.5 kNm
+B055,FL2_S,H300x150x6.5x9,SS400,4.005,142.5,front L2 step beam y100.62 (+4.0/+4.2),0.722,flexure 1.2D+1.6L: Mu 86.4 / φMn 119.5 kNm
+B056,FL2_S,H300x150x6.5x9,SS400,3.43,122.0,front L2 step beam y103.62 (+3.8/+4.0),0.722,flexure 1.2D+1.6L: Mu 86.4 / φMn 119.5 kNm
+B057,FL2_S,H300x150x6.5x9,SS400,3.055,108.7,front L2 step beam y108.12 (+3.6/+3.8),0.722,flexure 1.2D+1.6L: Mu 86.4 / φMn 119.5 kNm
+B058,FL2_S,H300x150x6.5x9,SS400,2.68,95.4,front L2 step beam y111.12 (+3.4/+3.6),0.722,flexure 1.2D+1.6L: Mu 86.4 / φMn 119.5 kNm
+B059,FL2_W,H294x200x8x12,SS400,1.6,87.4,wing cantilever beam,0.159,flexure 1.2D+1.6L: Mu 30.0 / φMn 189.4 kNm
+B060,FL2_W,H294x200x8x12,SS400,1.6,87.4,wing cantilever beam,0.159,flexure 1.2D+1.6L: Mu 30.0 / φMn 189.4 kNm
+B061,FL2_E,H294x200x8x12,SS400,2.9,158.5,wing end beam,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+B062,FL2_W,H294x200x8x12,SS400,1.8,98.4,wing cantilever beam,0.159,flexure 1.2D+1.6L: Mu 30.0 / φMn 189.4 kNm
+B063,FL2_W,H294x200x8x12,SS400,1.8,98.4,wing cantilever beam,0.159,flexure 1.2D+1.6L: Mu 30.0 / φMn 189.4 kNm
+B064,FL2_E,H294x200x8x12,SS400,2.9,158.5,wing end beam,0.985,deflection total: 28.3 mm vs 1L/240 = 28.8
+FP001,FL2_FASCIA,PL6x450,SS400,8.8,186.5,fascia plate 6 mm,,detailing / nominal
+FP002,FL2_FASCIA,PL6x450,SS400,6.013,127.4,fascia plate 6 mm,,detailing / nominal
+FP003,FL2_FASCIA,PL6x450,SS400,1.5,31.8,fascia plate 6 mm,,detailing / nominal
+FP004,FL2_FASCIA,PL6x450,SS400,6.013,127.4,fascia plate 6 mm,,detailing / nominal
+FP005,FL2_FASCIA,PL6x450,SS400,9.22,195.4,fascia plate 6 mm,,detailing / nominal
+FP006,FL2_FASCIA,PL6x450,SS400,6.013,127.4,fascia plate 6 mm,,detailing / nominal
+FP007,FL2_FASCIA,PL6x450,SS400,1.5,31.8,fascia plate 6 mm,,detailing / nominal
+FP008,FL2_FASCIA,PL6x450,SS400,6.013,127.4,fascia plate 6 mm,,detailing / nominal
+FP009,FL2_FASCIA,PL6x450,SS400,7.98,169.1,fascia plate 6 mm,,detailing / nominal
+HP001,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP002,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR001,MISC_HR,CHS48.6x3.2,SS400,1.65,5.9,top rail front L2,,detailing / nominal
+HP003,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP004,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP005,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP006,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP007,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP008,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR002,MISC_HR,CHS48.6x3.2,SS400,6.9,24.7,top rail front L2,,detailing / nominal
+HP009,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR003,MISC_HR,CHS48.6x3.2,SS400,0.25,0.9,top rail front L2,,detailing / nominal
+HP010,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP011,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP012,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR004,MISC_HR,CHS48.6x3.2,SS400,3.023,10.8,top rail front L2,,detailing / nominal
+HP013,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP014,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR005,MISC_HR,CHS48.6x3.2,SS400,3.023,10.8,top rail front L2,,detailing / nominal
+HP015,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR006,MISC_HR,CHS48.6x3.2,SS400,0.65,2.3,top rail front L2,,detailing / nominal
+HP016,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR007,MISC_HR,CHS48.6x3.2,SS400,0.85,3.0,top rail front L2,,detailing / nominal
+HP017,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP018,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP019,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR008,MISC_HR,CHS48.6x3.2,SS400,3.055,10.9,top rail front L2,,detailing / nominal
+HP020,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP021,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP022,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR009,MISC_HR,CHS48.6x3.2,SS400,3.055,10.9,top rail front L2,,detailing / nominal
+HP023,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR010,MISC_HR,CHS48.6x3.2,SS400,0.05,0.2,top rail front L2,,detailing / nominal
+HP024,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP025,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP026,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP027,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP028,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP029,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR011,MISC_HR,CHS48.6x3.2,SS400,9.0,32.2,top rail front L2,,detailing / nominal
+HP030,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP031,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP032,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR012,MISC_HR,CHS48.6x3.2,SS400,3.055,10.9,top rail front L2,,detailing / nominal
+HP033,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP034,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP035,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR013,MISC_HR,CHS48.6x3.2,SS400,3.055,10.9,top rail front L2,,detailing / nominal
+HP036,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR014,MISC_HR,CHS48.6x3.2,SS400,0.43,1.5,top rail front L2,,detailing / nominal
+HP037,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR015,MISC_HR,CHS48.6x3.2,SS400,1.07,3.8,top rail front L2,,detailing / nominal
+HP038,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP039,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP040,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR016,MISC_HR,CHS48.6x3.2,SS400,3.023,10.8,top rail front L2,,detailing / nominal
+HP041,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP042,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP043,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR017,MISC_HR,CHS48.6x3.2,SS400,2.55,9.1,top rail front L2,,detailing / nominal
+HP044,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR018,MISC_HR,CHS48.6x3.2,SS400,0.474,1.7,top rail front L2,,detailing / nominal
+HP045,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP046,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP047,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP048,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP049,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP050,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR019,MISC_HR,CHS48.6x3.2,SS400,6.13,21.9,top rail front L2,,detailing / nominal
+HP051,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HP052,MISC_HP,SHS50x50x3.2,SS400,1.1,5.2,guard post front L2,,detailing / nominal
+HR020,MISC_HR,CHS48.6x3.2,SS400,1.85,6.6,top rail front L2,,detailing / nominal
+C027,BD_C,H200x200x8x12,SS400,4.36,212.5,bouldering deck column NW,0.368,"axial + bending: Nu 275 / φPn 923 kN, KL/r 90"
+C028,BD_C,H200x200x8x12,SS400,4.36,212.5,bouldering deck column NE,0.368,"axial + bending: Nu 275 / φPn 923 kN, KL/r 90"
+B065,BD_G,H800x300x14x26,SS400,13.45,2752.8,bouldering deck north girder (13.45 m),0.999,vibration fn ≥ 6 Hz: fn 6.0 Hz (9 Hz needs 2 columns at the fall-zone edge)
+B066,BD_S,H250x125x6x9,SS400,13.6,388.8,bouldering deck south beam on gable posts,0.877,flexure 1.2D+1.6L: Mu 70.7 / φMn 80.7 kNm
+C029,BD_P,SHS150x150x4.5,SS400,4.91,100.9,"deck SE post (inside the gable glass, gap glass 67.71 / wall 68.06)",0.122,axial: Nu 48 / φPn 395 kN
+J017,BD_J,H350x175x7x11,SS400,5.85,282.3,bouldering deck joist x-1.35,0.728,flexure 1.2D+1.6L: Mu 139.3 / φMn 191.4 kNm
+J018,BD_J,H350x175x7x11,SS400,5.85,282.3,bouldering deck joist x0.89,0.728,flexure 1.2D+1.6L: Mu 139.3 / φMn 191.4 kNm
+J019,BD_J,H350x175x7x11,SS400,5.85,282.3,bouldering deck joist x3.13,0.728,flexure 1.2D+1.6L: Mu 139.3 / φMn 191.4 kNm
+J020,BD_J,H350x175x7x11,SS400,5.85,282.3,bouldering deck joist x5.38,0.728,flexure 1.2D+1.6L: Mu 139.3 / φMn 191.4 kNm
+J021,BD_J,H350x175x7x11,SS400,5.85,282.3,bouldering deck joist x7.62,0.728,flexure 1.2D+1.6L: Mu 139.3 / φMn 191.4 kNm
+J022,BD_J,H350x175x7x11,SS400,5.85,282.3,bouldering deck joist x9.86,0.728,flexure 1.2D+1.6L: Mu 139.3 / φMn 191.4 kNm
+J023,BD_J,H350x175x7x11,SS400,5.85,282.3,bouldering deck joist x12.10,0.728,flexure 1.2D+1.6L: Mu 139.3 / φMn 191.4 kNm
+VB013,BD_BR,CHS114.3x4.5,SS400,7.138,87.0,deck side brace (N-S),0.989,slenderness KL/r ≤ 200: 
+VB014,BD_BR,CHS114.3x4.5,SS400,7.138,87.0,deck side brace (N-S),0.989,slenderness KL/r ≤ 200: 
+HR021,MISC_HR,CHS48.6x3.2,SS400,4.57,16.4,deck guard west (0.84),,detailing / nominal
+HR022,MISC_HR,CHS48.6x3.2,SS400,1.8,6.4,deck guard north (0.84),,detailing / nominal
+C030,CM_C,H194x150x6x9,SS400,2.66,78.4,mezz column 4,0.531,"axial: Nu 311 / φPn 586 kN, KL/r 86"
+C031,CM_C,H194x150x6x9,SS400,2.66,78.4,mezz column 4,0.531,"axial: Nu 311 / φPn 586 kN, KL/r 86"
+B067,CM_P,H400x200x8x13,SS400,1.39,89.4,mezz primary beam 4 (cantilever),0.895,flexure: Mu 262 / φMn 292 kNm
+B068,CM_P,H400x200x8x13,SS400,3.45,221.9,mezz primary beam 4,0.895,flexure: Mu 262 / φMn 292 kNm
+B069,CM_P,H400x200x8x13,SS400,5.0,321.6,mezz primary beam 4,0.895,flexure: Mu 262 / φMn 292 kNm
+C032,CM_C,H194x150x6x9,SS400,2.66,78.4,mezz column 5,0.531,"axial: Nu 311 / φPn 586 kN, KL/r 86"
+C033,CM_C,H194x150x6x9,SS400,2.66,78.4,mezz column 5,0.531,"axial: Nu 311 / φPn 586 kN, KL/r 86"
+B070,CM_P,H400x200x8x13,SS400,1.39,89.4,mezz primary beam 5 (cantilever),0.895,flexure: Mu 262 / φMn 292 kNm
+B071,CM_P,H400x200x8x13,SS400,3.45,221.9,mezz primary beam 5,0.895,flexure: Mu 262 / φMn 292 kNm
+B072,CM_P,H400x200x8x13,SS400,4.95,318.3,mezz primary beam 5,0.895,flexure: Mu 262 / φMn 292 kNm
+B073,CM_B9,H400x200x8x13,SS400,8.8,565.9,mezz 9.0 m beam x6.76,0.954,flexure 1.2D+1.6L: Mu 278.9 / φMn 292.4 kNm
+B074,CM_B9,H400x200x8x13,SS400,8.8,565.9,mezz 9.0 m beam x8.74,0.954,flexure 1.2D+1.6L: Mu 278.9 / φMn 292.4 kNm
+B075,CM_B9,H400x200x8x13,SS400,8.8,565.9,mezz 9.0 m beam x10.72,0.954,flexure 1.2D+1.6L: Mu 278.9 / φMn 292.4 kNm
+B076,CM_B9,H400x200x8x13,SS400,8.8,565.9,mezz 9.0 m beam x12.70,0.954,flexure 1.2D+1.6L: Mu 278.9 / φMn 292.4 kNm
+B077,CM_B9,H400x200x8x13,SS400,8.8,565.9,mezz 9.0 m beam x14.68,0.954,flexure 1.2D+1.6L: Mu 278.9 / φMn 292.4 kNm
+B078,CM_B9,H400x200x8x13,SS400,8.8,565.9,mezz 9.0 m beam x16.66,0.954,flexure 1.2D+1.6L: Mu 278.9 / φMn 292.4 kNm
+B079,BR_B,H300x150x6.5x9,SS400,6.95,247.3,bridge north beam (grid 5),0.721,deflection total: 20.9 mm vs 1L/240 = 29.0
+B080,BR_B,H300x150x6.5x9,SS400,6.88,244.8,bridge south beam (y 95.55),0.721,deflection total: 20.9 mm vs 1L/240 = 29.0
+J024,BR_J,H150x75x5x7,SS400,1.8,24.4,bridge joist,0.473,flexure 1.2D+1.6L: Mu 10.6 / φMn 22.5 kNm
+J025,BR_J,H150x75x5x7,SS400,1.8,24.4,bridge joist,0.473,flexure 1.2D+1.6L: Mu 10.6 / φMn 22.5 kNm
+J026,BR_J,H150x75x5x7,SS400,1.8,24.4,bridge joist,0.473,flexure 1.2D+1.6L: Mu 10.6 / φMn 22.5 kNm
+HR023,MISC_HR,CHS48.6x3.2,SS400,0.82,2.9,walkway guard south,,detailing / nominal
+SS001,ST_STR,H150x75x5x7,SS400,5.129,69.6,scissor stair lower flight stringer,0.736,deflection live: 9.1 mm vs 1L/360 = 12.4
+SS002,ST_STR,H150x75x5x7,SS400,5.129,69.6,scissor stair lower flight stringer,0.736,deflection live: 9.1 mm vs 1L/360 = 12.4
+SS003,ST_STR,H150x75x5x7,SS400,4.474,60.8,scissor stair upper flight stringer,0.736,deflection live: 9.1 mm vs 1L/360 = 12.4
+SS004,ST_STR,H150x75x5x7,SS400,4.474,60.8,scissor stair upper flight stringer,0.736,deflection live: 9.1 mm vs 1L/360 = 12.4
+SB001,ST_LB,H150x75x5x7,SS400,2.109,28.6,scissor landing beam,0.486,flexure 1.2D+1.6L: Mu 10.9 / φMn 22.5 kNm
+SB002,ST_LB,H150x75x5x7,SS400,2.109,28.6,scissor landing beam,0.486,flexure 1.2D+1.6L: Mu 10.9 / φMn 22.5 kNm
+SC001,ST_POST,SHS100x100x3.2,SS400,2.6,25.3,landing post,0.095,axial: Nu 20 / φPn 211 kN
+HR024,MISC_HR,CHS48.6x3.2,SS400,4.309,15.4,stair handrail upper,,detailing / nominal
+HR025,MISC_HR,CHS48.6x3.2,SS400,4.309,15.4,stair handrail upper,,detailing / nominal
+HR026,MISC_HR,CHS48.6x3.2,SS400,4.924,17.6,stair handrail lower,,detailing / nominal
+HR027,MISC_HR,CHS48.6x3.2,SS400,4.924,17.6,stair handrail lower,,detailing / nominal
+SC002,SP_COL,CHS165.2x5,SS400,4.2,83.0,spiral centre column,0.395,"axial + overturning: Nu 38 kN, Mu 9.5 kNm (propped head)"
+TR001,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 1,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR002,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 2,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR003,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 3,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR004,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 4,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR005,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 5,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR006,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 6,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR007,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 7,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR008,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 8,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR009,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 9,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR010,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 10,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR011,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 11,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR012,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 12,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR013,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 13,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR014,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 14,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR015,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 15,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR016,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 16,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR017,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 17,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+TR018,SP_ARM,H150x75x5x7,SS400,1.29,17.5,spiral tread arm 18,0.206,cantilever arm: Mu 4.27 kNm (tread + 1.3 kN point at tip)
+HR028,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR029,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR030,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR031,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR032,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR033,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR034,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR035,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR036,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR037,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR038,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR039,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR040,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR041,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR042,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR043,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR044,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+HR045,MISC_HR,CHS48.6x3.2,SS400,0.338,1.2,spiral helical rail,,detailing / nominal
+GF001,MISC_GF,RHS100x50x3.2,SS400,4.2,30.3,courtyard glass mullion,,detailing / nominal
+GF002,MISC_GF,RHS100x50x3.2,SS400,4.2,30.3,courtyard glass mullion,,detailing / nominal
+GF003,MISC_GF,RHS100x50x3.2,SS400,4.2,30.3,courtyard glass mullion,,detailing / nominal
+GF004,MISC_GF,RHS100x50x3.2,SS400,2.85,20.5,courtyard glass head,,detailing / nominal
+GF005,MISC_GF,RHS100x50x3.2,SS400,4.2,30.3,courtyard glass mullion,,detailing / nominal
+GF006,MISC_GF,RHS100x50x3.2,SS400,4.2,30.3,courtyard glass mullion,,detailing / nominal
+GF007,MISC_GF,RHS100x50x3.2,SS400,4.2,30.3,courtyard glass mullion,,detailing / nominal
+GF008,MISC_GF,RHS100x50x3.2,SS400,2.85,20.5,courtyard glass head,,detailing / nominal
+GF009,MISC_GF,RHS100x50x3.2,SS400,2.1,15.1,Edge partition post,,detailing / nominal
+GF010,MISC_GF,RHS100x50x3.2,SS400,2.1,15.1,Edge partition post,,detailing / nominal
+GF011,MISC_GF,RHS100x50x3.2,SS400,2.1,15.1,Edge partition post,,detailing / nominal
+GF012,MISC_GF,RHS100x50x3.2,SS400,2.1,15.1,Edge partition post,,detailing / nominal
+GF013,MISC_GF,RHS100x50x3.2,SS400,2.1,15.1,Edge partition post,,detailing / nominal
+GF014,MISC_GF,RHS100x50x3.2,SS400,21.7,156.5,partition head beam +6.3 (gypsum above to rafter 5),,detailing / nominal
+GF015,MISC_GF,RHS100x50x3.2,SS400,4.55,32.8,full-height barrier head (h 2.3),,detailing / nominal

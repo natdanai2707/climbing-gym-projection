@@ -45,31 +45,54 @@ def RHS(h, b, t): n = f'RHS{h}x{b}x{t:g}'; SEC[n] = dict(t='SHS', h=h, b=b, tw=t
 def CHS(d, t): n = f'CHS{d:g}x{t:g}'; SEC[n] = dict(t='CHS', h=d, b=d, tw=t); return n
 def RB(d): n = f'RB{d}'; SEC[n] = dict(t='CHS', h=d, b=d, tw=d / 2); return n
 def PL(w, t): n = f'PL{t:g}x{w}'; SEC[n] = dict(t='PL', h=w, b=t); return n
+import re
+def secdef(n):
+    v = [float(x) for x in re.findall(r'[\d.]+', n)]; iv = lambda x: int(x) if x == int(x) else x
+    if n.startswith('H'): return H(*map(iv, v[:4]))
+    if n.startswith('C') and not n.startswith('CHS'): return CL(*map(iv, v[:4]))
+    if n.startswith('SHS'): return SHS(iv(v[0]), v[2])
+    if n.startswith('RHS'): return RHS(iv(v[0]), iv(v[1]), v[2])
+    if n.startswith('CHS'): return CHS(v[0], v[1])
+    if n.startswith('RB'): return RB(int(v[0]))
+    if n.startswith('PL'): return PL(iv(v[1]), v[0])
+    raise ValueError(n)
+_SZ = os.path.join(OUT, 'sizes.json')
+SIZES = json.load(open(_SZ)) if os.path.exists(_SZ) and os.environ.get('PRELIM') != '1' else {}
+def G(grp, default):
+    return secdef(SIZES[grp]) if grp in SIZES else default
 
-S_COL_HI = H(588, 300, 12, 20)     # climbing-zone portal column, fixed base
-S_RAF_HI = H(500, 200, 10, 16)
-S_COL_LO = H(400, 200, 8, 13)      # low-zone portal column, pinned base
-S_RAF_LO = H(400, 200, 8, 13)
-S_GPOST = H(300, 150, 6.5, 9)      # gable / clerestory wind post
-S_PUR = CL(150, 65, 20, 3.2)
-S_PUR9 = CL(200, 75, 20, 3.2)      # 9.0 m lobby bay (check phase 3, may become H150)
-S_GIRT = CL(150, 65, 20, 3.2)
-S_EAVE = CL(150, 65, 20, 3.2)      # eave strut (paired with eave purlin)
-S_STRUT = CHS(114.3, 4.5)          # bracing struts
-S_ROD = RB(20)
+# design groups -> section (out/sizes.json from sizing.py overrides the preliminary default)
+FG = {'1': 'HI_END', '2': 'HI', '3': 'HI', '4': 'STEP', '5': 'LO_MEZZ', '6': 'LO', '7': 'LO', '8': 'LO_END'}
+FDEF = {'HI_END': (H(588, 300, 12, 20), H(500, 200, 10, 16)), 'HI': (H(588, 300, 12, 20), H(500, 200, 10, 16)),
+        'STEP': (H(588, 300, 12, 20), H(500, 200, 10, 16)), 'LO_MEZZ': (H(400, 200, 8, 13), H(400, 200, 8, 13)),
+        'LO': (H(400, 200, 8, 13), H(400, 200, 8, 13)), 'LO_END': (H(400, 200, 8, 13), H(400, 200, 8, 13))}
+FSEC = {k: (G(f'MF_{k}_COL', c), G(f'MF_{k}_RAF', r)) for k, (c, r) in FDEF.items()}
+S_COL_HI, S_RAF_HI = FSEC['HI']; S_COL_LO, S_RAF_LO = FSEC['LO']
+S_RAF_STEP_LO = G('MF_STEP_LRAF', H(400, 200, 8, 13))
+S_GP1 = G('WP_G1', H(300, 150, 6.5, 9)); S_GP8 = G('WP_G8', H(300, 150, 6.5, 9)); S_GP4 = G('WP_G4', H(300, 150, 6.5, 9))
+S_GPB = G('WP_B', H(300, 150, 6.5, 9)); S_GPOST = S_GP1
+S_PUR = G('PUR', CL(150, 65, 20, 3.2))
+S_PUR9 = G('PUR9', CL(200, 75, 20, 3.2))
+S_GIRT = G('GIRT', CL(150, 65, 20, 3.2))
+S_EAVE = G('EAVE_HI', CL(150, 65, 20, 3.2)); S_EAVE_LO = G('EAVE_LO', CL(150, 65, 20, 3.2))
+S_STRUT = G('STRUT_ROOF', CHS(114.3, 4.5)); S_STRUT_W = G('STRUT_WALL', CHS(114.3, 4.5))
+S_ROD = G('ROD_ROOF_HI', RB(20)); S_ROD_LO = G('ROD_ROOF_LO', RB(20)); S_RODW = G('ROD_WALL_HI', RB(24)); S_RODW_LO = G('ROD_WALL_LO', RB(20))
 S_SAG = RB(12)
-S_FL2_X = H(300, 150, 6.5, 9)      # front L2 cross beam on grid
-S_FL2_E = H(250, 125, 6, 9)        # front L2 edge / step beams
-S_FL2_J = H(200, 100, 5.5, 8)      # front L2 joists
-S_FL2_C = SHS(150, 6)              # front L2 inner column ("เสา 150")
-S_BD_G = H(700, 300, 13, 24)       # bouldering deck north girder (13.45 m clear, no column in the fall zone)
-S_BD_J = H(300, 150, 6.5, 9)
-S_BD_C = H(250, 250, 9, 14)
-S_CM_B = H(400, 200, 8, 13)        # co-working mezzanine 9.0 m beams
-S_CM_C = H(200, 200, 8, 12)
-S_BR_B = H(300, 150, 6.5, 9)
-S_STR = CL(250, 75, 25, 4.5) if False else H(250, 125, 6, 9)   # stair stringer (may become PL folded / PFC)
-S_SPC = CHS(219.1, 8.2)            # spiral centre column
+S_FL2_X = G('FL2_X', H(300, 150, 6.5, 9))      # front L2 cross beam on grid
+S_FL2_E = G('FL2_E', H(250, 125, 6, 9))        # front L2 edge beams
+S_FL2_S = G('FL2_S', H(250, 125, 6, 9))        # step beams
+S_FL2_W = G('FL2_E', H(250, 125, 6, 9))        # wing cantilevers = continuation of the edge beams (same section)
+S_FL2_J = G('FL2_J', H(200, 100, 5.5, 8))      # front L2 joists
+S_FL2_C = G('FL2_C', SHS(150, 6))              # front L2 inner column ("เสา 150")
+S_BD_G = G('BD_G', H(700, 300, 13, 24))        # bouldering deck north girder (13.45 m clear, no column in the fall zone)
+S_BD_J = G('BD_J', H(300, 150, 6.5, 9)); S_BD_S = G('BD_S', H(300, 150, 6.5, 9))
+S_BD_C = G('BD_C', H(250, 250, 9, 14)); S_BD_P = G('BD_P', SHS(150, 6)); S_BD_BR = G('BD_BR', CHS(114.3, 4.5))
+S_CM_B = G('CM_B9', H(400, 200, 8, 13))        # co-working mezzanine 9.0 m beams
+S_CM_P = G('CM_P', H(400, 200, 8, 13))         # mezz primary beams on grid 4 / 5
+S_CM_C = G('CM_C', H(200, 200, 8, 12))
+S_BR_B = G('BR_B', H(300, 150, 6.5, 9)); S_BR_J = G('BR_J', H(200, 100, 5.5, 8))
+S_STR = G('ST_STR', H(250, 125, 6, 9)); S_STL = G('ST_LB', H(200, 100, 5.5, 8)); S_STP = G('ST_POST', SHS(100, 4.5))
+S_SPC = G('SP_COL', CHS(216.3, 8.2)); S_SPA = G('SP_ARM', H(150, 75, 5, 7))
 S_POST = SHS(50, 3.2)              # guard posts
 S_RAIL = CHS(48.6, 3.2)
 S_FASC = PL(450, 6)
@@ -100,9 +123,7 @@ def y_name(y):
 for g, n in zip(GY, GN):
     hi = HIGH(g)
     E = EAVE_HI if hi else EAVE_LO
-    sc, sr = (S_COL_HI, S_RAF_HI) if hi else (S_COL_LO, S_RAF_LO)
-    if n == '4': sc, sr = S_COL_HI, S_RAF_HI
-    if n in ('5',): sc = S_COL_LO
+    sc, sr = FSEC[FG[n]]
     for x, side in ((xcol(sc, 'A'), 'A'), (xcol(sc, 'B'), 'B')):
         mem('C', 'MAIN', f'MF{n}', 1, [x, g, BASE], [x, g, E], sc, f'portal column {side}/{n}', web=[1, 0, 0],
             note='fixed base' if hi else 'pinned base')
@@ -116,23 +137,23 @@ for g, n in zip(GY, GN):
         mem('HN', 'MAIN', f'MF{n}', 1, [xk, g, tos_roof(xk, E) - d - d / 2], [xh, g, tos_roof(xh, E) - d - d / 2], sr,
             f'haunch {side}/{n}', note='cut from rafter section, welded under rafter')
     if n == '4':                         # grid 4 also carries the low lobby roof at +7 (step frame)
-        dl = SEC[S_RAF_LO]['h'] / 1000
+        dl = SEC[S_RAF_STEP_LO]['h'] / 1000
         for x0, x1, side in ((xcol(sc, 'A'), XR, 'A'), (XR, xcol(sc, 'B'), 'B')):
             mem('R', 'MAIN', 'MF4', 1, [x0, g, tos_roof(x0, EAVE_LO) - dl / 2], [x1, g, tos_roof(x1, EAVE_LO) - dl / 2],
-                S_RAF_LO, f'low rafter {side}-ridge 4 (lobby roof, end plate to high column)')
+                S_RAF_STEP_LO, f'low rafter {side}-ridge 4 (lobby roof, end plate to high column)')
         for x in (0.6, 6.0, 11.4):        # clerestory posts +7 roof -> +15 rafter
-            mem('WP', 'MAIN', 'MF4', 1, [x, g, tos_roof(x, EAVE_LO)], [x, g, tos_roof(x, EAVE_HI) - SEC[S_RAF_HI]['h'] / 1000],
-                S_GPOST, 'clerestory wind post 4', web=[0, 1, 0])
+            mem('WP', 'MAIN', 'MF4', 1, [x, g, tos_roof(x, EAVE_LO)], [x, g, tos_roof(x, EAVE_HI) - SEC[FSEC['STEP'][1]]['h'] / 1000],
+                S_GP4, 'clerestory wind post 4', web=[0, 1, 0])
 
 # gable wind posts: grid 1 (also carry the bouldering deck at +6.18) and grid 8
 GP1 = [-1.40, 2.30, 6.00, 9.62]          # clear of the gable window x 9.72-14.61
 GP8 = [0.60, 6.00, 11.40]
 for g, n, xs, E in ((GY[0], '1', GP1, EAVE_HI), (GY[7], '8', GP8, EAVE_LO)):
     for x in xs:
-        mem('WP', 'MAIN', f'MF{n}', 1, [x, g, BASE], [x, g, tos_roof(x, E) - SEC[S_RAF_HI if n == '1' else S_RAF_LO]['h'] / 1000],
-            S_GPOST, f'gable wind post {n}', web=[0, 1, 0], note='pinned top (slotted for rafter deflection), pinned base')
+        mem('WP', 'MAIN', f'MF{n}', 1, [x, g, BASE], [x, g, tos_roof(x, E) - SEC[FSEC['HI_END' if n == '1' else 'LO_END'][1]]['h'] / 1000],
+            S_GP1 if n == '1' else S_GP8, f'gable wind post {n}', web=[0, 1, 0], note='pinned top (slotted for rafter deflection), pinned base')
 # lobby rear wall: 9.0 m bay on grid B gets a mid wind post for the girts
-mem('WP', 'MAIN', 'WB', 1, [XB, 92.95, BASE], [XB, 92.95, EAVE_LO], S_GPOST, 'wind post B lobby bay', web=[1, 0, 0])
+mem('WP', 'MAIN', 'WB', 1, [XB, 92.95, BASE], [XB, 92.95, EAVE_LO], S_GPB, 'wind post B lobby bay', web=[1, 0, 0])
 
 # ================================================================ 2. roof: purlins, sag rods, eave struts, bracing (phase 2)
 def purlin_xs():
@@ -154,7 +175,7 @@ for y0, y1, E, bn in roof_bays():
         z = tos_roof(x, E) + hp / 2
         mem('P', 'ROOF', f'RF{bn}', 2, [x, y0, z], [x, y1, z], sp, f'purlin bay {bn}', web=[-math.sin(math.radians(5)) * np.sign(x - XR) or 0, 0, 1])
     # sag rods: 1 line at mid-span (2 lines at third points for 9 m), each slope eave->ridge
-    ns = 2 if (y1 - y0) > 8 else 1
+    ns = 2                                    # sag rods at third points (uplift: R-factor method needs them)
     for k in range(1, ns + 1):
         ys = y0 + (y1 - y0) * k / (ns + 1)
         for xa, xb in ((PX[0], PX[9]), (PX[10], PX[19])):
@@ -166,7 +187,9 @@ for (ya, yb, E) in ((GY[0], GY[3], EAVE_HI), (GY[3], GY[7], EAVE_LO)):
     for x in (XA, XB):
         for i in range(len(GY) - 1):
             if GY[i] >= ya - 0.01 and GY[i + 1] <= yb + 0.01:
-                mem('ES', 'ROOF', 'EAVE', 2, [x, GY[i], E - 0.08], [x, GY[i + 1], E - 0.08], S_EAVE,
+                se = S_EAVE if E == EAVE_HI else S_EAVE_LO
+                xs_ = xcol(FSEC['HI'][0] if E == EAVE_HI else FSEC['LO'][0], 'A' if x < 0 else 'B')
+                mem('ES', 'ROOF', 'EAVE', 2, [xs_, GY[i], E - 0.25], [xs_, GY[i + 1], E - 0.25], se,
                     f'eave strut {"A" if x < 0 else "B"} {GN[i]}-{GN[i+1]}', web=[1, 0, 0])
 # roof bracing: X rods per slope in braced bays, strut tubes on node lines
 NODES = [XA, 0.58, XR, 11.43, XB]
@@ -174,21 +197,35 @@ for (i, E) in ((0, EAVE_HI), (2, EAVE_HI), (3, EAVE_LO), (6, EAVE_LO)):
     y0, y1 = GY[i], GY[i + 1]; bn = f'{GN[i]}-{GN[i + 1]}'
     for xa, xb in zip(NODES[:-1], NODES[1:]):
         za, zb = tos_roof(xa, E) - 0.1, tos_roof(xb, E) - 0.1
-        mem('RB', 'BRACE', f'RBR{bn}', 2, [xa, y0, za], [xb, y1, zb], S_ROD, f'roof X-brace {bn}')
-        mem('RB', 'BRACE', f'RBR{bn}', 2, [xa, y1, za], [xb, y0, zb], S_ROD, f'roof X-brace {bn}')
+        rr = S_ROD if E == EAVE_HI else S_ROD_LO
+        mem('RB', 'BRACE', f'RBR{bn}', 2, [xa, y0, za], [xb, y1, zb], rr, f'roof X-brace {bn}')
+        mem('RB', 'BRACE', f'RBR{bn}', 2, [xa, y1, za], [xb, y0, zb], rr, f'roof X-brace {bn}')
     for x in NODES[1:-1]:
         z = tos_roof(x, E) - 0.1
         mem('ST', 'BRACE', f'RBR{bn}', 2, [x, y0, z], [x, y1, z], S_STRUT, f'roof strut {bn}')
-# wall (vertical) bracing: line B bay 3-4 (high, 2 tiers), line B bay 7-8, line A bay 1-2 (high, 2 tiers), line A bay 7-8
-VB = [(XB, 2, EAVE_HI, [BASE, 7.6, EAVE_HI]), (XB, 6, EAVE_LO, [BASE, EAVE_LO]),
-      (XA, 0, EAVE_HI, [BASE, 7.6, EAVE_HI]), (XA, 6, EAVE_LO, [BASE, EAVE_LO])]
-for x, i, E, tiers in VB:
-    y0, y1 = GY[i], GY[i + 1]; side = 'A' if x < 0 else 'B'; bn = f'{side}{GN[i]}-{GN[i + 1]}'
-    for za, zb in zip(tiers[:-1], tiers[1:]):
-        mem('VB', 'BRACE', f'VBR{bn}', 2, [x, y0, za], [x, y1, zb], S_ROD if E == EAVE_LO else RB(24), f'wall X-brace {bn}')
-        mem('VB', 'BRACE', f'VBR{bn}', 2, [x, y1, za], [x, y0, zb], S_ROD if E == EAVE_LO else RB(24), f'wall X-brace {bn}')
-    for zz in tiers[1:-1]:
-        mem('ST', 'BRACE', f'VBR{bn}', 2, [x, y0, zz], [x, y1, zz], S_STRUT, f'wall strut {bn}')
+# wall (vertical) bracing (P3): line B bay 3-4 (high), line B bay 7-8 (low), line A bay 3-4 only (high, tiers around the
+# front L2 deck). Line A bays 1-2 / 7-8 clash with the facade counters on L2, so low-zone line A force travels along the +7
+# eave strut into node A/4. Tiers: (z at y0, z at y1) per level.
+def deck_tiers(y0, y1):
+    lo0, lo1 = tos_floor(lvl(y0)) - SEC[S_FL2_E]['h'] / 1000, tos_floor(lvl(y1 - 0.01)) - SEC[S_FL2_E]['h'] / 1000
+    return [(BASE, BASE), (lo0, lo1), (lvl(y0), lvl(y1 - 0.01)), (EAVE_LO, EAVE_LO), (EAVE_HI, EAVE_HI)]
+VB = [('B', 2, EAVE_HI, [(BASE, BASE), (7.6, 7.6), (EAVE_HI, EAVE_HI)]), ('B', 6, EAVE_LO, [(BASE, BASE), (EAVE_LO, EAVE_LO)]),
+      ('A', 2, EAVE_HI, deck_tiers(GY[2], GY[3]))]
+for side, i, E, tiers in VB:
+    y0, y1 = GY[i], GY[i + 1]; bn = f'{side}{GN[i]}-{GN[i + 1]}'
+    # brace plane just inboard of the inset girts (girt depth + 15 mm + half the brace)
+    rb = SEC[S_RODW if E == EAVE_HI else S_RODW_LO]['h'] / 2000; hg = SEC[S_GIRT]['h'] / 1000
+    x = XFACE_A + 0.025 + hg + 0.015 + rb if side == 'A' else XFACE_B - 0.025 - hg - 0.015 - rb
+    rod = S_RODW if E == EAVE_HI else S_RODW_LO
+    for (a0, a1), (b0, b1) in zip(tiers[:-1], tiers[1:]):
+        if b0 - a0 < 1.0:          # deck zone: the slab / edge beam is the strut, no rods
+            continue
+        mem('VB', 'BRACE', f'VBR{bn}', 2, [x, y0, a0], [x, y1, b1], rod, f'wall X-brace {bn}', web=[1, 0, 0])
+        mem('VB', 'BRACE', f'VBR{bn}', 2, [x, y1, a1], [x, y0, b0], rod, f'wall X-brace {bn}', web=[1, 0, 0])
+    for z0_, z1_ in tiers[1:-1]:
+        if abs(z0_ - EAVE_LO) < 0.01 or abs(z0_ - 7.6) < 0.01:
+            xs_ = XFACE_A + 0.025 + hg + 0.015 + SEC[S_STRUT_W]['h'] / 2000 if side == 'A' else XFACE_B - 0.025 - hg - 0.015 - SEC[S_STRUT_W]['h'] / 2000
+            mem('ST', 'BRACE', f'VBR{bn}', 2, [xs_, y0, z0_], [xs_, y1, z1_], S_STRUT_W, f'wall strut {bn}', web=[1, 0, 0])
 
 # ================================================================ 3. girts (phase 2)
 def girt_levels(z0, z1, start=2.2, step=1.5):
@@ -204,22 +241,26 @@ for x, side in ((XA, 'A'), (XB, 'B')):
         if side == 'A' and i == 3: continue                     # lobby bay A: courtyard screen frame (by GF)
         stops = [y0, y1] if not (side == 'B' and i == 3) else [y0, 92.95, y1]
         for za in girt_levels(BASE, E):
-            if side == 'A':
-                lo, hi = FL2_ZONE((y0 + y1) / 2)
-                if za < hi: continue                    # facade below +L2 is the open arcade; deck edge beam carries the cladding base
+            if side == 'A':                             # facade below +L2 is the open arcade; first girt clears the L2 counters (top +1.05)
+                mx = max(lvl(yy) for yy in np.linspace(y0 + 0.01, y1 - 0.01, 12))
+                if za < mx + 1.15: continue
             for ya, yb in zip(stops[:-1], stops[1:]):
-                xo = x - 0.37 if side == 'A' else x + 0.37  # girt outside the column flange
-                mem('G', 'WALL', f'GT{side}{GN[i]}-{GN[i+1]}', 2, [xo, ya, za], [xo, yb, za], S_GIRT, f'girt {side} {GN[i]}-{GN[i+1]}', web=[0, 0, 1])
+                hg = SEC[S_GIRT]['h'] / 1000          # inset girt: cladding sits on the column face, girt between the flanges
+                xo = XFACE_A + 0.025 + hg / 2 if side == 'A' else XFACE_B - 0.025 - hg / 2
+                mem('G', 'WALL', f'GT{side}{GN[i]}-{GN[i+1]}', 2, [xo, ya, za], [xo, yb, za], S_GIRT, f'girt {side} {GN[i]}-{GN[i+1]}', web=[1, 0, 0],
+                    note='inset between column flanges, cleat to column web')
 for g, n, xs, E in ((GY[0], '1', GP1, EAVE_HI), (GY[7], '8', GP8, EAVE_LO)):
-    posts = [XA] + xs + [XB]; yo = g - 0.25 if n == '1' else g + 0.25
+    posts = [XA] + xs + [XB]
+    yo = g if n == '1' else g + SEC[S_GP8]['h'] / 2000 + SEC[S_GIRT]['h'] / 2000   # grid 1: inset in the post depth; grid 8: on the outer flange
     for xa, xb in zip(posts[:-1], posts[1:]):
         for za in girt_levels(BASE, min(tos_roof(xa, E), tos_roof(xb, E))):
-            mem('G', 'WALL', f'GT{n}', 2, [xa, yo, za], [xb, yo, za], S_GIRT, f'gable girt {n}', web=[0, 0, 1])
+            if xa < -1.97 and za < 3.7: continue    # gable end of the street arcade is open below the front L2
+            mem('G', 'WALL', f'GT{n}', 2, [xa, yo, za], [xb, yo, za], S_GIRT, f'gable girt {n}', web=[0, 1, 0])
 posts = [XA, 0.6, 6.0, 11.4, XB]
 for xa, xb in zip(posts[:-1], posts[1:]):       # grid 4 clerestory
     z = EAVE_LO + 1.2
     while z < min(tos_roof(xa, EAVE_HI), tos_roof(xb, EAVE_HI)) - 0.6:
-        mem('G', 'WALL', 'GT4', 2, [xa, GY[3] + 0.25, z], [xb, GY[3] + 0.25, z], S_GIRT, 'clerestory girt 4', web=[0, 0, 1]); z += 1.5
+        mem('G', 'WALL', 'GT4', 2, [xa, GY[3], z], [xb, GY[3], z], S_GIRT, 'clerestory girt 4', web=[0, 1, 0]); z += 1.5
 
 # ================================================================ 4. front L2 mezzanine (phase 3)
 FL2_COLS = []
@@ -268,13 +309,14 @@ for ya, yb, top in segs:
 for (a, b, top), (a2, b2, top2) in zip(TER[:-1], TER[1:]):
     if abs(top - top2) < 0.01 or any(abs(b - g) < 0.05 for g in GY): continue
     lo = tos_floor(min(top, top2))
-    mem('B', 'FL2', f'FL2-S{b:.2f}', 3, [XA + 0.1, b, lo - dE / 2], [xe(b) - 0.07, b, lo - dE / 2], S_FL2_E,
+    dS = SEC[S_FL2_S]['h'] / 1000
+    mem('B', 'FL2', f'FL2-S{b:.2f}', 3, [XA + 0.1, b, lo - dS / 2], [xe(b) - 0.07, b, lo - dS / 2], S_FL2_S,
         f'front L2 step beam y{b:.2f} (+{min(top,top2):.1f}/+{max(top,top2):.1f})', note='PL10 upstand 200 mm welded on top flange')
 # wings past both end walls (cantilever 1.65 m from grid 1 / grid 8)
 for yg, yw, top in ((GY[0], 66.1, 3.4), (GY[7], 119.1, 3.4)):
     t = tos_floor(top)
     for x in (XA, xe(yg) - 0.07):
-        mem('B', 'FL2', 'FL2-WING', 3, [x, yg, t - dE / 2], [x, yw + (0.05 if yw < yg else -0.05), t - dE / 2], S_FL2_E, 'wing cantilever beam',
+        mem('B', 'FL2', 'FL2-WING', 3, [x, yg, t - dE / 2], [x, yw + (0.05 if yw < yg else -0.05), t - dE / 2], S_FL2_W, 'wing cantilever beam',
             web=[0, 0, 1], note='continuous over grid, back-span to first joist')
     mem('B', 'FL2', 'FL2-WING', 3, [XF + 0.05, yw + (0.05 if yw < yg else -0.05), t - dE / 2], [xe(yw) - 0.05, yw + (0.05 if yw < yg else -0.05), t - dE / 2], S_FL2_E, 'wing end beam')
 # fascia plate on the facade face + brackets @ 1.2 m
@@ -301,13 +343,14 @@ mem('C', 'BD', 'BD', 4, [-1.35, BDN, FFL], [-1.35, BDN, tb - dG], S_BD_C, 'bould
 mem('C', 'BD', 'BD', 4, [12.10, BDN, FFL], [12.10, BDN, tb - dG], S_BD_C, 'bouldering deck column NE', web=[0, 1, 0])
 mem('B', 'BD', 'BD', 4, [-1.35, BDN, tb - dG / 2], [12.10, BDN, tb - dG / 2], S_BD_G, 'bouldering deck north girder (13.45 m)',
     note='no column in the fall zone; option: SM520 H600x300')
-mem('B', 'BD', 'BD', 4, [-1.40, GY[0] + 0.25, tb - dJb / 2], [12.20, GY[0] + 0.25, tb - dJb / 2], S_BD_J, 'bouldering deck south beam on gable posts')
-mem('C', 'BD', 'BD', 4, [12.20, 67.95, FFL], [12.20, 67.95, tb - dJb], SHS(150, 6), 'deck SE post (inside the gable glass, gap glass 67.71 / wall 68.06)', web=[1, 0, 0])
+dS_ = SEC[S_BD_S]['h'] / 1000
+mem('B', 'BD', 'BD', 4, [-1.40, GY[0] + 0.25, tb - dS_ / 2], [12.20, GY[0] + 0.25, tb - dS_ / 2], S_BD_S, 'bouldering deck south beam on gable posts')
+mem('C', 'BD', 'BD', 4, [12.20, 67.95, FFL], [12.20, 67.95, tb - dS_], S_BD_P, 'deck SE post (inside the gable glass, gap glass 67.71 / wall 68.06)', web=[1, 0, 0])
 xs = np.linspace(-1.35, 12.10, 7)
 for x in xs:
     mem('J', 'BD', 'BD', 4, [x, GY[0] + 0.3, tb - dJb / 2], [x, BDN - 0.15, tb - dJb / 2], S_BD_J, f'bouldering deck joist x{x:.2f}')
 for x in (-1.40, 12.15):    # N-S bracing in the deck side planes (inside the wall cavity, confirm with wall builder)
-    mem('VB', 'BD', 'BD', 4, [x, GY[0] + 0.3, FFL + 0.2], [x, BDN - 0.2, tb - dG], S_BRC, 'deck side brace (N-S)')
+    mem('VB', 'BD', 'BD', 4, [x, GY[0] + 0.3, FFL + 0.2], [x, BDN - 0.2, tb - dG], S_BD_BR, 'deck side brace (N-S)')
 for x0, x1 in ((-1.45, 12.26),):
     for xx in np.arange(-1.40, 12.26, 1.2):
         if -1.45 <= xx <= -0.5 or -0.5 < xx < 1.32 and False: pass
@@ -315,28 +358,27 @@ for x0, x1 in ((-1.45, 12.26),):
     mem('HR', 'MISC', 'HR-BD', 6, [-0.48, 74.13, BD_TOP + 0.84], [1.32, 74.13, BD_TOP + 0.84], S_RAIL, 'deck guard north (0.84)')
 
 # ================================================================ 6. co-working mezzanine +4.2 and bridge (phase 4)
-CM_TOP = 4.2; tc = tos_floor(CM_TOP); dB = SEC[S_CM_B]['h'] / 1000
-CMX = [6.66, 11.70]
+CM_TOP = 4.2; tc = tos_floor(CM_TOP); dB = SEC[S_CM_B]['h'] / 1000; dP = SEC[S_CM_P]['h'] / 1000
+CMX = [8.15, 11.60]            # P3: clear spots on grid 4 / 5 (checked against the mz19 ground floor: counter, WC partitions)
+CMW = 6.76                     # mezz west edge beam (slab edge x 6.71)
+XBC = xcol(FSEC['LO_MEZZ'][0], 'B') - SEC[FSEC['LO_MEZZ'][0]]['h'] / 2000     # inner flange face of column B/4, B/5
 for g in (GY[3], GY[4]):
     for x in CMX:
-        mem('C', 'CM', f'CM-{y_name(g)}', 4, [x, g, FFL], [x, g, tc - dB], S_CM_C, f'mezz column {y_name(g)}', web=[1, 0, 0])
-    pts = CMX + [XB - 0.15]
+        mem('C', 'CM', f'CM-{y_name(g)}', 4, [x, g, FFL], [x, g, tc - dP], S_CM_C, f'mezz column {y_name(g)}', web=[1, 0, 0])
+    xcb = xcol(FSEC['STEP' if g == GY[3] else 'LO_MEZZ'][0], 'B') - SEC[FSEC['STEP' if g == GY[3] else 'LO_MEZZ'][0]]['h'] / 2000
+    pts = [CMW] + CMX + [xcb]
     for xa, xb in zip(pts[:-1], pts[1:]):
-        mem('B', 'CM', f'CM-{y_name(g)}', 4, [xa, g, tc - dB / 2], [xb, g, tc - dB / 2], S_CM_B, f'mezz primary beam {y_name(g)}',
-            note='end plate to main column B flange' if xb > 16 else '')
-for x in np.linspace(6.66, 16.70, 6):
+        mem('B', 'CM', f'CM-{y_name(g)}', 4, [xa, g, tc - dP / 2], [xb, g, tc - dP / 2], S_CM_P,
+            f'mezz primary beam {y_name(g)}' + (' (cantilever)' if xa == CMW else ''),
+            note='end plate to main column B flange' if xb > 16 else ('continuous over column, cantilever 1.39 m' if xa == CMW else ''))
+for x in np.linspace(CMW, 16.66, 6):
     mem('B', 'CM', 'CM', 4, [x, GY[3] + 0.1, tc - dB / 2], [x, GY[4] - 0.1, tc - dB / 2], S_CM_B, f'mezz 9.0 m beam x{x:.2f}', web=[0, 0, 1])
-# small +4.2 platform south of grid 4 (x 12.86-16.81, y 84.4-88.4): CONFIRM use
-for x in (12.90, 16.70):
-    mem('C', 'CM', 'CM-S', 4, [x, 84.45, FFL], [x, 84.45, tc - 0.25], H(200, 200, 8, 12), 'platform post (confirm)', web=[1, 0, 0])
-    mem('B', 'CM', 'CM-S', 4, [x, 84.45, tc - 0.125], [x, GY[3] - 0.1, tc - 0.125], H(250, 125, 6, 9), 'platform beam (confirm)')
-mem('B', 'CM', 'CM-S', 4, [12.90, 84.45, tc - 0.125], [16.70, 84.45, tc - 0.125], H(250, 125, 6, 9), 'platform edge beam (confirm)')
-# bridge x -0.09 -> 6.66 at y 95.5-97.6, level +4.2
+# bridge x -0.09 -> mezz, y 95.5-97.6, level +4.2 (D8: the +4.2 grey slab south of grid 4 is a room roof only, no steel)
 dBr = SEC[S_BR_B]['h'] / 1000
-mem('B', 'BR', 'BR', 4, [-0.19, GY[4], tc - dBr / 2], [6.66, GY[4], tc - dBr / 2], S_BR_B, 'bridge north beam (grid 5)')
-mem('B', 'BR', 'BR', 4, [-0.12, 95.55, tc - dBr / 2], [6.66, 95.55, tc - dBr / 2], S_BR_B, 'bridge south beam (y 95.55)', note='ends on front L2 edge beam and mezz edge beam; spiral head tied in')
-for x in (1.6, 3.4, 5.0):
-    mem('J', 'BR', 'BR', 4, [x, 95.6, tc - 0.1], [x, GY[4] - 0.05, tc - 0.1], S_FL2_J, 'bridge joist')
+mem('B', 'BR', 'BR', 4, [-0.19, GY[4], tc - dBr / 2], [CMW, GY[4], tc - dBr / 2], S_BR_B, 'bridge north beam (grid 5)', note='on mezz primary beam cantilever tip')
+mem('B', 'BR', 'BR', 4, [-0.12, 95.55, tc - dBr / 2], [CMW, 95.55, tc - dBr / 2], S_BR_B, 'bridge south beam (y 95.55)', note='ends on front L2 edge beam and mezz edge beam; spiral head tied in')
+for x in (1.6, 3.4, 5.1):
+    mem('J', 'BR', 'BR', 4, [x, 95.6, tc - SEC[S_BR_J]['h'] / 2000], [x, GY[4] - 0.05, tc - SEC[S_BR_J]['h'] / 2000], S_BR_J, 'bridge joist')
 mem('HR', 'MISC', 'HR-BR', 6, [1.27, 95.5, CM_TOP + 1.1], [2.09, 95.5, CM_TOP + 1.1], S_RAIL, 'walkway guard south')
 
 # ================================================================ 7. stairs (phase 5)
@@ -348,8 +390,8 @@ for x in (-1.42, -0.53):
     mem('SS', 'STAIR', 'ST1', 5, [x, YT, 6.3 - 0.2], [x, YB + 0.2, 3.8 - 0.2], S_STR, 'scissor stair upper flight stringer', web=[0, 0, 1])
 FX0 = xe(YB + 0.45) - 0.02
 for yy in (YB, YB + 0.9):
-    mem('SB', 'STAIR', 'ST1', 5, [FX0, yy, 3.8 - 0.15], [0.5, yy, 3.8 - 0.15], H(200, 100, 5.5, 8), 'scissor landing beam')
-mem('SC', 'STAIR', 'ST1', 5, [-1.30, YB + 0.82, FFL], [-1.30, YB + 0.82, 3.8 - 0.25], SHS(100, 4.5), 'landing post', web=[1, 0, 0])
+    mem('SB', 'STAIR', 'ST1', 5, [FX0, yy, 3.8 - 0.05 - SEC[S_STL]['h'] / 2000], [0.5, yy, 3.8 - 0.05 - SEC[S_STL]['h'] / 2000], S_STL, 'scissor landing beam')
+mem('SC', 'STAIR', 'ST1', 5, [-1.30, YB + 0.82, FFL], [-1.30, YB + 0.82, 3.8 - 0.05 - SEC[S_STL]['h'] / 1000], S_STP, 'landing post', web=[1, 0, 0])
 for x in (-1.45, -0.5):
     mem('HR', 'MISC', 'HR-ST1', 6, [x, YT, 6.3 + 0.9], [x, YB, 3.8 + 0.9], S_RAIL, 'stair handrail upper')
 for x in (-0.45, 0.5):
@@ -360,7 +402,7 @@ mem('SC', 'STAIR', 'ST2', 5, [CX, CY, FFL], [CX, CY, 4.2 + 1.0], S_SPC, 'spiral 
 SW = math.radians(220); A0 = math.pi + SW; N = 18; d = SW / N
 for i in range(N):
     a = A0 - (i + 0.5) * d; z = FFL + (i + 1) * (4.2 - FFL) / N - 0.03
-    mem('TR', 'STAIR', 'ST2', 5, [CX + 0.11 * math.cos(a), CY + 0.11 * math.sin(a), z], [CX + R * math.cos(a), CY + R * math.sin(a), z], H(150, 75, 5, 7),
+    mem('TR', 'STAIR', 'ST2', 5, [CX + 0.11 * math.cos(a), CY + 0.11 * math.sin(a), z], [CX + R * math.cos(a), CY + R * math.sin(a), z], S_SPA,
         f'spiral tread arm {i+1}', note='folded PL6 tread on arm (or PL tread welded to column)')
 pts = [(CX + (R - 0.05) * math.cos(A0 - k * d), CY + (R - 0.05) * math.sin(A0 - k * d), FFL + k * (4.2 - FFL) / N + 0.95) for k in range(N + 1)]
 for p, q in zip(pts[:-1], pts[1:]):
@@ -387,13 +429,52 @@ def area_mm2(s):
         D, t = d['h'], d['tw']; return math.pi / 4 * (D ** 2 - (D - 2 * t) ** 2)
     if d['t'] == 'PL': return d['h'] * d['b']
 for s in SEC: SEC[s]['A'] = round(area_mm2(s), 1); SEC[s]['kgm'] = round(SEC[s]['A'] * 1e-6 * RHO, 2)
+def classify(m):
+    r, p, s_, a = m['role'], m['pre'], m['sys'], m['asm']
+    if s_ == 'MAIN':
+        if p in ('C', 'R', 'HN'):
+            n = a[2:]; k = FG.get(n, 'X')
+            if 'low rafter' in r: return 'MF_STEP_LRAF'
+            return f'MF_{k}_COL' if p == 'C' else f'MF_{k}_RAF'
+        if p == 'WP': return {'MF1': 'WP_G1', 'MF8': 'WP_G8', 'MF4': 'WP_G4', 'WB': 'WP_B'}[a]
+    if p == 'P': return 'PUR9' if '4-5' in a else 'PUR'
+    if p == 'SR': return 'SAG'
+    if p == 'ES': return 'EAVE_HI' if m['p0'][2] > 10 else 'EAVE_LO'
+    if p == 'RB': return 'ROD_ROOF_HI' if m['p0'][2] > 10 else 'ROD_ROOF_LO'
+    if p == 'VB' and s_ == 'BRACE': return 'ROD_WALL_HI' if a in ('VBRB3-4', 'VBRA3-4') else 'ROD_WALL_LO'
+    if p == 'ST' and s_ == 'BRACE': return 'STRUT_ROOF' if a.startswith('RBR') else 'STRUT_WALL'
+    if p == 'G': return 'GIRT'
+    if s_ == 'FL2':
+        if p == 'C': return 'FL2_C'
+        if p == 'J': return 'FL2_J'
+        if p == 'FP': return 'FL2_FASCIA'
+        if 'cross beam' in r: return 'FL2_X'
+        if 'step beam' in r: return 'FL2_S'
+        if 'wing cantilever' in r: return 'FL2_W'
+        return 'FL2_E'
+    if s_ == 'BD':
+        if 'girder' in r: return 'BD_G'
+        if 'south beam' in r: return 'BD_S'
+        if 'SE post' in r: return 'BD_P'
+        if p == 'C': return 'BD_C'
+        if p == 'J': return 'BD_J'
+        if p == 'VB': return 'BD_BR'
+    if s_ == 'CM':
+        if p == 'C': return 'CM_C'
+        if '9.0 m' in r: return 'CM_B9'
+        return 'CM_P'
+    if s_ == 'BR': return 'BR_J' if p == 'J' else 'BR_B'
+    if s_ == 'STAIR':
+        return {'SS': 'ST_STR', 'SB': 'ST_LB', 'TR': 'SP_ARM'}.get(p) or ('SP_COL' if 'spiral' in r else 'ST_POST')
+    return 'MISC_' + p
 cnt = {}
 for m in M:
+    m['grp'] = classify(m)
     L = float(np.linalg.norm(np.subtract(m['p1'], m['p0'])))
     cnt[m['pre']] = cnt.get(m['pre'], 0) + 1
     m['id'] = f"{m['pre']}{cnt[m['pre']]:03d}"
     m['L'] = round(L, 3); m['kg'] = round(L * SEC[m['sec']]['kgm'], 1)
-lay = dict(version='P2-layout-r1', grids=dict(y=dict(zip(GN, GY)), x=dict(A=XA, B=XB, R=XR)),
+lay = dict(version=os.environ.get('LAYVER', 'P3-r1'), grids=dict(y=dict(zip(GN, GY)), x=dict(A=XA, B=XB, R=XR)),
            levels=dict(base=BASE, ffl=FFL, eave_hi=EAVE_HI, eave_lo=EAVE_LO, bouldering=BD_TOP, mezz=CM_TOP, terraces=TER),
            sections=SEC, members=M)
 json.dump(lay, open(os.path.join(OUT, 'layout.json'), 'w'), separators=(',', ':'))

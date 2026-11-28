@@ -1,0 +1,84 @@
+member,group,section,role,category,object,hits,x,y,z,xmin,ymin,zmin,xmax,ymax,zmax
+B073,CM_B9,H400x200x8x13,"mezz 9.0 m beam x6.76",interior,Aluminum_Anodized_Clear#2/CarPaint_Matte_Black#2,2779,6.68,90.76,3.76,6.67,90.0,3.67,6.71,96.2,4.03
+C014,MF_LO_COL,H450x200x9x14,"portal column B/7",interior,*15/Aluminium-matte/Aluminum_Anodized_DarkGray#1,2160,16.66,110.67,1.9,16.56,110.56,1.13,16.81,110.74,3.22
+B047,FL2_E,H294x200x8x12,"front L2 inner edge beam y111.12-117.25",glass,Glass_Window_Neutral#3,337,-1.98,114.22,3.07,-1.99,111.2,2.99,-1.97,117.2,3.18
+B011,FL2_E,H294x200x8x12,"front L2 inner edge beam y67.75-74.65",glass,Glass_Window_Neutral#3,327,-1.98,71.75,3.07,-1.99,68.83,2.99,-1.97,74.58,3.18
+J022,BD_J,H350x175x7x11,"bouldering deck joist x9.86",interior,FURN_black/LED_5500k#1,216,9.87,71.87,5.98,9.79,70.19,5.97,9.94,73.51,6.0
+J004,FL2_J,H244x175x7x11,"front L2 joist y76.40",interior,FURN_black/LED_5500k#1,144,-3.6,76.4,3.39,-4.51,76.32,3.38,-2.69,76.48,3.42
+J005,FL2_J,H244x175x7x11,"front L2 joist y79.40",interior,FURN_black/LED_5500k#1,144,-3.32,79.4,3.59,-4.32,79.32,3.58,-2.32,79.48,3.62
+J006,FL2_J,H244x175x7x11,"front L2 joist y83.90",interior,FURN_black/LED_5500k#1,144,-2.96,83.9,3.79,-4.08,83.82,3.78,-1.84,83.98,3.82
+J007,FL2_J,H244x175x7x11,"front L2 joist y86.90",interior,FURN_black/LED_5500k#1,144,-2.53,86.9,3.99,-3.79,86.82,3.98,-1.27,86.98,4.02
+J011,FL2_J,H244x175x7x11,"front L2 joist y99.12",interior,FURN_black/LED_5500k#1,144,-2.53,99.12,3.99,-3.79,99.04,3.98,-1.27,99.2,4.02
+J012,FL2_J,H244x175x7x11,"front L2 joist y102.12",interior,FURN_black/LED_5500k#1,144,-2.96,102.12,3.79,-4.08,102.04,3.78,-1.84,102.2,3.82
+J013,FL2_J,H244x175x7x11,"front L2 joist y106.62",interior,FURN_black/LED_5500k#1,144,-3.32,106.62,3.59,-4.32,106.54,3.58,-2.32,106.7,3.62
+J001,FL2_J,H244x175x7x11,"front L2 joist y69.47",interior,FURN_black/LED_5500k#1,128,-3.74,69.44,3.19,-4.6,69.4,3.18,-2.88,69.51,3.22
+B015,FL2_E,H294x200x8x12,"front L2 inner edge beam y74.90-77.90",glass,Glass_Window_Neutral#3,109,-1.97,75.68,3.23,-1.99,75.03,3.18,-1.95,76.4,3.35
+GF014,MISC_GF,RHS100x50x3.2,"partition head beam +6.3 (gypsum above to rafter 5)",interior,Aluminum_Brushed_5cm#4,103,4.87,97.6,6.29,-3.93,97.59,6.26,15.46,97.61,6.3
+J016,FL2_J,H244x175x7x11,"front L2 joist y115.21",interior,FURN_black/LED_5500k#1,64,-3.74,115.19,3.19,-4.6,115.14,3.18,-2.88,115.22,3.22
+J021,BD_J,H350x175x7x11,"bouldering deck joist x7.62",interior,FURN_black,36,7.69,71.87,5.99,7.69,70.19,5.97,7.69,73.51,6.0
+B045,FL2_E,H294x200x8x12,"front L2 inner edge beam y110.65-111.12",glass,Glass_Window_Neutral#3,33,-1.97,110.87,3.21,-1.99,110.75,3.18,-1.95,111.04,3.33
+GF014,MISC_GF,RHS100x50x3.2,"partition head beam +6.3 (gypsum above to rafter 5)",wall/cladding,Aluminum_Brushed_5cm#4/Material3#1,26,5.36,97.6,6.3,-4.17,97.59,6.3,16.65,97.6,6.3
+GF013,MISC_GF,RHS100x50x3.2,"Edge partition post",interior,Aluminum_Brushed_5cm#4,25,-0.09,97.57,5.57,-0.1,97.56,4.23,-0.08,97.59,6.27
+C003,MF_HI_COL,H500x200x10x16,"portal column A/2",interior,FURN_black/FURN_oak,24,-4.85,74.6,4.17,-4.97,74.6,3.4,-4.52,74.6,4.45
+C015,MF_LO_END_COL,H350x175x7x11,"portal column A/8",interior,FURN_black/FURN_oak,22,-4.88,117.2,4.15,-4.97,117.2,3.4,-4.67,117.2,4.45
+B005,FL2_X,H300x150x6.5x9,"front L2 cross beam 5 (column A flange -> inner edge)",glass,Glass_Window_Neutral#3,22,-1.97,97.43,3.88,-1.99,97.4,3.79,-1.95,97.51,3.98
+J018,BD_J,H350x175x7x11,"bouldering deck joist x0.89",climbing wall,FURN_black/hold_9,22,0.91,70.33,6.06,0.85,70.2,6.01,0.97,70.45,6.14
+B004,FL2_X,H300x150x6.5x9,"front L2 cross beam 4 (column A flange -> inner edge)",glass,Glass_Window_Neutral#3,18,-1.97,88.41,3.87,-1.99,88.4,3.79,-1.95,88.48,3.98
+B006,FL2_X,H300x150x6.5x9,"front L2 cross beam 6 (column A flange -> inner edge)",glass,Glass_Window_Neutral#3,17,-1.97,104.07,3.6,-1.99,104.0,3.6,-1.95,104.12,3.6
+B013,FL2_E,H294x200x8x12,"front L2 inner edge beam y74.65-74.90",glass,Glass_Window_Neutral#3,16,-1.98,74.81,3.07,-1.99,74.71,2.99,-1.97,74.87,3.18
+J006,FL2_J,H244x175x7x11,"front L2 joist y83.90",glass,Glass_Window_Neutral#3,16,-1.97,83.9,3.78,-1.99,83.9,3.72,-1.95,83.9,3.85
+J012,FL2_J,H244x175x7x11,"front L2 joist y102.12",glass,Glass_Window_Neutral#3,16,-1.97,102.12,3.78,-1.99,102.12,3.72,-1.95,102.12,3.85
+B052,FL2_S,H300x150x6.5x9,"front L2 step beam y77.90 (+3.6/+3.8)",glass,Glass_Window_Neutral#3,15,-1.97,77.9,3.32,-1.99,77.9,3.18,-1.95,77.9,3.38
+J004,FL2_J,H244x175x7x11,"front L2 joist y76.40",glass,Glass_Window_Neutral#3,14,-1.97,76.4,3.25,-1.99,76.4,3.23,-1.95,76.4,3.35
+J005,FL2_J,H244x175x7x11,"front L2 joist y79.40",glass,Glass_Window_Neutral#3,14,-1.97,79.4,3.45,-1.99,79.4,3.43,-1.95,79.4,3.54
+J007,FL2_J,H244x175x7x11,"front L2 joist y86.90",glass,Glass_Window_Neutral#3,14,-1.97,86.9,3.9,-1.99,86.9,3.88,-1.95,86.9,3.98
+J011,FL2_J,H244x175x7x11,"front L2 joist y99.12",glass,Glass_Window_Neutral#3,14,-1.97,99.12,3.9,-1.99,99.12,3.88,-1.95,99.12,3.98
+B049,FL2_E,H294x200x8x12,"front L2 inner edge beam y117.25-119.10",interior,Aluminum_Anodized_DarkGray,14,-1.98,117.58,3.1,-1.99,117.55,3.0,-1.97,117.6,3.2
+B063,FL2_W,H294x200x8x12,"wing cantilever beam",interior,Aluminum_Anodized_DarkGray,14,-1.98,117.58,3.1,-1.99,117.55,3.0,-1.97,117.6,3.2
+B054,FL2_S,H300x150x6.5x9,"front L2 step beam y85.40 (+4.0/+4.2)",glass,Glass_Window_Neutral#3,13,-1.97,85.4,3.73,-1.99,85.4,3.6,-1.95,85.4,3.85
+B055,FL2_S,H300x150x6.5x9,"front L2 step beam y100.62 (+4.0/+4.2)",glass,Glass_Window_Neutral#3,13,-1.97,100.62,3.73,-1.99,100.62,3.6,-1.95,100.62,3.85
+C007,MF_STEP_COL,H400x200x8x13,"portal column A/4",wall/cladding,Cladding_Metal,11,-4.89,88.5,4.61,-4.89,88.49,4.2,-4.89,88.53,5.47
+C009,MF_LO_MEZZ_COL,H450x200x9x14,"portal column A/5",interior,Aluminum_Brushed_5cm#4,10,-4.96,97.53,5.25,-4.97,97.52,4.2,-4.95,97.54,6.3
+J020,BD_J,H350x175x7x11,"bouldering deck joist x5.38",climbing wall,CW_red/CW_white/CW_wood,10,5.4,68.82,6.0,5.38,68.18,6.0,5.42,70.18,6.0
+WP009,WP_G8,H200x100x5.5x8,"gable wind post 8",wall/cladding,Cladding_Metal/Material3#1,9,6.01,117.33,2.51,6.01,117.25,1.0,6.01,117.34,3.4
+J023,BD_J,H350x175x7x11,"bouldering deck joist x12.10",climbing wall,CW_red/CW_white,9,12.16,70.07,6.08,12.1,69.28,6.0,12.18,70.3,6.15
+GF012,MISC_GF,RHS100x50x3.2,"Edge partition post",glass,Glass_Window_Neutral#3,9,-1.26,97.56,5.27,-1.26,97.56,4.24,-1.26,97.56,6.22
+B003,FL2_X,H300x150x6.5x9,"front L2 cross beam 3 (column A flange -> inner edge)",glass,Glass_Window_Neutral#3,8,-1.97,81.53,3.6,-1.99,81.48,3.6,-1.95,81.57,3.6
+J021,BD_J,H350x175x7x11,"bouldering deck joist x7.62",climbing wall,CW_red/CW_white/CW_wood,8,7.69,69.49,5.92,7.66,68.14,5.83,7.7,70.2,6.0
+GF003,MISC_GF,RHS100x50x3.2,"courtyard glass mullion",glass,Glass_Window_Neutral#3,8,-1.99,90.37,6.3,-1.99,90.36,5.6,-1.99,90.38,7.0
+GF007,MISC_GF,RHS100x50x3.2,"courtyard glass mullion",glass,Glass_Window_Neutral#3,8,-1.99,95.53,6.3,-1.99,95.52,5.6,-1.99,95.53,7.0
+B043,FL2_E,H294x200x8x12,"front L2 inner edge beam y108.12-110.65",glass,Glass_Window_Neutral#3,7,-1.97,110.62,3.2,-1.99,110.62,3.18,-1.95,110.62,3.31
+C012,MF_LO_COL,H450x200x9x14,"portal column B/6",interior,Concrete_Raw,6,16.81,104.0,2.3,16.81,104.0,1.0,16.81,104.0,3.6
+WP006,WP_G1,H250x125x6x9,"gable wind post 1",wall/cladding,Material3#1,6,6.0,67.83,14.82,6.0,67.8,14.47,6.01,67.85,15.0
+J008,FL2_J,H244x175x7x11,"front L2 joist y90.70",glass,Glass_Window_Neutral#3,6,-1.95,90.69,3.88,-1.95,90.65,3.88,-1.95,90.78,3.88
+J009,FL2_J,H244x175x7x11,"front L2 joist y92.95",glass,Glass_Window_Neutral#3,6,-1.95,92.94,3.88,-1.95,92.9,3.88,-1.95,93.03,3.88
+J010,FL2_J,H244x175x7x11,"front L2 joist y95.20",glass,Glass_Window_Neutral#3,6,-1.95,95.19,3.88,-1.95,95.15,3.88,-1.95,95.27,3.88
+B049,FL2_E,H294x200x8x12,"front L2 inner edge beam y117.25-119.10",glass,Glass_Window_Neutral#3,6,-1.98,117.36,3.08,-1.99,117.29,2.99,-1.97,117.37,3.18
+B063,FL2_W,H294x200x8x12,"wing cantilever beam",glass,Glass_Window_Neutral#3,6,-1.98,117.36,3.08,-1.99,117.29,2.99,-1.97,117.37,3.18
+GF013,MISC_GF,RHS100x50x3.2,"Edge partition post",glass,Glass_Window_Neutral#3,5,-0.09,97.56,5.32,-0.09,97.56,5.25,-0.09,97.56,5.6
+C014,MF_LO_COL,H450x200x9x14,"portal column B/7",wall/cladding,Cladding_Metal/Material3#1,4,16.88,110.66,3.82,16.85,110.64,1.0,16.94,110.67,5.67
+J013,FL2_J,H244x175x7x11,"front L2 joist y106.62",glass,Glass_Window_Neutral#3,4,-1.97,106.62,3.6,-1.97,106.62,3.6,-1.97,106.62,3.6
+B053,FL2_S,H300x150x6.5x9,"front L2 step beam y82.40 (+3.8/+4.0)",glass,Glass_Window_Neutral#3,4,-1.97,82.4,3.6,-1.97,82.4,3.6,-1.97,82.4,3.6
+B056,FL2_S,H300x150x6.5x9,"front L2 step beam y103.62 (+3.8/+4.0)",glass,Glass_Window_Neutral#3,4,-1.97,103.62,3.6,-1.97,103.62,3.6,-1.97,103.62,3.6
+C012,MF_LO_COL,H450x200x9x14,"portal column B/6",wall/cladding,Cladding_Metal,3,16.86,104.07,4.76,16.85,104.07,2.93,16.86,104.07,5.67
+WP011,WP_B,H148x100x6x9,"wind post B lobby bay",wall/cladding,Cladding_Metal,3,16.91,92.95,3.47,16.91,92.95,1.0,16.91,92.95,4.7
+C004,MF_HI_COL,H500x200x10x16,"portal column B/2",climbing wall,CW_wood,2,16.91,74.64,6.83,16.91,74.64,3.31,16.91,74.64,10.36
+C005,MF_HI_COL,H500x200x10x16,"portal column A/3",wall/cladding,Cladding_Metal,2,-4.89,81.63,3.8,-4.89,81.63,3.8,-4.89,81.63,3.8
+C008,MF_STEP_COL,H400x200x8x13,"portal column B/4",interior,Cladding_Metal,2,16.81,88.4,4.15,16.81,88.4,4.15,16.81,88.4,4.15
+C016,MF_LO_END_COL,H350x175x7x11,"portal column B/8",wall/cladding,Cladding_Metal,2,16.86,117.27,4.3,16.85,117.27,2.93,16.86,117.27,5.67
+WP007,WP_G1,H250x125x6x9,"gable wind post 1",wall/cladding,Material3#1,2,9.67,67.81,14.99,9.67,67.75,14.98,9.67,67.87,15.0
+RB017,ROD_ROOF_LO,RB20,"roof X-brace 4-5",wall/cladding,Material3#1,2,-3.65,90.42,7.0,-3.65,90.42,7.0,-3.65,90.42,7.0
+B075,CM_B9,H400x200x8x13,"mezz 9.0 m beam x10.72",interior,Concrete_Raw,2,10.71,94.85,4.0,10.71,94.85,4.0,10.71,94.85,4.0
+B080,BR_B,H300x150x6.5x9,"bridge south beam (y 95.55)",interior,CarPaint_Matte_Black#2,2,6.7,95.56,3.95,6.7,95.56,3.88,6.71,95.56,4.02
+R003,MF_HI_RAF,H400x200x8x13,"rafter A-ridge 2",wall/cladding,Material3#1,1,-4.67,74.59,14.98,-4.67,74.59,14.98,-4.67,74.59,14.98
+R006,MF_HI_RAF,H400x200x8x13,"rafter B-ridge 3",wall/cladding,Material3#1,1,16.68,81.59,14.98,16.68,81.59,14.98,16.68,81.59,14.98
+WP005,WP_G1,H250x125x6x9,"gable wind post 1",wall/cladding,Material3#1,1,2.34,67.74,15.0,2.34,67.74,15.0,2.34,67.74,15.0
+ES006,EAVE_HI,CHS139.8x4.5,"eave strut B 3-4",wall/cladding,Cladding_Metal,1,16.81,81.73,14.7,16.81,81.73,14.7,16.81,81.73,14.7
+RB018,ROD_ROOF_LO,RB20,"roof X-brace 4-5",wall/cladding,Material3#1,1,-3.67,95.5,7.0,-3.67,95.5,7.0,-3.67,95.5,7.0
+VB004,ROD_WALL_HI,CHS114.3x4.5,"wall X-brace B3-4",wall/cladding,Material3#1,1,16.68,81.59,14.98,16.68,81.59,14.98,16.68,81.59,14.98
+G048,GIRT,C200x75x20x3.2,"girt B 3-4",wall/cladding,Cladding_Metal,1,16.81,81.73,12.67,16.81,81.73,12.67,16.81,81.73,12.67
+J019,BD_J,H350x175x7x11,"bouldering deck joist x3.13",climbing wall,CW_wood,1,3.13,69.55,6.0,3.13,69.55,6.0,3.13,69.55,6.0
+VB013,BD_BR,CHS114.3x4.5,"deck side brace (N-S)",climbing wall,CW_white,1,-1.45,68.67,1.59,-1.45,68.67,1.59,-1.45,68.67,1.59
+VB013,BD_BR,CHS114.3x4.5,"deck side brace (N-S)",interior,B03_Apricot_Glow,1,-1.45,68.67,1.59,-1.45,68.67,1.59,-1.45,68.67,1.59
+B076,CM_B9,H400x200x8x13,"mezz 9.0 m beam x12.70",interior,Concrete_Raw,1,12.74,94.87,4.0,12.74,94.87,4.0,12.74,94.87,4.0
+B077,CM_B9,H400x200x8x13,"mezz 9.0 m beam x14.68",interior,Concrete_Raw,1,14.77,94.84,4.0,14.77,94.84,4.0,14.77,94.84,4.0

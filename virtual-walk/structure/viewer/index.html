@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>Active Space Steel P2</title>
+<title>Active Space Steel</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -41,7 +41,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--oxide);outline-
 #card dt{color:var(--mute)} #card dd{margin:0;font-family:var(--f-mono);overflow-wrap:anywhere}
 .hint{position:absolute;left:12px;bottom:10px;font-size:.72rem;color:var(--mute);pointer-events:none}
 .stats{font-family:var(--f-mono);font-size:.78rem;color:var(--mute);font-variant-numeric:tabular-nums}
-main.doc{max-width:76ch;margin:34px auto 0}
+main.doc{max-width:120ch;margin:34px auto 0}
+main.doc p,main.doc ul{max-width:76ch}
 main.doc h2{font-size:1.15rem;margin:34px 0 8px;padding-top:10px;border-top:1px solid var(--line)}
 main.doc h2 .n{font-family:var(--f-mono);color:var(--oxide);margin-right:8px;font-size:.9rem}
 .tw{overflow-x:auto;margin:10px 0}
@@ -63,8 +64,8 @@ code{font-family:var(--f-mono);font-size:.85em}
 
 <div class="wrap">
 <header>
-  <h1>Active Space Hat Yai · โครงสร้างเหล็ก Phase 2 Layout</h1>
-  <span class="tag">LAYOUT r1 · 28 NOV 2026 · ขนาดหน้าตัดยังเป็นค่าเบื้องต้น (PRELIM)</span>
+  <h1>Active Space Hat Yai · โครงสร้างเหล็ก Phase 3 Sizing</h1>
+  <span class="tag">P3-r1 · 28 NOV 2026 · AISC 360-16 LRFD · มยผ. 1311-50</span>
 </header>
 
 <section class="viewer">
@@ -76,6 +77,8 @@ code{font-family:var(--f-mono);font-size:.85em}
       <label>ความทึบ <input type="range" id="op" min="0.05" max="1" step="0.05" value="0.25"></label>
       <div class="row" id="alay"></div>
     </div>
+    <div><h3>สี</h3><label><input type="checkbox" id="urm"> สีตาม utilization (UR)</label>
+      <div class="row" style="font-size:.72rem;gap:6px"><span><i class="sw" style="background:#3c9d5d"></i> &lt;0.5</span><span><i class="sw" style="background:#a6c63a"></i> 0.5–0.8</span><span><i class="sw" style="background:#e39b2d"></i> 0.8–0.95</span><span><i class="sw" style="background:#d13b2b"></i> &gt;0.95</span><span><i class="sw" style="background:#9aa3a6"></i> ไม่มีค่า</span></div></div>
     <div><h3>Clash</h3><label><input type="checkbox" id="clash" checked> จุด clash (pre-check)</label></div>
     <div><h3>มุมมอง</h3><div class="row" id="views"></div></div>
     <div class="stats" id="stats"></div>
@@ -89,92 +92,61 @@ code{font-family:var(--f-mono);font-size:.85em}
 </section>
 
 <main class="doc">
-<h2><span class="n">1</span>ตรวจข้อมูล (Phase 1) ผ่าน</h2>
+<h2><span class="n">P3</span>สรุป</h2>
+<p id="sum">–</p>
 <ul>
-<li><code>SRC=../base OUT=… python3 build_model.py</code> ได้ <code>geo.bin</code> และ <code>geo.json</code> ตรงกับ <code>model/</code> ทุก byte (sha256 <code>b2231fa9…a8158</code>)</li>
-<li>กริดเสาจาก geometry: y = 67.75, 74.65, 81.55, 88.45, 97.45, 104.05, 110.65, 117.25 · x = −4.84 / 16.86 ตรงทั้งหมด</li>
-<li>เสาเดิมในโมเดล H300×300 (placeholder) web อยู่ในระนาบ frame, ฐาน +0.20, หัวเสา +15.00 (กริด 1–4) / +7.00 (กริด 5–8)</li>
+<li><b>วิธีออกแบบ:</b> AISC 360-16 LRFD · portal ทุกกริดวิเคราะห์ second-order แบบ Direct Analysis Method (0.8EI, notional load 0.002ΣY, K = 1) ด้วย 13 load combination</li>
+<li><b>ลม มยผ. 1311-50:</b> สงขลา กลุ่ม 4A, V50 25 m/s, TF 1.2, Iw 1.0, terrain A · q = <span id="q">–</span> kPa · q·Ce หลังคาสูง <span id="qh">–</span> / หลังคาต่ำ <span id="ql">–</span> kPa · ใช้ load factor 1.6W (ลมคาบ 50 ปี)</li>
+<li><b>Load combination:</b> 1.4D · 1.2D+1.6L+0.5Lr · 1.2D+1.6Lr+0.5L · 1.2D+1.6W+0.5L+0.5Lr · 0.9D+1.6W (W1–W4 ตามขวาง ±แรงดันภายใน, W5 ยกตัวตามยาว)</li>
+<li><b>แรงผนังปีน (ยืนยันแล้ว):</b> auto-belay 12 kN/เครื่องที่ +13.0 แขน 0.75 ม. เอียง 15° · ใช้พร้อมกัน 3 ใน 5 lane (1 ใน 2 lane ติดกัน) · คิดเป็น L (×1.6) · แรงดึงกลับจากน้ำหนักผนังเข้าเสา B</li>
+<li><b>พื้น:</b> metal deck + คอนกรีต 120 มม. (2.6 kPa) + finish/ฝ้า/งานระบบ 1.0 kPa · co-working เพิ่ม partition 1.0 kPa · LL 5.0 kPa · คานคิดแบบ non-composite (ปลอดภัยกว่า) แต่ตรวจการสั่นด้วย composite I ตาม DG11</li>
 </ul>
 
-<h2><span class="n">2</span>ระบบโครงสร้างที่เสนอ</h2>
-<div class="tw"><table>
-<thead><tr><th>ส่วน</th><th>ระบบ</th><th>หน้าตัดเบื้องต้น</th></tr></thead>
-<tbody>
-<tr><td>Portal กริด 1–4 (ยิมปีน, eave +15.0)</td><td>Portal H ตัน + haunch 2.2 ม. ฐานยึดแน่น (fixed) คุม drift เพราะผนังปีนยึดเสาแนว B ถึง +13.0</td><td class="m">C H588×300 · R H500×200</td></tr>
-<tr><td>Portal กริด 5–8 (eave +7.0)</td><td>Portal ฐาน pin</td><td class="m">C/R H400×200</td></tr>
-<tr><td>กริด 4 (step frame)</td><td>เสาสูงถึง +15 รับหลังคาสูง + rafter หลังคาต่ำ +7 ฝากด้านเหนือ · เสา clerestory x 0.6 / 6.0 / 11.4</td><td class="m">WP H300×150</td></tr>
-<tr><td>Gable กริด 1 / 8</td><td>Portal เต็ม + เสารับลม กริด 1: x −1.40, 2.30, 6.00, 9.62 (หลบกระจก 9.72–14.61) · กริด 8: 0.6, 6.0, 11.4</td><td class="m">H300×150</td></tr>
-<tr><td>แป / sag rod</td><td>แป C ระยะ ~1.17 ม. ตามโมเดล · sag rod 1 แนว (2 แนวที่ bay 9 ม.)</td><td class="m">C150×65×20×3.2 · C200 (bay 4–5) · RB12</td></tr>
-<tr><td>Bracing หลังคา</td><td>X rod ทั้งสองลาด bay 1–2, 3–4 (หลังคาสูง) และ 4–5, 7–8 (หลังคาต่ำ) + strut CHS ที่ node</td><td class="m">RB20 · CHS114.3×4.5</td></tr>
-<tr><td>Bracing ผนัง</td><td>แนว B: bay 3–4 (2 ชั้น), 7–8 · แนว A: bay 1–2 (2 ชั้น), 7–8 · แนว B bay 1–2 ติดผนังปีน จึงย้ายไป bay 3–4</td><td class="m">RB24 / RB20</td></tr>
-<tr><td>Eave strut / girt</td><td>Eave strut ทั้ง 2 แนวทั้ง 2 โซน · girt @1.5 ม. · แนว A ใต้ L2 เป็น arcade เปิด ไม่มี girt · bay ล็อบบี้แนว B เพิ่มเสารับลม y 92.95</td><td class="m">C150×65×20×3.2</td></tr>
-<tr><td>Front L2 (+3.4 ถึง +4.2)</td><td>Cross beam ทุกกริด (end plate ติด flange เสา A → เสาใน) · edge beam นอก/ใน · step beam ที่ทุกขั้น (upstand 200) · joist @≤2.3 ม. · wing ยื่น 1.65 ม. ทั้งสองข้าง · fascia PL6 · ราว 1.1 ม.</td><td class="m">X H300×150 · E H250×125 · J H200×100 · เสาใน SHS150×150×6</td></tr>
-<tr><td>พื้น L2 bouldering +6.3</td><td>Girder ทิศเหนือ y 74.05 ช่วง 13.45 ม. <b>ไม่มีเสาใน fall zone</b> · joist ทิศ N-S 7 ตัว พาดคานบนเสา gable กริด 1 · ค้ำ N-S ในระนาบ x −1.40 / 12.15</td><td class="m">G H700×300 · J H300×150 · C H250×250</td></tr>
-<tr><td>Co-working mezz +4.2</td><td>x 6.71–16.91 · y 88.4–97.6 · คานช่วง 9.0 ม. 6 ตัว พาดคานหลักบนกริด 4 / 5 · เสา x 6.66, 11.70 + ฝากเสา B</td><td class="m">H400×200 · เสา H200×200</td></tr>
-<tr><td>ทางเชื่อม +4.2</td><td>x −0.09 → 6.66 แนวกริด 5 · หัวเสาบันไดวนยึดคานใต้</td><td class="m">H300×150</td></tr>
-<tr><td>บันได</td><td>กรรไกร: stringer 2 คู่ + ชานพัก +3.8 บนคานขอบ L2 + เสา SHS100 · บันไดวน R1.4: เสากลาง CHS219 + แขน cantilever 18 ขั้น</td><td class="m">H250×125 · CHS219.1×8.2</td></tr>
-</tbody></table></div>
-<p class="note">น้ำหนักเหล็กเบื้องต้น (ยังไม่รวม connection): <span id="wt">–</span></p>
-
-<h2><span class="n">3</span>เกณฑ์ออกแบบที่จะใช้ใน Phase 3</h2>
-<ul>
-<li><b>วิธีออกแบบ: LRFD</b> ตาม AISC 360-16 (วสท. ยอมรับ) · combos 1.4D · 1.2D+1.6L+0.5Lr · 1.2D+1.6Lr+0.5L · 1.2D+1.0W+0.5L · 0.9D+1.0W · ตรวจ serviceability ที่ค่าใช้งาน</li>
-<li><b>วัสดุ:</b> หน้าตัดรีดร้อน SS400 (Fy 245) · girder ทางเลือก SM520 (Fy 355) · แป/girt C เย็น TIS 1228 SSC400 ชุบสังกะสี · tie rod SR24 · สลักโครงหลัก F10T / A325 · secondary 8.8 · anchor SS400</li>
-<li><b>Live load:</b> พื้นยิม/mezz/front L2 5.0 kPa · บันได 5.0 kPa · ราว 0.75 kN/m แนวนอนที่ +1.1 · หลังคา 0.30 kPa (กฎกระทรวง) + จุด 1.0 kN ที่แป</li>
-<li><b>Dead load เพิ่ม:</b> slab composite 120 มม. 2.6 kPa · finish/ฝ้า/งานระบบ 1.0 kPa · หลังคา sheet+ฉนวน 0.15 kPa · ท่อแอร์แขวน 0.25 kPa (โซนท่อ)</li>
-<li><b>ลม มยผ. 1311-50:</b> สงขลา กลุ่ม 4A V50 = 25 m/s, TF = 1.2, Iw = 1.0 (ต้องเปิดตาราง ภาคผนวก ก ยืนยันอีกครั้งตอนคำนวณ) · วิธีอย่างง่าย อาคารสูง ≤ 23 ม.</li>
-<li><b>Deflection:</b> คาน/mezz L/360 (LL) · L/240 (รวม) · แป L/180 · drift เสาโซนปีน H/200 (เข้มกว่า H/150 เพราะผนังปีน)</li>
-<li><b>Vibration:</b> พื้น bouldering + mezz ตรวจตาม AISC Design Guide 11 (rhythmic + walking), เป้า fn ≥ 9 Hz สำหรับพื้นออกกำลังกาย</li>
-</ul>
-
-<h2><span class="n">4</span>แรงผนังปีนที่เสนอ (รอยืนยัน)</h2>
-<p>อิงหลักการ EN 12572-1:2017 (ผนัง lead / top rope) และ EN 12572-2 (bouldering) ผมยังไม่ได้เปิดตาราง A.1 ฉบับเต็ม ตัวเลขด้านล่างเป็นค่าที่เสนอ ต้องเทียบกับผู้ผลิตผนังและคู่มืออุปกรณ์ auto-belay ก่อนใช้</p>
-<div class="tw"><table>
-<thead><tr><th>รายการ</th><th>ค่าเสนอ (characteristic)</th><th>วิธีใส่ในโมเดล</th></tr></thead>
-<tbody>
-<tr><td>น้ำหนักผนัง (แผ่น + holds + โครงรองของผู้ผลิต)</td><td class="m">0.50 kPa ต่อพื้นที่ผิวผนัง</td><td>ลงจุดยึดตามระยะโครงรอง</td></tr>
-<tr><td>แรงตกที่ quickdraw (protection point)</td><td class="m">8.0 kN / lane</td><td>1 จุดต่อ lane ที่ตำแหน่งเลวร้ายสุด ทิศลง+ออกจากผนัง 30°</td></tr>
-<tr><td>Top anchor / lower-off</td><td class="m">12.0 kN / lane</td><td>ที่ยอดผนัง +10.5 / +13.0</td></tr>
-<tr><td>Auto-belay (TRUBLUE หรือเทียบเท่า)</td><td class="m">12.0 kN / เครื่อง</td><td>ที่จุดแขวน ทิศดิ่ง ±15° · รอคู่มือรุ่นจริง</td></tr>
-<tr><td>น้ำหนักนักปีน</td><td class="m">1.0 kN / lane</td><td>พร้อมกันทุก lane</td></tr>
-<tr><td>การเกิดพร้อมกัน (global)</td><td class="m">ตก 1 ใน 2 lane ติดกัน</td><td>ออกแบบ portal / bracing · ชิ้นรองรับเฉพาะที่ใช้ทุก lane</td></tr>
-<tr><td>Bouldering (ใต้พื้น +6.3 และ boulder กลางห้อง)</td><td class="m">0.50 kPa + 1.0 kN / 1.5 ม.</td><td>boulder กลางห้องตั้งอิสระบนพื้น ไม่ฝากโครงอาคาร</td></tr>
-<tr><td>Crash mat บนพื้น +6.3</td><td class="m">0.15 kPa SDL</td><td>LL 5.0 kPa ครอบแรงกระแทกแบบกระจายแล้ว</td></tr>
+<h2><span class="n">D</span>ที่แก้ตามคำตอบรอบที่แล้ว</h2>
+<div class="tw"><table><thead><tr><th>ข้อ</th><th>ผล</th></tr></thead><tbody>
+<tr><td>แรงผนังปีน</td><td>ใช้ตามที่เสนอ ใส่ใน frame กริด 1–3 แนว B</td></tr>
+<tr><td>พื้น metal deck</td><td>joist @ ≤ 2.3 ม. ทุกพื้น (ระยะ span ของ deck แบบไม่ค้ำยัน)</td></tr>
+<tr><td>X-brace แนว A</td><td>bay 1–2 และ 7–8 ชนเคาน์เตอร์ริม facade บน L2 (z 3.2–4.85) จึงย้ายไป <b>bay 3–4</b> ซึ่งไม่มีเคาน์เตอร์ แบ่ง 3 ชั้น เว้นช่วงพื้น L2 · แรงตามยาวโซนต่ำแนว A วิ่งตาม eave strut +7.0 เข้า node A/4 · bay 3–4 แรงสูง ใช้ CHS X (รับทั้งดึงและอัด) แทน rod · ระนาบ brace อยู่ด้านในแนว girt</td></tr>
+<tr><td>เสา mezz</td><td>ตรวจผังชั้นล่างแล้ว x 6.66 / 11.70 ชนเคาน์เตอร์และผนัง WC จึงย้ายไป <b>x 8.15 และ 11.60</b> บนกริด 4 และ 5 (เช็กว่าว่างในรัศมี 130 มม. ตั้งแต่ z 1.05–3.55) · คานหลักยื่น cantilever 1.39 ม. ไปขอบ mezz x 6.76</td></tr>
+<tr><td>แผ่น +4.2 ใต้กริด 4</td><td>ลบโครงเหล็กออก (เป็นหลังคาห้อง)</td></tr>
+<tr><td>หลังคาห้อง Edge/WC +3.6</td><td>งานผนังเบา ไม่อยู่ใน scope เหล็ก</td></tr>
+<tr><td>Girt</td><td>cladding ชิดผิวเสา (−4.99 / +17.00) จึงต้องใช้ girt แบบ inset อยู่ระหว่าง flange เสา ยึด cleat ที่ web · ไม่มี girt ใต้ L2 (arcade) และที่ปลาย arcade ด้าน gable</td></tr>
 </tbody></table></div>
 
-<h2><span class="n">5</span>เรื่องที่ต้องตัดสินใจก่อน Phase 3</h2>
-<div class="tw"><table>
-<thead><tr><th>#</th><th>ประเด็น</th><th>ข้อเสนอ</th></tr></thead>
-<tbody>
-<tr><td class="m">D1</td><td>พื้น front L2 / bouldering / mezz: แผ่นเหล็ก 12 มม. ตามโมเดล หรือ metal deck + คอนกรีต</td><td><span class="pill rec">แนะนำ</span> composite 120 มม. แผ่นเหล็ก 12 มม. บน joist 1.2 ม. แอ่น L/255 ไม่ผ่าน L/360 และสั่นมาก</td></tr>
-<tr><td class="m">D2</td><td>ฐานเสา</td><td><span class="pill rec">แนะนำ</span> fixed กริด 1–4 · pin กริด 5–8</td></tr>
-<tr><td class="m">D3</td><td>เสาหลักลึก 588 มม. ถ้าวางกลางกริด flange นอกจะทะลุแนว facade 144 มม.</td><td><span class="pill rec">ทำแล้ว</span> เสาชิดผิวนอก flange ที่ x −4.98 / +17.00 กริดสถาปัตย์ไม่ขยับ แต่ศูนย์เสาเลื่อนเข้า 0.15 ม.</td></tr>
-<tr><td class="m">D4</td><td>X-brace แนว A bay 1–2 และ 7–8 ชั้นล่างอยู่ในแนว arcade ริมถนน</td><td><span class="pill ask">ถาม</span> รับได้ไหม ถ้าไม่ ใช้ portal bay ใต้ L2 แทน (เหล็กเพิ่ม ~1.5 ตัน)</td></tr>
-<tr><td class="m">D5</td><td>Girder พื้น +6.3 ช่วง 13.45 ม. H700 หรือเพิ่มเสา 2 ต้นที่ขอบ fall zone แล้วใช้ H400</td><td><span class="pill rec">แนะนำ</span> ไม่มีเสา (ปลอดภัยกว่า)</td></tr>
-<tr><td class="m">D6</td><td>กระจก gable กริด 1 x 9.72–14.61 สูงถึง +11.4</td><td>เสารับลมหลบ ต้องมีคาน head เหนือกระจก +11.4 และเสา SHS150 รับมุมพื้น +6.3 ด้านใน (y 67.95)</td></tr>
-<tr><td class="m">D7</td><td>ตำแหน่งเสา co-working mezz x 6.66 / 11.70 บนกริด 4, 5</td><td><span class="pill ask">ถาม</span> ตรงผนัง WC/เคาน์เตอร์ไหม</td></tr>
-<tr><td class="m">D8</td><td>แผ่น +4.2 สีเทา x 12.86–16.81 y 84.4–88.4</td><td><span class="pill ask">ถาม</span> เป็นพื้นใช้งานหรือแค่หลังคาห้อง ตอนนี้ใส่โครงไว้ก่อน</td></tr>
-<tr><td class="m">D9</td><td>หลังคาห้อง Edge/WC +3.6</td><td><span class="pill ask">ถาม</span> สมมติผนังก่อรับ ไม่อยู่ใน scope เหล็ก</td></tr>
-<tr><td class="m">D10</td><td>โครงรองผนังปีน</td><td>ผู้ผลิตผนังทำ ผมเตรียมจุดยึดบนเสา B, เสา gable และพื้น +6.3 ตามแรงข้อ 4</td></tr>
+<h2><span class="n">F</span>Portal frame</h2>
+<div class="tw"><table id="tfr"></table></div>
+<p class="note">Drift ควบคุมโซนปีน: ยอดเสา 15 ม. ขยับ 64–65 มม. (H/230) ใต้ลมใช้งาน เกณฑ์ H/200 = 74 มม. · ฐาน fixed กริด 1–4 โมเมนต์ฐานใช้งานสูงสุด ~257 kNm ต่อเสา (W) ดูตาราง reaction</p>
+
+<h2><span class="n">U</span>Utilization ทุกกลุ่มชิ้นส่วน</h2>
+<p class="note">ตารางนี้สร้างจากผลคำนวณจริง (<code>out/calc.json</code>) · รายชิ้นทุก mark อยู่ใน <code>out/members_ur.csv</code> · กดหัวกลุ่มเพื่อดูทุกการตรวจ</p>
+<div class="tw"><table id="tur"></table></div>
+
+<h2><span class="n">V</span>พื้น bouldering +6.3 และการสั่น</h2>
+<p>Girder ช่วง 13.45 ม. ไม่มีเสาใน fall zone ใช้ <b id="bdg">–</b> · กำลังรับเหลือมาก (UR flexure ~0.5) ตัวกำหนดคือการสั่น · เป้า 9 Hz ที่ตั้งไว้ทำไม่ได้ถ้าไม่เพิ่มเสา จึงปรับเกณฑ์เป็น <b>fn ≥ 6 Hz + ap/g ≤ 1.5 %</b> (DG11 walking) ซึ่งเพียงพอสำหรับ bouldering ที่ไม่มีการกระโดดเป็นจังหวะ</p>
+<div class="tw"><table id="tvib"></table></div>
+<p class="note">ถ้าต้องการ 9 Hz จริง ต้องเพิ่มเสา 2 ต้นที่ขอบ fall zone (ข้อ D5 ทางเลือก) girder ลดเหลือ H350</p>
+
+<h2><span class="n">R</span>แรงปฏิกิริยาฐานเสา portal (ใช้งาน ไม่ factored)</h2>
+<p class="note">H = แรงราบ (+x), V = แรงดิ่ง (+ขึ้นคือรับกด), M = โมเมนต์ฐาน kNm (เฉพาะ fixed) · ไฟล์เต็ม <code>out/reactions.csv</code></p>
+<div class="tw"><table id="trc"></table></div>
+
+<h2><span class="n">C</span>Clash หลัง sizing</h2>
+<p>รัน clash ใหม่ทุกชิ้น <span id="ncl">–</span> กลุ่ม ส่วนเหล็กเองไม่มีชนกันแล้ว ที่เหลือเป็นงานประสานกับสถาปัตย์:</p>
+<div class="tw"><table><thead><tr><th>จุด</th><th>พิกัด x, y, z</th><th>ให้สถาปัตย์แก้</th></tr></thead><tbody>
+<tr><td>เสา B/7 × อุปกรณ์ Edge</td><td class="m">16.66, 110.67, 1.90</td><td>ขยับอุปกรณ์เข้า 0.30 ม.</td></tr>
+<tr><td>เสา A/2, A/8 × เคาน์เตอร์ L2</td><td class="m">−4.85, 74.60, 4.17 · −4.88, 117.20, 4.15</td><td>เคาน์เตอร์หยุดก่อนหน้าเสา 0.15 ม.</td></tr>
+<tr><td>หัวกระจกแนว x −1.97 × คาน L2</td><td class="m">ทั้งแนว z 3.0–3.9</td><td>กระจกจบใต้ท้องคาน (ไม่ใช่ใต้แผ่นพื้น)</td></tr>
+<tr><td>Joist +6.3 × ยอดผนัง bouldering ล่าง</td><td class="m">0.9–12.1, 68.8–70.3, 6.0</td><td>ผนังล่างหยุดที่ +5.80</td></tr>
+<tr><td>Joist +6.3 / L2 × downlight</td><td class="m">ใต้พื้นทั้งหมด</td><td>วางไฟระหว่าง joist</td></tr>
+<tr><td>คาน mezz × ยอดผนัง WC (Concrete_Raw)</td><td class="m">10.7–14.8, 94.85, 4.0</td><td>ผนัง WC หยุดที่ +3.60</td></tr>
+<tr><td>กระจกเงาผนังหลัง bay 3–4 × brace</td><td class="m">16.79, 82.72, 1.43</td><td>ย้ายกระจกเงาไป bay 2–3</td></tr>
+<tr><td>Wing L2 ทะลุผนังปลายอาคาร</td><td class="m">−2.0, 117.6, 3.1 · −2.0, 67.6, 3.1</td><td>รอยต่อกระจก/ผนังรอบคาน (ตั้งใจให้เป็นแบบนี้)</td></tr>
 </tbody></table></div>
 
-<h2><span class="n">6</span>Clash pre-check</h2>
-<p>เทียบกล่องหน้าตัดทุกชิ้นกับ mz19 (ตัด placeholder steel เดิมออก) พบ <span id="ncl">–</span> กลุ่ม ส่วนใหญ่เป็น interface ที่ต้องการอยู่แล้ว ตารางนี้คือจุดที่ต้องแก้จริง ไฟล์เต็มพร้อมพิกัดอยู่ใน <code>structure/out/clash_P2-layout-r1.csv</code></p>
-<div class="tw"><table>
-<thead><tr><th>ชิ้น</th><th>ชนกับ</th><th>x, y, z</th><th>แก้</th></tr></thead>
-<tbody>
-<tr><td class="m">C014 เสา B/7</td><td>อุปกรณ์ Edge สีดำชิดผนังหลัง</td><td class="m">16.68, 110.67, 1.89</td><td>เลื่อนอุปกรณ์เข้า 0.35 ม.</td></tr>
-<tr><td class="m">C008 เสา B/4</td><td>สุขภัณฑ์ WC</td><td class="m">16.49, 88.55, 2.04</td><td>ขยับ WC หรือหุ้มเสาในผนัง</td></tr>
-<tr><td class="m">C003 / C015 เสา A/2, A/8</td><td>เคาน์เตอร์ริม facade บน L2</td><td class="m">−4.85, 74.60, 4.17</td><td>เคาน์เตอร์หยุดก่อนเสา 0.20 ม.</td></tr>
-<tr><td class="m">B071 คาน mezz x 6.66</td><td>ของตกแต่งสีดำใต้ขอบ mezz</td><td class="m">6.68, 90.76, 3.76</td><td>ลดระดับของ หรือย้าย</td></tr>
-<tr><td class="m">J018–J023 joist +6.3</td><td>ยอดผนัง bouldering ล่าง (5.5–6.3)</td><td class="m">0.9–12.1, 68.8–70.3, 6.0</td><td>ผนังล่างหยุดใต้ joist +5.88</td></tr>
-<tr><td class="m">J001–J016 joist L2</td><td>downlight ใต้ L2</td><td class="m">−3.7, ทุกเทอเรซ, ~3.3</td><td>วางไฟระหว่าง joist</td></tr>
-<tr><td class="m">B003–B056 คาน L2</td><td>หัวกระจกแนว x −1.97</td><td class="m">ทั้งแนว</td><td>interface: กระจกจบใต้ท้องคาน</td></tr>
-</tbody></table></div>
-
-<h2><span class="n">7</span>แบบ layout</h2>
+<h2><span class="n">G</span>แบบ</h2>
 <div class="gal" id="gal"></div>
-<p class="note">ขั้นต่อไป (Phase 3): หลังยืนยัน D1–D10 และแรงผนังปีน จะคำนวณทุกชิ้นหลัก (frame analysis 2D ทุกกริด + เช็คชิ้นรอง) พร้อม utilization ratio</p>
+<p class="note">ต่อไป Phase 4 connection: base plate + anchor, haunch/knee end plate (F10T), splice เสา 15 ม., fin plate/end plate พื้น, gusset bracing, parapet post บนเสาแนว A/B โซนต่ำ (cladding ถึง +8.4)</p>
+<p class="note">Phase 1–2: build ตรง byte (sha256 b2231fa9…a8158), กริดตรง, layout r1 ผ่านการตรวจแล้ว</p>
 </main>
 </div>
 <div id="zoom" hidden><img id="zimg" alt=""></div>
@@ -186,16 +158,17 @@ const SYS={MAIN:['โครงหลัก','#b23a26'],ROOF:['แป / sag rod',
   FL2:['Front L2','#d9661c'],BD:['พื้น bouldering +6.3','#8a46ad'],CM:['Co-working mezz','#b8930b'],BR:['ทางเชื่อม','#c9a21a'],STAIR:['บันได','#2a8a4a'],MISC:['ราว / กรอบกระจก','#5d6d7e']};
 const PH={1:'1 โครงหลัก',2:'2 หลังคา/ผนัง',3:'3 Front L2',4:'4 พื้น/mezz',5:'5 บันได',6:'6 งานรอง'};
 const ALAY=['wall','climb','interior','duct','roof','services','structure'];
-const IMGS=[['P2-01_roof.png','หลังคา'],['P2-02_frontL2.png','+3.4..+4.2 Front L2 / mezz'],['P2-03_boulder.png','+6.3 พื้น bouldering / บันได'],
- ['P2-11_grid1.png','กริด 1'],['P2-12_grid2.png','กริด 2'],['P2-14_grid4.png','กริด 4'],['P2-16_grid6.png','กริด 6'],['P2-18_grid8.png','กริด 8'],
- ['P2-21_lineA.png','แนว A'],['P2-22_lineB.png','แนว B']];
+const IMGS=[['P3-F_HI.png','frame กริด 2–3 M envelope'],['P3-F_HI_END.png','frame กริด 1'],['P3-F_STEP.png','frame กริด 4 (step)'],['P3-F_LO_MEZZ.png','frame กริด 5'],
+ ['P3-F_LO.png','frame กริด 6–7'],['P3-F_LO_END.png','frame กริด 8'],['P3-01_roof.png','หลังคา'],['P3-02_frontL2.png','+3.4..+4.2 Front L2 / mezz'],['P3-03_boulder.png','+6.3 พื้น bouldering / บันได'],
+ ['P3-11_grid1.png','กริด 1'],['P3-12_grid2.png','กริด 2'],['P3-14_grid4.png','กริด 4'],['P3-16_grid6.png','กริด 6'],['P3-18_grid8.png','กริด 8'],
+ ['P3-21_lineA.png','แนว A'],['P3-22_lineB.png','แนว B']];
 async function getJSON(paths){for(const p of paths){try{const r=await fetch(p);if(r.ok)return await r.json()}catch(e){}}return null}
 async function getBuf(paths){for(const p of paths){try{const r=await fetch(p);if(r.ok)return await r.arrayBuffer()}catch(e){}}return null}
 const $=id=>document.getElementById(id);
 // gallery
 const gal=$('gal');
 for(const [f,c] of IMGS){const fig=document.createElement('figure');const im=document.createElement('img');im.loading='lazy';im.alt=c;
-  im.src='img/'+f; im.onerror=()=>{if(!im.dataset.f){im.dataset.f=1;im.src='../out/p2/'+f}};
+  im.src='img/'+f; im.onerror=()=>{if(!im.dataset.f){im.dataset.f=1;im.src='../out/p3/'+f}};
   im.onclick=()=>{$('zimg').src=im.src;$('zoom').hidden=false};fig.append(im);const cap=document.createElement('figcaption');cap.textContent=f.replace('.png','')+' · '+c;fig.append(cap);gal.append(fig)}
 $('zoom').onclick=()=>{$('zoom').hidden=true};
 
@@ -251,8 +224,16 @@ function rebuild(){
       if(rs)for(const r of rs)addPrism(P,Nn,I,a,ax,w,f,Lm,r);else addPrism(P,Nn,I,a,ax,w,f,Lm,{oct:1,r:s.h/2000});
       rg.push([i0/3,I.length/3,m]);n++;kg+=m.kg}
     const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(Nn,3));g.setIndex(I);
-    const me=new THREE.Mesh(g,new THREE.MeshLambertMaterial({color:SYS[sys][1],side:THREE.DoubleSide}));me.userData.rg=rg;S.add(me);meshes[sys]=me}
-  $('stats').textContent=`${n} ชิ้น · ${(kg/1000).toFixed(1)} t (prelim, ไม่รวม connection)`}
+    let mat;
+    if($('urm').checked){const col=new Float32Array(P.length);for(const [t0,t1,m] of rg){const c=new THREE.Color(urColor(m));
+        const vs=new Set();for(let t=t0;t<t1;t++)for(let k=0;k<3;k++)vs.add(I[3*t+k]);for(const v of vs){col[3*v]=c.r;col[3*v+1]=c.g;col[3*v+2]=c.b}}
+      g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));mat=new THREE.MeshLambertMaterial({vertexColors:true,side:THREE.DoubleSide})}
+    else mat=new THREE.MeshLambertMaterial({color:SYS[sys][1],side:THREE.DoubleSide});
+    const me=new THREE.Mesh(g,mat);me.userData.rg=rg;S.add(me);meshes[sys]=me}
+  $('stats').textContent=`${n} ชิ้น · ${(kg/1000).toFixed(1)} t (ไม่รวม connection)`}
+let UR={};const urOf=m=>{let g=m.grp||'';if(/^MF_.*_RAF$/.test(g)&&UR[g])return UR[g].ur;return UR[g]?UR[g].ur:null};
+function urColor(m){const u=urOf(m);if(u==null)return '#9aa3a6';return u<.5?'#3c9d5d':u<.8?'#a6c63a':u<.95?'#e39b2d':'#d13b2b'}
+$('urm').onchange=()=>rebuild();
 // arch overlay
 async function loadArch(){
   const meta=await getJSON(['arch/geo.json','../../model/geo.json']);const buf=await getBuf(['arch/geo.wasm','../../model/geo.bin']);
@@ -286,15 +267,48 @@ function show(m){const s=L.sections[m.sec];const c=$('card');c.hidden=false;hl(m
   const f=v=>v.map(x=>x.toFixed(3)).join(', ');
   c.innerHTML=`<div class="id">${m.id} <span class="tag">${m.asm}</span></div><div>${m.role}</div><dl>
   <dt>หน้าตัด</dt><dd>${m.sec}</dd><dt>เกรด</dt><dd>${m.grade}</dd><dt>ยาว</dt><dd>${m.L.toFixed(3)} ม.</dd><dt>น้ำหนัก</dt><dd>${m.kg.toFixed(1)} กก. (${s.kgm} กก./ม.)</dd>
+  <dt>กลุ่ม</dt><dd>${m.grp||'-'}</dd><dt>UR</dt><dd>${urOf(m)!=null?urOf(m).toFixed(2):'– (nominal / detailing)'}</dd>${UR[m.grp]&&UR[m.grp].checks.length?`<dt>คุม</dt><dd>${(()=>{const c=UR[m.grp].checks.reduce((a,b)=>b[1]>a[1]?b:a);return c[0]+': '+c[2]})()}</dd>`:''}
   <dt>ระบบ</dt><dd>${SYS[m.sys][0]}</dd><dt>Phase</dt><dd>${PH[m.ph]}</dd><dt>จุดเริ่ม</dt><dd>${f(m.p0)}</dd><dt>จุดจบ</dt><dd>${f(m.p1)}</dd>${m.note?`<dt>หมายเหตุ</dt><dd>${m.note}</dd>`:''}</dl>`}
 (async()=>{
   L=await getJSON(['data/layout.json','../out/layout.json']);
   if(!L){$('status').textContent='โหลด layout.json ไม่ได้';return}
-  members=L.members;rebuild();
-  const tot=members.reduce((a,m)=>a+m.kg,0);$('wt').textContent=`${members.length} ชิ้น · ${(tot/1000).toFixed(1)} ตัน`;
-  const cl=await getJSON(['data/clash.json','../out/clash_P2-layout-r1.json'])||[];$('ncl').textContent=cl.length;
+  UR=await getJSON(['data/ur.json','../out/ur.json'])||{};members=L.members;rebuild();report();
+  
+  const cl=await getJSON(['data/clash.json','../out/clash_P3-r1.json'])||[];$('ncl').textContent=cl.length;
   const sg=new THREE.SphereGeometry(.18,10,8),sm=new THREE.MeshBasicMaterial({color:0xff2a2a,depthTest:false});
   for(const c of cl){const s=new THREE.Mesh(sg,sm);s.position.copy(T(...c.at));s.renderOrder=8;clashGroup.add(s)}
   $('status').textContent='กำลังโหลดโมเดลสถาปัตย์ mz19…';loadArch()})();
+async function report(){
+  const C=await getJSON(['data/calc.json','../out/calc.json']);const P3=await getJSON(['data/p3_summary.json','../out/p3_summary.json']);
+  if(!C||!P3)return;const c=C.calc;const f2=x=>(+x).toFixed(2);
+  $('q').textContent=f2(C.q);$('qh').textContent=f2(C.qh_hi);$('ql').textContent=f2(C.qh_lo);
+  const pill=u=>`<span class="pill ${u>1.0?'bad':u>0.95?'ask':'rec'}">${f2(u)}</span>`;
+  // frames
+  const FR=[['HI_END','1','fixed'],['HI','2, 3','fixed'],['STEP','4','fixed'],['LO_MEZZ','5','pin'],['LO','6, 7','pin'],['LO_END','8','pin']];
+  let h='<thead><tr><th>กริด</th><th>ฐาน</th><th>เสา</th><th>Rafter</th><th>UR เสา</th><th>UR rafter/haunch</th><th>ตัวคุม</th></tr></thead><tbody>';
+  for(const [k,g,b] of FR){const cc=c['MF_'+k+'_COL'],rr=c['MF_'+k+'_RAF'];const gov=cc.checks.reduce((a,x)=>x[1]>a[1]?x:a);
+    h+=`<tr><td class="m">${g}</td><td>${b}</td><td class="m">${cc.sec}</td><td class="m">${rr.sec}${k=='STEP'?' · low '+c.MF_STEP_LRAF.sec:''}</td><td>${pill(cc.ur)}</td><td>${pill(rr.ur)}</td><td>${gov[0]} · ${gov[2]}</td></tr>`}
+  $('tfr').innerHTML=h+'</tbody>';
+  // groups
+  const ton=P3.tonnage;const names={PUR:'แป bay 6.6–6.9',PUR9:'แป bay 9.0',GIRT:'girt',FL2_J:'L2 joist',FL2_X:'L2 คานขวางกริด',FL2_S:'L2 step beam',FL2_E:'L2 edge beam + wing',FL2_C:'L2 เสาใน',
+   BD_J:'+6.3 joist',BD_G:'+6.3 girder',BD_S:'+6.3 คานใต้',BD_C:'+6.3 เสา NE/NW',BD_P:'+6.3 เสา SE',BD_BR:'+6.3 ค้ำ N-S',CM_B9:'mezz คาน 9 ม.',CM_P:'mezz คานหลัก',CM_C:'mezz เสา',
+   BR_B:'ทางเชื่อม คาน',BR_J:'ทางเชื่อม joist',ST_STR:'บันได stringer',ST_LB:'บันได คานชานพัก',ST_POST:'บันได เสาชานพัก',SP_COL:'บันไดวน เสากลาง',SP_ARM:'บันไดวน แขน',
+   WP_G1:'เสารับลม gable 1',WP_G8:'เสารับลม gable 8',WP_G4:'เสา clerestory 4',WP_B:'เสารับลม B ล็อบบี้',ROD_ROOF_HI:'brace หลังคาสูง',ROD_ROOF_LO:'brace หลังคาต่ำ',
+   ROD_WALL_HI:'brace ผนัง bay 3–4 (A, B)',ROD_WALL_LO:'brace ผนัง B bay 7–8',STRUT_ROOF:'strut หลังคา',STRUT_WALL:'strut ผนัง',EAVE_HI:'eave strut สูง',EAVE_LO:'eave strut ต่ำ'};
+  h='<thead><tr><th>กลุ่ม</th><th>หน้าตัด</th><th>ชิ้น</th><th>ตัน</th><th>UR</th><th>ตัวคุม</th></tr></thead><tbody>';
+  const keys=Object.keys(c).filter(k=>!k.startsWith('MF_')).sort((a,b)=>c[b].ur-c[a].ur);
+  for(const k of keys){const v=c[k];const gov=v.checks.length?v.checks.reduce((a,x)=>x[1]>a[1]?x:a):['',0,''];const t=ton[k]||[0,0];
+    h+=`<tr><td><details><summary>${names[k]||k}</summary><div class="note">${v.note}<br>${v.checks.map(x=>`${x[0]}: ${f2(x[1])} · ${x[2]}`).join('<br>')}</div></details></td><td class="m">${v.sec}</td><td class="m">${t[0]}</td><td class="m">${(t[1]/1000).toFixed(2)}</td><td>${pill(v.ur)}</td><td>${gov[0]} · ${gov[2]}</td></tr>`}
+  $('tur').innerHTML=h+'</tbody>';
+  const mf=Object.keys(ton).filter(k=>k.startsWith('MF_')||k.startsWith('WP_')).reduce((a,k)=>a+ton[k][1],0);
+  $('sum').innerHTML=`ออกแบบครบทุกกลุ่ม ${Object.keys(c).length} กลุ่ม · UR สูงสุด ${f2(Math.max(...Object.values(c).map(v=>v.ur)))} · น้ำหนักเหล็กรวม <b>${P3.total.toFixed(1)} ตัน</b> (ยังไม่รวม connection ~8–10 %) · โครงหลัก + เสารับลม ${(mf/1000).toFixed(1)} ตัน`;
+  // vibration
+  const bd=c.BD_G;$('bdg').textContent=bd.sec;
+  $('tvib').innerHTML='<thead><tr><th>ทางเลือก</th><th>fn (Hz)</th><th>ap/g (%)</th></tr></thead><tbody>'+bd.vib_options.map(o=>`<tr><td class="m">${o[0]}</td><td class="m">${o[1]}</td><td class="m">${o[2]}</td></tr>`).join('')+'</tbody>';
+  // reactions
+  const R=P3.reactions;h='<thead><tr><th>ฐาน</th><th>ชนิด</th><th>D V</th><th>L V</th><th>Lr V</th><th>D M</th><th>W ยกสูงสุด V</th><th>W H สูงสุด</th><th>W M สูงสุด</th></tr></thead><tbody>';
+  for(const r of R){const ws=['W1','W2','W3','W4','W5'];const up=Math.min(...ws.map(w=>r[w+'_V']));const hh=Math.max(...ws.map(w=>Math.abs(r[w+'_H'])));const mm=Math.max(...ws.map(w=>Math.abs(r[w+'_M']||0)));
+    h+=`<tr><td class="m">${r.support}</td><td>${r.type}</td><td class="m">${r.D_V}</td><td class="m">${r.L_V}</td><td class="m">${r.Lr_V}</td><td class="m">${r.D_M}</td><td class="m">${up.toFixed(1)}</td><td class="m">${hh.toFixed(1)}</td><td class="m">${mm.toFixed(1)}</td></tr>`}
+  $('trc').innerHTML=h+'</tbody>'}
 (function loop(){requestAnimationFrame(loop);ctl.update();R.render(S,cam)})();
 </script>

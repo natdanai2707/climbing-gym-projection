@@ -1,0 +1,2074 @@
+{
+ "basis": {
+  "method": "AISC 360-16 LRFD; portal frames by the Direct Analysis Method (2nd-order P-Delta, 0.8EI/0.8EA, notional 0.002Yi, K=1)",
+  "combos": [
+   "1.4D",
+   "1.2D+1.6L+0.5Lr",
+   "1.2D+1.6Lr+0.5L",
+   "1.2D+1.6W+0.5L+0.5Lr",
+   "0.9D+1.6W"
+  ],
+  "wind": "มยผ. 1311-50 simplified procedure: Songkhla group 4A, V50 = 25 m/s, TF = 1.2, Iw = 1.0, terrain A (open, conservative). q = 0.5*1.25*V^2*TF = 0.469 kPa; Ce = (z/10)^0.2 >= 0.9; low-rise CpCg: wall 0.75 / -0.55, roof -1.3 / -0.7, side wall -0.7; internal CpiCgi +0.3 / -0.3. 50-year wind with load factor 1.6.",
+  "loads": {
+   "roof_SDL": "sheet + insulation 0.15 kPa, MEP + lighting hung 0.20 kPa, purlins by section",
+   "roof_Lr": "0.30 kPa (กฎกระทรวง) + 1.0 kN point on purlins",
+   "floor_SDL": "composite slab 120 mm on metal deck 2.6 kPa, finish + ceiling + MEP 1.0 kPa, partitions co-working 1.0 kPa",
+   "floor_L": "5.0 kPa (gym, mezz, front L2, stairs, bridge); guard 0.75 kN/m at +1.1",
+   "climbing": "wall DL 0.5 kPa of face; protection point 8 kN/lane; top anchor 12 kN/lane; auto-belay 12 kN/device; climber 1 kN/lane; global: 1 of 2 adjacent lanes active (3 of 5 rear lanes); climbing loads factored as L (1.6)"
+  },
+  "serviceability": "beams L/360 live, L/240 total; cantilevers 2L/360; purlins/girts L/180; rafters L/240 Lr; climbing-zone drift H/200, low zone H/150 (1.0W, full EI)",
+  "vibration": "AISC DG11 walking: co-working / front L2 ap/g <= 0.5 %; bouldering deck ap/g <= 1.5 % and fn >= 9 Hz (target)",
+  "materials": "SS400 Fy 245 (hot-rolled H, plates), TIS 1228 SSC400 Fy 245 (lipped C), STKR400 Fy 245 (SHS), STK400 Fy 235 (CHS), SR24 rods Fy 235 / Fu 380"
+ },
+ "q": 0.46875,
+ "qh_hi": 0.5146280077047088,
+ "qh_lo": 0.4482902342765798,
+ "calc": {
+  "PUR": {
+   "sec": "C150x75x20x3.2",
+   "ur": 0.912,
+   "checks": [
+    [
+     "gravity 1.2D+1.6Lr",
+     0.667,
+     "Mu 6.87 / φMn 10.30 kNm"
+    ],
+    [
+     "uplift 0.9D+1.6W (R-factor)",
+     0.912,
+     "Mu 6.58 / φMn 7.21 kNm"
+    ],
+    [
+     "deflection D+Lr",
+     0.854,
+     "32.7 mm vs L/180"
+    ],
+    [
+     "deflection W",
+     0.481,
+     "18.4 mm vs L/180"
+    ]
+   ],
+   "note": "span 6.9 m @ 1.175 m, sag rods at third points, uplift -0.82 kPa (service)"
+  },
+  "PUR9": {
+   "sec": "C200x75x25x4.5",
+   "ur": 0.782,
+   "checks": [
+    [
+     "gravity 1.2D+1.6Lr",
+     0.584,
+     "Mu 12.32 / φMn 21.10 kNm"
+    ],
+    [
+     "uplift 0.9D+1.6W (R-factor)",
+     0.782,
+     "Mu 10.72 / φMn 13.72 kNm"
+    ],
+    [
+     "deflection D+Lr",
+     0.736,
+     "36.8 mm vs L/180"
+    ],
+    [
+     "deflection W",
+     0.348,
+     "17.4 mm vs L/180"
+    ]
+   ],
+   "note": "span 9.0 m @ 1.175 m, sag rods at third points, uplift -0.82 kPa (service)"
+  },
+  "GIRT": {
+   "sec": "C200x75x20x3.2",
+   "ur": 0.864,
+   "checks": [
+    [
+     "pressure",
+     0.513,
+     "Mu 7.72 kNm"
+    ],
+    [
+     "suction (R-factor)",
+     0.864,
+     "Mu 8.45 kNm"
+    ],
+    [
+     "deflection W",
+     0.46,
+     "17.6 mm vs L/180"
+    ]
+   ],
+   "note": "span 6.9 m @ 1.5 m, wind 0.54 / -0.59 kPa (service)"
+  },
+  "FL2_J": {
+   "sec": "H244x175x7x11",
+   "ur": 0.689,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.291,
+     "Mu 35.9 / φMn 123.1 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.118,
+     "Vu 29.6 / φVn 251.1 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.689,
+     "Mu 84.8 / φMn 123.1 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.279,
+     "Vu 70.0 / φVn 251.1 kN"
+    ],
+    [
+     "deflection live",
+     0.502,
+     "6.8 mm vs 1L/360 = 13.5"
+    ],
+    [
+     "deflection total",
+     0.589,
+     "11.9 mm vs 1L/240 = 20.2"
+    ]
+   ],
+   "note": "span 4.85 m, @ 2.3 m"
+  },
+  "FL2_X": {
+   "sec": "H300x150x6.5x9",
+   "ur": 0.708,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.298,
+     "Mu 35.6 / φMn 119.5 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.102,
+     "Vu 29.3 / φVn 286.6 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.708,
+     "Mu 84.6 / φMn 119.5 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.243,
+     "Vu 69.8 / φVn 286.6 kN"
+    ],
+    [
+     "deflection live",
+     0.427,
+     "5.7 mm vs 1L/360 = 13.5"
+    ],
+    [
+     "deflection total",
+     0.498,
+     "10.1 mm vs 1L/240 = 20.2"
+    ]
+   ],
+   "note": "grid cross beam span 4.85 m (simple), trib 2.3 m"
+  },
+  "FL2_S": {
+   "sec": "H300x150x6.5x9",
+   "ur": 0.722,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.315,
+     "Mu 37.6 / φMn 119.5 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.108,
+     "Vu 31.0 / φVn 286.6 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.722,
+     "Mu 86.4 / φMn 119.5 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.248,
+     "Vu 71.2 / φVn 286.6 kN"
+    ],
+    [
+     "deflection live",
+     0.427,
+     "5.7 mm vs 1L/360 = 13.5"
+    ],
+    [
+     "deflection total",
+     0.51,
+     "10.3 mm vs 1L/240 = 20.2"
+    ]
+   ],
+   "note": "step beam span 4.85 m, trib 2.3 m + upstand"
+  },
+  "FL2_E": {
+   "sec": "H294x200x8x12",
+   "ur": 0.985,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.424,
+     "Mu 80.3 / φMn 189.4 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.135,
+     "Vu 46.5 / φVn 345.7 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.973,
+     "Mu 184.3 / φMn 189.4 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.309,
+     "Vu 106.8 / φVn 345.7 kN"
+    ],
+    [
+     "deflection live",
+     0.823,
+     "15.8 mm vs 1L/360 = 19.2"
+    ],
+    [
+     "deflection total",
+     0.985,
+     "28.3 mm vs 1L/240 = 28.8"
+    ],
+    [
+     "vibration walking ap/g ≤ 0.5 %",
+     0.642,
+     "fn 6.3 Hz, W 337 kN, ap/g 0.32 %"
+    ]
+   ],
+   "note": "edge beams span 6.9 m, trib 2.42 m + guard / fascia 0.35 kN/m"
+  },
+  "FL2_W": {
+   "sec": "H294x200x8x12",
+   "ur": 0.159,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.066,
+     "Mu 12.5 / φMn 189.4 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.042,
+     "Vu 14.5 / φVn 345.7 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.159,
+     "Mu 30.0 / φMn 189.4 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.098,
+     "Vu 34.0 / φVn 345.7 kN"
+    ],
+    [
+     "deflection live",
+     0.042,
+     "0.4 mm vs 2L/360 = 9.2"
+    ],
+    [
+     "deflection total",
+     0.048,
+     "0.7 mm vs 2L/240 = 13.8"
+    ]
+   ],
+   "note": "cantilever 1.65 m = continuation of the edge beam (same section), back-span over grid"
+  },
+  "FL2_C": {
+   "sec": "SHS150x150x4.5",
+   "ur": 0.901,
+   "checks": [
+    [
+     "axial + bending",
+     0.901,
+     "Nu 240 / φPn 455 kN, Mu 13.2 kNm, KL/r 65"
+    ]
+   ],
+   "note": "H 3.9 m, trib 2.42 x 7.8 m"
+  },
+  "BD_J": {
+   "sec": "H350x175x7x11",
+   "ur": 0.728,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.317,
+     "Mu 60.7 / φMn 191.4 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.113,
+     "Vu 40.6 / φVn 360.1 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.728,
+     "Mu 139.3 / φMn 191.4 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.255,
+     "Vu 91.9 / φVn 360.1 kN"
+    ],
+    [
+     "deflection live",
+     0.46,
+     "7.9 mm vs 1L/360 = 17.1"
+    ],
+    [
+     "deflection total",
+     0.542,
+     "13.9 mm vs 1L/240 = 25.6"
+    ]
+   ],
+   "note": "joist span 6.15 m @ 2.24 m + upper wall line load"
+  },
+  "BD_G": {
+   "sec": "H800x300x14x26",
+   "ur": 0.999,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.296,
+     "Mu 538.0 / φMn 1817.6 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.089,
+     "Vu 146.2 / φVn 1646.4 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.664,
+     "Mu 1206.9 / φMn 1817.6 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.198,
+     "Vu 325.5 / φVn 1646.4 kN"
+    ],
+    [
+     "deflection live",
+     0.306,
+     "11.4 mm vs 1L/360 = 37.4"
+    ],
+    [
+     "deflection total",
+     0.379,
+     "21.2 mm vs 1L/240 = 56.0"
+    ],
+    [
+     "vibration ap/g ≤ 1.5 %",
+     0.185,
+     "ap/g 0.28 %, W 425 kN"
+    ],
+    [
+     "vibration fn ≥ 6 Hz",
+     0.999,
+     "fn 6.0 Hz (9 Hz needs 2 columns at the fall-zone edge)"
+    ]
+   ],
+   "note": "girder span 13.45 m, 5 joist point loads, Lb 2.24 m (no column in the fall zone)",
+   "vib_options": [
+    [
+     "H700x300x13x24",
+     5.2,
+     0.35
+    ],
+    [
+     "H800x300x14x26",
+     6.0,
+     0.28
+    ],
+    [
+     "H900x300x16x28",
+     6.8,
+     0.22
+    ],
+    [
+     "2 extra columns + H350x175x7x11",
+     10.3,
+     0.18
+    ]
+   ]
+  },
+  "BD_S": {
+   "sec": "H250x125x6x9",
+   "ur": 0.877,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.393,
+     "Mu 31.7 / φMn 80.7 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.156,
+     "Vu 34.3 / φVn 220.5 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.877,
+     "Mu 70.7 / φMn 80.7 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.347,
+     "Vu 76.5 / φVn 220.5 kN"
+    ],
+    [
+     "deflection live",
+     0.466,
+     "4.8 mm vs 1L/360 = 10.3"
+    ],
+    [
+     "deflection total",
+     0.569,
+     "8.8 mm vs 1L/240 = 15.4"
+    ]
+   ],
+   "note": "span 3.7 m between gable posts, UDL from joists + wall"
+  },
+  "BD_C": {
+   "sec": "H200x200x8x12",
+   "ur": 0.368,
+   "checks": [
+    [
+     "axial + bending",
+     0.368,
+     "Nu 275 / φPn 923 kN, KL/r 90"
+    ]
+   ],
+   "note": "H 4.5 m, girder end reaction D 90 / L 104 kN"
+  },
+  "BD_P": {
+   "sec": "SHS150x150x4.5",
+   "ur": 0.122,
+   "checks": [
+    [
+     "axial",
+     0.122,
+     "Nu 48 / φPn 395 kN"
+    ]
+   ],
+   "note": "SE post, H 5.0 m"
+  },
+  "BD_BR": {
+   "sec": "CHS114.3x4.5",
+   "ur": 0.989,
+   "checks": [
+    [
+     "compression",
+     0.372,
+     "Nu 23.0 kN, L 7.7 m"
+    ],
+    [
+     "slenderness KL/r ≤ 200",
+     0.989,
+     ""
+    ]
+   ],
+   "note": "deck lateral 36.0 kN (2.5 % gravity + climbers), 2 planes"
+  },
+  "CM_B9": {
+   "sec": "H400x200x8x13",
+   "ur": 0.954,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.473,
+     "Mu 138.3 / φMn 292.4 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.131,
+     "Vu 61.5 / φVn 470.4 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.954,
+     "Mu 278.9 / φMn 292.4 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.264,
+     "Vu 124.0 / φVn 470.4 kN"
+    ],
+    [
+     "deflection live",
+     0.714,
+     "17.8 mm vs 1L/360 = 25.0"
+    ],
+    [
+     "deflection total",
+     0.945,
+     "35.4 mm vs 1L/240 = 37.5"
+    ],
+    [
+     "vibration walking ap/g ≤ 0.5 %",
+     0.481,
+     "fn 8.0 Hz, W 244 kN, ap/g 0.24 %"
+    ]
+   ],
+   "note": "span 9.0 m @ 1.98 m, simple"
+  },
+  "CM_P": {
+   "sec": "H400x200x8x13",
+   "ur": 0.895,
+   "checks": [
+    [
+     "flexure",
+     0.895,
+     "Mu 262 / φMn 292 kNm"
+    ],
+    [
+     "shear",
+     0.701,
+     "Vu 330 / φVn 470 kN"
+    ],
+    [
+     "deflection live (cantilever tip / span)",
+     0.424,
+     "3.3 mm"
+    ]
+   ],
+   "note": "continuous over columns x 8.15 / 11.60, cantilever 1.39 m to x 6.76"
+  },
+  "CM_C": {
+   "sec": "H194x150x6x9",
+   "ur": 0.531,
+   "checks": [
+    [
+     "axial",
+     0.531,
+     "Nu 311 / φPn 586 kN, KL/r 86"
+    ]
+   ],
+   "note": "H 3.1 m, two 9 m beam reactions x 1.25 continuity"
+  },
+  "BR_B": {
+   "sec": "H300x150x6.5x9",
+   "ur": 0.721,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.347,
+     "Mu 41.5 / φMn 119.5 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.083,
+     "Vu 23.9 / φVn 286.6 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.702,
+     "Mu 83.9 / φMn 119.5 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.168,
+     "Vu 48.3 / φVn 286.6 kN"
+    ],
+    [
+     "deflection live",
+     0.546,
+     "10.5 mm vs 1L/360 = 19.3"
+    ],
+    [
+     "deflection total",
+     0.721,
+     "20.9 mm vs 1L/240 = 29.0"
+    ]
+   ],
+   "note": "span 6.95 m, trib 1.0 m + glass partition 0.65 kN/m + guard"
+  },
+  "BR_J": {
+   "sec": "H150x75x5x7",
+   "ur": 0.473,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.196,
+     "Mu 4.4 / φMn 22.5 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.082,
+     "Vu 9.0 / φVn 110.2 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.473,
+     "Mu 10.6 / φMn 22.5 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.198,
+     "Vu 21.8 / φVn 110.2 kN"
+    ],
+    [
+     "deflection live",
+     0.235,
+     "1.3 mm vs 1L/360 = 5.4"
+    ],
+    [
+     "deflection total",
+     0.272,
+     "2.2 mm vs 1L/240 = 8.1"
+    ]
+   ],
+   "note": "span 1.95 m @ 1.8 m"
+  },
+  "ST_STR": {
+   "sec": "H150x75x5x7",
+   "ur": 0.736,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.155,
+     "Mu 3.5 / φMn 22.5 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.028,
+     "Vu 3.1 / φVn 110.2 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.552,
+     "Mu 12.4 / φMn 22.5 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.101,
+     "Vu 11.1 / φVn 110.2 kN"
+    ],
+    [
+     "deflection live",
+     0.736,
+     "9.1 mm vs 1L/360 = 12.4"
+    ],
+    [
+     "deflection total",
+     0.699,
+     "13.0 mm vs 1L/240 = 18.5"
+    ]
+   ],
+   "note": "lower flight horizontal span 4.45 m (upper 3.71 m), plan loads"
+  },
+  "ST_LB": {
+   "sec": "H150x75x5x7",
+   "ur": 0.486,
+   "checks": [
+    [
+     "flexure 1.4D",
+     0.097,
+     "Mu 2.2 / φMn 22.5 kNm"
+    ],
+    [
+     "shear 1.4D",
+     0.035,
+     "Vu 3.9 / φVn 110.2 kN"
+    ],
+    [
+     "flexure 1.2D+1.6L",
+     0.486,
+     "Mu 10.9 / φMn 22.5 kNm"
+    ],
+    [
+     "shear 1.2D+1.6L",
+     0.176,
+     "Vu 19.4 / φVn 110.2 kN"
+    ],
+    [
+     "deflection live",
+     0.267,
+     "1.6 mm vs 1L/360 = 5.8"
+    ],
+    [
+     "deflection total",
+     0.229,
+     "2.0 mm vs 1L/240 = 8.8"
+    ]
+   ],
+   "note": "landing beam span 2.1 m with 2 stringer reactions"
+  },
+  "ST_POST": {
+   "sec": "SHS100x100x3.2",
+   "ur": 0.095,
+   "checks": [
+    [
+     "axial",
+     0.095,
+     "Nu 20 / φPn 211 kN"
+    ]
+   ],
+   "note": "landing post H 2.7 m"
+  },
+  "SP_COL": {
+   "sec": "CHS165.2x5",
+   "ur": 0.395,
+   "checks": [
+    [
+     "axial + overturning",
+     0.395,
+     "Nu 38 kN, Mu 9.5 kNm (propped head)"
+    ]
+   ],
+   "note": "CHS centre column, head tied to the bridge south beam"
+  },
+  "SP_ARM": {
+   "sec": "H150x75x5x7",
+   "ur": 0.206,
+   "checks": [
+    [
+     "cantilever arm",
+     0.206,
+     "Mu 4.27 kNm (tread + 1.3 kN point at tip)"
+    ]
+   ],
+   "note": "tread arm cantilever 1.29 m"
+  },
+  "WP_G1": {
+   "sec": "H250x125x6x9",
+   "ur": 0.833,
+   "checks": [
+    [
+     "span 5.8 m wind + axial",
+     0.398,
+     "Mu 21.1 kNm, Nu 99 kN"
+    ],
+    [
+     "deflection span 5.8",
+     0.113,
+     "4 mm vs L/180"
+    ],
+    [
+     "gravity 1.2D+1.6L",
+     0.232,
+     "Nu 164 kN"
+    ],
+    [
+     "span 9.4 m wind + axial",
+     0.833,
+     "Mu 47.7 kNm, Nu 99 kN"
+    ],
+    [
+     "deflection span 9.4",
+     0.48,
+     "25 mm vs L/180"
+    ],
+    [
+     "gravity 1.2D+1.6L",
+     0.303,
+     "Nu 164 kN"
+    ]
+   ],
+   "note": "spans [5.8, 9.4], trib 3.7 m, wind 0.54 kPa"
+  },
+  "WP_G8": {
+   "sec": "H200x100x5.5x8",
+   "ur": 0.802,
+   "checks": [
+    [
+     "span 7.2 m wind + axial",
+     0.802,
+     "Mu 26.4 kNm, Nu 9 kN"
+    ],
+    [
+     "deflection span 7.2",
+     0.603,
+     "24 mm vs L/180"
+    ],
+    [
+     "gravity 1.2D+1.6L",
+     0.023,
+     "Nu 9 kN"
+    ]
+   ],
+   "note": "spans [7.2], trib 5.4 m, wind 0.47 kPa"
+  },
+  "WP_G4": {
+   "sec": "H250x125x6x9",
+   "ur": 0.618,
+   "checks": [
+    [
+     "span 8.2 m wind + axial",
+     0.618,
+     "Mu 39.2 kNm, Nu 11 kN"
+    ],
+    [
+     "deflection span 8.2",
+     0.465,
+     "21 mm vs L/180"
+    ],
+    [
+     "gravity 1.2D+1.6L",
+     0.018,
+     "Nu 11 kN"
+    ]
+   ],
+   "note": "spans [8.2], trib 5.4 m, wind 0.54 kPa"
+  },
+  "WP_B": {
+   "sec": "H148x100x6x9",
+   "ur": 0.764,
+   "checks": [
+    [
+     "span 6.8 m wind + axial",
+     0.757,
+     "Mu 19.6 kNm, Nu 45 kN"
+    ],
+    [
+     "deflection span 6.8",
+     0.764,
+     "29 mm vs L/180"
+    ],
+    [
+     "gravity 1.2D+1.6L",
+     0.22,
+     "Nu 69 kN"
+    ]
+   ],
+   "note": "spans [6.8], trib 4.5 m, wind 0.47 kPa"
+  },
+  "MF_HI_END_COL": {
+   "sec": "H400x200x8x13",
+   "ur": 0.86,
+   "checks": [
+    [
+     "column N+M (H1-1)",
+     0.663,
+     "grid 1 0.9D+1.6W4: Nu 3 kN / φPn 1238, Mu 179 / φMn 270 kNm"
+    ],
+    [
+     "column shear",
+     0.083,
+     "grid 1 0.9D+1.6W4: Vu 39 / φVn 470 kN"
+    ],
+    [
+     "rafter N+M",
+     0.458,
+     "grid 1 1.2D+1.6Lr+0.5L: Nu 17 kN / φPn 1044, Mu 83 / φMn 185 kNm"
+    ],
+    [
+     "rafter shear",
+     0.092,
+     "grid 1 1.2D+1.6Lr+0.5L: Vu 33 / φVn 360 kN"
+    ],
+    [
+     "haunch N+M",
+     0.428,
+     "grid 1 1.2D+1.6Lr+0.5L: Nu 20 kN / φPn 1141, Mu 99 / φMn 236 kNm"
+    ],
+    [
+     "drift",
+     0.86,
+     "grid 1 W1: 64 mm vs H/200 = 74"
+    ],
+    [
+     "rafter deflection",
+     0.32,
+     "grid 1: 29 mm vs L/240 = 89"
+    ]
+   ],
+   "note": "frame HI_END: grids [1], base fixed",
+   "reactions": {
+    "67.75": {
+     "D": {
+      "A": [
+       7.6,
+       69.6,
+       -34.8
+      ],
+      "B": [
+       -5.3,
+       37.7,
+       28.4
+      ]
+     },
+     "L": {
+      "A": [
+       2.5,
+       39.3,
+       -13.6
+      ],
+      "B": [
+       1.6,
+       14.2,
+       -16.4
+      ]
+     },
+     "Lr": {
+      "A": [
+       3.7,
+       11.2,
+       -19.2
+      ],
+      "B": [
+       -3.7,
+       11.2,
+       19.2
+      ]
+     },
+     "W1": {
+      "A": [
+       -21.4,
+       -30.6,
+       118.2
+      ],
+      "B": [
+       -11.4,
+       -19.2,
+       52.3
+      ]
+     },
+     "W2": {
+      "A": [
+       -27.3,
+       -19.1,
+       127.3
+      ],
+      "B": [
+       -5.5,
+       -7.7,
+       43.2
+      ]
+     },
+     "W3": {
+      "A": [
+       11.4,
+       -19.2,
+       -52.2
+      ],
+      "B": [
+       21.4,
+       -30.6,
+       -118.2
+      ]
+     },
+     "W4": {
+      "A": [
+       5.5,
+       -7.7,
+       -43.1
+      ],
+      "B": [
+       27.3,
+       -19.1,
+       -127.3
+      ]
+     },
+     "W5": {
+      "A": [
+       6.0,
+       -30.7,
+       4.5
+      ],
+      "B": [
+       -6.0,
+       -30.7,
+       -4.5
+      ]
+     }
+    }
+   }
+  },
+  "MF_HI_END_RAF": {
+   "sec": "H350x175x7x11",
+   "ur": 0.458,
+   "checks": [],
+   "note": "see MF_HI_END_COL"
+  },
+  "MF_HI_COL": {
+   "sec": "H500x200x10x16",
+   "ur": 0.874,
+   "checks": [
+    [
+     "column N+M (H1-1)",
+     0.836,
+     "grid 2 0.9D+1.6W4: Nu -2 kN / φPn 1896, Mu 365 / φMn 437 kNm"
+    ],
+    [
+     "column shear",
+     0.108,
+     "grid 2 0.9D+1.6W4: Vu 79 / φVn 735 kN"
+    ],
+    [
+     "rafter N+M",
+     0.529,
+     "grid 3 1.2D+1.6Lr+0.5L: Nu 29 kN / φPn 1490, Mu 151 / φMn 291 kNm"
+    ],
+    [
+     "rafter shear",
+     0.134,
+     "grid 2 1.2D+1.6Lr+0.5L: Vu 63 / φVn 470 kN"
+    ],
+    [
+     "haunch N+M",
+     0.528,
+     "grid 2 1.2D+1.6Lr+0.5L: Nu 38 kN / φPn 1586, Mu 193 / φMn 373 kNm"
+    ],
+    [
+     "drift",
+     0.874,
+     "grid 2 W1: 65 mm vs H/200 = 74"
+    ],
+    [
+     "rafter deflection",
+     0.338,
+     "grid 3: 30 mm vs L/240 = 89"
+    ]
+   ],
+   "note": "frame HI: grids [2, 3], base fixed",
+   "reactions": {
+    "74.65": {
+     "D": {
+      "A": [
+       14.1,
+       109.0,
+       -67.0
+      ],
+      "B": [
+       -9.6,
+       65.6,
+       50.9
+      ]
+     },
+     "L": {
+      "A": [
+       4.8,
+       53.9,
+       -30.3
+      ],
+      "B": [
+       3.0,
+       27.7,
+       -33.4
+      ]
+     },
+     "Lr": {
+      "A": [
+       7.5,
+       22.2,
+       -39.0
+      ],
+      "B": [
+       -7.5,
+       22.2,
+       39.0
+      ]
+     },
+     "W1": {
+      "A": [
+       -43.0,
+       -60.8,
+       238.8
+      ],
+      "B": [
+       -22.5,
+       -38.3,
+       104.2
+      ]
+     },
+     "W2": {
+      "A": [
+       -54.7,
+       -38.0,
+       256.6
+      ],
+      "B": [
+       -10.7,
+       -15.4,
+       86.4
+      ]
+     },
+     "W3": {
+      "A": [
+       22.5,
+       -38.3,
+       -104.1
+      ],
+      "B": [
+       43.0,
+       -60.9,
+       -238.8
+      ]
+     },
+     "W4": {
+      "A": [
+       10.7,
+       -15.4,
+       -86.3
+      ],
+      "B": [
+       54.7,
+       -38.0,
+       -256.6
+      ]
+     },
+     "W5": {
+      "A": [
+       11.9,
+       -61.0,
+       10.3
+      ],
+      "B": [
+       -11.9,
+       -61.0,
+       -10.2
+      ]
+     }
+    },
+    "81.55": {
+     "D": {
+      "A": [
+       13.7,
+       118.8,
+       -60.8
+      ],
+      "B": [
+       -11.5,
+       65.9,
+       61.2
+      ]
+     },
+     "L": {
+      "A": [
+       1.0,
+       64.6,
+       8.0
+      ],
+      "B": [
+       -0.1,
+       3.5,
+       0.2
+      ]
+     },
+     "Lr": {
+      "A": [
+       7.5,
+       22.2,
+       -39.0
+      ],
+      "B": [
+       -7.5,
+       22.2,
+       39.0
+      ]
+     },
+     "W1": {
+      "A": [
+       -43.0,
+       -60.8,
+       238.8
+      ],
+      "B": [
+       -22.5,
+       -38.3,
+       104.2
+      ]
+     },
+     "W2": {
+      "A": [
+       -54.7,
+       -38.0,
+       256.6
+      ],
+      "B": [
+       -10.7,
+       -15.4,
+       86.4
+      ]
+     },
+     "W3": {
+      "A": [
+       22.5,
+       -38.3,
+       -104.1
+      ],
+      "B": [
+       43.0,
+       -60.9,
+       -238.8
+      ]
+     },
+     "W4": {
+      "A": [
+       10.7,
+       -15.4,
+       -86.3
+      ],
+      "B": [
+       54.7,
+       -38.0,
+       -256.6
+      ]
+     },
+     "W5": {
+      "A": [
+       11.9,
+       -61.0,
+       10.3
+      ],
+      "B": [
+       -11.9,
+       -61.0,
+       -10.2
+      ]
+     }
+    }
+   }
+  },
+  "MF_HI_RAF": {
+   "sec": "H400x200x8x13",
+   "ur": 0.529,
+   "checks": [],
+   "note": "see MF_HI_COL"
+  },
+  "MF_STEP_COL": {
+   "sec": "H400x200x8x13",
+   "ur": 0.865,
+   "checks": [
+    [
+     "column N+M (H1-1)",
+     0.685,
+     "grid 4 0.9D+1.6W3: Nu 22 kN / φPn 1238, Mu 183 / φMn 270 kNm"
+    ],
+    [
+     "column shear",
+     0.068,
+     "grid 4 0.9D+1.6W1: Vu 32 / φVn 470 kN"
+    ],
+    [
+     "rafter N+M",
+     0.459,
+     "grid 4 1.2D+1.6Lr+0.5L: Nu 15 kN / φPn 1044, Mu 83 / φMn 185 kNm"
+    ],
+    [
+     "rafter shear",
+     0.091,
+     "grid 4 1.2D+1.6Lr+0.5L: Vu 33 / φVn 360 kN"
+    ],
+    [
+     "haunch N+M",
+     0.402,
+     "grid 4 1.2D+1.6Lr+0.5L: Nu 18 kN / φPn 1141, Mu 93 / φMn 236 kNm"
+    ],
+    [
+     "low rafter N+M",
+     0.843,
+     "grid 4 1.2D+1.6Lr+0.5L: Nu 3 kN / φPn 1785, Mu 308 / φMn 366 kNm"
+    ],
+    [
+     "drift",
+     0.865,
+     "grid 4 W1: 64 mm vs H/200 = 74"
+    ],
+    [
+     "rafter deflection",
+     0.316,
+     "grid 4: 28 mm vs L/240 = 89"
+    ]
+   ],
+   "note": "frame STEP: grids [4], base fixed",
+   "reactions": {
+    "88.45": {
+     "D": {
+      "A": [
+       9.9,
+       110.4,
+       -42.4
+      ],
+      "B": [
+       -9.9,
+       149.6,
+       33.4
+      ]
+     },
+     "L": {
+      "A": [
+       3.6,
+       54.5,
+       -7.2
+      ],
+      "B": [
+       -3.6,
+       84.6,
+       0.3
+      ]
+     },
+     "Lr": {
+      "A": [
+       3.3,
+       25.7,
+       -17.5
+      ],
+      "B": [
+       -3.3,
+       25.7,
+       17.5
+      ]
+     },
+     "W1": {
+      "A": [
+       -25.5,
+       -70.6,
+       134.1
+      ],
+      "B": [
+       -7.2,
+       -59.2,
+       36.5
+      ]
+     },
+     "W2": {
+      "A": [
+       -25.5,
+       -44.1,
+       120.5
+      ],
+      "B": [
+       -7.3,
+       -32.7,
+       50.0
+      ]
+     },
+     "W3": {
+      "A": [
+       7.2,
+       -59.2,
+       -36.4
+      ],
+      "B": [
+       25.5,
+       -70.6,
+       -134.0
+      ]
+     },
+     "W4": {
+      "A": [
+       7.3,
+       -32.7,
+       -49.9
+      ],
+      "B": [
+       25.5,
+       -44.1,
+       -120.4
+      ]
+     },
+     "W5": {
+      "A": [
+       0.3,
+       -61.3,
+       26.4
+      ],
+      "B": [
+       -0.3,
+       -61.3,
+       -26.3
+      ]
+     }
+    }
+   }
+  },
+  "MF_STEP_RAF": {
+   "sec": "H350x175x7x11",
+   "ur": 0.843,
+   "checks": [],
+   "note": "see MF_STEP_COL"
+  },
+  "MF_STEP_LRAF": {
+   "sec": "H450x200x9x14",
+   "ur": 0.843,
+   "checks": [],
+   "note": "see MF_STEP_COL"
+  },
+  "MF_LO_MEZZ_COL": {
+   "sec": "H450x200x9x14",
+   "ur": 0.955,
+   "checks": [
+    [
+     "column N+M (H1-1)",
+     0.955,
+     "grid 5 1.2D+1.6Lr+0.5L: Nu 89 kN / φPn 1620, Mu 314 / φMn 339 kNm"
+    ],
+    [
+     "column shear",
+     0.086,
+     "grid 5 1.2D+1.6Lr+0.5L: Vu 51 / φVn 595 kN"
+    ],
+    [
+     "rafter N+M",
+     0.81,
+     "grid 5 1.2D+1.6Lr+0.5L: Nu 57 kN / φPn 1044, Mu 144 / φMn 185 kNm"
+    ],
+    [
+     "rafter shear",
+     0.185,
+     "grid 5 1.2D+1.6Lr+0.5L: Vu 67 / φVn 360 kN"
+    ],
+    [
+     "haunch N+M",
+     0.974,
+     "grid 5 1.2D+1.6Lr+0.5L: Nu 57 kN / φPn 1141, Mu 224 / φMn 236 kNm"
+    ],
+    [
+     "drift",
+     0.761,
+     "grid 5 W1: 35 mm vs H/150 = 45"
+    ],
+    [
+     "rafter deflection",
+     0.486,
+     "grid 5: 43 mm vs L/240 = 89"
+    ]
+   ],
+   "note": "frame LO_MEZZ: grids [5], base pinned",
+   "reactions": {
+    "97.45": {
+     "D": {
+      "A": [
+       23.5,
+       96.7,
+       0.0
+      ],
+      "B": [
+       -23.5,
+       135.9,
+       0.0
+      ]
+     },
+     "L": {
+      "A": [
+       3.0,
+       53.6,
+       0.0
+      ],
+      "B": [
+       -3.0,
+       84.2,
+       0.0
+      ]
+     },
+     "Lr": {
+      "A": [
+       12.9,
+       25.2,
+       0.0
+      ],
+      "B": [
+       -12.9,
+       25.2,
+       0.0
+      ]
+     },
+     "W1": {
+      "A": [
+       -36.7,
+       -58.6,
+       -0.0
+      ],
+      "B": [
+       8.5,
+       -39.3,
+       -0.0
+      ]
+     },
+     "W2": {
+      "A": [
+       -32.4,
+       -36.0,
+       0.0
+      ],
+      "B": [
+       4.2,
+       -16.7,
+       0.0
+      ]
+     },
+     "W3": {
+      "A": [
+       -8.5,
+       -39.3,
+       0.0
+      ],
+      "B": [
+       36.7,
+       -58.6,
+       -0.0
+      ]
+     },
+     "W4": {
+      "A": [
+       -4.3,
+       -16.7,
+       0.0
+      ],
+      "B": [
+       32.4,
+       -36.0,
+       -0.0
+      ]
+     },
+     "W5": {
+      "A": [
+       -18.6,
+       -60.2,
+       -0.0
+      ],
+      "B": [
+       18.6,
+       -60.2,
+       -0.0
+      ]
+     }
+    }
+   }
+  },
+  "MF_LO_MEZZ_RAF": {
+   "sec": "H350x175x7x11",
+   "ur": 0.974,
+   "checks": [],
+   "note": "see MF_LO_MEZZ_COL"
+  },
+  "MF_LO_COL": {
+   "sec": "H450x200x9x14",
+   "ur": 0.84,
+   "checks": [
+    [
+     "column N+M (H1-1)",
+     0.84,
+     "grid 6 1.2D+1.6Lr+0.5L: Nu 78 kN / φPn 1620, Mu 276 / φMn 339 kNm"
+    ],
+    [
+     "column shear",
+     0.07,
+     "grid 6 1.2D+1.6Lr+0.5L: Vu 42 / φVn 595 kN"
+    ],
+    [
+     "rafter N+M",
+     0.724,
+     "grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1044, Mu 129 / φMn 185 kNm"
+    ],
+    [
+     "rafter shear",
+     0.162,
+     "grid 6 1.2D+1.6Lr+0.5L: Vu 58 / φVn 360 kN"
+    ],
+    [
+     "haunch N+M",
+     0.87,
+     "grid 6 1.2D+1.6Lr+0.5L: Nu 47 kN / φPn 1141, Mu 201 / φMn 236 kNm"
+    ],
+    [
+     "drift",
+     0.644,
+     "grid 7 W1: 29 mm vs H/150 = 45"
+    ],
+    [
+     "rafter deflection",
+     0.412,
+     "grid 7: 37 mm vs L/240 = 89"
+    ]
+   ],
+   "note": "frame LO: grids [6, 7], base pinned",
+   "reactions": {
+    "104.05": {
+     "D": {
+      "A": [
+       19.1,
+       96.2,
+       0.0
+      ],
+      "B": [
+       -19.1,
+       47.2,
+       0.0
+      ]
+     },
+     "L": {
+      "A": [
+       1.3,
+       60.8,
+       0.0
+      ],
+      "B": [
+       -1.3,
+       0.9,
+       0.0
+      ]
+     },
+     "Lr": {
+      "A": [
+       10.9,
+       21.3,
+       0.0
+      ],
+      "B": [
+       -10.9,
+       21.3,
+       0.0
+      ]
+     },
+     "W1": {
+      "A": [
+       -31.0,
+       -49.6,
+       0.0
+      ],
+      "B": [
+       7.2,
+       -33.2,
+       -0.0
+      ]
+     },
+     "W2": {
+      "A": [
+       -27.4,
+       -30.4,
+       0.0
+      ],
+      "B": [
+       3.6,
+       -14.1,
+       -0.0
+      ]
+     },
+     "W3": {
+      "A": [
+       -7.2,
+       -33.3,
+       -0.0
+      ],
+      "B": [
+       31.0,
+       -49.6,
+       0.0
+      ]
+     },
+     "W4": {
+      "A": [
+       -3.6,
+       -14.2,
+       0.0
+      ],
+      "B": [
+       27.4,
+       -30.5,
+       -0.0
+      ]
+     },
+     "W5": {
+      "A": [
+       -15.8,
+       -51.0,
+       0.0
+      ],
+      "B": [
+       15.8,
+       -51.0,
+       -0.0
+      ]
+     }
+    },
+    "110.65": {
+     "D": {
+      "A": [
+       18.9,
+       87.5,
+       0.0
+      ],
+      "B": [
+       -18.9,
+       47.1,
+       0.0
+      ]
+     },
+     "L": {
+      "A": [
+       1.1,
+       49.6,
+       0.0
+      ],
+      "B": [
+       -1.1,
+       0.7,
+       0.0
+      ]
+     },
+     "Lr": {
+      "A": [
+       10.9,
+       21.3,
+       0.0
+      ],
+      "B": [
+       -10.9,
+       21.3,
+       0.0
+      ]
+     },
+     "W1": {
+      "A": [
+       -31.0,
+       -49.6,
+       0.0
+      ],
+      "B": [
+       7.2,
+       -33.2,
+       -0.0
+      ]
+     },
+     "W2": {
+      "A": [
+       -27.4,
+       -30.4,
+       0.0
+      ],
+      "B": [
+       3.6,
+       -14.1,
+       0.0
+      ]
+     },
+     "W3": {
+      "A": [
+       -7.2,
+       -33.3,
+       0.0
+      ],
+      "B": [
+       31.0,
+       -49.6,
+       0.0
+      ]
+     },
+     "W4": {
+      "A": [
+       -3.6,
+       -14.2,
+       0.0
+      ],
+      "B": [
+       27.4,
+       -30.5,
+       -0.0
+      ]
+     },
+     "W5": {
+      "A": [
+       -15.8,
+       -51.0,
+       -0.0
+      ],
+      "B": [
+       15.8,
+       -51.0,
+       -0.0
+      ]
+     }
+    }
+   }
+  },
+  "MF_LO_RAF": {
+   "sec": "H350x175x7x11",
+   "ur": 0.87,
+   "checks": [],
+   "note": "see MF_LO_COL"
+  },
+  "MF_LO_END_COL": {
+   "sec": "H350x175x7x11",
+   "ur": 0.97,
+   "checks": [
+    [
+     "column N+M (H1-1)",
+     0.97,
+     "grid 8 1.2D+1.6Lr+0.5L: Nu 46 kN / φPn 990, Mu 160 / φMn 169 kNm"
+    ],
+    [
+     "column shear",
+     0.067,
+     "grid 8 1.2D+1.6Lr+0.5L: Vu 24 / φVn 360 kN"
+    ],
+    [
+     "rafter N+M",
+     0.684,
+     "grid 8 1.2D+1.6Lr+0.5L: Nu 24 kN / φPn 691, Mu 73 / φMn 110 kNm"
+    ],
+    [
+     "rafter shear",
+     0.12,
+     "grid 8 1.2D+1.6Lr+0.5L: Vu 34 / φVn 287 kN"
+    ],
+    [
+     "haunch N+M",
+     0.841,
+     "grid 8 1.2D+1.6Lr+0.5L: Nu 27 kN / φPn 804, Mu 115 / φMn 140 kNm"
+    ],
+    [
+     "drift",
+     0.669,
+     "grid 8 W1: 30 mm vs H/150 = 45"
+    ],
+    [
+     "rafter deflection",
+     0.5,
+     "grid 8: 45 mm vs L/240 = 89"
+    ]
+   ],
+   "note": "frame LO_END: grids [8], base pinned",
+   "reactions": {
+    "117.25": {
+     "D": {
+      "A": [
+       11.2,
+       57.9,
+       0.0
+      ],
+      "B": [
+       -11.2,
+       28.0,
+       0.0
+      ]
+     },
+     "L": {
+      "A": [
+       0.7,
+       36.6,
+       0.0
+      ],
+      "B": [
+       -0.7,
+       0.4,
+       0.0
+      ]
+     },
+     "Lr": {
+      "A": [
+       6.2,
+       12.3,
+       0.0
+      ],
+      "B": [
+       -6.2,
+       12.3,
+       0.0
+      ]
+     },
+     "W1": {
+      "A": [
+       -16.9,
+       -28.4,
+       -0.0
+      ],
+      "B": [
+       5.0,
+       -19.5,
+       -0.0
+      ]
+     },
+     "W2": {
+      "A": [
+       -14.4,
+       -17.3,
+       -0.0
+      ],
+      "B": [
+       2.6,
+       -8.5,
+       -0.0
+      ]
+     },
+     "W3": {
+      "A": [
+       -5.1,
+       -19.5,
+       -0.0
+      ],
+      "B": [
+       16.9,
+       -28.4,
+       -0.0
+      ]
+     },
+     "W4": {
+      "A": [
+       -2.6,
+       -8.5,
+       0.0
+      ],
+      "B": [
+       14.4,
+       -17.3,
+       -0.0
+      ]
+     },
+     "W5": {
+      "A": [
+       -9.6,
+       -29.5,
+       0.0
+      ],
+      "B": [
+       9.6,
+       -29.5,
+       -0.0
+      ]
+     }
+    }
+   }
+  },
+  "MF_LO_END_RAF": {
+   "sec": "H300x150x6.5x9",
+   "ur": 0.841,
+   "checks": [],
+   "note": "see MF_LO_END_COL"
+  },
+  "ROD_ROOF_HI": {
+   "sec": "RB30",
+   "ur": 0.87,
+   "checks": [
+    [
+     "tension (threaded)",
+     0.87,
+     "Tu 131 kN, L 8.8 m"
+    ]
+   ],
+   "note": "high roof X-brace: gable force 376 kN, 55 % to roof, panel shear 103 kN"
+  },
+  "ROD_ROOF_LO": {
+   "sec": "RB20",
+   "ur": 0.877,
+   "checks": [
+    [
+     "tension (threaded)",
+     0.877,
+     "Tu 59 kN, L 8.5 m"
+    ]
+   ],
+   "note": "low roof X-brace: gable 8 force 165 kN"
+  },
+  "ROD_WALL_HI": {
+   "sec": "CHS114.3x4.5",
+   "ur": 0.872,
+   "checks": [
+    [
+     "compression diagonal (Lc = L/2)",
+     0.872,
+     "Nu 114 kN, Lc 5.28 m"
+    ],
+    [
+     "tension diagonal",
+     0.347,
+     "Tu 114 kN"
+    ],
+    [
+     "KL/r ≤ 200",
+     0.68,
+     ""
+    ]
+   ],
+   "note": "CHS X-brace bay 3-4 (A and B), tension + compression: eave 103 kN + low-zone line A 45 kN"
+  },
+  "ROD_WALL_LO": {
+   "sec": "RB20",
+   "ur": 0.973,
+   "checks": [
+    [
+     "tension (threaded)",
+     0.973,
+     "Tu 65 kN, L 9.5 m"
+    ]
+   ],
+   "note": "wall X-brace line B bay 7-8"
+  },
+  "STRUT_ROOF": {
+   "sec": "CHS114.3x4.5",
+   "ur": 0.888,
+   "checks": [
+    [
+     "compression",
+     0.674,
+     "Nu 52 kN, L 6.9 m"
+    ],
+    [
+     "KL/r ≤ 200",
+     0.888,
+     ""
+    ]
+   ],
+   "note": "roof strut at panel points (gable post reactions)"
+  },
+  "STRUT_WALL": {
+   "sec": "CHS165.2x5",
+   "ur": 0.609,
+   "checks": [
+    [
+     "compression",
+     0.585,
+     "Nu 149 kN, L 6.9 m"
+    ],
+    [
+     "KL/r ≤ 200",
+     0.609,
+     ""
+    ]
+   ],
+   "note": "wall strut at +7.0 / +7.6 tiers"
+  },
+  "EAVE_HI": {
+   "sec": "CHS139.8x4.5",
+   "ur": 0.721,
+   "checks": [
+    [
+     "compression",
+     0.721,
+     "Nu 103 kN, L 6.9 m"
+    ],
+    [
+     "KL/r ≤ 200",
+     0.721,
+     ""
+    ]
+   ],
+   "note": "eave strut grid 1 -> bay 3-4 (compression from roof bracing)"
+  },
+  "EAVE_LO": {
+   "sec": "CHS139.8x4.5",
+   "ur": 0.94,
+   "checks": [
+    [
+     "compression",
+     0.54,
+     "Nu 45 kN, L 9.0 m"
+    ],
+    [
+     "KL/r ≤ 200",
+     0.94,
+     ""
+    ]
+   ],
+   "note": "low eave strut line A, 4 bays (9.0 m lobby bay governs) into node A/4"
+  }
+ }
+}

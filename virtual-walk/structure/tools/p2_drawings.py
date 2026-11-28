@@ -2,7 +2,7 @@
 import json, os, sys, numpy as np, matplotlib
 matplotlib.use('Agg'); import matplotlib.pyplot as plt
 from archview import tris, view
-D = os.path.join(os.path.dirname(__file__), '..', 'out'); P = os.path.join(D, 'p2'); os.makedirs(P, exist_ok=True)
+D = os.path.join(os.path.dirname(__file__), '..', 'out'); PH = os.environ.get('PH', 'p2'); P = os.path.join(D, PH); os.makedirs(P, exist_ok=True)
 L = json.load(open(os.path.join(D, 'layout.json'))); M = L['members']
 GY = list(L['grids']['y'].values()); GN = list(L['grids']['y'].keys())
 COL = dict(MAIN='#c0392b', ROOF='#2e86c1', BRACE='#16a085', WALL='#7f8c8d', FL2='#d35400', BD='#8e44ad', CM='#b7950b', BR='#b7950b', STAIR='#1e8449', MISC='#5d6d7e')
@@ -50,8 +50,8 @@ def plan(name, z0, z1, sel, title, arch=True, labsel=None):
     ax.set_xlim(64.5, 120.5); ax.set_ylim(-6.5, 18.5); ax.set_aspect('equal')
     grid(ax)
     lines(ax, sel, [1, 0], labsel=labsel)
-    ax.set_title(title, fontsize=12, loc='left'); ax.set_xlabel('y (m)'); ax.set_ylabel('x (m)')
-    f.savefig(os.path.join(P, name), dpi=130, bbox_inches='tight'); plt.close(f)
+    ax.set_title(title.replace('P2-', PH.upper() + '-'), fontsize=12, loc='left'); ax.set_xlabel('y (m)'); ax.set_ylabel('x (m)')
+    f.savefig(os.path.join(P, name.replace('P2-', PH.upper() + '-')), dpi=130, bbox_inches='tight'); plt.close(f)
 
 plan('P2-01_roof.png', 7, 17, lambda m: m['sys'] in ('ROOF', 'BRACE') and m['pre'] in ('P', 'SR', 'RB', 'ST', 'ES') and m['p0'][2] > 6.5
      or m['pre'] == 'R', 'P2-01  ROOF FRAMING PLAN  (rafters red, purlins blue @ ~1.17 m, X-bracing green dashed, sag rods dashed)',
@@ -72,8 +72,8 @@ def elev(name, sel, ax_i, xl, title, arch_box=None, depth=None, rev=False, figsi
     lines(ax, sel, ax_i, labsel=labsel)
     for zz, t in ((0.2, '+0.20'), (1.0, 'FFL +1.00'), (7.0, '+7.00'), (15.0, '+15.00')):
         ax.axhline(zz, color='k', lw=.3, ls=':'); ax.text(xl[1], zz, ' ' + t, va='center', fontsize=7)
-    ax.set_title(title, fontsize=11, loc='left')
-    f.savefig(os.path.join(P, name), dpi=130, bbox_inches='tight'); plt.close(f)
+    ax.set_title(title.replace('P2-', PH.upper() + '-'), fontsize=11, loc='left')
+    f.savefig(os.path.join(P, name.replace('P2-', PH.upper() + '-')), dpi=130, bbox_inches='tight'); plt.close(f)
 
 near = lambda y0, tol=0.35: (lambda m: abs(m['p0'][1] - y0) < tol and abs(m['p1'][1] - y0) < tol)
 for gi in (0, 1, 3, 5, 7):
