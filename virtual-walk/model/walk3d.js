@@ -47,7 +47,7 @@ if(touch){ui.querySelector('#joy').style.display='block';ui.querySelector('#whel
 let pos={x:0,z:0,feet:0},yaw=0,pitch=0,vy=0,keys={},joy={x:0,y:0},saved=null;
 function spot(i){const s=SPOTS[i];pos.x=s[1];pos.z=-s[2];const f=floorAt(pos.x,pos.z,s[3]+0.3);pos.feet=f>-1e8?f:s[3];yaw=s[4]*Math.PI/180;pitch=0;vy=0}
 async function enter(){
-  if(!W){ui.querySelector('#winfo').textContent='กำลังโหลด…';W=await fetch('walk.json?v=mz18').then(r=>r.json());index(W.walk,fl);index(W.col,cl)}
+  if(!W){ui.querySelector('#winfo').textContent='กำลังโหลด…';W=await fetch('walk.json?v=mz19').then(r=>r.json());index(W.walk,fl);index(W.col,cl)}
   const V=window.V,c=V.cam;
   saved={fov:c.fov,near:c.near,pos:c.position.clone(),q:c.quaternion.clone(),cam:V.getCam(),L:{...V.L}};
   V.walking=true;document.body.classList.add('walking');ui.style.display='block';btn.classList.add('on');
