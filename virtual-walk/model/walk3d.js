@@ -2,7 +2,7 @@
 (function(){
 const EYE=1.6, STEP=0.45, RAD=0.22, SPD=1.6, RUN=3.4, CELL=1;
 const SPOTS=[['หน้าอาคาร',-12,93.2,0.2,-90],['โถงทางเข้า',2.9,90.4,1.0,180],['โซนปีนผา',5.0,77.5,1.0,180],
- ['บันไดขึ้นชั้น 2 แนวหน้า',0.02,74.3,1.0,0],['ชั้น 2 แนวหน้า (ฝั่งผา)',-3.0,72.0,3.4,0],['โบลเดอริ่งชั้น 2',3.0,73.6,6.3,90],
+ ['บันไดขึ้นชั้น 2 แนวหน้า',0.02,73.4,1.0,0],['ชั้น 2 แนวหน้า (ฝั่งผา)',-3.0,72.0,3.4,0],['โบลเดอริ่งชั้น 2',3.0,73.6,6.3,90],
  ['ชั้น 2 แนวหน้า (ส่วนกลาง)',-1.0,93.0,4.2,180],['Co-working ชั้น 2',8.0,89.0,4.2,0],['Edge · Hyrox',8.0,108.0,1.0,0],
  ['ชั้น 2 แนวหน้า (ฝั่ง Edge)',-3.0,114.0,3.4,180]];
 let W=null, fl=new Map(), cl=new Map();
@@ -47,7 +47,7 @@ if(touch){ui.querySelector('#joy').style.display='block';ui.querySelector('#whel
 let pos={x:0,z:0,feet:0},yaw=0,pitch=0,vy=0,keys={},joy={x:0,y:0},saved=null;
 function spot(i){const s=SPOTS[i];pos.x=s[1];pos.z=-s[2];const f=floorAt(pos.x,pos.z,s[3]+0.3);pos.feet=f>-1e8?f:s[3];yaw=s[4]*Math.PI/180;pitch=0;vy=0}
 async function enter(){
-  if(!W){ui.querySelector('#winfo').textContent='กำลังโหลด…';W=await fetch('walk.json?v=mz7').then(r=>r.json());index(W.walk,fl);index(W.col,cl)}
+  if(!W){ui.querySelector('#winfo').textContent='กำลังโหลด…';W=await fetch('walk.json?v=mz8').then(r=>r.json());index(W.walk,fl);index(W.col,cl)}
   const V=window.V,c=V.cam;
   saved={fov:c.fov,near:c.near,pos:c.position.clone(),q:c.quaternion.clone(),cam:V.getCam(),L:{...V.L}};
   V.walking=true;document.body.classList.add('walking');ui.style.display='block';btn.classList.add('on');
