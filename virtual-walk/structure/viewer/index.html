@@ -255,7 +255,7 @@ function rebuild(){
   $('stats').textContent=`${n} ชิ้น · ${(kg/1000).toFixed(1)} t (prelim, ไม่รวม connection)`}
 // arch overlay
 async function loadArch(){
-  const meta=await getJSON(['arch/geo.json','../../model/geo.json']);const buf=await getBuf(['arch/geo.bin','../../model/geo.bin']);
+  const meta=await getJSON(['arch/geo.json','../../model/geo.json']);const buf=await getBuf(['arch/geo.wasm','../../model/geo.bin']);
   if(!meta||!buf){$('status').textContent='โหลดโมเดลสถาปัตย์ไม่ได้ (แสดงเฉพาะเหล็ก)';return}
   const byL={};
   for(const ch of meta.chunks){if(ch.t!==undefined)continue;const lay=ch.k.split('#')[0];if(!ALAY.includes(lay))continue;
